@@ -1,0 +1,8 @@
+[
+  {
+    "id":"assumed-roadwork-b","scenario_group":"congestion-b","category":"construction","location":"시연 수음점 인근","start_time":"07:00","end_time":"09:00","receptor_ids":["residential-1","university-1","school-1"],"source_noise_data":{"level_db":82.0,"acoustic_unit_type":"Lp_dBA"},"is_fixed":true,"provenance":{"status":"assumed","source":"PoC congestion experiment","note":"Not measured or verified","unit":"Lp_dBA"}
+  },
+  {
+    "id":"assumed-waste-b","scenario_group":"congestion-b","category":"waste_collection","location":"시연 수음점 인근","start_time":"09:00","end_time":"09:30","receptor_ids":["residential-1"],"source_noise_data":{"level_db":75.0,"acoustic_unit_type":"Lp_dBA"},"is_fixed":true,"provenance":{"status":"assumed","source":"PoC congestion experiment","note":"Not measured or verified","unit":"Lp_dBA"}
+  }
+]
