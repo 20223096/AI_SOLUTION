@@ -5,8 +5,8 @@ from app.services.impact import calculate_impact
 from app.services.prediction import predict
 
 
-def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignment], threshold: float = 65.0, sensitivity_enabled: bool = True) -> ScheduleMetrics:
-    rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled)["predictions"]
+def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignment], threshold: float = 65.0, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> ScheduleMetrics:
+    rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile)["predictions"]
     # Aggregate conservatively across receptors: one value per slot, taking maximum.
     by_slot, total_impact = {}, 0.0
     for row in rows:
@@ -35,9 +35,9 @@ def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignme
     return ScheduleMetrics(max_continuous_high_noise_minutes=max(high_runs, default=0), longest_quiet_window_minutes=max(quiet_runs, default=0), sensitive_high_noise_minutes=sensitive_high, max_impact_score=max(receptor_impacts, default=0), total_impact_score=round(sum(receptor_impacts), 2))
 
 
-def compare(scenario_id: str, day: date, before: list[TaskAssignment], after: list[TaskAssignment], sensitivity_enabled: bool = True) -> dict:
-    a, b = schedule_metrics(scenario_id, day, before, sensitivity_enabled=sensitivity_enabled), schedule_metrics(scenario_id, day, after, sensitivity_enabled=sensitivity_enabled)
+def compare(scenario_id: str, day: date, before: list[TaskAssignment], after: list[TaskAssignment], sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
+    a, b = schedule_metrics(scenario_id, day, before, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile), schedule_metrics(scenario_id, day, after, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile)
     before_starts = {x.task_id: x.start for x in before}
     change = sum(abs(int((x.start - before_starts[x.task_id]).total_seconds() / 60)) for x in after if x.task_id in before_starts)
     b.schedule_change_minutes = change
-    return {"before": a, "after": b, "delta": {k: round(getattr(b, k) - getattr(a, k), 2) for k in ScheduleMetrics.model_fields}, "comparison_basis": {"date": day, "slot_minutes": 15, "threshold_db": 65.0, "same_receptors_and_rules": True}}
+    return {"before": a, "after": b, "delta": {k: round(getattr(b, k) - getattr(a, k), 2) for k in ScheduleMetrics.model_fields}, "comparison_basis": {"date": day, "slot_minutes": 15, "threshold_db": 65.0, "background_profile": background_profile, "same_receptors_and_rules": True}}

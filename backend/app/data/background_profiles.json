@@ -1,0 +1,636 @@
+[
+  {
+    "id": "assumed_demo",
+    "label": "기존 PoC 가정 배경",
+    "calculation_eligible": true,
+    "metric": "LAeq_dBA_assumed",
+    "observation_period": null,
+    "hourly_values": [],
+    "source_metadata": {
+      "status": "assumed",
+      "source": "PoC scenario settings",
+      "unit": "LAeq_dBA"
+    },
+    "quality_warnings": [
+      "실측값이 아닌 기존 시연 가정값"
+    ]
+  },
+  {
+    "id": "sdot_observed_profile",
+    "label": "S-DoT 신촌 시간 패턴",
+    "calculation_eligible": false,
+    "metric": "device_average_noise_metric_unspecified",
+    "observation_period": {
+      "start": "2025-11-12T20:07:00+09:00",
+      "end": "2026-10-11T23:07:00+09:00"
+    },
+    "hourly_values": [
+      {
+        "day_type": "weekday",
+        "hour": 0,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 1,
+        "representative_db": 39.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 2,
+        "representative_db": 39.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 3,
+        "representative_db": 38.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 4,
+        "representative_db": 38.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 5,
+        "representative_db": 38.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 6,
+        "representative_db": 39.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 7,
+        "representative_db": 39.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 8,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 9,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 10,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 11,
+        "representative_db": 40.0,
+        "observation_count": 424
+      },
+      {
+        "day_type": "weekday",
+        "hour": 12,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 13,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 14,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 15,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 16,
+        "representative_db": 40.0,
+        "observation_count": 427
+      },
+      {
+        "day_type": "weekday",
+        "hour": 17,
+        "representative_db": 40.0,
+        "observation_count": 427
+      },
+      {
+        "day_type": "weekday",
+        "hour": 18,
+        "representative_db": 40.0,
+        "observation_count": 425
+      },
+      {
+        "day_type": "weekday",
+        "hour": 19,
+        "representative_db": 41.0,
+        "observation_count": 427
+      },
+      {
+        "day_type": "weekday",
+        "hour": 20,
+        "representative_db": 41.0,
+        "observation_count": 428
+      },
+      {
+        "day_type": "weekday",
+        "hour": 21,
+        "representative_db": 41.0,
+        "observation_count": 428
+      },
+      {
+        "day_type": "weekday",
+        "hour": 22,
+        "representative_db": 41.0,
+        "observation_count": 428
+      },
+      {
+        "day_type": "weekday",
+        "hour": 23,
+        "representative_db": 40.0,
+        "observation_count": 428
+      },
+      {
+        "day_type": "weekend",
+        "hour": 0,
+        "representative_db": 39.5,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 1,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 2,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 3,
+        "representative_db": 38.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 4,
+        "representative_db": 38.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 5,
+        "representative_db": 38.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 6,
+        "representative_db": 38.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 7,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 8,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 9,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 10,
+        "representative_db": 39.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 11,
+        "representative_db": 39.5,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 12,
+        "representative_db": 40.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 13,
+        "representative_db": 40.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 14,
+        "representative_db": 40.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 15,
+        "representative_db": 40.0,
+        "observation_count": 170
+      },
+      {
+        "day_type": "weekend",
+        "hour": 16,
+        "representative_db": 40.0,
+        "observation_count": 170
+      },
+      {
+        "day_type": "weekend",
+        "hour": 17,
+        "representative_db": 40.0,
+        "observation_count": 170
+      },
+      {
+        "day_type": "weekend",
+        "hour": 18,
+        "representative_db": 40.0,
+        "observation_count": 170
+      },
+      {
+        "day_type": "weekend",
+        "hour": 19,
+        "representative_db": 40.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 20,
+        "representative_db": 41.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 21,
+        "representative_db": 40.5,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 22,
+        "representative_db": 40.0,
+        "observation_count": 172
+      },
+      {
+        "day_type": "weekend",
+        "hour": 23,
+        "representative_db": 40.0,
+        "observation_count": 170
+      }
+    ],
+    "source_metadata": {
+      "status": "verified_public",
+      "source": "Seoul S-DoT environmental CSV",
+      "unit": "source noise unit not documented in supplied files"
+    },
+    "quality_warnings": [
+      "측정지표·교정·설치 위치 호환성이 확인되지 않아 물리 합성에 사용하지 않음"
+    ]
+  },
+  {
+    "id": "road_traffic_observed_profile",
+    "label": "신촌 도로교통소음 시간별 LEQ 대표 패턴",
+    "calculation_eligible": true,
+    "metric": "LEQ",
+    "observation_period": {
+      "start": "2025-01-01",
+      "end": "2026-06-30"
+    },
+    "hourly_values": [
+      {
+        "day_type": "weekday",
+        "hour": 0,
+        "representative_db": 70.2,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 1,
+        "representative_db": 68.9,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 2,
+        "representative_db": 68.15,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 3,
+        "representative_db": 67.1,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 4,
+        "representative_db": 66.4,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 5,
+        "representative_db": 66.4,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 6,
+        "representative_db": 68.4,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 7,
+        "representative_db": 70.9,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 8,
+        "representative_db": 71.5,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 9,
+        "representative_db": 71.2,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 10,
+        "representative_db": 71.5,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 11,
+        "representative_db": 71.55,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 12,
+        "representative_db": 71.3,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 13,
+        "representative_db": 71.5,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 14,
+        "representative_db": 71.2,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 15,
+        "representative_db": 71.4,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 16,
+        "representative_db": 71.5,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 17,
+        "representative_db": 71.55,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 18,
+        "representative_db": 71.3,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 19,
+        "representative_db": 71.6,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 20,
+        "representative_db": 71.3,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 21,
+        "representative_db": 71.0,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 22,
+        "representative_db": 70.5,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekday",
+        "hour": 23,
+        "representative_db": 70.7,
+        "observation_count": 390
+      },
+      {
+        "day_type": "weekend",
+        "hour": 0,
+        "representative_db": 70.0,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 1,
+        "representative_db": 69.3,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 2,
+        "representative_db": 68.7,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 3,
+        "representative_db": 67.8,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 4,
+        "representative_db": 67.3,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 5,
+        "representative_db": 66.7,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 6,
+        "representative_db": 67.9,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 7,
+        "representative_db": 69.0,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 8,
+        "representative_db": 69.9,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 9,
+        "representative_db": 70.6,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 10,
+        "representative_db": 71.4,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 11,
+        "representative_db": 71.2,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 12,
+        "representative_db": 71.4,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 13,
+        "representative_db": 70.95,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 14,
+        "representative_db": 71.0,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 15,
+        "representative_db": 71.3,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 16,
+        "representative_db": 71.2,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 17,
+        "representative_db": 71.3,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 18,
+        "representative_db": 71.3,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 19,
+        "representative_db": 71.5,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 20,
+        "representative_db": 71.2,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 21,
+        "representative_db": 70.9,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 22,
+        "representative_db": 70.9,
+        "observation_count": 156
+      },
+      {
+        "day_type": "weekend",
+        "hour": 23,
+        "representative_db": 70.6,
+        "observation_count": 156
+      }
+    ],
+    "source_metadata": {
+      "status": "verified_public",
+      "source": "Seoul road traffic noise monthly workbooks: Sinchon hourly sheets",
+      "unit": "dB LEQ"
+    },
+    "quality_warnings": [
+      "시뮬레이션 날짜의 실측이 아닌 과거 시간대별 중앙값",
+      "주소·좌표가 없어 다른 수음점의 실측값으로 간주할 수 없음",
+      "명시적 선택 시 지역 대표 배경 후보로만 사용"
+    ]
+  }
+]

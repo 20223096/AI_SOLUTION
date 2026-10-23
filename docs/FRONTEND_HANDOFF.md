@@ -32,6 +32,8 @@ POST /api/noise/predict
 
 그래프는 `total_estimated_db`, 구성요소는 별도 범례로 표현합니다. null은 0이 아니라 누락입니다.
 
+`GET /api/noise/background-profiles`의 `calculation_eligible`과 `quality_warnings`를 먼저 표시합니다. 요청에 `background_profile`을 생략하면 기존 `assumed_demo`가 유지됩니다. `road_traffic_observed_profile`은 명시 선택만 허용하고 과거 대표 패턴임을 표시하며, S-DoT 프로파일은 분석 전용이라 계산 요청 시 422가 정상입니다.
+
 ## Noise Slot 후보
 
 ```json

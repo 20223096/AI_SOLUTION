@@ -9,7 +9,7 @@ from app.services.prediction import predict
 from app.services.timegrid import at, overlaps
 
 
-def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True) -> ScheduleCandidate:
+def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> ScheduleCandidate:
     scenario = get_scenario(scenario_id)
     notice = scenario["notice"]
     timed = [t for t in notice.tasks if t.duration_minutes is not None]
@@ -37,7 +37,7 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
             reasons.append(f"작업 금지시간 {forbidden['start']}~{forbidden['end']}과 충돌")
     # Sequential construction preserves predecessors/resources by construction.
     feasible = not reasons
-    metrics = schedule_metrics(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled) if feasible else ScheduleMetrics()
+    metrics = schedule_metrics(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile) if feasible else ScheduleMetrics()
     original = default_assignments(scenario, day)
     original_starts = {x.task_id: x.start for x in original}
     change = sum(abs(int((x.start - original_starts[x.task_id]).total_seconds() / 60)) for x in assignments)
@@ -45,7 +45,7 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
     overlap_count = 0
     overlap_penalty = float(scenario.get("settings", {}).get("existing_overlap_penalty_per_receptor_slot", 0))
     if feasible and overlap_penalty:
-        rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled)["predictions"]
+        rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile)["predictions"]
         overlap_count = sum(bool(x["active_task_ids"] and x["existing_event_ids"]) for x in rows)
     resident_cost = metrics.total_impact_score + overlap_count * overlap_penalty
     return ScheduleCandidate(id=f"offset-{offset_minutes}", task_assignments=assignments if feasible else [], feasibility=feasible, infeasibility_reasons=reasons, needs_confirmation=["덤프트럭 소음 원천값", "미확정 공정 소요시간"] if reasons else ["덤프트럭 소음 원천값"], metrics=metrics, objective_values={"resident_cost": round(resident_cost, 2), "change_cost": float(change), "base_impact_cost": metrics.total_impact_score, "existing_noise_overlap_slots": float(overlap_count), "existing_noise_overlap_penalty": round(overlap_count * overlap_penalty, 2)}, provenance=SourceMetadata(status="derived", source="exact 15-minute offset enumeration", note="No duration reduction or parallel work assumed"))
@@ -60,9 +60,9 @@ def _dominated_reason(candidate: ScheduleCandidate, valid: list[ScheduleCandidat
     return {"dominated_by": best.id, "reason": "resident_cost와 change_cost가 모두 같거나 낮고 하나 이상 엄격히 낮음"}
 
 
-def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True) -> dict:
+def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
     scenario = get_scenario(scenario_id)
-    raw = [_candidate(scenario_id, day, offset, sensitivity_enabled=sensitivity_enabled) for offset in range(0, 121, 15)]
+    raw = [_candidate(scenario_id, day, offset, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile) for offset in range(0, 121, 15)]
     valid = [x for x in raw if x.feasibility]
     points = [{"id": x.id, **x.objective_values} for x in valid]
     ids = {x["id"] for x in non_dominated(points)}
@@ -78,7 +78,7 @@ def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True) -> d
         "generated_candidate_count": len(raw), "feasible_candidate_count": len(valid),
         "infeasible_candidate_count": len(raw) - len(valid), "pareto_candidate_count": len(frontier),
         "candidate_metrics": [{"id": x.id, "feasibility": x.feasibility, "objective_values": x.objective_values, "metrics": x.metrics, "infeasibility_reasons": x.infeasibility_reasons, "dominated_reason": _dominated_reason(x, valid) if x.feasibility else None} for x in raw],
-        "sensitivity_enabled": sensitivity_enabled,
+        "sensitivity_enabled": sensitivity_enabled, "background_profile": background_profile,
     }
     if not valid:
         return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "infeasible", "valid_candidates": [], "pareto_candidates": [], "recommended_options": [], "infeasible_result": raw[0], "relaxation_guidance": ["누락 공정시간을 확인", "금지시간 또는 일일 제한을 담당자가 검토", "필요하면 다일 분할 가능 여부 확인"], "solver": "exact_enumeration", "diagnostics": diagnostics}

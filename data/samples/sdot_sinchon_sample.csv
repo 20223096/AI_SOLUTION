@@ -1,0 +1,2 @@
+sensor_id,sensor_serial,observed_at,district,neighborhood,noise_avg,noise_max,noise_min,record_type,quality_status,provenance
+SDOT001,SAMPLE_SERIAL,2026-08-10T00:07:00+09:00,Seodaemun-gu,Sinchon-dong,40,43,39,1,valid,"{""status"":""verified_public"",""note"":""schema-only synthetic sample; not an observed record""}"

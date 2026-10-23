@@ -2,6 +2,7 @@ from datetime import date, datetime, time, timedelta
 
 from app.models.domain import TaskAssignment
 from app.services.acoustics import energy_sum, sound_power_to_pressure, source_noise
+from app.services.background_profiles import profile_level
 from app.services.data import get_scenario, load_json_rows
 from app.services.sensitivity import sensitivity
 from app.services.timegrid import TZ, at, overlaps, slots
@@ -30,7 +31,7 @@ def _within_windows(moment: datetime, windows: list[dict]) -> bool:
     return False
 
 
-def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True) -> dict:
+def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
     scenario = get_scenario(scenario_id)
     assignments = assignments or default_assignments(scenario, day)
     equipment = {x.id: x.model_dump(mode="json") for x in scenario["equipment"]}
@@ -61,9 +62,13 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
                     construction_levels.append(sound_power_to_pressure(value, receptor.distance_to_source_m))
                     active.append(task.id)
             construction_db = energy_sum(construction_levels)
-            bg_hit = next((x for x in backgrounds if x["receptor_id"] == receptor.id and x["time"] == start.strftime("%H:%M")), None)
-            background_db = float(bg_hit["laeq_db"]) if bg_hit else settings.get("default_background_laeq_db")
-            background_meta = bg_hit["source_metadata"] if bg_hit else settings.get("source_metadata", {"status": "missing", "note": "No background value for slot", "unit": "LAeq_dBA"})
+            bg_hit = next((x for x in backgrounds if x["receptor_id"] == receptor.id and x["time"] == start.strftime("%H:%M")), None) if background_profile == "assumed_demo" else None
+            if background_profile == "assumed_demo":
+                background_db = float(bg_hit["laeq_db"]) if bg_hit else settings.get("default_background_laeq_db")
+                background_meta = bg_hit["source_metadata"] if bg_hit else settings.get("source_metadata", {"status": "missing", "note": "No background value for slot", "unit": "LAeq_dBA"})
+            else:
+                background_db, background_meta, profile_warnings = profile_level(background_profile, start)
+                warnings.extend(profile_warnings)
             if background_db is None:
                 warnings.append(f"{receptor.id} {start.strftime('%H:%M')}: background noise missing; no fallback value inserted")
             event_levels, event_ids, event_sources = [], [], []
@@ -84,4 +89,4 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             exam_active = bool(settings.get("exam_period")) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
             sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "status":"disabled_for_experiment"}
             results.append({"receptor_id": receptor.id, "slot_start": start, "slot_end": end, "active_task_ids": active, "construction_lp_db": None if construction_db is None else round(construction_db, 2), "background_laeq_db": background_db, "existing_noise_lp_db": None if existing_db is None else round(existing_db, 2), "existing_event_ids": event_ids, "total_estimated_db": None if total_db is None else round(total_db, 2), "sensitivity": sensitivity_data, "source_metadata": {"background": background_meta, "equipment": sources, "existing_events": event_sources}})
-    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "timezone": "Asia/Seoul", "slot_minutes": 15, "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}
+    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}

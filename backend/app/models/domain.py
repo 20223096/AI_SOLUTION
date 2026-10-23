@@ -142,6 +142,7 @@ class PredictRequest(BaseModel):
     analysis_date: date = date(2026, 10, 26)
     assignments: list[TaskAssignment] | None = None
     sensitivity_enabled: bool = True
+    background_profile: str = "assumed_demo"
 
 
 class ImpactRequest(BaseModel):
@@ -157,6 +158,7 @@ class OptimizeRequest(BaseModel):
     scenario_id: str = "case-a"
     analysis_date: date = date(2026, 10, 26)
     sensitivity_enabled: bool = True
+    background_profile: str = "assumed_demo"
 
 
 class CompareRequest(BaseModel):
@@ -164,8 +166,10 @@ class CompareRequest(BaseModel):
     analysis_date: date = date(2026, 10, 26)
     before: list[TaskAssignment]
     after: list[TaskAssignment]
+    background_profile: str = "assumed_demo"
 
 
 class ExperimentRequest(BaseModel):
     scenario_id: str = "case-a"
     analysis_date: date = date(2026, 10, 26)
+    background_profile: str = "assumed_demo"

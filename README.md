@@ -33,4 +33,14 @@ pytest -q
 
 개발용 후보 진단은 `GET /api/schedules/optimize/{scenario_id}/diagnostics`에서 확인합니다. 기본 CASE A와 별도로 소음 집중, 시험기간, 제약 강화 실험 시나리오가 제공됩니다.
 
+## 배경소음 ETL
+
+원본 경로를 유지한 기본 실행:
+
+```bash
+python scripts/noise_etl.py
+```
+
+다른 경로는 `--raw-root`, `--processed-root`, `--backend-catalog`으로 지정합니다. 원본 CSV는 CP949 스트리밍 방식이며 ZIP에서는 신촌 시트만 읽습니다. 생성 CSV는 Git에서 제외됩니다. `GET /api/noise/background-profiles`로 프로파일을 조회하고 predict/optimize 요청의 `background_profile`로 명시 선택합니다. 기본값은 기존 `assumed_demo`입니다.
+
 작은 시나리오에는 모든 15분 시작 오프셋을 정확 평가합니다. `requirements.txt`에 OR-Tools가 포함되어 있으나 현재 PoC 실행 경로는 재현성과 설명 가능성을 위해 정확 열거를 사용합니다.

@@ -13,13 +13,13 @@ router = APIRouter(prefix="/api/experiments", tags=["experiments"])
 def experiments(request: ExperimentRequest):
     try:
         scenario = get_scenario(request.scenario_id)
-        optimized = optimize(request.scenario_id, request.analysis_date, sensitivity_enabled=True)
-        physical_optimized = optimize(request.scenario_id, request.analysis_date, sensitivity_enabled=False)
+        optimized = optimize(request.scenario_id, request.analysis_date, sensitivity_enabled=True, background_profile=request.background_profile)
+        physical_optimized = optimize(request.scenario_id, request.analysis_date, sensitivity_enabled=False, background_profile=request.background_profile)
     except KeyError as exc:
         raise HTTPException(404, str(exc)) from exc
     original = default_assignments(scenario, request.analysis_date)
     options = optimized.get("recommended_options", [])
-    experiment_a = compare(request.scenario_id, request.analysis_date, original, options[0]["candidate"].task_assignments) if options else {"status": "not_run", "reason": "no feasible recommendation"}
+    experiment_a = compare(request.scenario_id, request.analysis_date, original, options[0]["candidate"].task_assignments, background_profile=request.background_profile) if options else {"status": "not_run", "reason": "no feasible recommendation"}
     physical_options = physical_optimized.get("recommended_options", [])
     experiment_b = {"status": "completed" if options else "not_run", "without_sensitivity": [{"candidate_id": x["candidate"].id, "objective_values": x["candidate"].objective_values} for x in physical_options], "with_sensitivity": [{"candidate_id": x["candidate"].id, "objective_values": x["candidate"].objective_values} for x in options], "recommendation_changed": [x["candidate"].id for x in physical_options] != [x["candidate"].id for x in options], "note": "Sensitivity changes impact only, never physical dB."}
     experiment_c = [{"character": x["character"], "candidate_id": x["candidate"].id, "resident_cost": x["candidate"].objective_values["resident_cost"], "change_cost": x["candidate"].objective_values["change_cost"]} for x in options]

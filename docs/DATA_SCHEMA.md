@@ -14,3 +14,5 @@
 | ScheduleCandidate | assignments, feasibility, reasons, metrics, objectives, provenance | 불가능 후보는 추천 제외 |
 
 출처 상태는 `verified_public`, `user_provided`, `assumed`, `derived`, `missing` 중 하나입니다. 현재 장비값은 모두 `user_provided`, 배경과 민감도는 `assumed`, 계산값은 `derived`, 덤프트럭 및 미확정 공정 시간은 `missing`입니다.
+
+배경 프로파일 카탈로그는 `id`, `calculation_eligible`, `metric`, `observation_period`, `hourly_values`, `source_metadata`, `quality_warnings`를 가집니다. 관측 프로파일의 시뮬레이션 날짜와 원 관측기간은 별도 필드이며, S-DoT 장치 평균소음과 도로 LEQ는 서로 다른 지표로 유지합니다. ETL CSV 상세 스키마는 `data/schemas/README.md`를 참고합니다.

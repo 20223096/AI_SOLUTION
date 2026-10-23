@@ -36,3 +36,11 @@ def test_diagnostics_endpoint_and_experiment_b():
     assert response.json()["generated_candidate_count"] == 9
     experiment = client.post("/api/experiments/run", json={"scenario_id":"scenario-c-exam","analysis_date":"2026-10-26"}).json()
     assert experiment["experiment_b"]["recommendation_changed"] is True
+
+
+def test_background_profile_api_and_incompatible_guard():
+    catalog = client.get("/api/noise/background-profiles")
+    assert catalog.status_code == 200
+    assert catalog.json()["default"] == "assumed_demo"
+    response = client.post("/api/noise/predict", json={"scenario_id":"case-a","background_profile":"sdot_observed_profile"})
+    assert response.status_code == 422
