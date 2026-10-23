@@ -26,6 +26,8 @@ def scenarios() -> dict:
             merged["notice"]["constraints"].update(overlay.get("constraints", {}))
             merged["settings"] = overlay.get("settings", {})
             merged["source_provenance"] = overlay.get("source_provenance", {})
+            if "receptors" in overlay:
+                merged["receptors"] = overlay["receptors"]
             result[overlay["id"]] = merged
     return result
 

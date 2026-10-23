@@ -1,16 +1,30 @@
 {
-  "generated_at": "2026-10-23T08:56:15+00:00",
+  "generated_at": "2026-10-23T13:02:21+00:00",
   "collector_version": "1.0.0",
   "results": [
     {
       "dataset": "equipment_noise",
-      "source_url": "https://www.data.go.kr/tcs/dss/selectDataSetList.do?keyword=%EA%B1%B4%EC%84%A4%EA%B8%B0%EA%B3%84%20%EC%86%8C%EC%9D%8C",
-      "status": "insufficient_fields",
-      "fetched_at": "2026-10-23T08:28:49+00:00",
-      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/equipment_noise/data_go_kr_search.html",
-      "row_count": 0,
-      "note": "Official search metadata did not expose model-level Lw/Lp measurements suitable for calculation. Existing assumptions remain separate.",
-      "sha256": "ad6d73f7a186f7c856bf508be038615919a101770e00eee3eefb4dab97464294"
+      "source_url": "https://www.data.go.kr/data/3038414/fileData.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T13:02:21+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/equipment_noise/official_20260420",
+      "row_count": 753,
+      "note": "Official model-level Lw_dBA records processed for cutter, breaker, excavator, and compactor/roller. Dump trucks are absent. No model was arbitrarily selected for the PoC scenario.",
+      "sha256": "49fb2f8a3d1ca6cafc95d0bea166f001bf1b1e4da7131ad8321e4bfb032313a8",
+      "source_period": "2008-01 to 2025-07",
+      "data_id": "3038414"
+    },
+    {
+      "dataset": "receptor_distances",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:09+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/construction/pmisPjtList_2001_3000.xml",
+      "row_count": 3,
+      "note": "Distances derived from the official project representative point and official facility points. No line geometry was available; these are not propagation-path distances.",
+      "sha256": "11fd2a259e77cedd4d5d39ac8841cb125431849e61092a0fce9ec65e480de84d",
+      "project_id": "6132026083144",
+      "crs": "EPSG:4326"
     },
     {
       "dataset": "facilities",
@@ -112,7 +126,8 @@
     }
   ],
   "processed_counts": {
-    "equipment_noise": 0,
+    "equipment_noise": 753,
+    "receptor_distances": 3,
     "construction_events": 3,
     "cultural_events": 55,
     "receptors": 6,

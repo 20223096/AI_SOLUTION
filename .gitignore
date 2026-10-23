@@ -17,3 +17,5 @@ data/reports/*.tmp
 !data/processed/waste_collection.csv
 !data/processed/land_use.csv
 !data/processed/official_facilities.csv
+!data/processed/official_equipment_noise.csv
+!data/processed/receptor_distances.csv

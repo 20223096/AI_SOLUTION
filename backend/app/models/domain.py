@@ -87,6 +87,12 @@ class Receptor(BaseModel):
     distance_to_source_m: float = Field(gt=0)
     sensitivity_profile: list[SensitivityProfile] = Field(default_factory=list)
     noise_limit_profile: dict[str, Any] | None = None
+    latitude: float | None = Field(default=None, ge=-90, le=90)
+    longitude: float | None = Field(default=None, ge=-180, le=180)
+    coordinate_crs: Literal["EPSG:4326"] | None = None
+    coordinate_source: str | None = None
+    distance_method: str | None = None
+    spatial_status: Literal["verified_public", "assumed", "deferred"] | None = None
 
 
 class BackgroundNoise(BaseModel):

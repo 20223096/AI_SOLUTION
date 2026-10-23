@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import date, time
-from math import asin, cos, radians, sin, sqrt
+from math import asin, cos, hypot, radians, sin, sqrt
 
 
 def pagination_ranges(total_count: int, page_size: int = 1000) -> list[tuple[int, int]]:
@@ -48,11 +48,39 @@ def split_event_date_and_time(value: str) -> tuple[str, str | None]:
 
 
 def geodesic_distance_m(lat1: float, lon1: float, lat2: float, lon2: float) -> float:
+    for lat, lon in ((lat1, lon1), (lat2, lon2)):
+        if not -90 <= lat <= 90 or not -180 <= lon <= 180:
+            raise ValueError("coordinates must be WGS84 latitude/longitude")
     radius = 6_371_008.8
     p1, p2 = radians(lat1), radians(lat2)
     dlat, dlon = radians(lat2 - lat1), radians(lon2 - lon1)
     a = sin(dlat / 2) ** 2 + cos(p1) * cos(p2) * sin(dlon / 2) ** 2
     return 2 * radius * asin(sqrt(a))
+
+
+def point_to_segment_distance_m(
+    point_lat: float,
+    point_lon: float,
+    start_lat: float,
+    start_lon: float,
+    end_lat: float,
+    end_lon: float,
+) -> float:
+    """Approximate WGS84 point-to-segment distance in a local tangent plane."""
+    for lat, lon in ((point_lat, point_lon), (start_lat, start_lon), (end_lat, end_lon)):
+        if not -90 <= lat <= 90 or not -180 <= lon <= 180:
+            raise ValueError("coordinates must be WGS84 latitude/longitude")
+    origin_lat = radians((point_lat + start_lat + end_lat) / 3)
+    radius = 6_371_008.8
+    def xy(lat: float, lon: float) -> tuple[float, float]:
+        return radius * radians(lon - point_lon) * cos(origin_lat), radius * radians(lat - point_lat)
+    ax, ay = xy(start_lat, start_lon)
+    bx, by = xy(end_lat, end_lon)
+    dx, dy = bx - ax, by - ay
+    if dx == 0 and dy == 0:
+        return hypot(ax, ay)
+    t = max(0.0, min(1.0, -(ax * dx + ay * dy) / (dx * dx + dy * dy)))
+    return hypot(ax + t * dx, ay + t * dy)
 
 
 def collection_time(row: dict) -> tuple[str, str] | None:

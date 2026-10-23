@@ -28,6 +28,8 @@ def public_catalog() -> dict:
         "cultural_events": _csv("cultural_events.csv"),
         "receptors": _csv("receptors.csv"),
         "official_facilities": _csv("official_facilities.csv"),
+        "receptor_distances": _csv("receptor_distances.csv"),
+        "official_equipment_noise": _csv("official_equipment_noise.csv"),
         "academic_calendar": _csv("academic_calendar.csv"),
         "waste_collection": _csv("waste_collection.csv"),
         "land_use": _csv("land_use.csv"),
@@ -35,6 +37,8 @@ def public_catalog() -> dict:
             "schedule_only_events_are_energy_summed": False,
             "coordinate_crs_required_for_distance": True,
             "unverified_values_used_for_acoustic_calculation": False,
+            "official_equipment_requires_model_match": True,
+            "spatial_distance_is_horizontal_not_propagation_path": True,
         },
     }
 

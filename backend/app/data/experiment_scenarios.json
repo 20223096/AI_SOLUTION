@@ -19,5 +19,15 @@
     "id":"sinchon-public-2026-10","base_scenario_id":"case-a","title":"신촌 공공데이터 연동 — 2026년 10월","expected_feasibility":true,
     "settings":{"default_background_laeq_db":55.0,"exam_period":false,"public_data_calendar_institution":"sogang"},
     "source_provenance":{"academic_calendar":{"status":"processed","source":"Sogang official 2026 academic calendar","note":"Calendar sensitivity only; physical receptor distances and equipment levels remain original PoC assumptions. It is not attributed to Yonsei or Ewha."},"public_catalog":{"status":"integrated","source":"data/reports/public_data_manifest.json"}}
+  },
+  {
+    "id":"sinchon-spatial-2026","base_scenario_id":"case-a","title":"신촌 공식 좌표 기반 거리 — 2026","expected_feasibility":true,
+    "settings":{"default_background_laeq_db":55.0,"exam_period":false,"source_metadata":{"status":"assumed","source":"PoC baseline background","unit":"LAeq_dBA"}},
+    "receptors":[
+      {"id":"school-changseo","name":"서울창서초등학교","type":"school","location":"서울특별시 서대문구 연세로5나길 30-3","distance_to_source_m":452.8,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.55814305,"longitude":126.9334809,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15021148/standard.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"},
+      {"id":"school-changcheon","name":"창천중학교","type":"school","location":"서울특별시 마포구 백범로1길 56","distance_to_source_m":235.3,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.55498958,"longitude":126.9392951,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15021148/standard.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"},
+      {"id":"hospital-severance","name":"연세대학교의과대학세브란스병원","type":"hospital","location":"서울특별시 서대문구 연세로 50-1","distance_to_source_m":633.1,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.5623446,"longitude":126.9408265,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15001698/openapi.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"}
+    ],
+    "source_provenance":{"project_coordinate":{"status":"verified_public","source":"Seoul Open Data pmisPjtList project 6132026083144","note":"Official representative point; no line geometry or structured address was supplied."},"distances":{"status":"derived","source":"data/processed/receptor_distances.csv","note":"Horizontal representative-point distances, not acoustic propagation paths."},"equipment":{"status":"user_provided","source":"unchanged case-a equipment","note":"Official model catalogue exists, but scenario model identifiers are missing; no arbitrary substitution."}}
   }
 ]
