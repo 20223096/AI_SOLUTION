@@ -12,6 +12,7 @@
   "result_code": "30",
   "result_message": "SERVICE_KEY_IS_NOT_REGISTERED_ERROR",
   "authenticated": false,
+  "required_for_shh_schedule": false,
   "interpretation": "The tested key is not registered for this endpoint. This is not evidence of successful approval and was not treated as collection success.",
   "equipment_noise_dataset_id": "3038414",
   "equipment_noise_delivery_type": "fileData CSV; no serviceKey authentication endpoint"

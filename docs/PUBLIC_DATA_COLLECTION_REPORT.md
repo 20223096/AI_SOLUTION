@@ -27,7 +27,19 @@
 
 연관 승인형 API인 **자동차 배출가스 및 소음인증 정보(데이터 ID 15000988)**의 공식 `getVems` 엔드포인트로 키를 실제 시험했다. `.env` 값은 공공데이터포털의 Encoding 키 형태였으므로 한 번 `unquote`한 뒤 `httpx.get(..., params={"serviceKey": ...})`에 넘겼다. 최종 요청에는 `%252B` 같은 이중 인코딩이 없음을 테스트했다.
 
-실제 응답은 HTTP 403, 코드 `30`, `SERVICE_KEY_IS_NOT_REGISTERED_ERROR`였다. 따라서 키 존재를 인증 성공으로 간주하지 않았으며, 이 키가 해당 API에 승인된 상태라고 확인할 수 없다. 결과는 `data/reports/data_go_kr_auth.json`에 키 없이 기록했다. 사용자가 실제로 신청·승인받은 API의 데이터 ID 또는 요청주소가 `15000988/getVems`와 다르다면 그 엔드포인트가 추가로 필요하다.
+실제 응답은 HTTP 403, 코드 `30`, `SERVICE_KEY_IS_NOT_REGISTERED_ERROR`였다. 이 `getVems` API는 쉿간표 건설장비 소음 계산에 직접 필요한 자료가 아니므로 활용신청을 요구하거나 수집 선행조건으로 삼지 않는다. 결과는 과거 진단 기록으로만 `data/reports/data_go_kr_auth.json`에 남겼다.
+
+### 승인된 시설 API 재검증
+
+| 데이터 ID | API/엔드포인트 | 실제 결과 | 정제 결과 |
+|---|---|---|---|
+| 15021148 | `tn_pubr_public_elesch_mskul_lc_api` | HTTP 200, `00 NORMAL SERVICE` | 서울창서초등학교·창천중학교 2행 |
+| 15001698 | `hospInfoServicev2/getHospBasisList` | HTTP 200, `00 NORMAL SERVICE` | 검색 3행 중 신촌 세브란스병원 1행 |
+| 15134735 | `BldRgstHubService/getBrTitleInfo` | HTTP 200, `00 NORMAL SERVICE` | 승인 확인만 수행, 수음점 위치에는 미사용 |
+
+학교 표준데이터는 CSV·JSON·XML 공개 다운로드도 제공한다. API가 정상 승인되어 정확한 학교명으로 2행을 받았으므로 이번 실행에서는 별도 전체 파일을 중복 다운로드하지 않았다. 학교 기준일은 API가 제공한 `2026-10-01`이다. 병원 API는 별도 데이터 기준일 필드를 제공하지 않아 `reference_date`를 비워 두고 조회일 `2026-10-23`을 `retrieved_at`으로 분리했다.
+
+정규화 결과는 `data/processed/official_facilities.csv`, 키를 제외한 승인 결과는 `data/reports/data_go_kr_facility_auth.json`에 보관한다. 주소·좌표는 공식 카탈로그에서 조회 가능하지만 기존 시나리오의 가상 공사원 위치가 검증되지 않았으므로 수음점 거리나 계산 입력은 자동 교체하지 않았다.
 
 ## 서울 Open API 호출 검증
 

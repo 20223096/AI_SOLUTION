@@ -27,6 +27,7 @@ def public_catalog() -> dict:
         "construction_events": _csv("construction_events.csv"),
         "cultural_events": _csv("cultural_events.csv"),
         "receptors": _csv("receptors.csv"),
+        "official_facilities": _csv("official_facilities.csv"),
         "academic_calendar": _csv("academic_calendar.csv"),
         "waste_collection": _csv("waste_collection.csv"),
         "land_use": _csv("land_use.csv"),

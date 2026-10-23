@@ -138,3 +138,13 @@ def test_data_go_kr_authentication_error_is_classified():
     result = authentication_result(response)
     assert result.authenticated is False
     assert result.result_code == "30"
+
+
+def test_approved_official_facilities_are_exposed_without_changing_scenarios():
+    catalog = public_catalog()
+    facilities = {row["name"]: row for row in catalog["official_facilities"]}
+    assert {"서울창서초등학교", "창천중학교", "연세대학교의과대학세브란스병원"} <= facilities.keys()
+    assert all(row["crs"] == "EPSG:4326" for row in facilities.values())
+    assert facilities["서울창서초등학교"]["reference_date"] == "2026-10-01"
+    assert facilities["연세대학교의과대학세브란스병원"]["reference_date"] == ""
+    assert predict("case-a", date(2026, 10, 26))["scenario_id"] == "case-a"

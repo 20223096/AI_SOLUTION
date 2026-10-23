@@ -16,3 +16,4 @@ data/reports/*.tmp
 !data/processed/academic_calendar.csv
 !data/processed/waste_collection.csv
 !data/processed/land_use.csv
+!data/processed/official_facilities.csv
