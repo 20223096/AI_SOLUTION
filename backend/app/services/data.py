@@ -28,6 +28,8 @@ def scenarios() -> dict:
             merged["source_provenance"] = overlay.get("source_provenance", {})
             if "receptors" in overlay:
                 merged["receptors"] = overlay["receptors"]
+            if "equipment" in overlay:
+                merged["equipment"] = overlay["equipment"]
             result[overlay["id"]] = merged
     return result
 

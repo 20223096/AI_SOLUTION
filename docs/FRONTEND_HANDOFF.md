@@ -1,6 +1,31 @@
 # 프론트엔드 인계
 
-기본 URL은 `http://127.0.0.1:8000`, Swagger는 `/docs`입니다. 권장 호출 순서는 health → scenarios → scenario detail → extract → optimize → 선택 후보 noise predict → compare/experiments입니다.
+기본 URL은 `http://127.0.0.1:8000`, Swagger는 `/docs`입니다. 기존 필드는 삭제하거나 의미를 변경하지 않았습니다.
+
+## 최종 호출 순서와 시나리오 선택
+
+1. `GET /api/health`
+2. `GET /api/noise/background-profiles`
+3. `GET /api/poc/scenarios`
+4. `GET /api/poc/scenarios/{scenario_id}`로 좌표·장비·출처 확인
+5. `GET /api/public-data/catalog`로 실제 공사·행사 일정과 공식 장비 카탈로그 확인
+6. 필요하면 `POST /api/notices/extract`
+7. `POST /api/noise/predict`
+8. `POST /api/schedules/optimize`
+9. 선택 후보로 `POST /api/schedules/compare`
+10. 개발 비교 화면은 `POST /api/experiments/run`
+
+최종 시연 A는 `official_reference_equipment`와 `road_traffic_observed_profile`, 시연 B는 `final-demo-congestion`과 같은 프로파일을 사용합니다. A의 장비 모델도 실제 현장 확인값이 아니라 공식 분포 참고행입니다. B의 기존 이벤트 시간·Lp는 `assumed`입니다.
+
+```json
+GET /api/poc/scenarios/official_reference_equipment
+{
+  "id":"official_reference_equipment",
+  "settings":{"recommended_background_profile":"road_traffic_observed_profile","demo_classification":"official_reference"},
+  "receptors":[{"name":"창천중학교","distance_to_source_m":235.3,"latitude":37.55498958,"longitude":126.9392951,"coordinate_crs":"EPSG:4326","spatial_status":"verified_public"}],
+  "equipment":[{"category":"브레이커","model_name":"GB525E(저소음)","sound_power_level_db":122.0,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","note":"Observed record nearest to category median; reference scenario, not confirmed site equipment"}}]
+}
+```
 
 ## 신고자료 구조화
 
@@ -21,13 +46,13 @@ Content-Type: application/json
 
 ```json
 POST /api/noise/predict
-{"scenario_id":"scenario-b-congestion","analysis_date":"2026-10-26","sensitivity_enabled":true}
+{"scenario_id":"official_reference_equipment","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile"}
 ```
 
 한 슬롯의 응답 형태:
 
 ```json
-{"receptor_id":"residential-1","slot_start":"2026-10-26T07:00:00+09:00","slot_end":"2026-10-26T07:15:00+09:00","active_task_ids":["cut"],"construction_lp_db":72.52,"background_laeq_db":55.0,"existing_noise_lp_db":82.0,"existing_event_ids":["assumed-roadwork-b"],"total_estimated_db":82.46,"sensitivity":{"weight":1.0,"status":"assumed"},"source_metadata":{"existing_events":[{"status":"assumed","source":"PoC congestion experiment","unit":"Lp_dBA"}]}}
+{"receptor_id":"school-changcheon","slot_start":"2026-10-26T08:00:00+09:00","slot_end":"2026-10-26T08:15:00+09:00","active_task_ids":["break"],"background_only_db":71.5,"existing_environment_db":71.5,"new_project_contribution_db":63.58,"with_new_project_db":72.15,"delta_total_db":0.65,"total_impact":30.46,"baseline_impact":29.38,"incremental_impact":1.08,"impact_saturation":{"score_at_ceiling":false,"level_component_at_ceiling":false,"incremental_zero_despite_physical_increase":false},"source_metadata":{"equipment":[{"source":{"status":"verified_public"}}]}}
 ```
 
 그래프는 `total_estimated_db`, 구성요소는 별도 범례로 표현합니다. null은 0이 아니라 누락입니다.
@@ -56,14 +81,31 @@ POST /api/noise/predict
 
 ```json
 POST /api/schedules/optimize
-{"scenario_id":"case-a","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile","objective_mode":"incremental_impact"}
+{"scenario_id":"official_reference_equipment","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile","objective_mode":"incremental_impact"}
 ```
 
 ```json
-{"optimization_status":"optimal_enumeration","recommended_options":[{"character":["construction_convenience","resident_protection","balanced"],"candidate":{"id":"offset-0","feasibility":true,"task_assignments":[{"task_id":"cut","start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T08:00:00+09:00"}],"objective_values":{"resident_cost":1472.53,"change_cost":0.0}}}],"diagnostics":{"generated_candidate_count":9,"feasible_candidate_count":9,"infeasible_candidate_count":0,"pareto_candidate_count":1}}
+{"optimization_status":"optimal_enumeration","recommended_options":[{"character":["construction_convenience","balanced"],"candidate":{"id":"offset-0","feasibility":true,"task_assignments":[{"task_id":"cut","start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T08:00:00+09:00"}],"objective_values":{"resident_cost":13.72,"change_cost":0.0}}},{"character":["resident_protection"],"candidate":{"id":"offset-120","objective_values":{"resident_cost":13.20,"change_cost":480.0}}}],"diagnostics":{"generated_candidate_count":9,"feasible_candidate_count":9,"infeasible_candidate_count":0,"pareto_candidate_count":9}}
 ```
 
 조정안이 하나면 카드 하나만 만들고 `character` 배열의 세 배지를 붙입니다. 서로 다른 세 후보처럼 복제하지 않습니다. 상세 후보표는 `GET /api/schedules/optimize/{scenario_id}/diagnostics`에서 조회합니다.
+
+## 비교 결과
+
+`before`와 `after`에는 optimize에서 받은 `task_assignments`를 그대로 넣습니다.
+
+```json
+POST /api/schedules/compare
+{"scenario_id":"official_reference_equipment","analysis_date":"2026-10-26","background_profile":"road_traffic_observed_profile","before":[{"task_id":"cut","start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T08:00:00+09:00"},{"task_id":"break","start":"2026-10-26T08:00:00+09:00","end":"2026-10-26T10:00:00+09:00"},{"task_id":"excavate","start":"2026-10-26T10:00:00+09:00","end":"2026-10-26T15:00:00+09:00"},{"task_id":"compact","start":"2026-10-26T15:00:00+09:00","end":"2026-10-26T16:00:00+09:00"}],"after":[{"task_id":"cut","start":"2026-10-26T09:00:00+09:00","end":"2026-10-26T10:00:00+09:00"},{"task_id":"break","start":"2026-10-26T10:00:00+09:00","end":"2026-10-26T12:00:00+09:00"},{"task_id":"excavate","start":"2026-10-26T12:00:00+09:00","end":"2026-10-26T17:00:00+09:00"},{"task_id":"compact","start":"2026-10-26T17:00:00+09:00","end":"2026-10-26T18:00:00+09:00"}]}
+```
+
+응답의 `before`, `after`, `delta`, `comparison_basis`를 그대로 사용합니다. 후보의 전체 assignment 배열을 전송해야 합니다.
+
+## 기존 공사·행사 일정
+
+`GET /api/public-data/catalog`의 `construction_events`와 `cultural_events`를 달력 레이어로 표시합니다. 공사의 `project_start_date/end_date`는 사업기간이지 일일 작업시간이 아닙니다. `work_start_time/end_time` 또는 `noise_db`가 빈 문자열이면 미확인 배지를 표시하고 소음 그래프에 합산하지 않습니다. 행사의 날짜별 시간이 `time_text`에만 있으면 원문은 표시하되 단일 시간으로 축약하지 않습니다.
+
+`final-demo-congestion` 예측의 `existing_event_ids`와 `source_metadata.existing_events[].status=assumed`는 별도 “가정 실험” 레이어입니다. 서울시 원본 일정과 같은 색상이나 실측 배지를 쓰지 않습니다.
 
 ## 불가능 일정
 
@@ -90,5 +132,7 @@ POST /api/schedules/optimize
 ## 출처 표시
 
 `verified_public`=검증 공공자료, `user_provided`=사용자 시나리오, `assumed`=실험 가정, `derived`=계산값, `missing`=누락으로 통일합니다. 색상 badge와 설명을 함께 쓰고 `legal_assessment=null`, disclaimer, 덤프트럭 경고를 숨기지 않습니다. B/C의 기존소음·시험기간은 반드시 `assumed`로 표시합니다.
+
+도로 관측 프로파일도 수음점별 현장 실측이 아니라 특정 지점의 역사적 대표값이므로 `verified_public` 배지 옆에 공간 대표성 경고를 표시합니다. 포화 경고의 `level_component_at_ceiling` 또는 `incremental_zero_despite_physical_increase`가 true이면 증분 0을 “영향 없음”으로 번역하지 않습니다.
 
 422는 필드 오류, 404는 시나리오 없음, 415는 파일 유형, 503은 선택 PDF 의존성 문제입니다. CORS는 배포 origin 확정 전 열지 않았습니다.
