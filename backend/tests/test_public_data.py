@@ -4,6 +4,7 @@ from datetime import date
 from pathlib import Path
 
 import pytest
+import httpx
 from fastapi.testclient import TestClient
 
 from app.main import app
@@ -12,6 +13,7 @@ from app.services.prediction import predict
 from app.services.public_data import acoustic_public_events, is_exam_period, public_catalog
 from scripts.collect_public_data.common import CollectionResult, VALID_STATUSES, load_project_env
 from scripts.collect_public_data.sources import _event_times
+from scripts.collect_public_data.data_go_kr import authentication_result, normalized_service_key, request_with_service_key
 from scripts.collect_public_data.validation import collection_time, deduplicate_events, geodesic_distance_m, pagination_ranges, require_seoul_response_shape, split_event_date_and_time, split_project_and_work_time, validate_acoustic_unit
 
 
@@ -113,3 +115,26 @@ def test_live_collection_manifest_records_verified_seoul_responses():
     assert results["events"]["api_result_code"] == "INFO-000"
     assert results["construction"]["source_total_count"] >= results["construction"]["row_count"]
     assert results["events"]["source_total_count"] >= results["events"]["row_count"]
+
+
+def test_data_go_kr_key_is_encoded_exactly_once_with_params():
+    captured = {}
+    def handler(request):
+        captured["url"] = str(request.url)
+        return httpx.Response(200, json={"response": {"header": {"resultCode": "00", "resultMsg": "OK"}}})
+    response = request_with_service_key(
+        "https://apis.data.go.kr/example",
+        "abc%2Bdef%2Fghi%3D%3D",
+        {"pageNo": 1},
+        transport=httpx.MockTransport(handler),
+    )
+    assert "serviceKey=abc%2Bdef%2Fghi%3D%3D" in captured["url"]
+    assert "%252B" not in captured["url"]
+    assert authentication_result(response).authenticated is True
+
+
+def test_data_go_kr_authentication_error_is_classified():
+    response = httpx.Response(403, json={"OpenAPI_ServiceResponse": {"cmmMsgHeader": {"errMsg": "SERVICE_KEY_IS_NOT_REGISTERED_ERROR", "returnReasonCode": "30"}}})
+    result = authentication_result(response)
+    assert result.authenticated is False
+    assert result.result_code == "30"

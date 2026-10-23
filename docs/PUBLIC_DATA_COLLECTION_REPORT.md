@@ -21,6 +21,14 @@
 
 상태별 상세 URL, UTC 조회시각, API 결과코드, 전체/필터 행 수, 원본 경로와 체크섬은 매니페스트가 정본이다. 서울 API 키는 프로젝트 `.env`에서 로드되지만 로그·원본 파일명·매니페스트·Git에는 기록하지 않는다.
 
+### 공공데이터포털 키 검증
+
+현재 장비 수집기는 `requests`/`httpx` API 파라미터 호출이 아니라 공공데이터포털 검색 페이지 URL을 직접 내려받고 있었다. 목표인 국립환경과학원 **소음발생건설기기 소음도검사 현황(데이터 ID 3038414)**은 CSV 파일데이터이며 `serviceKey` 인증 API가 아니다.
+
+연관 승인형 API인 **자동차 배출가스 및 소음인증 정보(데이터 ID 15000988)**의 공식 `getVems` 엔드포인트로 키를 실제 시험했다. `.env` 값은 공공데이터포털의 Encoding 키 형태였으므로 한 번 `unquote`한 뒤 `httpx.get(..., params={"serviceKey": ...})`에 넘겼다. 최종 요청에는 `%252B` 같은 이중 인코딩이 없음을 테스트했다.
+
+실제 응답은 HTTP 403, 코드 `30`, `SERVICE_KEY_IS_NOT_REGISTERED_ERROR`였다. 따라서 키 존재를 인증 성공으로 간주하지 않았으며, 이 키가 해당 API에 승인된 상태라고 확인할 수 없다. 결과는 `data/reports/data_go_kr_auth.json`에 키 없이 기록했다. 사용자가 실제로 신청·승인받은 API의 데이터 ID 또는 요청주소가 `15000988/getVems`와 다르다면 그 엔드포인트가 추가로 필요하다.
+
 ## 서울 Open API 호출 검증
 
 - 건설알림이: `http://openapi.seoul.go.kr:8088/{KEY}/xml/pmisPjtList/{START_INDEX}/{END_INDEX}/`
