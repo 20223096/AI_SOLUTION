@@ -26,6 +26,10 @@ class CollectionResult:
     row_count: int = 0
     note: str = ""
     sha256: str | None = None
+    source_total_count: int | None = None
+    api_result_code: str | None = None
+    service_name: str | None = None
+    response_type: str | None = None
 
     def __post_init__(self) -> None:
         if self.status not in VALID_STATUSES:
@@ -81,3 +85,16 @@ def result_dict(result: CollectionResult) -> dict[str, Any]:
 
 def env(name: str) -> str | None:
     return os.environ.get(name) or None
+
+
+def load_project_env(path: Path) -> None:
+    """Load simple .env entries without overriding an explicitly supplied environment."""
+    if not path.exists():
+        return
+    for raw in path.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        name, value = line.split("=", 1)
+        if name.strip():
+            os.environ.setdefault(name.strip(), value.strip().strip('"\''))

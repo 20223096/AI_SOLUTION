@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-23T08:28:50+00:00",
+  "generated_at": "2026-10-23T08:56:15+00:00",
   "collector_version": "1.0.0",
   "results": [
     {
@@ -11,26 +11,6 @@
       "row_count": 0,
       "note": "Official search metadata did not expose model-level Lw/Lp measurements suitable for calculation. Existing assumptions remain separate.",
       "sha256": "ad6d73f7a186f7c856bf508be038615919a101770e00eee3eefb4dab97464294"
-    },
-    {
-      "dataset": "construction",
-      "source_url": "https://data.seoul.go.kr/dataList/OA-15589/A/1/datasetView.do",
-      "status": "blocked_auth",
-      "fetched_at": "2026-10-23T08:28:49+00:00",
-      "raw_path": null,
-      "row_count": 0,
-      "note": "Set SEOUL_OPEN_DATA_API_KEY in the environment; no key is stored in the repository. The legacy One-PMIS schedule dataset is also marked service-ended; service name must be revalidated.",
-      "sha256": null
-    },
-    {
-      "dataset": "events",
-      "source_url": "https://data.seoul.go.kr/dataList/OA-23040/S/1/datasetView.do",
-      "status": "blocked_auth",
-      "fetched_at": "2026-10-23T08:28:49+00:00",
-      "raw_path": null,
-      "row_count": 0,
-      "note": "Set SEOUL_OPEN_DATA_API_KEY in the environment; no key is stored in the repository.",
-      "sha256": null
     },
     {
       "dataset": "facilities",
@@ -101,12 +81,40 @@
       "row_count": 0,
       "note": "Interactive cadastral lookup did not provide a reusable boundary file/CRS without a parcel or authenticated spatial download.",
       "sha256": "886cf1d71c0979b001b6d8d2927db578a218c266f62633168cfb4ab993f22c6e"
+    },
+    {
+      "dataset": "construction",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:09+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/construction",
+      "row_count": 3,
+      "note": "API INFO-000; source_total_count=5006. Project dates are not daily work times; no acoustic level supplied.",
+      "sha256": "9aeb53e3a32a57cf0e1e2abc007fb83e50c847d47438b33a1d6c63c3cdb720eb",
+      "source_total_count": 5006,
+      "api_result_code": "INFO-000",
+      "service_name": "pmisPjtList",
+      "response_type": "xml"
+    },
+    {
+      "dataset": "events",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15486/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:15+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/events",
+      "row_count": 55,
+      "note": "API INFO-000; source_total_count=19658. PRO_TIME retained; only unambiguous clock tokens parsed. No acoustic level supplied.",
+      "sha256": "69831026da3bdf50471281803fa8ea47a4d08784c73de901018955417c4f4133",
+      "source_total_count": 19658,
+      "api_result_code": "INFO-000",
+      "service_name": "culturalEventInfo",
+      "response_type": "json"
     }
   ],
   "processed_counts": {
     "equipment_noise": 0,
-    "construction_events": 0,
-    "cultural_events": 0,
+    "construction_events": 3,
+    "cultural_events": 55,
     "receptors": 6,
     "academic_calendar": 2,
     "waste_collection": 0,

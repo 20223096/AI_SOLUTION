@@ -10,7 +10,8 @@ from app.main import app
 from app.services.optimizer import optimize
 from app.services.prediction import predict
 from app.services.public_data import acoustic_public_events, is_exam_period, public_catalog
-from scripts.collect_public_data.common import CollectionResult, VALID_STATUSES
+from scripts.collect_public_data.common import CollectionResult, VALID_STATUSES, load_project_env
+from scripts.collect_public_data.sources import _event_times
 from scripts.collect_public_data.validation import collection_time, deduplicate_events, geodesic_distance_m, pagination_ranges, require_seoul_response_shape, split_event_date_and_time, split_project_and_work_time, validate_acoustic_unit
 
 
@@ -89,3 +90,26 @@ def test_seoul_api_shape_pagination_and_event_duplicates():
         require_seoul_response_shape({}, "culturalEventInfo")
     row = {"name": "행사", "event_start": "2026-10-20", "event_end": "2026-10-20", "location": "신촌"}
     assert deduplicate_events([row, dict(row)]) == [row]
+
+
+def test_project_env_loader_does_not_override_explicit_environment(tmp_path, monkeypatch):
+    path = tmp_path / ".env"
+    path.write_text("SEOUL_OPEN_DATA_API_KEY=file-value\n", encoding="utf-8")
+    monkeypatch.setenv("SEOUL_OPEN_DATA_API_KEY", "explicit-value")
+    load_project_env(path)
+    assert __import__("os").environ["SEOUL_OPEN_DATA_API_KEY"] == "explicit-value"
+
+
+def test_event_time_parser_does_not_flatten_multi_day_schedules():
+    assert _event_times("13:00 ~ 18:00") == ("13:00", "18:00")
+    assert _event_times("[9.11] 17:30~20:00, [9.12] 10:00~19:00") == ("", "")
+
+
+def test_live_collection_manifest_records_verified_seoul_responses():
+    results = {x["dataset"]: x for x in public_catalog()["manifest"]["results"]}
+    assert results["construction"]["status"] == "processed"
+    assert results["events"]["status"] == "processed"
+    assert results["construction"]["api_result_code"] == "INFO-000"
+    assert results["events"]["api_result_code"] == "INFO-000"
+    assert results["construction"]["source_total_count"] >= results["construction"]["row_count"]
+    assert results["events"]["source_total_count"] >= results["events"]["row_count"]
