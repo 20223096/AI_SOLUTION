@@ -4,7 +4,9 @@ from datetime import datetime
 
 import pytest
 
+from app.services import background_profiles
 from app.services.background_profiles import profile_catalog, profile_level
+from app.services.optimizer import optimize
 from app.services.prediction import predict
 from scripts.noise_etl import normalize_sdot_row, parse_sensor_time, process_sdot, sha256_file
 
@@ -66,3 +68,35 @@ def test_observed_road_profile_is_explicit_and_not_default():
     assert default["background_profile"] == "assumed_demo"
     assert observed["background_profile"] == "road_traffic_observed_profile"
     assert any("과거 시간대별 중앙값" in warning for warning in observed["warnings"])
+
+
+def test_observed_profile_changes_hourly_background_and_total_noise():
+    day = __import__("datetime").date(2026, 10, 26)
+    assumed = predict("case-a", day)
+    observed = predict("case-a", day, background_profile="road_traffic_observed_profile")
+    def at_hour(rows, hour):
+        return next(x for x in rows["predictions"] if x["receptor_id"] == "residential-1" and x["slot_start"].hour == hour)
+    assert at_hour(observed, 7)["background_laeq_db"] == 70.9
+    assert at_hour(observed, 8)["background_laeq_db"] == 71.5
+    assert at_hour(observed, 7)["total_estimated_db"] != at_hour(assumed, 7)["total_estimated_db"]
+    assert 0 <= at_hour(observed, 7)["total_estimated_db"] < 200
+    metadata = at_hour(observed, 7)["source_metadata"]["background"]
+    assert metadata["value_status"] == "derived"
+    assert metadata["spatial_application_status"] == "assumed"
+
+
+def test_observed_profile_is_deterministic_and_keeps_period_source():
+    day = __import__("datetime").date(2026, 10, 26)
+    first = optimize("case-a", day, background_profile="road_traffic_observed_profile")
+    second = optimize("case-a", day, background_profile="road_traffic_observed_profile")
+    assert [(x.id, x.objective_values) for x in first["pareto_candidates"]] == [(x.id, x.objective_values) for x in second["pareto_candidates"]]
+    profile = profile_catalog()["road_traffic_observed_profile"]
+    assert profile["observation_period"] == {"start":"2025-01-01", "end":"2026-06-30"}
+    assert profile["source_metadata"]["status"] == "verified_public"
+
+
+def test_missing_profile_hour_returns_none_and_warning(monkeypatch):
+    monkeypatch.setattr(background_profiles, "profile_catalog", lambda: {"partial":{"id":"partial","calculation_eligible":True,"hourly_values":[],"source_metadata":{"status":"derived"},"observation_period":None,"metric":"LEQ","quality_warnings":[]}})
+    value, metadata, warnings = background_profiles.profile_level("partial", datetime(2026, 10, 26, 7))
+    assert value is None and metadata["status"] == "derived"
+    assert "no representative value" in warnings[0]

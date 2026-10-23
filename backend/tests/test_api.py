@@ -44,3 +44,5 @@ def test_background_profile_api_and_incompatible_guard():
     assert catalog.json()["default"] == "assumed_demo"
     response = client.post("/api/noise/predict", json={"scenario_id":"case-a","background_profile":"sdot_observed_profile"})
     assert response.status_code == 422
+    unknown = client.post("/api/noise/predict", json={"scenario_id":"case-a","background_profile":"does-not-exist"})
+    assert unknown.status_code == 422

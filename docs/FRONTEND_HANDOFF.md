@@ -32,13 +32,31 @@ POST /api/noise/predict
 
 그래프는 `total_estimated_db`, 구성요소는 별도 범례로 표현합니다. null은 0이 아니라 누락입니다.
 
+5차 추가 필드는 다음처럼 분리해서 표시합니다.
+
+```json
+{
+  "background_only_db": 70.9,
+  "existing_environment_db": 70.9,
+  "new_project_contribution_db": 72.47,
+  "with_new_project_db": 74.76,
+  "delta_total_db": 3.86,
+  "baseline_impact": 25.73,
+  "total_impact": 31.52,
+  "incremental_impact": 5.79,
+  "impact_saturation": {"level_component_at_ceiling": false,"incremental_zero_despite_physical_increase": false}
+}
+```
+
+`new_project_contribution_db`와 `delta_total_db`는 다른 값입니다. 전자는 신규 음원 자체의 수음점 기여 레벨이고 후자는 기존 총환경 대비 물리적 증가입니다. 증분 Impact가 0이면서 포화 경고가 true이면 “영향 없음”으로 표시하지 말고 “점수 상한으로 추가 영향 구분 불가”로 표시합니다.
+
 `GET /api/noise/background-profiles`의 `calculation_eligible`과 `quality_warnings`를 먼저 표시합니다. 요청에 `background_profile`을 생략하면 기존 `assumed_demo`가 유지됩니다. `road_traffic_observed_profile`은 명시 선택만 허용하고 과거 대표 패턴임을 표시하며, S-DoT 프로파일은 분석 전용이라 계산 요청 시 422가 정상입니다.
 
 ## Noise Slot 후보
 
 ```json
 POST /api/schedules/optimize
-{"scenario_id":"case-a","analysis_date":"2026-10-26","sensitivity_enabled":true}
+{"scenario_id":"case-a","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile","objective_mode":"incremental_impact"}
 ```
 
 ```json
@@ -66,6 +84,8 @@ POST /api/schedules/optimize
 - `delta`: after - before
 
 `threshold_db=65`는 PoC 분석 임계값이며 법정 기준이 아닙니다.
+
+추가 비교지표 `absolute_impact_cost`, `incremental_impact_cost`, `new_project_additional_high_noise_minutes`, `sensitive_new_project_exposure_minutes`를 별도 라벨로 표시합니다. 기본 추천 배지는 증분 목적이며, 절대 목적 비교가 필요하면 같은 요청을 `objective_mode=absolute_impact`로 재호출합니다. `policy_overlap_cost`는 진단용이고 현재 Pareto 비용에 포함되지 않습니다.
 
 ## 출처 표시
 

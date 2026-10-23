@@ -4,6 +4,8 @@ from app.models.domain import TaskAssignment
 from app.services.acoustics import energy_sum, sound_power_to_pressure, source_noise
 from app.services.background_profiles import profile_level
 from app.services.data import get_scenario, load_json_rows
+from app.services.impact import calculate_impact
+from app.models.domain import ImpactRequest
 from app.services.sensitivity import sensitivity
 from app.services.timegrid import TZ, at, overlaps, slots
 
@@ -33,7 +35,7 @@ def _within_windows(moment: datetime, windows: list[dict]) -> bool:
 
 def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
     scenario = get_scenario(scenario_id)
-    assignments = assignments or default_assignments(scenario, day)
+    assignments = default_assignments(scenario, day) if assignments is None else assignments
     equipment = {x.id: x.model_dump(mode="json") for x in scenario["equipment"]}
     tasks = {x.id: x for x in scenario["notice"].tasks}
     catalog = load_json_rows("equipment_noise.json")
@@ -84,9 +86,23 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
                     else:
                         event_levels.append(float(level)); event_ids.append(event["id"]); event_sources.append(event["provenance"])
             existing_db = energy_sum(event_levels)
-            numeric_levels = ([background_db] if background_db is not None else []) + ([construction_db] if construction_db is not None else []) + ([existing_db] if existing_db is not None else [])
+            baseline_levels = ([background_db] if background_db is not None else []) + ([existing_db] if existing_db is not None else [])
+            existing_environment_db = energy_sum(baseline_levels)
+            numeric_levels = baseline_levels + ([construction_db] if construction_db is not None else [])
             total_db = energy_sum(numeric_levels)
             exam_active = bool(settings.get("exam_period")) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
             sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "status":"disabled_for_experiment"}
-            results.append({"receptor_id": receptor.id, "slot_start": start, "slot_end": end, "active_task_ids": active, "construction_lp_db": None if construction_db is None else round(construction_db, 2), "background_laeq_db": background_db, "existing_noise_lp_db": None if existing_db is None else round(existing_db, 2), "existing_event_ids": event_ids, "total_estimated_db": None if total_db is None else round(total_db, 2), "sensitivity": sensitivity_data, "source_metadata": {"background": background_meta, "equipment": sources, "existing_events": event_sources}})
+            total_impact = baseline_impact = incremental_impact = 0.0
+            saturation = {"score_at_ceiling": False, "level_component_at_ceiling": False, "incremental_zero_despite_physical_increase": False}
+            delta_total_db = 0.0
+            if total_db is not None and existing_environment_db is not None:
+                delta_total_db = max(0.0, total_db - existing_environment_db) if construction_db is not None else 0.0
+                total_result = calculate_impact(ImpactRequest(total_noise_db=total_db, threshold_db=65, duration_minutes=15 if total_db >= 65 else 0, continuous_minutes=15 if total_db >= 65 else 0, sensitivity_weight=sensitivity_data["weight"]))
+                baseline_result = calculate_impact(ImpactRequest(total_noise_db=existing_environment_db, threshold_db=65, duration_minutes=15 if existing_environment_db >= 65 else 0, continuous_minutes=15 if existing_environment_db >= 65 else 0, sensitivity_weight=sensitivity_data["weight"]))
+                total_impact, baseline_impact = total_result["score"], baseline_result["score"]
+                incremental_impact = max(0.0, round(total_impact - baseline_impact, 2)) if construction_db is not None else 0.0
+                saturation = {"score_at_ceiling": total_impact >= 100, "level_component_at_ceiling": total_result["components"]["level"] >= 1, "incremental_zero_despite_physical_increase": delta_total_db > 0 and incremental_impact == 0}
+                if saturation["incremental_zero_despite_physical_increase"]:
+                    warnings.append(f"{receptor.id} {start.strftime('%H:%M')}: incremental Impact is zero despite positive physical dB increase due to score clipping/rounding")
+            results.append({"receptor_id": receptor.id, "slot_start": start, "slot_end": end, "active_task_ids": active, "construction_lp_db": None if construction_db is None else round(construction_db, 2), "new_project_contribution_db": None if construction_db is None else round(construction_db, 2), "background_laeq_db": background_db, "background_only_db": background_db, "existing_noise_lp_db": None if existing_db is None else round(existing_db, 2), "existing_environment_db": None if existing_environment_db is None else round(existing_environment_db, 2), "existing_event_ids": event_ids, "total_estimated_db": None if total_db is None else round(total_db, 2), "with_new_project_db": None if total_db is None else round(total_db, 2), "delta_total_db": round(delta_total_db, 2), "total_impact": total_impact, "baseline_impact": baseline_impact, "incremental_impact": incremental_impact, "impact_saturation": saturation, "sensitivity": sensitivity_data, "source_metadata": {"background": background_meta, "equipment": sources, "existing_events": event_sources}})
     return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}

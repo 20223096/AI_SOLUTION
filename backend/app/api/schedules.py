@@ -10,7 +10,7 @@ router = APIRouter(prefix="/api/schedules", tags=["schedules"])
 
 @router.post("/optimize")
 def optimize_schedule(request: OptimizeRequest):
-    try: return optimize(request.scenario_id, request.analysis_date, request.sensitivity_enabled, request.background_profile)
+    try: return optimize(request.scenario_id, request.analysis_date, request.sensitivity_enabled, request.background_profile, request.objective_mode)
     except KeyError as exc: raise HTTPException(404, str(exc)) from exc
     except ValueError as exc: raise HTTPException(422, str(exc)) from exc
 
@@ -23,9 +23,9 @@ def compare_schedules(request: CompareRequest):
 
 
 @router.get("/optimize/{scenario_id}/diagnostics")
-def optimization_diagnostics(scenario_id: str, analysis_date: date = Query(date(2026, 10, 26)), sensitivity_enabled: bool = True, background_profile: str = "assumed_demo"):
+def optimization_diagnostics(scenario_id: str, analysis_date: date = Query(date(2026, 10, 26)), sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact"):
     try:
-        result = optimize(scenario_id, analysis_date, sensitivity_enabled, background_profile)
+        result = optimize(scenario_id, analysis_date, sensitivity_enabled, background_profile, objective_mode)
         return {"scenario_id": scenario_id, "analysis_date": analysis_date, **result["diagnostics"]}
     except KeyError as exc:
         raise HTTPException(404, str(exc)) from exc

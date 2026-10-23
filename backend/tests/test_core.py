@@ -127,9 +127,10 @@ def test_congestion_can_select_avoidance_candidate():
     result = optimize("scenario-b-congestion", DAY)
     protection = next(x for x in result["recommended_options"] if "resident_protection" in x["character"])["candidate"]
     original = next(x for x in result["valid_candidates"] if x.id == "offset-0")
-    assert protection.id == "offset-120"
-    assert protection.objective_values["existing_noise_overlap_slots"] < original.objective_values["existing_noise_overlap_slots"]
-    assert protection.objective_values["resident_cost"] < original.objective_values["resident_cost"]
+    shifted = next(x for x in result["valid_candidates"] if x.id == "offset-120")
+    assert shifted.objective_values["existing_noise_overlap_slots"] < original.objective_values["existing_noise_overlap_slots"]
+    assert result["diagnostics"]["policy_overlap_cost_included_in_pareto"] is False
+    assert protection.objective_values["resident_cost"] == protection.objective_values["incremental_impact_cost"]
 
 
 def test_exam_sensitivity_can_change_recommendation_priority():

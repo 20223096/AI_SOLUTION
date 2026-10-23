@@ -28,5 +28,5 @@ def profile_level(profile_id: str, moment) -> tuple[float | None, dict, list[str
     value = next((x for x in profile["hourly_values"] if x["day_type"] == day_type and x["hour"] == moment.hour), None)
     if value is None:
         return None, profile["source_metadata"], [f"{profile_id}: no representative value for {day_type} hour {moment.hour}"]
-    metadata = profile["source_metadata"] | {"profile_id": profile_id, "observation_period": profile["observation_period"], "metric": profile["metric"], "representative_observation_count": value["observation_count"]}
+    metadata = profile["source_metadata"] | {"profile_id": profile_id, "observation_period": profile["observation_period"], "metric": profile["metric"], "representative_observation_count": value["observation_count"], "value_status": "derived", "spatial_application_status": "assumed"}
     return float(value["representative_db"]), metadata, list(profile.get("quality_warnings", []))

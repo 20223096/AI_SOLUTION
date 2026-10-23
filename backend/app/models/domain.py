@@ -119,6 +119,11 @@ class ScheduleMetrics(BaseModel):
     sensitive_high_noise_minutes: int = 0
     max_impact_score: float = 0
     total_impact_score: float = 0
+    absolute_impact_cost: float = 0
+    incremental_impact_cost: float = 0
+    new_project_additional_high_noise_minutes: int = 0
+    sensitive_new_project_exposure_minutes: int = 0
+    saturation_slot_count: int = 0
     schedule_change_minutes: int = 0
 
 
@@ -152,6 +157,7 @@ class ImpactRequest(BaseModel):
     continuous_minutes: int = Field(ge=0)
     sensitivity_weight: float = Field(gt=0)
     cumulative_burden: float = Field(default=0, ge=0)
+    baseline_noise_db: float | None = None
 
 
 class OptimizeRequest(BaseModel):
@@ -159,6 +165,7 @@ class OptimizeRequest(BaseModel):
     analysis_date: date = date(2026, 10, 26)
     sensitivity_enabled: bool = True
     background_profile: str = "assumed_demo"
+    objective_mode: Literal["incremental_impact", "absolute_impact"] = "incremental_impact"
 
 
 class CompareRequest(BaseModel):
@@ -173,3 +180,4 @@ class ExperimentRequest(BaseModel):
     scenario_id: str = "case-a"
     analysis_date: date = date(2026, 10, 26)
     background_profile: str = "assumed_demo"
+    objective_mode: Literal["incremental_impact", "absolute_impact"] = "incremental_impact"

@@ -8,31 +8,42 @@ from app.services.prediction import predict
 def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignment], threshold: float = 65.0, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> ScheduleMetrics:
     rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile)["predictions"]
     # Aggregate conservatively across receptors: one value per slot, taking maximum.
-    by_slot, total_impact = {}, 0.0
+    by_slot = {}
     for row in rows:
         level = row["total_estimated_db"]
         if level is None:
             continue
-        by_slot[row["slot_start"]] = max(by_slot.get(row["slot_start"], (0, 1))[0], level), max(by_slot.get(row["slot_start"], (0, 1))[1], row["sensitivity"]["weight"])
+        previous = by_slot.get(row["slot_start"], {"total":0,"baseline":0,"weight":1,"active":False})
+        by_slot[row["slot_start"]] = {"total":max(previous["total"], level), "baseline":max(previous["baseline"], row["existing_environment_db"] or 0), "weight":max(previous["weight"], row["sensitivity"]["weight"]), "active":previous["active"] or bool(row["active_task_ids"])}
     high_runs, quiet_runs, impacts = [], [], []
     current_high = current_quiet = 0
-    sensitive_high = 0
-    for level, weight in by_slot.values():
+    sensitive_high = additional_high = sensitive_project = 0
+    for values in by_slot.values():
+        level, weight = values["total"], values["weight"]
         high = level >= threshold
         current_high = current_high + 15 if high else 0
         current_quiet = current_quiet + 15 if not high else 0
         high_runs.append(current_high); quiet_runs.append(current_quiet)
         if high and weight > 1:
             sensitive_high += 15
+        if high and values["baseline"] < threshold:
+            additional_high += 15
+        if values["active"] and weight > 1:
+            sensitive_project += 15
         impacts.append(calculate_impact(ImpactRequest(total_noise_db=level, threshold_db=threshold, duration_minutes=15 if high else 0, continuous_minutes=current_high, sensitivity_weight=weight))["score"])
     # Resident cost sums every receptor-slot so receptor-specific sensitivity is retained.
-    receptor_impacts = []
+    receptor_impacts, incremental_impacts = [], []
+    saturation_count = 0
     for row in rows:
         level = row["total_estimated_db"]
         if level is None:
             continue
-        receptor_impacts.append(calculate_impact(ImpactRequest(total_noise_db=level, threshold_db=threshold, duration_minutes=15 if level >= threshold else 0, continuous_minutes=15 if level >= threshold else 0, sensitivity_weight=row["sensitivity"]["weight"]))["score"])
-    return ScheduleMetrics(max_continuous_high_noise_minutes=max(high_runs, default=0), longest_quiet_window_minutes=max(quiet_runs, default=0), sensitive_high_noise_minutes=sensitive_high, max_impact_score=max(receptor_impacts, default=0), total_impact_score=round(sum(receptor_impacts), 2))
+        receptor_impacts.append(row["total_impact"])
+        incremental_impacts.append(row["incremental_impact"])
+        saturation_count += int(row["impact_saturation"]["level_component_at_ceiling"] or row["impact_saturation"]["incremental_zero_despite_physical_increase"])
+    absolute = round(sum(receptor_impacts), 2)
+    incremental = round(sum(incremental_impacts), 2)
+    return ScheduleMetrics(max_continuous_high_noise_minutes=max(high_runs, default=0), longest_quiet_window_minutes=max(quiet_runs, default=0), sensitive_high_noise_minutes=sensitive_high, max_impact_score=max(receptor_impacts, default=0), total_impact_score=absolute, absolute_impact_cost=absolute, incremental_impact_cost=incremental, new_project_additional_high_noise_minutes=additional_high, sensitive_new_project_exposure_minutes=sensitive_project, saturation_slot_count=saturation_count)
 
 
 def compare(scenario_id: str, day: date, before: list[TaskAssignment], after: list[TaskAssignment], sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
