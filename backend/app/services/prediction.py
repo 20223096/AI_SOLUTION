@@ -7,6 +7,7 @@ from app.services.data import get_scenario, load_json_rows
 from app.services.impact import calculate_impact
 from app.models.domain import ImpactRequest
 from app.services.sensitivity import sensitivity
+from app.services.public_data import is_exam_period
 from app.services.timegrid import TZ, at, overlaps, slots
 
 
@@ -90,8 +91,12 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             existing_environment_db = energy_sum(baseline_levels)
             numeric_levels = baseline_levels + ([construction_db] if construction_db is not None else [])
             total_db = energy_sum(numeric_levels)
-            exam_active = bool(settings.get("exam_period")) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
+            calendar_institution = settings.get("public_data_calendar_institution")
+            calendar_exam = is_exam_period(day, calendar_institution) if calendar_institution else False
+            exam_active = (bool(settings.get("exam_period")) or calendar_exam) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
             sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "status":"disabled_for_experiment"}
+            if sensitivity_enabled and calendar_exam and receptor.type == "university":
+                sensitivity_data = {**sensitivity_data, "status": "derived", "calendar_source_status": "processed", "calendar_institution": calendar_institution}
             total_impact = baseline_impact = incremental_impact = 0.0
             saturation = {"score_at_ceiling": False, "level_component_at_ceiling": False, "incremental_zero_despite_physical_increase": False}
             delta_total_db = 0.0
@@ -105,4 +110,4 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
                 if saturation["incremental_zero_despite_physical_increase"]:
                     warnings.append(f"{receptor.id} {start.strftime('%H:%M')}: incremental Impact is zero despite positive physical dB increase due to score clipping/rounding")
             results.append({"receptor_id": receptor.id, "slot_start": start, "slot_end": end, "active_task_ids": active, "construction_lp_db": None if construction_db is None else round(construction_db, 2), "new_project_contribution_db": None if construction_db is None else round(construction_db, 2), "background_laeq_db": background_db, "background_only_db": background_db, "existing_noise_lp_db": None if existing_db is None else round(existing_db, 2), "existing_environment_db": None if existing_environment_db is None else round(existing_environment_db, 2), "existing_event_ids": event_ids, "total_estimated_db": None if total_db is None else round(total_db, 2), "with_new_project_db": None if total_db is None else round(total_db, 2), "delta_total_db": round(delta_total_db, 2), "total_impact": total_impact, "baseline_impact": baseline_impact, "incremental_impact": incremental_impact, "impact_saturation": saturation, "sensitivity": sensitivity_data, "source_metadata": {"background": background_meta, "equipment": sources, "existing_events": event_sources}})
-    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}
+    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "public_data_calendar_institution": settings.get("public_data_calendar_institution"), "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}

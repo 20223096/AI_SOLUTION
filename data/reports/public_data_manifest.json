@@ -1,0 +1,121 @@
+{
+  "generated_at": "2026-10-23T08:28:50+00:00",
+  "collector_version": "1.0.0",
+  "results": [
+    {
+      "dataset": "equipment_noise",
+      "source_url": "https://www.data.go.kr/tcs/dss/selectDataSetList.do?keyword=%EA%B1%B4%EC%84%A4%EA%B8%B0%EA%B3%84%20%EC%86%8C%EC%9D%8C",
+      "status": "insufficient_fields",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/equipment_noise/data_go_kr_search.html",
+      "row_count": 0,
+      "note": "Official search metadata did not expose model-level Lw/Lp measurements suitable for calculation. Existing assumptions remain separate.",
+      "sha256": "ad6d73f7a186f7c856bf508be038615919a101770e00eee3eefb4dab97464294"
+    },
+    {
+      "dataset": "construction",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15589/A/1/datasetView.do",
+      "status": "blocked_auth",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": null,
+      "row_count": 0,
+      "note": "Set SEOUL_OPEN_DATA_API_KEY in the environment; no key is stored in the repository. The legacy One-PMIS schedule dataset is also marked service-ended; service name must be revalidated.",
+      "sha256": null
+    },
+    {
+      "dataset": "events",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-23040/S/1/datasetView.do",
+      "status": "blocked_auth",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": null,
+      "row_count": 0,
+      "note": "Set SEOUL_OPEN_DATA_API_KEY in the environment; no key is stored in the repository.",
+      "sha256": null
+    },
+    {
+      "dataset": "facilities",
+      "source_url": "https://mirae.yonsei.ac.kr/sc/502/subview.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/facilities/yonsei.html",
+      "row_count": 1,
+      "note": "Official address verified; coordinates were not supplied and were not invented.",
+      "sha256": "b7296897adc57f28ec1b9b1501d656452b6eb3d7fcaa89550742641639554f3f"
+    },
+    {
+      "dataset": "facilities",
+      "source_url": "https://sev.severance.healthcare/sev/about/location/map.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/facilities/severance.html",
+      "row_count": 1,
+      "note": "Official address verified; coordinates were not supplied and were not invented.",
+      "sha256": "b1398b0588d82de9947afc3536743d5fb2cfbd0be78c4e1cd75a7b2e351dd34b"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://yonshin.yonsei.ac.kr/theology/department/schedule.do",
+      "status": "collected",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/yonsei_2026.html",
+      "row_count": 0,
+      "note": "",
+      "sha256": "7d6528640299e40addbd2e5a33e6d46a9d47df5ada4a74e5e8d9a42ff6cf6e87"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://cmsguide.ewha.ac.kr/cc/bachelor/academic-schedule.do?date=2026-10&mode=calendar",
+      "status": "pending_verification",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/ewha_2026.html",
+      "row_count": 0,
+      "note": "Official page confirms a 2026 second-semester general-course midterm but machine-readable exact date range was not stable; no range inferred.",
+      "sha256": "254fd725fd9e0963cfd2f1f6db71c0642736e6e1bd24b5edf2f1c99bad3665b9"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://me.sogang.ac.kr/ko/undergraduate/calendar",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/sogang_2026.html",
+      "row_count": 2,
+      "note": "Official 2026 exam date ranges extracted.",
+      "sha256": "b1f5ec61e0217bfc7455169ab050c9e0f2508075665aaec157e5cc6aa0ef25e3"
+    },
+    {
+      "dataset": "waste_collection",
+      "source_url": "https://www.sdm.go.kr/waste/contents/wasteGuide.do",
+      "status": "insufficient_fields",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/waste_collection/seodaemun_guide.html",
+      "row_count": 0,
+      "note": "Resident disposal guidance is not evidence of vehicle collection time; no acoustic event created.",
+      "sha256": "eed4118d6c501224683aa8f860c4316ac0f380e581890bdaa52eec13aa593e6a"
+    },
+    {
+      "dataset": "geographic",
+      "source_url": "https://www.eum.go.kr/web/am/amMain.jsp",
+      "status": "blocked_access",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/geographic/land_eum.html",
+      "row_count": 0,
+      "note": "Interactive cadastral lookup did not provide a reusable boundary file/CRS without a parcel or authenticated spatial download.",
+      "sha256": "886cf1d71c0979b001b6d8d2927db578a218c266f62633168cfb4ab993f22c6e"
+    }
+  ],
+  "processed_counts": {
+    "equipment_noise": 0,
+    "construction_events": 0,
+    "cultural_events": 0,
+    "receptors": 6,
+    "academic_calendar": 2,
+    "waste_collection": 0,
+    "land_use": 0
+  },
+  "integration_policy": {
+    "verified_numeric_acoustic_only": true,
+    "schedule_without_noise_db_energy_summed": false,
+    "sdot_reprocessed": false,
+    "road_traffic_reprocessed": false
+  }
+}

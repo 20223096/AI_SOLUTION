@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.api import experiments, impact, noise, notices, scenarios, schedules
+from app.api import experiments, impact, noise, notices, public_data, scenarios, schedules
 from app.core.config import get_settings
 
 settings = get_settings()
@@ -12,5 +12,5 @@ def health():
     return {"status": "ok", "model_version": settings.model_version, "extractor_mode": settings.extractor_mode}
 
 
-for router in (scenarios.router, notices.router, noise.router, impact.router, schedules.router, experiments.router):
+for router in (scenarios.router, notices.router, noise.router, impact.router, schedules.router, experiments.router, public_data.router):
     app.include_router(router)

@@ -14,5 +14,10 @@
     "constraints":{"same_day":true,"road_open_after_work":true,"require_all_task_durations":true,"forbidden_windows":[{"start":"12:00","end":"14:00"}]},
     "settings":{"default_background_laeq_db":55.0,"exam_period":false},
     "source_provenance":{"restriction":{"status":"assumed","source":"PoC hard-constraint experiment"}}
+  },
+  {
+    "id":"sinchon-public-2026-10","base_scenario_id":"case-a","title":"신촌 공공데이터 연동 — 2026년 10월","expected_feasibility":true,
+    "settings":{"default_background_laeq_db":55.0,"exam_period":false,"public_data_calendar_institution":"sogang"},
+    "source_provenance":{"academic_calendar":{"status":"processed","source":"Sogang official 2026 academic calendar","note":"Calendar sensitivity only; physical receptor distances and equipment levels remain original PoC assumptions. It is not attributed to Yonsei or Ewha."},"public_catalog":{"status":"integrated","source":"data/reports/public_data_manifest.json"}}
   }
 ]
