@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
-from app.models.domain import FieldValidationRequest, M1PredictRequest, M1ScheduleEvaluationRequest, M1UncertaintyRequest, PredictRequest
+from app.models.domain import DesignBasedSimulationRequest, FieldValidationRequest, M1PredictRequest, M1ScheduleEvaluationRequest, M1UncertaintyRequest, PredictRequest
+from app.services.design_simulation import design_simulation_catalog, run_design_rescheduling
 from app.services.field_validation import evaluate_field_validation
 from app.services.m1_acoustics import analyze_uncertainty, compare_m0_m1, evaluate_m1_schedule_candidates, predict_m1
 from app.services.prediction import predict
@@ -61,3 +62,16 @@ def noise_evaluate_m1_candidates(request: M1ScheduleEvaluationRequest):
 @router.post("/validate-m1-field")
 def noise_validate_m1_field(request: FieldValidationRequest):
     return evaluate_field_validation(request)
+
+
+@router.get("/design-simulation/catalog")
+def noise_design_simulation_catalog():
+    return design_simulation_catalog()
+
+
+@router.post("/design-simulation/reschedule")
+def noise_design_simulation_reschedule(request: DesignBasedSimulationRequest):
+    try:
+        return run_design_rescheduling(request)
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc

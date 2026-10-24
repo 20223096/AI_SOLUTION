@@ -290,6 +290,29 @@ class M1ScheduleEvaluationRequest(BaseModel):
     overlap_mode: Literal["complete_concurrent", "sequential_possible", "overlap_unknown"] = "overlap_unknown"
 
 
+class DesignBasedSimulationRequest(BaseModel):
+    segment_id: Literal["segment-yeonse-ro-2na-gil", "segment-chungjeong-ro"]
+    receptor_id: str = Field(min_length=1)
+    receptor_segment_id: Literal["segment-yeonse-ro-2na-gil", "segment-chungjeong-ro"]
+    distance_m: float = Field(gt=0)
+    background_laeq_db: float = 55.0
+    workday_start: time = time(7, 0)
+    workday_end: time = time(18, 0)
+    sensitive_start: time = time(8, 0)
+    sensitive_end: time = time(11, 0)
+    simulation_date: date = date(2026, 10, 26)
+
+    @model_validator(mode="after")
+    def segment_and_windows(self):
+        if self.segment_id != self.receptor_segment_id:
+            raise ValueError("receptor must belong to the selected construction segment")
+        if self.workday_end <= self.workday_start:
+            raise ValueError("workday_end must be after workday_start")
+        if self.sensitive_end <= self.sensitive_start:
+            raise ValueError("sensitive_end must be after sensitive_start")
+        return self
+
+
 class FieldObservation(BaseModel):
     id: str
     receptor_id: str
