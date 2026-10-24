@@ -169,6 +169,101 @@ class PredictRequest(BaseModel):
     background_profile: str = "assumed_demo"
 
 
+class M1Point(BaseModel):
+    x: float
+    y: float
+    z_m: float = 0.0
+    crs: Literal["EPSG:4326", "EPSG:5179", "EPSG:5186"]
+    provenance: Literal["official_design", "field_verified", "derived", "assumed", "unknown"]
+
+
+class M1ActiveInterval(BaseModel):
+    start: datetime
+    end: datetime
+
+    @model_validator(mode="after")
+    def ordered(self):
+        if self.end <= self.start:
+            raise ValueError("active interval end must be after start")
+        return self
+
+
+class M1PropagationCorrection(BaseModel):
+    value_db: float | None = None
+    status: Literal["field_verified", "derived", "assumed", "not_modelled"] = "not_modelled"
+    source: str | None = None
+
+    @model_validator(mode="after")
+    def require_value_only_when_modelled(self):
+        if self.status == "not_modelled" and self.value_db is not None:
+            raise ValueError("not_modelled correction must not have a numeric value")
+        if self.status != "not_modelled" and self.value_db is None:
+            raise ValueError("modelled correction requires value_db")
+        return self
+
+
+class M1NoiseSource(BaseModel):
+    id: str
+    segment_id: Literal["segment-yeonse-ro-2na-gil", "segment-chungjeong-ro"]
+    source_type: Literal["fixed", "moving_work", "moving_vehicle", "impulsive"]
+    equipment_category: str
+    equipment_model: str | None = None
+    count: int = Field(default=1, ge=1)
+    sound_power_level_db: float | None = None
+    lw_provenance: Literal["official_reference", "field_verified", "assumed", "unknown"] = "unknown"
+    reference_scenario: Literal["low", "median", "high"] | None = None
+    position: M1Point | None = None
+    deployment_start: datetime
+    deployment_end: datetime
+    actual_active_minutes: float | None = Field(default=None, ge=0, le=15)
+    activity_provenance: Literal["field_verified", "derived", "assumed", "unknown"] = "unknown"
+    active_intervals: list[M1ActiveInterval] = Field(default_factory=list)
+    simultaneous_group: str | None = None
+    measurement_condition_verified: bool = False
+
+    @model_validator(mode="after")
+    def valid_deployment(self):
+        if self.deployment_end <= self.deployment_start:
+            raise ValueError("deployment_end must be after deployment_start")
+        if self.actual_active_minutes is not None and self.activity_provenance == "unknown":
+            raise ValueError("numeric activity requires non-unknown activity_provenance")
+        return self
+
+
+class M1Receptor(BaseModel):
+    id: str
+    position: M1Point | None = None
+
+
+class M1PredictRequest(BaseModel):
+    slot_start: datetime
+    slot_end: datetime
+    sources: list[M1NoiseSource]
+    receptors: list[M1Receptor]
+    background_laeq_db: float | None = None
+    background_provenance: Literal["official_reference", "field_verified", "derived", "assumed", "unknown"] = "unknown"
+    overlap_mode: Literal["exact", "complete_concurrent", "sequential_possible", "overlap_unknown"] = "overlap_unknown"
+    corrections: dict[Literal["ground", "atmospheric", "barrier", "building", "reflection", "meteorology"], M1PropagationCorrection] = Field(default_factory=dict)
+
+    @model_validator(mode="after")
+    def fifteen_minute_slot(self):
+        if (self.slot_end - self.slot_start).total_seconds() != 900:
+            raise ValueError("M1 currently requires exactly one 15-minute slot")
+        if self.background_laeq_db is not None and self.background_provenance == "unknown":
+            raise ValueError("numeric background requires non-unknown provenance")
+        return self
+
+
+class M1SensitivityCase(BaseModel):
+    id: str
+    varied_variable: Literal["equipment_lw", "activity_ratio", "simultaneous_operation", "source_position", "receptor_position_or_height", "background_profile", "propagation_correction_availability"]
+    request: M1PredictRequest
+
+
+class M1UncertaintyRequest(BaseModel):
+    cases: list[M1SensitivityCase] = Field(min_length=1)
+
+
 class ImpactRequest(BaseModel):
     total_noise_db: float
     threshold_db: float = 65.0
