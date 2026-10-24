@@ -34,7 +34,7 @@ def _within_windows(moment: datetime, windows: list[dict]) -> bool:
     return False
 
 
-def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
+def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> dict:
     scenario = get_scenario(scenario_id)
     assignments = default_assignments(scenario, day) if assignments is None else assignments
     equipment = {x.id: x.model_dump(mode="json") for x in scenario["equipment"]}
@@ -98,7 +98,7 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             calendar_institution = settings.get("public_data_calendar_institution")
             calendar_exam = is_exam_period(day, calendar_institution) if calendar_institution else False
             exam_active = (bool(settings.get("exam_period")) or calendar_exam) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
-            sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "is_sensitive_time":False, "weight_status":"disabled", "status":"disabled_for_experiment"}
+            sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active, policy_version=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "is_sensitive_time":False, "weight_status":"disabled", "status":"disabled_for_experiment"}
             if sensitivity_enabled and calendar_exam and receptor.type == "university":
                 sensitivity_data = {**sensitivity_data, "status": "derived", "calendar_source_status": "processed", "calendar_institution": calendar_institution}
             total_impact = baseline_impact = incremental_impact = 0.0

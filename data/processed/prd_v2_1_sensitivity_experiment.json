@@ -1,0 +1,46 @@
+{
+  "generated_by": "app.services.prd_v2_1.sensitivity_policy_experiment",
+  "policy_version": "prd_max_v2_1_experimental",
+  "status": "simulated",
+  "scenario_id": "final-demo-congestion",
+  "analysis_date": "2026-09-11",
+  "background_profile": "road_traffic_observed_profile",
+  "baseline_policy": "legacy_v1_additive",
+  "baseline_recommended_candidate_ids": ["offset-0"],
+  "cases": [
+    {
+      "multiplier": 1.1,
+      "recommended_candidate_ids": ["offset-0"],
+      "recommendation_changed": false,
+      "pareto_candidate_ids": ["offset-0"],
+      "ranking_changed": false,
+      "sensitive_exposure_receptor_minutes": 1620,
+      "weighted_sensitive_exposure": 1782.0,
+      "schedule_change_minutes": 0,
+      "incremental_impact_cost": 6.8
+    },
+    {
+      "multiplier": 1.3,
+      "recommended_candidate_ids": ["offset-0"],
+      "recommendation_changed": false,
+      "pareto_candidate_ids": ["offset-0"],
+      "ranking_changed": false,
+      "sensitive_exposure_receptor_minutes": 1620,
+      "weighted_sensitive_exposure": 2106.0,
+      "schedule_change_minutes": 0,
+      "incremental_impact_cost": 7.2
+    },
+    {
+      "multiplier": 1.5,
+      "recommended_candidate_ids": ["offset-0"],
+      "recommendation_changed": false,
+      "pareto_candidate_ids": ["offset-0"],
+      "ranking_changed": false,
+      "sensitive_exposure_receptor_minutes": 1620,
+      "weighted_sensitive_exposure": 2430.0,
+      "schedule_change_minutes": 0,
+      "incremental_impact_cost": 7.36
+    }
+  ],
+  "disclaimer": "Sensitivity multipliers are planning assumptions, not validated harm coefficients."
+}

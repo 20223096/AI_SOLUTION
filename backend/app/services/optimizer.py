@@ -20,7 +20,7 @@ OBJECTIVE_FIELDS = {
 MULTI_AXES = ["physical_energy_cost", "sensitive_exposure_cost", "continuous_burden_cost", "change_cost"]
 
 
-def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact") -> ScheduleCandidate:
+def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> ScheduleCandidate:
     scenario = get_scenario(scenario_id)
     notice = scenario["notice"]
     timed = [t for t in notice.tasks if t.duration_minutes is not None]
@@ -50,7 +50,7 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
             reasons.append(f"작업 금지시간 {forbidden['start']}~{forbidden['end']}과 충돌")
     # Sequential construction preserves predecessors/resources by construction.
     feasible = not reasons
-    metrics = schedule_metrics(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile) if feasible else ScheduleMetrics()
+    metrics = schedule_metrics(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, sensitivity_policy=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier) if feasible else ScheduleMetrics()
     original = default_assignments(scenario, day)
     original_starts = {x.task_id: x.start for x in original}
     task_changes = {x.task_id: abs(int((x.start - original_starts[x.task_id]).total_seconds() / 60)) for x in assignments}
@@ -111,11 +111,11 @@ def _recommendation_reasons(candidate: ScheduleCandidate, original: ScheduleCand
     return reasons
 
 
-def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact") -> dict:
+def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> dict:
     if objective_mode not in OBJECTIVE_FIELDS:
         raise ValueError(f"unknown objective_mode: {objective_mode}")
     scenario = get_scenario(scenario_id)
-    raw = [_candidate(scenario_id, day, offset, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, objective_mode=objective_mode) for offset in range(0, 121, 15)]
+    raw = [_candidate(scenario_id, day, offset, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, objective_mode=objective_mode, sensitivity_policy=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier) for offset in range(0, 121, 15)]
     valid = [x for x in raw if x.feasibility]
     points = [{"id": x.id, **x.objective_values} for x in valid]
     pareto_axes = MULTI_AXES if objective_mode == "multi_axis" else ["resident_cost", "change_cost"]
