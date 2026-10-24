@@ -810,10 +810,201 @@
           }
         }
       }
+    },
+    "/api/prd/demo/2026-09-11": {
+      "get": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Get Demo Fixture",
+        "operationId": "get_demo_fixture_api_prd_demo_2026_09_11_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DemoFixtureResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prd/schedules/validate": {
+      "post": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Validate Schedule",
+        "operationId": "validate_schedule_api_prd_schedules_validate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PRDScheduleValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PRDScheduleValidationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prd/recommendation-diagnostics": {
+      "get": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Get Recommendation Diagnostics",
+        "operationId": "get_recommendation_diagnostics_api_prd_recommendation_diagnostics_get",
+        "parameters": [
+          {
+            "name": "analysis_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "default": "2026-09-11",
+              "title": "Analysis Date"
+            }
+          },
+          {
+            "name": "background_profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "road_traffic_observed_profile",
+              "title": "Background Profile"
+            }
+          },
+          {
+            "name": "objective_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "incremental_impact",
+              "title": "Objective Mode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecommendationDiagnosticsResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prd/sensitivity/experiment": {
+      "post": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Run Sensitivity Experiment",
+        "operationId": "run_sensitivity_experiment_api_prd_sensitivity_experiment_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PRDSensitivityExperimentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PRDSensitivityExperimentResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
     "schemas": {
+      "AcousticOverlapPolicy": {
+        "properties": {
+          "official_events": {
+            "type": "string",
+            "title": "Official Events"
+          },
+          "assumed_congestion_overlay": {
+            "type": "string",
+            "title": "Assumed Congestion Overlay"
+          },
+          "claim_limit": {
+            "type": "string",
+            "title": "Claim Limit"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "official_events",
+          "assumed_congestion_overlay",
+          "claim_limit"
+        ],
+        "title": "AcousticOverlapPolicy"
+      },
       "BackgroundProfile": {
         "properties": {
           "id": {
@@ -918,6 +1109,108 @@
         ],
         "title": "Body_extract_file_api_notices_extract_file_post"
       },
+      "CandidateDiagnostic": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "first_task_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "First Task Start"
+          },
+          "project_start_shift_minutes": {
+            "type": "integer",
+            "title": "Project Start Shift Minutes"
+          },
+          "total_task_start_shift_minutes": {
+            "type": "integer",
+            "title": "Total Task Start Shift Minutes"
+          },
+          "feasibility": {
+            "type": "boolean",
+            "title": "Feasibility"
+          },
+          "infeasibility_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Infeasibility Reasons"
+          },
+          "objective_values": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Objective Values"
+          },
+          "sensitive_time_exposure_minutes": {
+            "type": "integer",
+            "title": "Sensitive Time Exposure Minutes"
+          },
+          "weighted_sensitive_exposure": {
+            "type": "number",
+            "title": "Weighted Sensitive Exposure"
+          },
+          "existing_noise_overlap_receptor_minutes": {
+            "type": "integer",
+            "title": "Existing Noise Overlap Receptor Minutes"
+          },
+          "existing_event_overlap_basis": {
+            "type": "string",
+            "enum": [
+              "assumed_simulation",
+              "none"
+            ],
+            "title": "Existing Event Overlap Basis"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/ScheduleMetrics"
+          },
+          "pareto_included": {
+            "type": "boolean",
+            "title": "Pareto Included"
+          },
+          "dominated_reason": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/DominatedReason"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "id",
+          "first_task_start",
+          "project_start_shift_minutes",
+          "total_task_start_shift_minutes",
+          "feasibility",
+          "infeasibility_reasons",
+          "objective_values",
+          "sensitive_time_exposure_minutes",
+          "weighted_sensitive_exposure",
+          "existing_noise_overlap_receptor_minutes",
+          "existing_event_overlap_basis",
+          "metrics",
+          "pareto_included",
+          "dominated_reason"
+        ],
+        "title": "CandidateDiagnostic"
+      },
       "CompareRequest": {
         "properties": {
           "scenario_id": {
@@ -1001,6 +1294,108 @@
           "comparison_basis"
         ],
         "title": "CompareResponse"
+      },
+      "ConstraintViolation": {
+        "properties": {
+          "code": {
+            "type": "string",
+            "title": "Code"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Id"
+          },
+          "equipment_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment Id"
+          },
+          "predecessor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Predecessor Id"
+          },
+          "count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Count"
+          },
+          "maximum": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum"
+          },
+          "scheduled_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scheduled Minutes"
+          },
+          "required_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Minutes"
+          },
+          "detail": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Detail"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "code"
+        ],
+        "title": "ConstraintViolation"
       },
       "ConstructionDesignResponse": {
         "properties": {
@@ -1274,6 +1669,257 @@
           "name"
         ],
         "title": "ConstructionTask"
+      },
+      "DemoContextEvent": {
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "existing_construction",
+              "cultural_event",
+              "waste_collection"
+            ],
+            "title": "Kind"
+          },
+          "event_id": {
+            "type": "string",
+            "title": "Event Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "period_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period Start"
+          },
+          "period_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Period End"
+          },
+          "operation_time": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Operation Time"
+          },
+          "noise_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Noise Db"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "verified_public",
+              "assumed"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "kind",
+          "event_id",
+          "operation_time",
+          "noise_db",
+          "status",
+          "source",
+          "note"
+        ],
+        "title": "DemoContextEvent"
+      },
+      "DemoFixtureResponse": {
+        "properties": {
+          "fixture_version": {
+            "type": "string",
+            "title": "Fixture Version"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "comparison_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Comparison Date"
+          },
+          "timezone": {
+            "type": "string",
+            "const": "Asia/Seoul",
+            "title": "Timezone"
+          },
+          "provenance_summary": {
+            "$ref": "#/components/schemas/ProvenanceSummary"
+          },
+          "official_new_construction_design": {
+            "$ref": "#/components/schemas/OfficialDesignSummary"
+          },
+          "demo_work_plan": {
+            "$ref": "#/components/schemas/DemoWorkPlanSummary"
+          },
+          "new_demo_notice": {
+            "$ref": "#/components/schemas/DemoNoticeSummary"
+          },
+          "sdot_daily_audit": {
+            "$ref": "#/components/schemas/SDotDailyAudit"
+          },
+          "context_events": {
+            "items": {
+              "$ref": "#/components/schemas/DemoContextEvent"
+            },
+            "type": "array",
+            "title": "Context Events"
+          },
+          "acoustic_overlap_policy": {
+            "$ref": "#/components/schemas/AcousticOverlapPolicy"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "fixture_version",
+          "analysis_date",
+          "comparison_date",
+          "timezone",
+          "provenance_summary",
+          "official_new_construction_design",
+          "demo_work_plan",
+          "new_demo_notice",
+          "sdot_daily_audit",
+          "context_events",
+          "acoustic_overlap_policy"
+        ],
+        "title": "DemoFixtureResponse"
+      },
+      "DemoNoticeSummary": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "status": {
+            "type": "string",
+            "const": "assumed",
+            "title": "Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "status",
+          "note"
+        ],
+        "title": "DemoNoticeSummary"
+      },
+      "DemoWorkPlanSummary": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "work_window": {
+            "type": "string",
+            "title": "Work Window"
+          },
+          "status": {
+            "type": "string",
+            "const": "assumed",
+            "title": "Status"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "task_duration_status": {
+            "type": "string",
+            "const": "user_provided",
+            "title": "Task Duration Status"
+          },
+          "existing_congestion_overlay_status": {
+            "type": "string",
+            "const": "assumed",
+            "title": "Existing Congestion Overlay Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "analysis_date",
+          "work_window",
+          "status",
+          "source",
+          "task_duration_status",
+          "existing_congestion_overlay_status",
+          "note"
+        ],
+        "title": "DemoWorkPlanSummary"
       },
       "DesignBasedSimulationRequest": {
         "properties": {
@@ -1773,6 +2419,33 @@
         ],
         "title": "DiagnosticsResponse"
       },
+      "DominatedReason": {
+        "properties": {
+          "dominated_by": {
+            "type": "string",
+            "title": "Dominated By"
+          },
+          "axes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Axes"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "dominated_by",
+          "axes",
+          "reason"
+        ],
+        "title": "DominatedReason"
+      },
       "Equipment": {
         "properties": {
           "id": {
@@ -1832,6 +2505,75 @@
           "source_metadata"
         ],
         "title": "Equipment"
+      },
+      "EquipmentPlanningConstraint": {
+        "properties": {
+          "equipment_id": {
+            "type": "string",
+            "title": "Equipment Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "specification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specification"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "max_daily_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Daily Count"
+          },
+          "required_usage_minutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Required Usage Minutes"
+          },
+          "permitted_time_windows": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "type": "array",
+            "title": "Permitted Time Windows"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "equipment_id",
+          "category",
+          "required_usage_minutes",
+          "source_metadata"
+        ],
+        "title": "EquipmentPlanningConstraint"
       },
       "ExperimentRequest": {
         "properties": {
@@ -2272,6 +3014,52 @@
           "alignment_failures"
         ],
         "title": "FieldValidationResponse"
+      },
+      "FixedTaskConstraint": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "fixed_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed Start"
+          },
+          "fixed_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed End"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "reason",
+          "source_metadata"
+        ],
+        "title": "FixedTaskConstraint"
       },
       "HTTPValidationError": {
         "properties": {
@@ -4385,6 +5173,57 @@
         ],
         "title": "NoisePredictResponse"
       },
+      "OfficialDesignSummary": {
+        "properties": {
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "status": {
+            "type": "string",
+            "const": "official_document",
+            "title": "Status"
+          },
+          "daily_work_window": {
+            "type": "null",
+            "title": "Daily Work Window"
+          },
+          "calendar_schedule": {
+            "type": "null",
+            "title": "Calendar Schedule"
+          },
+          "acoustic_prediction_status": {
+            "type": "string",
+            "const": "deferred",
+            "title": "Acoustic Prediction Status"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "notice_id",
+          "project_name",
+          "source",
+          "status",
+          "daily_work_window",
+          "calendar_schedule",
+          "acoustic_prediction_status",
+          "note"
+        ],
+        "title": "OfficialDesignSummary"
+      },
       "OptimizationDiagnostics": {
         "properties": {
           "generated_candidate_count": {
@@ -4687,6 +5526,308 @@
         ],
         "title": "OptimizeSuccessResponse"
       },
+      "PRDNoticePlanningInput": {
+        "properties": {
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "construction_period": {
+            "$ref": "#/components/schemas/ConstructionPeriod"
+          },
+          "total_work_window": {
+            "$ref": "#/components/schemas/TimeWindow"
+          },
+          "road_excavation": {
+            "type": "boolean",
+            "title": "Road Excavation"
+          },
+          "road_occupancy_permit_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "equipment_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/EquipmentPlanningConstraint"
+            },
+            "type": "array",
+            "title": "Equipment Constraints"
+          },
+          "fixed_tasks": {
+            "items": {
+              "$ref": "#/components/schemas/FixedTaskConstraint"
+            },
+            "type": "array",
+            "title": "Fixed Tasks"
+          },
+          "same_day_restoration_required": {
+            "type": "boolean",
+            "title": "Same Day Restoration Required",
+            "default": false
+          },
+          "project_completion_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Completion Date"
+          },
+          "non_adjustable_conditions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Non Adjustable Conditions"
+          },
+          "source_evidence": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Source Evidence"
+          },
+          "field_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Field Provenance"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "field_measured",
+              "official_document",
+              "user_provided",
+              "assumed"
+            ],
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "notice_id",
+          "project_name",
+          "location",
+          "construction_period",
+          "total_work_window",
+          "road_excavation",
+          "provenance"
+        ],
+        "title": "PRDNoticePlanningInput"
+      },
+      "PRDScheduleValidationRequest": {
+        "properties": {
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "planning": {
+            "$ref": "#/components/schemas/PRDNoticePlanningInput"
+          },
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "type": "array",
+            "title": "Assignments"
+          },
+          "predecessors": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Predecessors"
+          },
+          "equipment_by_task": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Equipment By Task"
+          },
+          "equipment_count_by_task": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Equipment Count By Task"
+          },
+          "restoration_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true,
+            "title": "Restoration Task Ids"
+          }
+        },
+        "type": "object",
+        "required": [
+          "analysis_date",
+          "planning",
+          "assignments"
+        ],
+        "title": "PRDScheduleValidationRequest"
+      },
+      "PRDScheduleValidationResponse": {
+        "properties": {
+          "feasible": {
+            "type": "boolean",
+            "title": "Feasible"
+          },
+          "violations": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintViolation"
+            },
+            "type": "array",
+            "title": "Violations"
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "prd_v2_1_explicit_input_only",
+            "title": "Policy Version"
+          },
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "feasible",
+          "violations",
+          "policy_version",
+          "notice_id",
+          "analysis_date"
+        ],
+        "title": "PRDScheduleValidationResponse"
+      },
+      "PRDSensitivityExperimentRequest": {
+        "properties": {
+          "analysis_dates": {
+            "items": {
+              "type": "string",
+              "format": "date"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Analysis Dates"
+          },
+          "multipliers": {
+            "items": {
+              "type": "number",
+              "enum": [
+                1.1,
+                1.3,
+                1.5
+              ]
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Multipliers"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "road_traffic_observed_profile"
+          }
+        },
+        "type": "object",
+        "title": "PRDSensitivityExperimentRequest"
+      },
+      "PRDSensitivityExperimentResponse": {
+        "properties": {
+          "policy_name": {
+            "type": "string",
+            "title": "Policy Name"
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "prd_max_v2_1_experimental",
+            "title": "Policy Version"
+          },
+          "overlap_rule": {
+            "type": "string",
+            "const": "maximum_single_multiplier",
+            "title": "Overlap Rule"
+          },
+          "status": {
+            "type": "string",
+            "const": "simulated",
+            "title": "Status"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile"
+          },
+          "experiments": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityDateExperiment"
+            },
+            "type": "array",
+            "title": "Experiments"
+          },
+          "default_m0_m1_unchanged": {
+            "type": "boolean",
+            "const": true,
+            "title": "Default M0 M1 Unchanged"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "policy_name",
+          "policy_version",
+          "overlap_rule",
+          "status",
+          "background_profile",
+          "experiments",
+          "default_m0_m1_unchanged",
+          "disclaimer"
+        ],
+        "title": "PRDSensitivityExperimentResponse"
+      },
       "PredictRequest": {
         "properties": {
           "scenario_id": {
@@ -4738,6 +5879,55 @@
           "missing"
         ],
         "title": "ProvenanceStatus"
+      },
+      "ProvenanceSummary": {
+        "properties": {
+          "official_values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Official Values"
+          },
+          "observed_values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Observed Values"
+          },
+          "literature_reference_values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Literature Reference Values"
+          },
+          "assumed_values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Assumed Values"
+          },
+          "missing_values": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Values"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "official_values",
+          "observed_values",
+          "literature_reference_values",
+          "assumed_values",
+          "missing_values"
+        ],
+        "title": "ProvenanceSummary"
       },
       "PublicDataCatalogResponse": {
         "properties": {
@@ -4994,6 +6184,102 @@
         ],
         "title": "Receptor"
       },
+      "RecommendationDiagnosticsResponse": {
+        "properties": {
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "scenario_selection_reason": {
+            "type": "string",
+            "title": "Scenario Selection Reason"
+          },
+          "comparison_data_role": {
+            "type": "string",
+            "enum": [
+              "demo_simulation",
+              "comparison_day_simulation"
+            ],
+            "title": "Comparison Data Role"
+          },
+          "optimization_status": {
+            "type": "string",
+            "title": "Optimization Status"
+          },
+          "objective_mode": {
+            "type": "string",
+            "title": "Objective Mode"
+          },
+          "scoring_version": {
+            "type": "string",
+            "title": "Scoring Version"
+          },
+          "solver": {
+            "type": "string",
+            "title": "Solver"
+          },
+          "recommended_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recommended Candidate Ids"
+          },
+          "pareto_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Candidate Ids"
+          },
+          "improvement_over_original": {
+            "type": "boolean",
+            "title": "Improvement Over Original"
+          },
+          "improvement_summary": {
+            "type": "string",
+            "title": "Improvement Summary"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateDiagnostic"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Caveats"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "analysis_date",
+          "scenario_id",
+          "scenario_selection_reason",
+          "comparison_data_role",
+          "optimization_status",
+          "objective_mode",
+          "scoring_version",
+          "solver",
+          "recommended_candidate_ids",
+          "pareto_candidate_ids",
+          "improvement_over_original",
+          "improvement_summary",
+          "candidates",
+          "caveats"
+        ],
+        "title": "RecommendationDiagnosticsResponse"
+      },
       "RecommendedOption": {
         "properties": {
           "character": {
@@ -5023,6 +6309,138 @@
           "recommendation_reasons"
         ],
         "title": "RecommendedOption"
+      },
+      "SDotDailyAudit": {
+        "properties": {
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "metric_caveat": {
+            "type": "string",
+            "title": "Metric Caveat"
+          },
+          "days": {
+            "items": {
+              "$ref": "#/components/schemas/SDotDayAudit"
+            },
+            "type": "array",
+            "title": "Days"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "source",
+          "metric_caveat",
+          "days"
+        ],
+        "title": "SDotDailyAudit"
+      },
+      "SDotDayAudit": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "row_count": {
+            "type": "integer",
+            "title": "Row Count"
+          },
+          "first_observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "First Observed At"
+          },
+          "last_observed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Last Observed At"
+          },
+          "duplicate_count": {
+            "type": "integer",
+            "title": "Duplicate Count"
+          },
+          "sensors": {
+            "items": {
+              "$ref": "#/components/schemas/SDotSensorAudit"
+            },
+            "type": "array",
+            "title": "Sensors"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "date",
+          "row_count",
+          "first_observed_at",
+          "last_observed_at",
+          "duplicate_count",
+          "sensors"
+        ],
+        "title": "SDotDayAudit"
+      },
+      "SDotSensorAudit": {
+        "properties": {
+          "sensor_serial": {
+            "type": "string",
+            "title": "Sensor Serial"
+          },
+          "valid_count": {
+            "type": "integer",
+            "title": "Valid Count"
+          },
+          "held_count": {
+            "type": "integer",
+            "title": "Held Count"
+          },
+          "noise_avg_min": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Noise Avg Min"
+          },
+          "noise_avg_max": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Noise Avg Max"
+          },
+          "noise_avg_mean": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Noise Avg Mean"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "sensor_serial",
+          "valid_count",
+          "held_count",
+          "noise_avg_min",
+          "noise_avg_max",
+          "noise_avg_mean"
+        ],
+        "title": "SDotSensorAudit"
       },
       "ScenarioDetailResponse": {
         "properties": {
@@ -5283,6 +6701,160 @@
         },
         "type": "object",
         "title": "ScheduleMetrics"
+      },
+      "SensitivityCase": {
+        "properties": {
+          "multiplier": {
+            "type": "number",
+            "enum": [
+              1.1,
+              1.3,
+              1.5
+            ],
+            "title": "Multiplier"
+          },
+          "recommended_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recommended Candidate Ids"
+          },
+          "recommendation_changed": {
+            "type": "boolean",
+            "title": "Recommendation Changed"
+          },
+          "pareto_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Candidate Ids"
+          },
+          "candidate_ranking": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Candidate Ranking"
+          },
+          "ranking_changed": {
+            "type": "boolean",
+            "title": "Ranking Changed"
+          },
+          "recommended_metrics": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleMetrics"
+            },
+            "type": "array",
+            "title": "Recommended Metrics"
+          },
+          "comparison_to_legacy_recommendation": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparison To Legacy Recommendation"
+          },
+          "infeasible_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Infeasible Candidate Ids"
+          },
+          "candidate_diagnostics": {
+            "items": {
+              "$ref": "#/components/schemas/CandidateDiagnostic"
+            },
+            "type": "array",
+            "title": "Candidate Diagnostics"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "multiplier",
+          "recommended_candidate_ids",
+          "recommendation_changed",
+          "pareto_candidate_ids",
+          "candidate_ranking",
+          "ranking_changed",
+          "recommended_metrics",
+          "comparison_to_legacy_recommendation",
+          "infeasible_candidate_ids",
+          "candidate_diagnostics"
+        ],
+        "title": "SensitivityCase"
+      },
+      "SensitivityDateExperiment": {
+        "properties": {
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "scenario_selection_reason": {
+            "type": "string",
+            "title": "Scenario Selection Reason"
+          },
+          "baseline_policy": {
+            "type": "string",
+            "const": "legacy_v1_additive",
+            "title": "Baseline Policy"
+          },
+          "baseline_recommended_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Baseline Recommended Candidate Ids"
+          },
+          "baseline_candidate_ranking": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Baseline Candidate Ranking"
+          },
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityCase"
+            },
+            "type": "array",
+            "title": "Cases"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "analysis_date",
+          "scenario_id",
+          "scenario_selection_reason",
+          "baseline_policy",
+          "baseline_recommended_candidate_ids",
+          "baseline_candidate_ranking",
+          "cases"
+        ],
+        "title": "SensitivityDateExperiment"
       },
       "SensitivityProfile": {
         "properties": {

@@ -1,16 +1,17 @@
 # 쉿간표 프론트엔드 계약 패키지
 
-이 디렉터리는 21개 명시적 응답 모델이 적용된 FastAPI 앱의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-24이다.
+이 디렉터리는 기존 21개 API와 PRD v2.1 전용 4개 API, 총 25개의 명시적 응답 모델이 적용된 FastAPI 앱의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-24이다.
 
 ## 구성
 
 - `../docs/openapi.json`: `app.openapi()`가 생성한 OpenAPI 3.1.0 원본
 - `types/api.d.ts`: 위 파일에서 `openapi-typescript@7.10.1`로 자동 생성한 타입
-- `examples/01-*.json` ~ `21-*.json`: 등록된 21개 API의 성공 요청/응답 전문
+- `examples/01-*.json` ~ `25-*.json`: 등록된 25개 API의 성공 요청/응답 전문
 - `examples/error-*.json`: 실제 재현한 404, 415, 422 응답
 - `examples/manifest.json`: 성공 검증 목록
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
-- `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 프론트엔드용 최종 확정 계약서
+- `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 기존 21개 API의 동결된 계약서
+- `../docs/PRD_V2_1_API_INTEGRATION_REPORT.md`: 신규 4개 API의 검증 결과와 연동 안내. 차기 계약서 발행 전 검토본
 
 ## 로컬 실행 및 재검증
 
@@ -52,7 +53,18 @@ type PredictResponse = components["schemas"]["NoisePredictResponse"];
 type PredictOperation = paths["/api/noise/predict"]["post"];
 ```
 
-21개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
+25개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
+
+## PRD v2.1 전용 API
+
+```text
+GET  /api/prd/demo/2026-09-11
+POST /api/prd/schedules/validate
+GET  /api/prd/recommendation-diagnostics?analysis_date=2026-09-11
+POST /api/prd/sensitivity/experiment
+```
+
+추천 진단은 `analysis_date`로 `2026-09-11` 또는 `2026-10-07`만 받는다. 9/11에는 날짜 한정 가정 혼잡 오버레이가 있는 `final-demo-congestion`, 10/7에는 그 오버레이를 제외한 `official_reference_equipment`를 사용한다. S-DoT는 화면의 관측·품질 맥락이며 음향 합성 입력이 아니다.
 
 현재 API로 시나리오 목록·상세, M0 소음 그래프, 최적화, 전후 비교, 공식자료/설계 시뮬레이션, M1 분석 화면을 구현할 수 있다. 주민 안내문 생성, 주민 전용 조회, 자연어 조건 수정, 법적 위반 판정 API는 존재하지 않는다. PoC 시나리오와 `/api/public-data/construction-design`의 공식 설계자료를 같은 데이터로 취급하지 않는다.
 

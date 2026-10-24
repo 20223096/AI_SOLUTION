@@ -5,7 +5,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.domain import SourceMetadata, TimeWindow
+from app.models.domain import ConstructionPeriod, SourceMetadata, TaskAssignment, TimeWindow
 
 
 class EquipmentPlanningConstraint(BaseModel):
@@ -35,6 +35,9 @@ class FixedTaskConstraint(BaseModel):
 
 class PRDNoticePlanningInput(BaseModel):
     notice_id: str
+    project_name: str
+    location: str
+    construction_period: ConstructionPeriod
     total_work_window: TimeWindow
     road_excavation: bool
     road_occupancy_permit_window: TimeWindow | None = None
@@ -44,10 +47,52 @@ class PRDNoticePlanningInput(BaseModel):
     project_completion_date: date | None = None
     non_adjustable_conditions: list[str] = Field(default_factory=list)
     source_evidence: dict[str, str] = Field(default_factory=dict)
+    field_provenance: dict[str, SourceMetadata] = Field(default_factory=dict)
     provenance: Literal["field_measured", "official_document", "user_provided", "assumed"]
 
     @model_validator(mode="after")
     def road_permit_required_only_from_input(self):
         if self.road_occupancy_permit_window is not None and not self.road_excavation:
             raise ValueError("road occupancy permit window requires road_excavation=true")
+        if (self.construction_period.start is None) != (self.construction_period.end is None):
+            raise ValueError("construction_period start and end must be supplied together")
+        if self.construction_period.start is not None and self.construction_period.end < self.construction_period.start:
+            raise ValueError("construction_period end must not precede start")
+        return self
+
+
+class PRDScheduleValidationRequest(BaseModel):
+    analysis_date: date
+    planning: PRDNoticePlanningInput
+    assignments: list[TaskAssignment]
+    predecessors: dict[str, list[str]] = Field(default_factory=dict)
+    equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
+    equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
+    restoration_task_ids: set[str] = Field(default_factory=set)
+
+    @model_validator(mode="after")
+    def validate_assignment_identity_and_time(self):
+        task_ids = [item.task_id for item in self.assignments]
+        if len(task_ids) != len(set(task_ids)):
+            raise ValueError("assignments must contain unique task_id values")
+        for item in self.assignments:
+            if item.start.tzinfo is None or item.end.tzinfo is None:
+                raise ValueError("assignment datetimes must include a timezone offset")
+            if item.start.date() != self.analysis_date:
+                raise ValueError("assignment start date must equal analysis_date")
+        return self
+
+
+class PRDSensitivityExperimentRequest(BaseModel):
+    analysis_dates: list[date] = Field(default_factory=lambda: [date(2026, 9, 11), date(2026, 10, 7)], min_length=1)
+    multipliers: list[Literal[1.1, 1.3, 1.5]] = Field(default_factory=lambda: [1.1, 1.3, 1.5], min_length=1)
+    background_profile: str = "road_traffic_observed_profile"
+
+    @model_validator(mode="after")
+    def supported_demo_dates_only(self):
+        supported = {date(2026, 9, 11), date(2026, 10, 7)}
+        if not set(self.analysis_dates) <= supported:
+            raise ValueError("analysis_dates must contain only 2026-09-11 or 2026-10-07")
+        if len(self.analysis_dates) != len(set(self.analysis_dates)) or len(self.multipliers) != len(set(self.multipliers)):
+            raise ValueError("analysis_dates and multipliers must not contain duplicates")
         return self

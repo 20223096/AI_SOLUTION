@@ -3,6 +3,33 @@
   "analysis_date": "2026-09-11",
   "comparison_date": "2026-10-07",
   "timezone": "Asia/Seoul",
+  "provenance_summary": {
+    "official_values": ["공식 설계 수량·기간 산정자료", "주변 공사 사업기간", "축제 날짜별 시간"],
+    "observed_values": ["S-DoT 원본의 센서별 시각·측정값·품질상태"],
+    "literature_reference_values": [],
+    "assumed_values": ["9/11 신규 신고 조건", "시연 작업창", "07:00~09:00 기존 공사 음향 오버레이", "폐기물 수거시간·소음"],
+    "missing_values": ["공식 일일 공사시간", "실제 장비 가동시간", "공사·행사 공식 음향값", "공식 날짜별 공정표"]
+  },
+  "official_new_construction_design": {
+    "notice_id": "R26BK01661205",
+    "project_name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+    "source": "data/processed/official_construction_design_v1.json",
+    "status": "official_document",
+    "daily_work_window": null,
+    "calendar_schedule": null,
+    "acoustic_prediction_status": "deferred",
+    "note": "공식 설계의 수량·기간 산정자료다. 날짜별 공정표, 장비 실제 가동시간 및 현장 음향값은 없다."
+  },
+  "demo_work_plan": {
+    "scenario_id": "final-demo-congestion",
+    "analysis_date": "2026-09-11",
+    "work_window": "07:00~18:00",
+    "status": "assumed",
+    "source": "hackathon prompt and PoC scenario",
+    "task_duration_status": "user_provided",
+    "existing_congestion_overlay_status": "assumed",
+    "note": "공식 설계자료가 아니며 9/11 시연 계산에만 쓰는 작업계획이다. 복구 공정시간은 결측이다."
+  },
   "new_demo_notice": {
     "scenario_id": "final-demo-congestion",
     "status": "assumed",

@@ -12,8 +12,6 @@
       "content-type": "application/json"
     },
     "body": {
-      "scenario_id": "case-a",
-      "analysis_date": "2026-10-26",
       "generated_candidate_count": 9,
       "feasible_candidate_count": 9,
       "infeasible_candidate_count": 0,
@@ -681,7 +679,9 @@
       "objective_unit": "experimental Impact points",
       "default_objective_unchanged": true,
       "balanced_selection": "legacy_v1_normalized_impact_plus_change",
-      "policy_overlap_cost_included_in_pareto": false
+      "policy_overlap_cost_included_in_pareto": false,
+      "scenario_id": "case-a",
+      "analysis_date": "2026-10-26"
     }
   }
 }

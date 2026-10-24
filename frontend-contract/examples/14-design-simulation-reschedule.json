@@ -8655,10 +8655,10 @@
           "id": "D-invalid-order-swap",
           "method": "work_order_change",
           "feasible": false,
+          "pareto_included": false,
           "infeasibility_reasons": [
             "precedence violation: cut->break"
-          ],
-          "pareto_included": false
+          ]
         }
       ],
       "pareto_candidates": [

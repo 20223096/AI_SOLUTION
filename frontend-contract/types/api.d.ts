@@ -361,10 +361,87 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/prd/demo/2026-09-11": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Demo Fixture */
+        get: operations["get_demo_fixture_api_prd_demo_2026_09_11_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/prd/schedules/validate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Validate Schedule */
+        post: operations["validate_schedule_api_prd_schedules_validate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/prd/recommendation-diagnostics": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Recommendation Diagnostics */
+        get: operations["get_recommendation_diagnostics_api_prd_recommendation_diagnostics_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/prd/sensitivity/experiment": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Run Sensitivity Experiment */
+        post: operations["run_sensitivity_experiment_api_prd_sensitivity_experiment_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** AcousticOverlapPolicy */
+        AcousticOverlapPolicy: {
+            /** Official Events */
+            official_events: string;
+            /** Assumed Congestion Overlay */
+            assumed_congestion_overlay: string;
+            /** Claim Limit */
+            claim_limit: string;
+        };
         /** BackgroundProfile */
         BackgroundProfile: {
             /** Id */
@@ -405,6 +482,40 @@ export interface components {
         Body_extract_file_api_notices_extract_file_post: {
             /** File */
             file: string;
+        };
+        /** CandidateDiagnostic */
+        CandidateDiagnostic: {
+            /** Id */
+            id: string;
+            /** First Task Start */
+            first_task_start: string | null;
+            /** Project Start Shift Minutes */
+            project_start_shift_minutes: number;
+            /** Total Task Start Shift Minutes */
+            total_task_start_shift_minutes: number;
+            /** Feasibility */
+            feasibility: boolean;
+            /** Infeasibility Reasons */
+            infeasibility_reasons: string[];
+            /** Objective Values */
+            objective_values: {
+                [key: string]: number;
+            };
+            /** Sensitive Time Exposure Minutes */
+            sensitive_time_exposure_minutes: number;
+            /** Weighted Sensitive Exposure */
+            weighted_sensitive_exposure: number;
+            /** Existing Noise Overlap Receptor Minutes */
+            existing_noise_overlap_receptor_minutes: number;
+            /**
+             * Existing Event Overlap Basis
+             * @enum {string}
+             */
+            existing_event_overlap_basis: "assumed_simulation" | "none";
+            metrics: components["schemas"]["ScheduleMetrics"];
+            /** Pareto Included */
+            pareto_included: boolean;
+            dominated_reason: components["schemas"]["DominatedReason"] | null;
         };
         /** CompareRequest */
         CompareRequest: {
@@ -447,6 +558,27 @@ export interface components {
             };
         } & {
             [key: string]: unknown;
+        };
+        /** ConstraintViolation */
+        ConstraintViolation: {
+            /** Code */
+            code: string;
+            /** Task Id */
+            task_id?: string | null;
+            /** Equipment Id */
+            equipment_id?: string | null;
+            /** Predecessor Id */
+            predecessor_id?: string | null;
+            /** Count */
+            count?: number | null;
+            /** Maximum */
+            maximum?: number | null;
+            /** Scheduled Minutes */
+            scheduled_minutes?: number | null;
+            /** Required Minutes */
+            required_minutes?: number | null;
+            /** Detail */
+            detail?: string | null;
         };
         /** ConstructionDesignResponse */
         ConstructionDesignResponse: {
@@ -550,6 +682,106 @@ export interface components {
             is_movable: boolean;
             /** Required Resources */
             required_resources?: string[];
+        };
+        /** DemoContextEvent */
+        DemoContextEvent: {
+            /**
+             * Kind
+             * @enum {string}
+             */
+            kind: "existing_construction" | "cultural_event" | "waste_collection";
+            /** Event Id */
+            event_id: string;
+            /** Name */
+            name?: string | null;
+            /** Period Start */
+            period_start?: string | null;
+            /** Period End */
+            period_end?: string | null;
+            /** Operation Time */
+            operation_time: string | null;
+            /** Noise Db */
+            noise_db: number | null;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "verified_public" | "assumed";
+            /** Source */
+            source: string | null;
+            /** Note */
+            note: string;
+        };
+        /** DemoFixtureResponse */
+        DemoFixtureResponse: {
+            /** Fixture Version */
+            fixture_version: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /**
+             * Comparison Date
+             * Format: date
+             */
+            comparison_date: string;
+            /**
+             * Timezone
+             * @constant
+             */
+            timezone: "Asia/Seoul";
+            provenance_summary: components["schemas"]["ProvenanceSummary"];
+            official_new_construction_design: components["schemas"]["OfficialDesignSummary"];
+            demo_work_plan: components["schemas"]["DemoWorkPlanSummary"];
+            new_demo_notice: components["schemas"]["DemoNoticeSummary"];
+            sdot_daily_audit: components["schemas"]["SDotDailyAudit"];
+            /** Context Events */
+            context_events: components["schemas"]["DemoContextEvent"][];
+            acoustic_overlap_policy: components["schemas"]["AcousticOverlapPolicy"];
+        };
+        /** DemoNoticeSummary */
+        DemoNoticeSummary: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Status
+             * @constant
+             */
+            status: "assumed";
+            /** Note */
+            note: string;
+        };
+        /** DemoWorkPlanSummary */
+        DemoWorkPlanSummary: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /** Work Window */
+            work_window: string;
+            /**
+             * Status
+             * @constant
+             */
+            status: "assumed";
+            /** Source */
+            source: string;
+            /**
+             * Task Duration Status
+             * @constant
+             */
+            task_duration_status: "user_provided";
+            /**
+             * Existing Congestion Overlay Status
+             * @constant
+             */
+            existing_congestion_overlay_status: "assumed";
+            /** Note */
+            note: string;
         };
         /** DesignBasedSimulationRequest */
         DesignBasedSimulationRequest: {
@@ -777,6 +1009,15 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** DominatedReason */
+        DominatedReason: {
+            /** Dominated By */
+            dominated_by: string;
+            /** Axes */
+            axes: string[];
+            /** Reason */
+            reason: string;
+        };
         /** Equipment */
         Equipment: {
             /** Id */
@@ -794,6 +1035,24 @@ export interface components {
              * @enum {string}
              */
             acoustic_unit_type: "Lw_dBA" | "Lp_dBA" | "missing";
+            source_metadata: components["schemas"]["SourceMetadata"];
+        };
+        /** EquipmentPlanningConstraint */
+        EquipmentPlanningConstraint: {
+            /** Equipment Id */
+            equipment_id: string;
+            /** Category */
+            category: string;
+            /** Specification */
+            specification?: string | null;
+            /** Model Name */
+            model_name?: string | null;
+            /** Max Daily Count */
+            max_daily_count?: number | null;
+            /** Required Usage Minutes */
+            required_usage_minutes: number;
+            /** Permitted Time Windows */
+            permitted_time_windows?: components["schemas"]["TimeWindow"][];
             source_metadata: components["schemas"]["SourceMetadata"];
         };
         /** ExperimentRequest */
@@ -978,6 +1237,18 @@ export interface components {
             coordinate_tolerance_note?: string | null;
         } & {
             [key: string]: unknown;
+        };
+        /** FixedTaskConstraint */
+        FixedTaskConstraint: {
+            /** Task Id */
+            task_id: string;
+            /** Fixed Start */
+            fixed_start?: string | null;
+            /** Fixed End */
+            fixed_end?: string | null;
+            /** Reason */
+            reason: string;
+            source_metadata: components["schemas"]["SourceMetadata"];
         };
         /** HTTPValidationError */
         HTTPValidationError: {
@@ -1728,6 +1999,31 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** OfficialDesignSummary */
+        OfficialDesignSummary: {
+            /** Notice Id */
+            notice_id: string;
+            /** Project Name */
+            project_name: string;
+            /** Source */
+            source: string;
+            /**
+             * Status
+             * @constant
+             */
+            status: "official_document";
+            /** Daily Work Window */
+            daily_work_window: null;
+            /** Calendar Schedule */
+            calendar_schedule: null;
+            /**
+             * Acoustic Prediction Status
+             * @constant
+             */
+            acoustic_prediction_status: "deferred";
+            /** Note */
+            note: string;
+        };
         /** OptimizationDiagnostics */
         OptimizationDiagnostics: {
             /** Generated Candidate Count */
@@ -1858,6 +2154,133 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** PRDNoticePlanningInput */
+        PRDNoticePlanningInput: {
+            /** Notice Id */
+            notice_id: string;
+            /** Project Name */
+            project_name: string;
+            /** Location */
+            location: string;
+            construction_period: components["schemas"]["ConstructionPeriod"];
+            total_work_window: components["schemas"]["TimeWindow"];
+            /** Road Excavation */
+            road_excavation: boolean;
+            road_occupancy_permit_window?: components["schemas"]["TimeWindow"] | null;
+            /** Equipment Constraints */
+            equipment_constraints?: components["schemas"]["EquipmentPlanningConstraint"][];
+            /** Fixed Tasks */
+            fixed_tasks?: components["schemas"]["FixedTaskConstraint"][];
+            /**
+             * Same Day Restoration Required
+             * @default false
+             */
+            same_day_restoration_required: boolean;
+            /** Project Completion Date */
+            project_completion_date?: string | null;
+            /** Non Adjustable Conditions */
+            non_adjustable_conditions?: string[];
+            /** Source Evidence */
+            source_evidence?: {
+                [key: string]: string;
+            };
+            /** Field Provenance */
+            field_provenance?: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "field_measured" | "official_document" | "user_provided" | "assumed";
+        };
+        /** PRDScheduleValidationRequest */
+        PRDScheduleValidationRequest: {
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            planning: components["schemas"]["PRDNoticePlanningInput"];
+            /** Assignments */
+            assignments: components["schemas"]["TaskAssignment"][];
+            /** Predecessors */
+            predecessors?: {
+                [key: string]: string[];
+            };
+            /** Equipment By Task */
+            equipment_by_task?: {
+                [key: string]: string | null;
+            };
+            /** Equipment Count By Task */
+            equipment_count_by_task?: {
+                [key: string]: number;
+            };
+            /** Restoration Task Ids */
+            restoration_task_ids?: string[];
+        };
+        /** PRDScheduleValidationResponse */
+        PRDScheduleValidationResponse: {
+            /** Feasible */
+            feasible: boolean;
+            /** Violations */
+            violations: components["schemas"]["ConstraintViolation"][];
+            /**
+             * Policy Version
+             * @constant
+             */
+            policy_version: "prd_v2_1_explicit_input_only";
+            /** Notice Id */
+            notice_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+        };
+        /** PRDSensitivityExperimentRequest */
+        PRDSensitivityExperimentRequest: {
+            /** Analysis Dates */
+            analysis_dates?: string[];
+            /** Multipliers */
+            multipliers?: (1.1 | 1.3 | 1.5)[];
+            /**
+             * Background Profile
+             * @default road_traffic_observed_profile
+             */
+            background_profile: string;
+        };
+        /** PRDSensitivityExperimentResponse */
+        PRDSensitivityExperimentResponse: {
+            /** Policy Name */
+            policy_name: string;
+            /**
+             * Policy Version
+             * @constant
+             */
+            policy_version: "prd_max_v2_1_experimental";
+            /**
+             * Overlap Rule
+             * @constant
+             */
+            overlap_rule: "maximum_single_multiplier";
+            /**
+             * Status
+             * @constant
+             */
+            status: "simulated";
+            /** Background Profile */
+            background_profile: string;
+            /** Experiments */
+            experiments: components["schemas"]["SensitivityDateExperiment"][];
+            /**
+             * Default M0 M1 Unchanged
+             * @constant
+             */
+            default_m0_m1_unchanged: true;
+            /** Disclaimer */
+            disclaimer: string;
+        };
         /** PredictRequest */
         PredictRequest: {
             /**
@@ -1889,6 +2312,19 @@ export interface components {
          * @enum {string}
          */
         ProvenanceStatus: "verified_public" | "user_provided" | "assumed" | "derived" | "missing";
+        /** ProvenanceSummary */
+        ProvenanceSummary: {
+            /** Official Values */
+            official_values: string[];
+            /** Observed Values */
+            observed_values: string[];
+            /** Literature Reference Values */
+            literature_reference_values: string[];
+            /** Assumed Values */
+            assumed_values: string[];
+            /** Missing Values */
+            missing_values: string[];
+        };
         /** PublicDataCatalogResponse */
         PublicDataCatalogResponse: {
             /** Manifest */
@@ -1980,6 +2416,43 @@ export interface components {
             /** Spatial Status */
             spatial_status?: ("verified_public" | "assumed" | "deferred") | null;
         };
+        /** RecommendationDiagnosticsResponse */
+        RecommendationDiagnosticsResponse: {
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Scenario Selection Reason */
+            scenario_selection_reason: string;
+            /**
+             * Comparison Data Role
+             * @enum {string}
+             */
+            comparison_data_role: "demo_simulation" | "comparison_day_simulation";
+            /** Optimization Status */
+            optimization_status: string;
+            /** Objective Mode */
+            objective_mode: string;
+            /** Scoring Version */
+            scoring_version: string;
+            /** Solver */
+            solver: string;
+            /** Recommended Candidate Ids */
+            recommended_candidate_ids: string[];
+            /** Pareto Candidate Ids */
+            pareto_candidate_ids: string[];
+            /** Improvement Over Original */
+            improvement_over_original: boolean;
+            /** Improvement Summary */
+            improvement_summary: string;
+            /** Candidates */
+            candidates: components["schemas"]["CandidateDiagnostic"][];
+            /** Caveats */
+            caveats: string[];
+        };
         /** RecommendedOption */
         RecommendedOption: {
             /** Character */
@@ -1991,6 +2464,54 @@ export interface components {
             }[];
         } & {
             [key: string]: unknown;
+        };
+        /** SDotDailyAudit */
+        SDotDailyAudit: {
+            /** Source */
+            source: string;
+            /** Metric Caveat */
+            metric_caveat: string;
+            /** Days */
+            days: components["schemas"]["SDotDayAudit"][];
+        };
+        /** SDotDayAudit */
+        SDotDayAudit: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Row Count */
+            row_count: number;
+            /**
+             * First Observed At
+             * Format: date-time
+             */
+            first_observed_at: string;
+            /**
+             * Last Observed At
+             * Format: date-time
+             */
+            last_observed_at: string;
+            /** Duplicate Count */
+            duplicate_count: number;
+            /** Sensors */
+            sensors: components["schemas"]["SDotSensorAudit"][];
+        };
+        /** SDotSensorAudit */
+        SDotSensorAudit: {
+            /** Sensor Serial */
+            sensor_serial: string;
+            /** Valid Count */
+            valid_count: number;
+            /** Held Count */
+            held_count: number;
+            /** Noise Avg Min */
+            noise_avg_min: number | null;
+            /** Noise Avg Max */
+            noise_avg_max: number | null;
+            /** Noise Avg Mean */
+            noise_avg_mean: number | null;
         };
         /** ScenarioDetailResponse */
         ScenarioDetailResponse: {
@@ -2165,6 +2686,57 @@ export interface components {
              * @default 0
              */
             project_end_change_minutes: number;
+        };
+        /** SensitivityCase */
+        SensitivityCase: {
+            /**
+             * Multiplier
+             * @enum {number}
+             */
+            multiplier: 1.1 | 1.3 | 1.5;
+            /** Recommended Candidate Ids */
+            recommended_candidate_ids: string[];
+            /** Recommendation Changed */
+            recommendation_changed: boolean;
+            /** Pareto Candidate Ids */
+            pareto_candidate_ids: string[];
+            /** Candidate Ranking */
+            candidate_ranking: string[];
+            /** Ranking Changed */
+            ranking_changed: boolean;
+            /** Recommended Metrics */
+            recommended_metrics: components["schemas"]["ScheduleMetrics"][];
+            /** Comparison To Legacy Recommendation */
+            comparison_to_legacy_recommendation: {
+                [key: string]: number;
+            } | null;
+            /** Infeasible Candidate Ids */
+            infeasible_candidate_ids: string[];
+            /** Candidate Diagnostics */
+            candidate_diagnostics: components["schemas"]["CandidateDiagnostic"][];
+        };
+        /** SensitivityDateExperiment */
+        SensitivityDateExperiment: {
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /** Scenario Id */
+            scenario_id: string;
+            /** Scenario Selection Reason */
+            scenario_selection_reason: string;
+            /**
+             * Baseline Policy
+             * @constant
+             */
+            baseline_policy: "legacy_v1_additive";
+            /** Baseline Recommended Candidate Ids */
+            baseline_recommended_candidate_ids: string[];
+            /** Baseline Candidate Ranking */
+            baseline_candidate_ranking: string[];
+            /** Cases */
+            cases: components["schemas"]["SensitivityCase"][];
         };
         /** SensitivityProfile */
         SensitivityProfile: {
@@ -2853,6 +3425,125 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["ConstructionDesignResponse"];
+                };
+            };
+        };
+    };
+    get_demo_fixture_api_prd_demo_2026_09_11_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["DemoFixtureResponse"];
+                };
+            };
+        };
+    };
+    validate_schedule_api_prd_schedules_validate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PRDScheduleValidationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PRDScheduleValidationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_recommendation_diagnostics_api_prd_recommendation_diagnostics_get: {
+        parameters: {
+            query?: {
+                analysis_date?: string;
+                background_profile?: string;
+                objective_mode?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RecommendationDiagnosticsResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    run_sensitivity_experiment_api_prd_sensitivity_experiment_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PRDSensitivityExperimentRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PRDSensitivityExperimentResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

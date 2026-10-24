@@ -18,10 +18,10 @@
     },
     "body": {
       "validation_status": "not_evaluable",
-      "reason": "no field observations",
       "mae": null,
       "rmse": null,
       "bias": null,
+      "reason": "no field observations",
       "receptor_errors": [],
       "equipment_errors": [],
       "alignment_failures": []

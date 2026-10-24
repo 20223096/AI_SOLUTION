@@ -1,6 +1,6 @@
 {
   "base_url": "http://127.0.0.1:8765",
-  "success_count": 21,
+  "success_count": 25,
   "endpoints": [
     {
       "name": "19-experiments-run",
@@ -96,6 +96,30 @@
       "name": "03-scenario-detail",
       "method": "GET",
       "path": "/api/poc/scenarios/case-a",
+      "status": 200
+    },
+    {
+      "name": "22-prd-demo-2026-09-11",
+      "method": "GET",
+      "path": "/api/prd/demo/2026-09-11",
+      "status": 200
+    },
+    {
+      "name": "24-prd-recommendation-diagnostics",
+      "method": "GET",
+      "path": "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11",
+      "status": 200
+    },
+    {
+      "name": "23-prd-schedule-validate",
+      "method": "POST",
+      "path": "/api/prd/schedules/validate",
+      "status": 200
+    },
+    {
+      "name": "25-prd-sensitivity-experiment",
+      "method": "POST",
+      "path": "/api/prd/sensitivity/experiment",
       "status": 200
     },
     {

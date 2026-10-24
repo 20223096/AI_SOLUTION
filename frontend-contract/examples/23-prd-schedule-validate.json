@@ -1,0 +1,125 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/prd/schedules/validate",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "analysis_date": "2026-09-11",
+      "planning": {
+        "notice_id": "demo-notice",
+        "project_name": "신촌 시연 공사",
+        "location": "서울특별시 서대문구 신촌동",
+        "construction_period": {
+          "start": "2026-09-11",
+          "end": "2026-09-11",
+          "raw_text": "시연 입력"
+        },
+        "total_work_window": {
+          "start": "07:00",
+          "end": "18:00"
+        },
+        "road_excavation": true,
+        "road_occupancy_permit_window": {
+          "start": "08:00",
+          "end": "17:00"
+        },
+        "equipment_constraints": [
+          {
+            "equipment_id": "excavator",
+            "category": "굴착기",
+            "specification": "06W",
+            "model_name": null,
+            "max_daily_count": 1,
+            "required_usage_minutes": 60,
+            "permitted_time_windows": [
+              {
+                "start": "08:00",
+                "end": "17:00"
+              }
+            ],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "demo form",
+              "note": null,
+              "unit": null
+            }
+          }
+        ],
+        "fixed_tasks": [
+          {
+            "task_id": "restore",
+            "fixed_start": "16:00",
+            "fixed_end": "17:00",
+            "reason": "당일 복구",
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "demo form",
+              "note": null,
+              "unit": null
+            }
+          }
+        ],
+        "same_day_restoration_required": true,
+        "project_completion_date": "2026-09-11",
+        "non_adjustable_conditions": [
+          "restore fixed"
+        ],
+        "source_evidence": {
+          "page": "2"
+        },
+        "field_provenance": {
+          "total_work_window": {
+            "status": "user_provided",
+            "source": "demo form",
+            "note": "not an official permit",
+            "unit": null
+          }
+        },
+        "provenance": "user_provided"
+      },
+      "assignments": [
+        {
+          "task_id": "dig",
+          "start": "2026-09-11T08:00:00+09:00",
+          "end": "2026-09-11T09:00:00+09:00"
+        },
+        {
+          "task_id": "restore",
+          "start": "2026-09-11T16:00:00+09:00",
+          "end": "2026-09-11T17:00:00+09:00"
+        }
+      ],
+      "predecessors": {
+        "restore": [
+          "dig"
+        ]
+      },
+      "equipment_by_task": {
+        "dig": "excavator",
+        "restore": null
+      },
+      "equipment_count_by_task": {
+        "dig": 1
+      },
+      "restoration_task_ids": [
+        "restore"
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "feasible": true,
+      "violations": [],
+      "policy_version": "prd_v2_1_explicit_input_only",
+      "notice_id": "demo-notice",
+      "analysis_date": "2026-09-11"
+    }
+  }
+}

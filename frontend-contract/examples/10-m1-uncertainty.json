@@ -187,18 +187,17 @@
                   {
                     "id": "excavator-a",
                     "segment_id": "segment-yeonse-ro-2na-gil",
-                    "source_type": "moving_work",
                     "equipment_category": "굴삭기",
+                    "source_type": "moving_work",
                     "equipment_model": null,
                     "simultaneous_group": null,
                     "count": 1,
                     "lw_db": 100.0,
-                    "lw_source": {
-                      "provenance": "assumed",
-                      "selection": "explicit_input",
-                      "measurement_condition_verified": false
-                    },
                     "distance_3d_m": 10.0,
+                    "active_minutes": 7.5,
+                    "activity_ratio": 0.5,
+                    "activity_basis": "explicit_active_minutes",
+                    "activity_provenance": "assumed",
                     "source_position": {
                       "x": 200000.0,
                       "y": 550000.0,
@@ -213,11 +212,12 @@
                       "crs": "EPSG:5186",
                       "provenance": "assumed"
                     },
-                    "active_minutes": 7.5,
-                    "activity_ratio": 0.5,
-                    "activity_basis": "explicit_active_minutes",
-                    "activity_provenance": "assumed",
-                    "measurement_condition_verified": false
+                    "measurement_condition_verified": false,
+                    "lw_source": {
+                      "provenance": "assumed",
+                      "selection": "explicit_input",
+                      "measurement_condition_verified": false
+                    }
                   }
                 ]
               }
@@ -302,18 +302,17 @@
                   {
                     "id": "excavator-a",
                     "segment_id": "segment-yeonse-ro-2na-gil",
-                    "source_type": "moving_work",
                     "equipment_category": "굴삭기",
+                    "source_type": "moving_work",
                     "equipment_model": null,
                     "simultaneous_group": null,
                     "count": 1,
                     "lw_db": 100.0,
-                    "lw_source": {
-                      "provenance": "assumed",
-                      "selection": "explicit_input",
-                      "measurement_condition_verified": false
-                    },
                     "distance_3d_m": 10.0,
+                    "active_minutes": 15.0,
+                    "activity_ratio": 1.0,
+                    "activity_basis": "explicit_active_minutes",
+                    "activity_provenance": "assumed",
                     "source_position": {
                       "x": 200000.0,
                       "y": 550000.0,
@@ -328,11 +327,12 @@
                       "crs": "EPSG:5186",
                       "provenance": "assumed"
                     },
-                    "active_minutes": 15.0,
-                    "activity_ratio": 1.0,
-                    "activity_basis": "explicit_active_minutes",
-                    "activity_provenance": "assumed",
-                    "measurement_condition_verified": false
+                    "measurement_condition_verified": false,
+                    "lw_source": {
+                      "provenance": "assumed",
+                      "selection": "explicit_input",
+                      "measurement_condition_verified": false
+                    }
                   }
                 ]
               }

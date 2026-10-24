@@ -81,6 +81,28 @@ def schedule_evaluation_payload() -> dict[str, Any]:
     }
 
 
+def prd_validation_payload() -> dict[str, Any]:
+    source = {"status": "user_provided", "source": "demo form", "note": None, "unit": None}
+    return {
+        "analysis_date": "2026-09-11",
+        "planning": {
+            "notice_id": "demo-notice", "project_name": "신촌 시연 공사", "location": "서울특별시 서대문구 신촌동",
+            "construction_period": {"start": "2026-09-11", "end": "2026-09-11", "raw_text": "시연 입력"},
+            "total_work_window": {"start": "07:00", "end": "18:00"}, "road_excavation": True,
+            "road_occupancy_permit_window": {"start": "08:00", "end": "17:00"},
+            "equipment_constraints": [{"equipment_id": "excavator", "category": "굴착기", "specification": "06W", "model_name": None, "max_daily_count": 1, "required_usage_minutes": 60, "permitted_time_windows": [{"start": "08:00", "end": "17:00"}], "source_metadata": source}],
+            "fixed_tasks": [{"task_id": "restore", "fixed_start": "16:00", "fixed_end": "17:00", "reason": "당일 복구", "source_metadata": source}],
+            "same_day_restoration_required": True, "project_completion_date": "2026-09-11",
+            "non_adjustable_conditions": ["restore fixed"], "source_evidence": {"page": "2"},
+            "field_provenance": {"total_work_window": {**source, "note": "not an official permit"}}, "provenance": "user_provided",
+        },
+        "assignments": [
+            {"task_id": "dig", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T09:00:00+09:00"},
+            {"task_id": "restore", "start": "2026-09-11T16:00:00+09:00", "end": "2026-09-11T17:00:00+09:00"},
+        ],
+        "predecessors": {"restore": ["dig"]}, "equipment_by_task": {"dig": "excavator", "restore": None},
+        "equipment_count_by_task": {"dig": 1}, "restoration_task_ids": ["restore"],
+    }
 def write_capture(name: str, request: dict[str, Any], response: httpx.Response) -> dict[str, Any]:
     try:
         body: Any = response.json()
@@ -129,6 +151,10 @@ def main() -> None:
         ("19-experiments-run", "POST", "/api/experiments/run", {"scenario_id": "case-a", "analysis_date": "2026-10-26"}),
         ("20-public-data-catalog", "GET", "/api/public-data/catalog", None),
         ("21-construction-design", "GET", "/api/public-data/construction-design", None),
+        ("22-prd-demo-2026-09-11", "GET", "/api/prd/demo/2026-09-11", None),
+        ("23-prd-schedule-validate", "POST", "/api/prd/schedules/validate", prd_validation_payload()),
+        ("24-prd-recommendation-diagnostics", "GET", "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11", None),
+        ("25-prd-sensitivity-experiment", "POST", "/api/prd/sensitivity/experiment", {}),
     ]
     manifest: list[dict[str, Any]] = []
     for name, method, url, payload in captures:
@@ -172,6 +198,7 @@ def main() -> None:
         ("error-422-validation", "POST", "/api/impact/calculate", {"total_noise_db": 70, "duration_minutes": -1, "continuous_minutes": 0, "sensitivity_weight": 1}, None, 422),
         ("error-422-domain", "POST", "/api/noise/predict", {"scenario_id": "case-a", "background_profile": "does-not-exist"}, None, 422),
         ("error-415-upload", "POST", "/api/notices/extract-file", None, {"file": ("notice.bin", b"abc", "application/octet-stream")}, 415),
+        ("error-422-prd-date", "GET", "/api/prd/recommendation-diagnostics?analysis_date=2026-09-12", None, None, 422),
     ]
     for name, method, url, payload, files, expected in error_cases:
         response = client.request(method, url, json=payload, files=files)

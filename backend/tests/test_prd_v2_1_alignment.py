@@ -7,7 +7,7 @@ from zoneinfo import ZoneInfo
 import pytest
 from pydantic import ValidationError
 
-from app.models.domain import SourceMetadata, TaskAssignment, TimeWindow
+from app.models.domain import ConstructionPeriod, SourceMetadata, TaskAssignment, TimeWindow
 from app.models.prd_v2_1 import EquipmentPlanningConstraint, FixedTaskConstraint, PRDNoticePlanningInput
 from app.services.optimizer import optimize
 from app.services.prd_v2_1 import sensitivity_policy_experiment, validate_prd_schedule
@@ -27,6 +27,9 @@ def moment(hour: int, minute: int = 0, day: int = 11) -> datetime:
 def planning(**updates) -> PRDNoticePlanningInput:
     values = {
         "notice_id": "demo-notice",
+        "project_name": "시연 공사",
+        "location": "서울특별시 서대문구 신촌동",
+        "construction_period": ConstructionPeriod(start=DAY, end=DAY),
         "total_work_window": TimeWindow(start=time(7), end=time(18)),
         "road_excavation": True,
         "road_occupancy_permit_window": TimeWindow(start=time(8), end=time(17)),

@@ -53,7 +53,10 @@ def test_all_21_responses_match_pre_response_model_json(example_path: Path):
 
 def test_every_business_operation_has_explicit_success_response_schema():
     routes = [route for route in app.routes if isinstance(route, APIRoute) and route.path.startswith("/api/")]
-    assert len(routes) == 21
+    assert len(routes) == 25
+    captured_paths = {urlsplit(json.loads(path.read_text())["request"]["url"]).path for path in success_examples()}
+    assert len({path for path in captured_paths if not path.startswith("/api/prd/")}) == 21
+    assert len(captured_paths) == 25
     assert all(route.response_model is not None for route in routes)
     schema = app.openapi()
     for route in routes:
