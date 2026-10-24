@@ -5,8 +5,16 @@ from app.services.data import get_scenario
 from app.services.metrics import schedule_metrics
 from app.services.pareto import non_dominated
 from app.services.prediction import default_assignments
-from app.services.prediction import predict
 from app.services.timegrid import at, overlaps
+
+
+OBJECTIVE_FIELDS = {
+    "incremental_impact": ("incremental_impact_cost", "experimental Impact points"),
+    "absolute_impact": ("absolute_impact_cost", "experimental Impact points"),
+    "physical_energy": ("new_project_energy_exposure_65db_ref_minutes", "65 dB-reference energy-minutes"),
+    "sensitive_exposure": ("sensitive_new_project_receptor_minutes", "receptor-minutes"),
+    "continuous_burden": ("max_continuous_new_project_minutes", "minutes"),
+}
 
 
 def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact") -> ScheduleCandidate:
@@ -42,15 +50,13 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
     original_starts = {x.task_id: x.start for x in original}
     change = sum(abs(int((x.start - original_starts[x.task_id]).total_seconds() / 60)) for x in assignments)
     metrics.schedule_change_minutes = change
-    overlap_count = 0
+    overlap_count = metrics.existing_noise_overlap_receptor_minutes // 15
     overlap_penalty = float(scenario.get("settings", {}).get("existing_overlap_penalty_per_receptor_slot", 0))
-    if feasible and overlap_penalty:
-        rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile)["predictions"]
-        overlap_count = sum(bool(x["active_task_ids"] and x["existing_event_ids"]) for x in rows)
     absolute_cost = metrics.absolute_impact_cost
     incremental_cost = metrics.incremental_impact_cost
-    resident_cost = incremental_cost if objective_mode == "incremental_impact" else absolute_cost
-    return ScheduleCandidate(id=f"offset-{offset_minutes}", task_assignments=assignments if feasible else [], feasibility=feasible, infeasibility_reasons=reasons, needs_confirmation=["덤프트럭 소음 원천값", "미확정 공정 소요시간"] if reasons else ["덤프트럭 소음 원천값"], metrics=metrics, objective_values={"resident_cost": round(resident_cost, 2), "change_cost": float(change), "base_impact_cost": absolute_cost, "absolute_impact_cost": absolute_cost, "incremental_impact_cost": incremental_cost, "existing_noise_overlap_slots": float(overlap_count), "policy_overlap_cost": round(overlap_count * overlap_penalty, 2), "existing_noise_overlap_penalty": round(overlap_count * overlap_penalty, 2)}, provenance=SourceMetadata(status="derived", source="exact 15-minute offset enumeration", note="No duration reduction or parallel work assumed; overlap policy cost reported but excluded from Pareto objectives"))
+    objective_field, _ = OBJECTIVE_FIELDS[objective_mode]
+    resident_cost = getattr(metrics, objective_field)
+    return ScheduleCandidate(id=f"offset-{offset_minutes}", task_assignments=assignments if feasible else [], feasibility=feasible, infeasibility_reasons=reasons, needs_confirmation=["덤프트럭 소음 원천값", "미확정 공정 소요시간"] if reasons else ["덤프트럭 소음 원천값"], metrics=metrics, objective_values={"resident_cost": round(resident_cost, 6), "change_cost": float(change), "base_impact_cost": absolute_cost, "absolute_impact_cost": absolute_cost, "incremental_impact_cost": incremental_cost, "physical_energy_cost": metrics.new_project_energy_exposure_65db_ref_minutes, "sensitive_exposure_cost": float(metrics.sensitive_new_project_receptor_minutes), "continuous_burden_cost": float(metrics.max_continuous_new_project_minutes), "existing_noise_overlap_slots": float(overlap_count), "existing_noise_overlap_minutes": float(overlap_count * 15), "policy_overlap_cost": round(overlap_count * overlap_penalty, 2), "existing_noise_overlap_penalty": round(overlap_count * overlap_penalty, 2)}, provenance=SourceMetadata(status="derived", source="exact 15-minute offset enumeration", note="No duration reduction or parallel work assumed; each objective retains its own unit; overlap policy cost is reported separately"))
 
 
 def _dominated_reason(candidate: ScheduleCandidate, valid: list[ScheduleCandidate]) -> dict | None:
@@ -63,7 +69,7 @@ def _dominated_reason(candidate: ScheduleCandidate, valid: list[ScheduleCandidat
 
 
 def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact") -> dict:
-    if objective_mode not in {"incremental_impact", "absolute_impact"}:
+    if objective_mode not in OBJECTIVE_FIELDS:
         raise ValueError(f"unknown objective_mode: {objective_mode}")
     scenario = get_scenario(scenario_id)
     raw = [_candidate(scenario_id, day, offset, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, objective_mode=objective_mode) for offset in range(0, 121, 15)]
@@ -75,15 +81,18 @@ def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, back
     if frontier:
         selections["construction_convenience"] = min(frontier, key=lambda x: x.objective_values["change_cost"])
         selections["resident_protection"] = min(frontier, key=lambda x: x.objective_values["resident_cost"])
-        selections["balanced"] = min(frontier, key=lambda x: x.objective_values["resident_cost"] / max(1, max(y.objective_values["resident_cost"] for y in frontier)) + x.objective_values["change_cost"] / max(1, max(y.objective_values["change_cost"] for y in frontier)))
+        # Preserve the v8 normalized balanced selector only for legacy Impact
+        # modes. Experimental metrics intentionally avoid cross-unit sums.
+        if objective_mode in {"incremental_impact", "absolute_impact"}:
+            selections["balanced"] = min(frontier, key=lambda x: x.objective_values["resident_cost"] / max(1, max(y.objective_values["resident_cost"] for y in frontier)) + x.objective_values["change_cost"] / max(1, max(y.objective_values["change_cost"] for y in frontier)))
     # Deduplicate labels that select the same candidate.
     unique = {v.id: {"character": [k for k, c in selections.items() if c.id == v.id], "candidate": v} for v in selections.values()}
     diagnostics = {
         "generated_candidate_count": len(raw), "feasible_candidate_count": len(valid),
         "infeasible_candidate_count": len(raw) - len(valid), "pareto_candidate_count": len(frontier),
         "candidate_metrics": [{"id": x.id, "feasibility": x.feasibility, "objective_values": x.objective_values, "metrics": x.metrics, "infeasibility_reasons": x.infeasibility_reasons, "dominated_reason": _dominated_reason(x, valid) if x.feasibility else None} for x in raw],
-        "sensitivity_enabled": sensitivity_enabled, "background_profile": background_profile, "objective_mode": objective_mode, "policy_overlap_cost_included_in_pareto": False,
+        "sensitivity_enabled": sensitivity_enabled, "background_profile": background_profile, "objective_mode": objective_mode, "objective_field": OBJECTIVE_FIELDS[objective_mode][0], "objective_unit": OBJECTIVE_FIELDS[objective_mode][1], "default_objective_unchanged": True, "balanced_selection": "v8_normalized_impact_plus_change" if objective_mode in {"incremental_impact", "absolute_impact"} else None, "policy_overlap_cost_included_in_pareto": False,
     }
     if not valid:
-        return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "infeasible", "valid_candidates": [], "pareto_candidates": [], "recommended_options": [], "infeasible_result": raw[0], "relaxation_guidance": ["누락 공정시간을 확인", "금지시간 또는 일일 제한을 담당자가 검토", "필요하면 다일 분할 가능 여부 확인"], "solver": "exact_enumeration", "diagnostics": diagnostics}
-    return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "optimal_enumeration", "valid_candidates": valid, "pareto_candidates": frontier, "recommended_options": list(unique.values()), "solver": "exact_enumeration", "note": "Only distinct non-dominated schedules are returned.", "diagnostics": diagnostics}
+        return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "infeasible", "scoring_version": "impact-v8-unchanged", "metrics_version": "schedule-metrics-v9-experimental", "valid_candidates": [], "pareto_candidates": [], "recommended_options": [], "infeasible_result": raw[0], "relaxation_guidance": ["누락 공정시간을 확인", "금지시간 또는 일일 제한을 담당자가 검토", "필요하면 다일 분할 가능 여부 확인"], "solver": "exact_enumeration", "diagnostics": diagnostics}
+    return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "optimal_enumeration", "scoring_version": "impact-v8-unchanged", "metrics_version": "schedule-metrics-v9-experimental", "valid_candidates": valid, "pareto_candidates": frontier, "recommended_options": list(unique.values()), "solver": "exact_enumeration", "note": "Only distinct non-dominated schedules are returned.", "diagnostics": diagnostics}

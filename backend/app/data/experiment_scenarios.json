@@ -46,5 +46,38 @@
     "id":"final-demo-congestion","base_scenario_id":"official_reference_equipment","title":"최종 시연 B — 신촌 소음 집중 가정 실험","expected_feasibility":true,
     "settings":{"default_background_laeq_db":55.0,"exam_period":false,"recommended_background_profile":"road_traffic_observed_profile","demo_classification":"assumed_congestion_simulation","existing_event_group":"final-demo-congestion","existing_overlap_penalty_per_receptor_slot":0.0},
     "source_provenance":{"scenario":{"status":"assumed","source":"simulation based on nearby Seoul public construction identity","note":"Existing event time and Lp are assumptions and are not Seoul API observations."},"event_identity":{"status":"processed","source":"Seoul pmisPjtList project 7042025092297","note":"Project period overlaps 2026-09-11; actual daily operation is not confirmed."},"event_acoustics":{"status":"assumed","source":"final demo policy simulation","note":"07:00-09:00 and 82 Lp_dBA are unverified experimental inputs."}}
+  },
+  {
+    "id":"final-demo-congestion-near-residential","base_scenario_id":"final-demo-congestion","title":"9차 실험 — 25m 가정 주거 수음점 추가","expected_feasibility":true,
+    "settings":{"default_background_laeq_db":55.0,"exam_period":false,"recommended_background_profile":"road_traffic_observed_profile","demo_classification":"assumed_near_receptor_experiment","existing_event_group":"final-demo-congestion","existing_overlap_penalty_per_receptor_slot":0.0},
+    "receptors":[
+      {"id":"school-changseo","name":"서울창서초등학교","type":"school","location":"서울특별시 서대문구 연세로5나길 30-3","distance_to_source_m":452.8,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.55814305,"longitude":126.9334809,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15021148/standard.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"},
+      {"id":"school-changcheon","name":"창천중학교","type":"school","location":"서울특별시 마포구 백범로1길 56","distance_to_source_m":235.3,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.55498958,"longitude":126.9392951,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15021148/standard.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"},
+      {"id":"hospital-severance","name":"연세대학교의과대학세브란스병원","type":"hospital","location":"서울특별시 서대문구 연세로 50-1","distance_to_source_m":633.1,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":37.5623446,"longitude":126.9408265,"coordinate_crs":"EPSG:4326","coordinate_source":"https://www.data.go.kr/data/15001698/openapi.do","distance_method":"WGS84 haversine point-to-point","spatial_status":"verified_public"},
+      {"id":"assumed-residential-25m","name":"가정 주거 수음점 (25m)","type":"residential","location":"공사 대표점으로부터 25m인 가상 상대 위치","distance_to_source_m":25.0,"sensitivity_profile":[],"noise_limit_profile":null,"latitude":null,"longitude":null,"coordinate_crs":null,"coordinate_source":null,"distance_method":"assumed radial distance; no building coordinate","spatial_status":"assumed"}
+    ],
+    "source_provenance":{"scenario":{"status":"assumed","source":"ninth-iteration near-receptor sensitivity experiment","note":"The added 25 m residence is hypothetical and is not a real building, coordinate, or measurement."},"base_scenario":{"status":"derived","source":"final-demo-congestion","note":"The three verified public receptors and all constraints are retained."}}
+  },
+  {
+    "id":"official-reference-equipment-min","base_scenario_id":"official_reference_equipment","title":"9차 민감도 — 공식 장비 유형별 최솟값","expected_feasibility":true,
+    "equipment":[
+      {"id":"cutter","category":"콘크리트 절단기","model_name":"RC20-210CY","count":1,"sound_power_level_db":97,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 콘크리트절단기 2020-14호","note":"Category minimum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"breaker","category":"브레이커","model_name":"B20","count":1,"sound_power_level_db":102,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 브레이커 2013-02호","note":"Category minimum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"excavator","category":"굴착기","model_name":"iX17e","count":1,"sound_power_level_db":79,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 굴삭기 2022-09호","note":"Category minimum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"roller","category":"롤러/다짐기계","model_name":"ZC220P-6","count":1,"sound_power_level_db":91,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 다짐기계 2019-01호","note":"Category minimum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"dump-truck","category":"덤프트럭","model_name":null,"count":1,"sound_power_level_db":null,"acoustic_unit_type":"missing","source_metadata":{"status":"missing","source":"data.go.kr 3038414","note":"Not present; excluded","unit":null}}
+    ],
+    "source_provenance":{"scenario":{"status":"derived","source":"official category minimum rows","note":"Experimental distribution bound; cross-model operating-condition equivalence is not verified."}}
+  },
+  {
+    "id":"official-reference-equipment-max","base_scenario_id":"official_reference_equipment","title":"9차 민감도 — 공식 장비 유형별 최댓값","expected_feasibility":true,
+    "equipment":[
+      {"id":"cutter","category":"콘크리트 절단기","model_name":"K1250","count":1,"sound_power_level_db":121,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 절단기 2008-04호","note":"Category maximum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"breaker","category":"브레이커","model_name":"GB525E","count":1,"sound_power_level_db":132,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 브레이커 2008-12호","note":"Category maximum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"excavator","category":"굴착기","model_name":"ROBEX8000LC-7A","count":1,"sound_power_level_db":114,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 굴착기 2008-71호","note":"Category maximum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"roller","category":"롤러/다짐기계","model_name":"SD106D","count":1,"sound_power_level_db":113,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"verified_public","source":"data.go.kr 3038414; 다짐기계 2022-01호","note":"Category maximum record; sensitivity bound, not confirmed site equipment","unit":"Lw_dBA"}},
+      {"id":"dump-truck","category":"덤프트럭","model_name":null,"count":1,"sound_power_level_db":null,"acoustic_unit_type":"missing","source_metadata":{"status":"missing","source":"data.go.kr 3038414","note":"Not present; excluded","unit":null}}
+    ],
+    "source_provenance":{"scenario":{"status":"derived","source":"official category maximum rows","note":"Experimental distribution bound; cross-model operating-condition equivalence is not verified."}}
   }
 ]

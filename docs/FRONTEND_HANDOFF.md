@@ -15,7 +15,7 @@
 9. 선택 후보로 `POST /api/schedules/compare`
 10. 개발 비교 화면은 `POST /api/experiments/run`
 
-최종 시연 A는 `official_reference_equipment`와 `road_traffic_observed_profile`, 시연 B는 `final-demo-congestion`과 같은 프로파일을 사용합니다. A의 장비 모델도 실제 현장 확인값이 아니라 공식 분포 참고행입니다. B의 기존 이벤트 시간·Lp는 `assumed`입니다.
+최종 시연 A는 `official_reference_equipment`와 `road_traffic_observed_profile`, 시연 B는 `final-demo-congestion`과 같은 프로파일을 사용합니다. A의 장비 모델도 실제 현장 확인값이 아니라 공식 분포 참고행입니다. B의 기존 이벤트 시간·Lp는 `assumed`입니다. 9차의 `final-demo-congestion-near-residential`에 추가된 25m 주거 수음점도 좌표 없는 `assumed` 실험값이며 실제 건물로 지도에 표시하면 안 됩니다.
 
 ```json
 GET /api/poc/scenarios/official_reference_equipment
@@ -84,6 +84,8 @@ POST /api/schedules/optimize
 {"scenario_id":"official_reference_equipment","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile","objective_mode":"incremental_impact"}
 ```
 
+기본 `objective_mode`는 계속 `incremental_impact`입니다. 9차 실험 모드 `physical_energy`, `sensitive_exposure`, `continuous_burden`은 비교 화면에서만 명시적으로 요청합니다. 응답의 `diagnostics.objective_field`와 `objective_unit`을 라벨에 사용하고 서로 다른 모드의 `resident_cost`를 같은 단위처럼 직접 비교하거나 합산하지 않습니다. 실험 모드는 `diagnostics.balanced_selection=null`이며 `balanced` 배지를 만들지 않습니다. `scoring_version=impact-v8-unchanged`, `metrics_version=schedule-metrics-v9-experimental`을 결과와 함께 보존합니다.
+
 ```json
 {"optimization_status":"optimal_enumeration","recommended_options":[{"character":["construction_convenience","balanced"],"candidate":{"id":"offset-0","feasibility":true,"task_assignments":[{"task_id":"cut","start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T08:00:00+09:00"}],"objective_values":{"resident_cost":13.72,"change_cost":0.0}}},{"character":["resident_protection"],"candidate":{"id":"offset-120","objective_values":{"resident_cost":13.20,"change_cost":480.0}}}],"diagnostics":{"generated_candidate_count":9,"feasible_candidate_count":9,"infeasible_candidate_count":0,"pareto_candidate_count":9}}
 ```
@@ -127,12 +129,12 @@ POST /api/schedules/compare
 
 `threshold_db=65`는 PoC 분석 임계값이며 법정 기준이 아닙니다.
 
-추가 비교지표 `absolute_impact_cost`, `incremental_impact_cost`, `new_project_additional_high_noise_minutes`, `sensitive_new_project_exposure_minutes`를 별도 라벨로 표시합니다. 기본 추천 배지는 증분 목적이며, 절대 목적 비교가 필요하면 같은 요청을 `objective_mode=absolute_impact`로 재호출합니다. `policy_overlap_cost`는 진단용이고 현재 Pareto 비용에 포함되지 않습니다.
+추가 비교지표 `absolute_impact_cost`, `incremental_impact_cost`, `new_project_additional_high_noise_minutes`, `sensitive_new_project_exposure_minutes`를 별도 라벨로 표시합니다. 9차 추가 필드는 `new_project_inactive_minutes`, `sensitive_new_project_receptor_minutes`, `max_continuous_new_project_minutes`, `new_project_energy_exposure_65db_ref_minutes`, `cumulative_delta_db_minutes`, `existing_noise_overlap_receptor_minutes`입니다. 기본 추천 배지는 증분 목적이며, 절대 목적 비교가 필요하면 같은 요청을 `objective_mode=absolute_impact`로 재호출합니다. 후보 `objective_values.existing_noise_overlap_minutes`와 metrics의 `existing_noise_overlap_receptor_minutes`는 같은 receptor-minutes 값이며, `policy_overlap_cost`는 임의 정책점수입니다. 이들은 현재 기본 Pareto 비용에 포함되지 않습니다.
 
 ## 출처 표시
 
 `verified_public`=검증 공공자료, `user_provided`=사용자 시나리오, `assumed`=실험 가정, `derived`=계산값, `missing`=누락으로 통일합니다. 색상 badge와 설명을 함께 쓰고 `legal_assessment=null`, disclaimer, 덤프트럭 경고를 숨기지 않습니다. B/C의 기존소음·시험기간은 반드시 `assumed`로 표시합니다.
 
-도로 관측 프로파일도 수음점별 현장 실측이 아니라 특정 지점의 역사적 대표값이므로 `verified_public` 배지 옆에 공간 대표성 경고를 표시합니다. 포화 경고의 `level_component_at_ceiling` 또는 `incremental_zero_despite_physical_increase`가 true이면 증분 0을 “영향 없음”으로 번역하지 않습니다.
+도로 관측 프로파일도 수음점별 현장 실측이 아니라 특정 지점의 역사적 대표값이므로 `verified_public` 배지 옆에 공간 대표성 경고를 표시합니다. 포화 경고의 `level_component_at_ceiling` 또는 `incremental_zero_despite_physical_increase`가 true이면 증분 0을 “영향 없음”으로 번역하지 않습니다. 후자는 85 dB component 포화뿐 아니라 소수 둘째 자리 반올림으로도 발생할 수 있으므로 “점수 해상도/포화로 구분 불가”로 표시합니다. 자세한 원인 분리는 `SCORING_VALIDATION.md`를 따릅니다.
 
 422는 필드 오류, 404는 시나리오 없음, 415는 파일 유형, 503은 선택 PDF 의존성 문제입니다. CORS는 배포 origin 확정 전 열지 않았습니다.

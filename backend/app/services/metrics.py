@@ -15,15 +15,16 @@ def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignme
             continue
         previous = by_slot.get(row["slot_start"], {"total":0,"baseline":0,"weight":1,"active":False})
         by_slot[row["slot_start"]] = {"total":max(previous["total"], level), "baseline":max(previous["baseline"], row["existing_environment_db"] or 0), "weight":max(previous["weight"], row["sensitivity"]["weight"]), "active":previous["active"] or bool(row["active_task_ids"])}
-    high_runs, quiet_runs, impacts = [], [], []
-    current_high = current_quiet = 0
+    high_runs, quiet_runs, project_runs, impacts = [], [], [], []
+    current_high = current_quiet = current_project = 0
     sensitive_high = additional_high = sensitive_project = 0
     for values in by_slot.values():
         level, weight = values["total"], values["weight"]
         high = level >= threshold
         current_high = current_high + 15 if high else 0
         current_quiet = current_quiet + 15 if not high else 0
-        high_runs.append(current_high); quiet_runs.append(current_quiet)
+        current_project = current_project + 15 if values["active"] else 0
+        high_runs.append(current_high); quiet_runs.append(current_quiet); project_runs.append(current_project)
         if high and weight > 1:
             sensitive_high += 15
         if high and values["baseline"] < threshold:
@@ -33,6 +34,10 @@ def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignme
         impacts.append(calculate_impact(ImpactRequest(total_noise_db=level, threshold_db=threshold, duration_minutes=15 if high else 0, continuous_minutes=current_high, sensitivity_weight=weight))["score"])
     # Resident cost sums every receptor-slot so receptor-specific sensitivity is retained.
     receptor_impacts, incremental_impacts = [], []
+    sensitive_receptor_minutes = 0
+    energy_exposure = 0.0
+    cumulative_delta_db_minutes = 0.0
+    existing_overlap_receptor_minutes = 0
     saturation_count = 0
     for row in rows:
         level = row["total_estimated_db"]
@@ -40,10 +45,21 @@ def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignme
             continue
         receptor_impacts.append(row["total_impact"])
         incremental_impacts.append(row["incremental_impact"])
+        if row["active_task_ids"] and row["sensitivity"]["weight"] > 1:
+            sensitive_receptor_minutes += 15
+        if row["new_project_contribution_db"] is not None:
+            # Linear construction-only energy relative to a 65 dB reference,
+            # integrated over minutes. Background/event energy is not included.
+            energy_exposure += 10 ** ((row["new_project_contribution_db"] - threshold) / 10) * 15
+            cumulative_delta_db_minutes += row["delta_total_db"] * 15
+        if row["active_task_ids"] and row["existing_event_ids"]:
+            existing_overlap_receptor_minutes += 15
         saturation_count += int(row["impact_saturation"]["level_component_at_ceiling"] or row["impact_saturation"]["incremental_zero_despite_physical_increase"])
     absolute = round(sum(receptor_impacts), 2)
     incremental = round(sum(incremental_impacts), 2)
-    return ScheduleMetrics(max_continuous_high_noise_minutes=max(high_runs, default=0), longest_quiet_window_minutes=max(quiet_runs, default=0), sensitive_high_noise_minutes=sensitive_high, max_impact_score=max(receptor_impacts, default=0), total_impact_score=absolute, absolute_impact_cost=absolute, incremental_impact_cost=incremental, new_project_additional_high_noise_minutes=additional_high, sensitive_new_project_exposure_minutes=sensitive_project, saturation_slot_count=saturation_count)
+    active_minutes = sum(15 for values in by_slot.values() if values["active"])
+    analysis_minutes = len(by_slot) * 15
+    return ScheduleMetrics(max_continuous_high_noise_minutes=max(high_runs, default=0), longest_quiet_window_minutes=max(quiet_runs, default=0), sensitive_high_noise_minutes=sensitive_high, max_impact_score=max(receptor_impacts, default=0), total_impact_score=absolute, absolute_impact_cost=absolute, incremental_impact_cost=incremental, new_project_additional_high_noise_minutes=additional_high, sensitive_new_project_exposure_minutes=sensitive_project, sensitive_new_project_receptor_minutes=sensitive_receptor_minutes, new_project_inactive_minutes=analysis_minutes-active_minutes, max_continuous_new_project_minutes=max(project_runs, default=0), new_project_energy_exposure_65db_ref_minutes=round(energy_exposure, 6), cumulative_delta_db_minutes=round(cumulative_delta_db_minutes, 2), existing_noise_overlap_receptor_minutes=existing_overlap_receptor_minutes, saturation_slot_count=saturation_count)
 
 
 def compare(scenario_id: str, day: date, before: list[TaskAssignment], after: list[TaskAssignment], sensitivity_enabled: bool = True, background_profile: str = "assumed_demo") -> dict:
