@@ -15,7 +15,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
               }
             }
           }
@@ -34,7 +36,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioListResponse"
+                }
               }
             }
           }
@@ -64,7 +68,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ScenarioDetailResponse"
+                }
               }
             }
           },
@@ -103,7 +109,17 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/MockNoticeExtractResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LLMNoticeExtractResponse"
+                    }
+                  ],
+                  "title": "Response Extract Json Api Notices Extract Post"
+                }
               }
             }
           },
@@ -142,7 +158,17 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/MockNoticeExtractResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/LLMNoticeExtractResponse"
+                    }
+                  ],
+                  "title": "Response Extract File Api Notices Extract File Post"
+                }
               }
             }
           },
@@ -181,7 +207,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/NoisePredictResponse"
+                }
               }
             }
           },
@@ -210,7 +238,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/BackgroundProfilesResponse"
+                }
               }
             }
           }
@@ -239,7 +269,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/M1PredictResponse"
+                }
               }
             }
           },
@@ -278,7 +310,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/M0M1CompareResponse"
+                }
               }
             }
           },
@@ -317,7 +351,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/M1UncertaintyResponse"
+                }
               }
             }
           },
@@ -356,7 +392,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/M1CandidateEvaluationResponse"
+                }
               }
             }
           },
@@ -395,7 +433,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/FieldValidationResponse"
+                }
               }
             }
           },
@@ -424,7 +464,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DesignSimulationCatalogResponse"
+                }
               }
             }
           }
@@ -453,7 +495,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DesignSimulationResponse"
+                }
               }
             }
           },
@@ -492,7 +536,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ImpactResponse"
+                }
               }
             }
           },
@@ -531,7 +577,17 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/OptimizeSuccessResponse"
+                    },
+                    {
+                      "$ref": "#/components/schemas/OptimizeInfeasibleResponse"
+                    }
+                  ],
+                  "title": "Response Optimize Schedule Api Schedules Optimize Post"
+                }
               }
             }
           },
@@ -570,7 +626,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/CompareResponse"
+                }
               }
             }
           },
@@ -651,7 +709,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/DiagnosticsResponse"
+                }
               }
             }
           },
@@ -690,7 +750,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ExperimentResponse"
+                }
               }
             }
           },
@@ -719,7 +781,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/PublicDataCatalogResponse"
+                }
               }
             }
           }
@@ -738,7 +802,9 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": {
+                  "$ref": "#/components/schemas/ConstructionDesignResponse"
+                }
               }
             }
           }
@@ -748,6 +814,96 @@
   },
   "components": {
     "schemas": {
+      "BackgroundProfile": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "calculation_eligible": {
+            "type": "boolean",
+            "title": "Calculation Eligible"
+          },
+          "metric": {
+            "type": "string",
+            "title": "Metric"
+          },
+          "observation_period": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Observation Period"
+          },
+          "hourly_values": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Hourly Values"
+          },
+          "source_metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Source Metadata"
+          },
+          "quality_warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Quality Warnings"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "label",
+          "calculation_eligible",
+          "metric",
+          "observation_period",
+          "hourly_values",
+          "source_metadata",
+          "quality_warnings"
+        ],
+        "title": "BackgroundProfile"
+      },
+      "BackgroundProfilesResponse": {
+        "properties": {
+          "profiles": {
+            "items": {
+              "$ref": "#/components/schemas/BackgroundProfile"
+            },
+            "type": "array",
+            "title": "Profiles"
+          },
+          "default": {
+            "type": "string",
+            "title": "Default"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "profiles",
+          "default"
+        ],
+        "title": "BackgroundProfilesResponse"
+      },
       "Body_extract_file_api_notices_extract_file_post": {
         "properties": {
           "file": {
@@ -801,6 +957,323 @@
           "after"
         ],
         "title": "CompareRequest"
+      },
+      "CompareResponse": {
+        "properties": {
+          "before": {
+            "$ref": "#/components/schemas/ScheduleMetrics"
+          },
+          "after": {
+            "$ref": "#/components/schemas/ScheduleMetrics"
+          },
+          "delta": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Delta"
+          },
+          "schedule_change_details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Schedule Change Details"
+          },
+          "comparison_basis": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Comparison Basis"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "before",
+          "after",
+          "delta",
+          "schedule_change_details",
+          "comparison_basis"
+        ],
+        "title": "CompareResponse"
+      },
+      "ConstructionDesignResponse": {
+        "properties": {
+          "data_version": {
+            "type": "string",
+            "title": "Data Version"
+          },
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "dataset_provenance": {
+            "type": "string",
+            "title": "Dataset Provenance"
+          },
+          "provenance_policy": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Provenance Policy"
+          },
+          "source_documents": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Source Documents"
+          },
+          "segments": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Segments"
+          },
+          "route_length_total_m": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Route Length Total M"
+          },
+          "work_packages": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Work Packages"
+          },
+          "equipment_reference_matching": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Equipment Reference Matching"
+          },
+          "schedule_metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Schedule Metadata"
+          },
+          "assumed_demo_schedule_reference": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Assumed Demo Schedule Reference"
+          },
+          "calculation_readiness": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Calculation Readiness"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "data_version",
+          "notice_id",
+          "project_name",
+          "dataset_provenance",
+          "provenance_policy",
+          "source_documents",
+          "segments",
+          "route_length_total_m",
+          "work_packages",
+          "equipment_reference_matching",
+          "schedule_metadata",
+          "assumed_demo_schedule_reference",
+          "calculation_readiness"
+        ],
+        "title": "ConstructionDesignResponse"
+      },
+      "ConstructionNotice": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "construction_period": {
+            "$ref": "#/components/schemas/ConstructionPeriod"
+          },
+          "original_work_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/ConstructionTask"
+            },
+            "type": "array",
+            "title": "Tasks"
+          },
+          "constraints": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Constraints"
+          },
+          "source_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Source Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "construction_period",
+          "tasks",
+          "source_provenance"
+        ],
+        "title": "ConstructionNotice"
+      },
+      "ConstructionPeriod": {
+        "properties": {
+          "start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Start"
+          },
+          "end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "End"
+          },
+          "raw_text": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Raw Text"
+          }
+        },
+        "type": "object",
+        "title": "ConstructionPeriod"
+      },
+      "ConstructionTask": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "equipment_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment Id"
+          },
+          "duration_minutes": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "exclusiveMinimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Duration Minutes"
+          },
+          "permitted_time_windows": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "type": "array",
+            "title": "Permitted Time Windows"
+          },
+          "predecessors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Predecessors"
+          },
+          "is_movable": {
+            "type": "boolean",
+            "title": "Is Movable",
+            "default": true
+          },
+          "required_resources": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Required Resources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name"
+        ],
+        "title": "ConstructionTask"
       },
       "DesignBasedSimulationRequest": {
         "properties": {
@@ -875,6 +1348,491 @@
         ],
         "title": "DesignBasedSimulationRequest"
       },
+      "DesignCandidate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "method": {
+            "type": "string",
+            "title": "Method"
+          },
+          "feasible": {
+            "type": "boolean",
+            "title": "Feasible"
+          },
+          "pareto_included": {
+            "type": "boolean",
+            "title": "Pareto Included"
+          },
+          "assignments": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignments"
+          },
+          "slot_results": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slot Results"
+          },
+          "metrics": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Metrics"
+          },
+          "acoustic_completeness": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "partial",
+                  "complete"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Acoustic Completeness"
+          },
+          "missing_noise_equipment": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Noise Equipment"
+          },
+          "infeasibility_reasons": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Infeasibility Reasons"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "method",
+          "feasible",
+          "pareto_included"
+        ],
+        "title": "DesignCandidate"
+      },
+      "DesignSimulationCatalogResponse": {
+        "properties": {
+          "data_version": {
+            "type": "string",
+            "title": "Data Version"
+          },
+          "simulation_version": {
+            "type": "string",
+            "title": "Simulation Version"
+          },
+          "official_design_data": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Official Design Data"
+          },
+          "official_reference_noise": {
+            "additionalProperties": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "object",
+            "title": "Official Reference Noise"
+          },
+          "excavator_capacity_match": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Excavator Capacity Match"
+          },
+          "missing_required_inputs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Required Inputs"
+          },
+          "official_prediction_status": {
+            "type": "string",
+            "const": "deferred",
+            "title": "Official Prediction Status"
+          },
+          "validation_status": {
+            "type": "string",
+            "const": "not_evaluable",
+            "title": "Validation Status"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "data_version",
+          "simulation_version",
+          "official_design_data",
+          "official_reference_noise",
+          "excavator_capacity_match",
+          "missing_required_inputs",
+          "official_prediction_status",
+          "validation_status"
+        ],
+        "title": "DesignSimulationCatalogResponse"
+      },
+      "DesignSimulationResponse": {
+        "properties": {
+          "simulation_version": {
+            "type": "string",
+            "title": "Simulation Version"
+          },
+          "result_type": {
+            "type": "string",
+            "const": "design_based_simulation",
+            "title": "Result Type"
+          },
+          "official_field_prediction_status": {
+            "type": "string",
+            "const": "deferred",
+            "title": "Official Field Prediction Status"
+          },
+          "simulation_status": {
+            "type": "string",
+            "const": "simulated",
+            "title": "Simulation Status"
+          },
+          "validation_status": {
+            "type": "string",
+            "const": "not_evaluable",
+            "title": "Validation Status"
+          },
+          "segment": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Segment"
+          },
+          "simulation_geometry": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Simulation Geometry"
+          },
+          "background_profile": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Background Profile"
+          },
+          "data_quality": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Data Quality"
+          },
+          "quantity_allocation": {
+            "type": "string",
+            "title": "Quantity Allocation"
+          },
+          "process_assumptions": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Process Assumptions"
+          },
+          "candidate_count": {
+            "type": "integer",
+            "title": "Candidate Count"
+          },
+          "feasible_candidate_count": {
+            "type": "integer",
+            "title": "Feasible Candidate Count"
+          },
+          "pareto_axes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Axes"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/DesignCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "pareto_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/DesignCandidate"
+            },
+            "type": "array",
+            "title": "Pareto Candidates"
+          },
+          "recommended_candidate": {
+            "$ref": "#/components/schemas/DesignCandidate"
+          },
+          "recommendation_reasons": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Recommendation Reasons"
+          },
+          "accuracy_claim": {
+            "type": "null",
+            "title": "Accuracy Claim"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "simulation_version",
+          "result_type",
+          "official_field_prediction_status",
+          "simulation_status",
+          "validation_status",
+          "segment",
+          "simulation_geometry",
+          "background_profile",
+          "data_quality",
+          "quantity_allocation",
+          "process_assumptions",
+          "candidate_count",
+          "feasible_candidate_count",
+          "pareto_axes",
+          "candidates",
+          "pareto_candidates",
+          "recommended_candidate",
+          "recommendation_reasons",
+          "accuracy_claim"
+        ],
+        "title": "DesignSimulationResponse"
+      },
+      "DiagnosticsResponse": {
+        "properties": {
+          "generated_candidate_count": {
+            "type": "integer",
+            "title": "Generated Candidate Count"
+          },
+          "feasible_candidate_count": {
+            "type": "integer",
+            "title": "Feasible Candidate Count"
+          },
+          "infeasible_candidate_count": {
+            "type": "integer",
+            "title": "Infeasible Candidate Count"
+          },
+          "pareto_candidate_count": {
+            "type": "integer",
+            "title": "Pareto Candidate Count"
+          },
+          "pareto_axes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Axes"
+          },
+          "candidate_metrics": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Candidate Metrics"
+          },
+          "sensitivity_enabled": {
+            "type": "boolean",
+            "title": "Sensitivity Enabled"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile"
+          },
+          "objective_mode": {
+            "type": "string",
+            "title": "Objective Mode"
+          },
+          "objective_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective Field"
+          },
+          "objective_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective Unit"
+          },
+          "default_objective_unchanged": {
+            "type": "boolean",
+            "title": "Default Objective Unchanged"
+          },
+          "balanced_selection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balanced Selection"
+          },
+          "policy_overlap_cost_included_in_pareto": {
+            "type": "boolean",
+            "title": "Policy Overlap Cost Included In Pareto"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "generated_candidate_count",
+          "feasible_candidate_count",
+          "infeasible_candidate_count",
+          "pareto_candidate_count",
+          "pareto_axes",
+          "candidate_metrics",
+          "sensitivity_enabled",
+          "background_profile",
+          "objective_mode",
+          "objective_field",
+          "objective_unit",
+          "default_objective_unchanged",
+          "balanced_selection",
+          "policy_overlap_cost_included_in_pareto",
+          "scenario_id",
+          "analysis_date"
+        ],
+        "title": "DiagnosticsResponse"
+      },
+      "Equipment": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Count"
+          },
+          "sound_power_level_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sound Power Level Db"
+          },
+          "acoustic_unit_type": {
+            "type": "string",
+            "enum": [
+              "Lw_dBA",
+              "Lp_dBA",
+              "missing"
+            ],
+            "title": "Acoustic Unit Type"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "category",
+          "count",
+          "acoustic_unit_type",
+          "source_metadata"
+        ],
+        "title": "Equipment"
+      },
       "ExperimentRequest": {
         "properties": {
           "scenario_id": {
@@ -909,6 +1867,57 @@
         },
         "type": "object",
         "title": "ExperimentRequest"
+      },
+      "ExperimentResponse": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "objective_mode": {
+            "type": "string",
+            "title": "Objective Mode"
+          },
+          "experiment_a": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Experiment A"
+          },
+          "experiment_b": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Experiment B"
+          },
+          "experiment_c": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Experiment C"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "analysis_date",
+          "objective_mode",
+          "experiment_a",
+          "experiment_b",
+          "experiment_c",
+          "disclaimer"
+        ],
+        "title": "ExperimentResponse"
       },
       "ExtractRequest": {
         "properties": {
@@ -1125,6 +2134,145 @@
         "type": "object",
         "title": "FieldValidationRequest"
       },
+      "FieldValidationResponse": {
+        "properties": {
+          "validation_status": {
+            "type": "string",
+            "enum": [
+              "evaluated",
+              "not_evaluable"
+            ],
+            "title": "Validation Status"
+          },
+          "sample_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sample Count"
+          },
+          "mae": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Mae"
+          },
+          "rmse": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Rmse"
+          },
+          "bias": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Bias"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          },
+          "aligned_sample_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Aligned Sample Count"
+          },
+          "receptor_errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Receptor Errors"
+          },
+          "equipment_errors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Equipment Errors"
+          },
+          "alignment_failures": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Alignment Failures"
+          },
+          "alignment_requirements": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Alignment Requirements"
+          },
+          "coordinate_tolerance_note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Tolerance Note"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "validation_status",
+          "mae",
+          "rmse",
+          "bias",
+          "receptor_errors",
+          "equipment_errors",
+          "alignment_failures"
+        ],
+        "title": "FieldValidationResponse"
+      },
       "HTTPValidationError": {
         "properties": {
           "detail": {
@@ -1137,6 +2285,31 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "extractor_mode": {
+            "type": "string",
+            "title": "Extractor Mode"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "status",
+          "model_version",
+          "extractor_mode"
+        ],
+        "title": "HealthResponse"
       },
       "ImpactRequest": {
         "properties": {
@@ -1191,6 +2364,515 @@
         ],
         "title": "ImpactRequest"
       },
+      "ImpactResponse": {
+        "properties": {
+          "score": {
+            "type": "number",
+            "title": "Score"
+          },
+          "components": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Components"
+          },
+          "weights": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Weights"
+          },
+          "classification": {
+            "type": "string",
+            "title": "Classification"
+          },
+          "baseline_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Score"
+          },
+          "incremental_score": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incremental Score"
+          },
+          "saturation": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "type": "boolean"
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Saturation"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "score",
+          "components",
+          "weights",
+          "classification"
+        ],
+        "title": "ImpactResponse"
+      },
+      "LLMNoticeExtractResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "llm",
+            "title": "Mode"
+          },
+          "is_actual_ai": {
+            "type": "boolean",
+            "const": true,
+            "title": "Is Actual Ai"
+          },
+          "provider": {
+            "type": "string",
+            "title": "Provider"
+          },
+          "model": {
+            "type": "string",
+            "title": "Model"
+          },
+          "notice": {
+            "$ref": "#/components/schemas/ConstructionNotice"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "mode",
+          "is_actual_ai",
+          "provider",
+          "model",
+          "notice",
+          "warnings"
+        ],
+        "title": "LLMNoticeExtractResponse"
+      },
+      "M0M1CompareResponse": {
+        "properties": {
+          "comparison_status": {
+            "type": "string",
+            "enum": [
+              "simulated",
+              "deferred"
+            ],
+            "title": "Comparison Status"
+          },
+          "validation_status": {
+            "type": "string",
+            "const": "not_evaluable",
+            "title": "Validation Status"
+          },
+          "m0_characterization": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 Characterization"
+          },
+          "m1_characterization": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 Characterization"
+          },
+          "comparisons": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/M0M1ComparisonRow"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Comparisons"
+          },
+          "m0": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/M1PredictResponse"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "m1": {
+            "$ref": "#/components/schemas/M1PredictResponse"
+          },
+          "accuracy_improvement_claimed": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Accuracy Improvement Claimed"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "comparison_status",
+          "validation_status",
+          "m1"
+        ],
+        "title": "M0M1CompareResponse"
+      },
+      "M0M1ComparisonRow": {
+        "properties": {
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "m0_new_project_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 New Project Laeq Db"
+          },
+          "m1_new_project_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 New Project Laeq Db"
+          },
+          "m0_total_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 Total Laeq Db"
+          },
+          "m1_total_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 Total Laeq Db"
+          },
+          "m0_delta_total_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 Delta Total Db"
+          },
+          "m1_delta_total_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 Delta Total Db"
+          },
+          "m0_energy_exposure": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 Energy Exposure"
+          },
+          "m1_energy_exposure": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 Energy Exposure"
+          },
+          "m0_incremental_impact": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M0 Incremental Impact"
+          },
+          "m1_incremental_impact": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "M1 Incremental Impact"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "receptor_id",
+          "m0_new_project_laeq_db",
+          "m1_new_project_laeq_db",
+          "m0_total_laeq_db",
+          "m1_total_laeq_db",
+          "m0_delta_total_db",
+          "m1_delta_total_db",
+          "m0_energy_exposure",
+          "m1_energy_exposure",
+          "m0_incremental_impact",
+          "m1_incremental_impact"
+        ],
+        "title": "M0M1ComparisonRow"
+      },
+      "M0PredictionRow": {
+        "properties": {
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "slot_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot Start"
+          },
+          "slot_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot End"
+          },
+          "active_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Active Task Ids"
+          },
+          "construction_lp_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Construction Lp Db"
+          },
+          "new_project_contribution_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Project Contribution Db"
+          },
+          "background_laeq_db": {
+            "type": "number",
+            "title": "Background Laeq Db"
+          },
+          "background_only_db": {
+            "type": "number",
+            "title": "Background Only Db"
+          },
+          "existing_noise_lp_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Existing Noise Lp Db"
+          },
+          "existing_environment_db": {
+            "type": "number",
+            "title": "Existing Environment Db"
+          },
+          "existing_event_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Existing Event Ids"
+          },
+          "total_estimated_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Estimated Db"
+          },
+          "with_new_project_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "With New Project Db"
+          },
+          "delta_total_db": {
+            "type": "number",
+            "title": "Delta Total Db"
+          },
+          "total_impact": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Total Impact"
+          },
+          "baseline_impact": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Baseline Impact"
+          },
+          "incremental_impact": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              }
+            ],
+            "title": "Incremental Impact"
+          },
+          "impact_saturation": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Impact Saturation"
+          },
+          "sensitivity": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Sensitivity"
+          },
+          "source_metadata": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Source Metadata"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "receptor_id",
+          "slot_start",
+          "slot_end",
+          "active_task_ids",
+          "construction_lp_db",
+          "new_project_contribution_db",
+          "background_laeq_db",
+          "background_only_db",
+          "existing_noise_lp_db",
+          "existing_environment_db",
+          "existing_event_ids",
+          "total_estimated_db",
+          "with_new_project_db",
+          "delta_total_db",
+          "total_impact",
+          "baseline_impact",
+          "incremental_impact",
+          "impact_saturation",
+          "sensitivity",
+          "source_metadata"
+        ],
+        "title": "M0PredictionRow"
+      },
       "M1ActiveInterval": {
         "properties": {
           "start": {
@@ -1210,6 +2892,258 @@
           "end"
         ],
         "title": "M1ActiveInterval"
+      },
+      "M1CandidateEvaluationResponse": {
+        "properties": {
+          "evaluation_status": {
+            "type": "string",
+            "enum": [
+              "simulated",
+              "deferred"
+            ],
+            "title": "Evaluation Status"
+          },
+          "validation_status": {
+            "type": "string",
+            "const": "not_evaluable",
+            "title": "Validation Status"
+          },
+          "scenario_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Scenario Id"
+          },
+          "base_optimizer_unchanged": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Base Optimizer Unchanged"
+          },
+          "generated_candidate_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Generated Candidate Count"
+          },
+          "feasible_candidate_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Feasible Candidate Count"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/M1EvaluatedCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "pareto_axes": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Pareto Axes"
+          },
+          "pareto_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/M1EvaluatedCandidate"
+            },
+            "type": "array",
+            "title": "Pareto Candidates"
+          },
+          "recommended_candidate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/M1EvaluatedCandidate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "recommendation_reasons": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Recommendation Reasons"
+          },
+          "missing_required_inputs": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MissingInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Required Inputs"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "evaluation_status",
+          "validation_status",
+          "candidates",
+          "pareto_candidates"
+        ],
+        "title": "M1CandidateEvaluationResponse"
+      },
+      "M1EvaluatedCandidate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "feasibility": {
+            "type": "boolean",
+            "title": "Feasibility"
+          },
+          "evaluation_status": {
+            "type": "string",
+            "enum": [
+              "simulated",
+              "deferred"
+            ],
+            "title": "Evaluation Status"
+          },
+          "task_assignments": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Assignments"
+          },
+          "objective_axes": {
+            "anyOf": [
+              {
+                "additionalProperties": {
+                  "anyOf": [
+                    {
+                      "type": "integer"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective Axes"
+          },
+          "slot_results": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slot Results"
+          },
+          "input_provenance": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Input Provenance"
+          },
+          "missing_required_inputs": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/MissingInput"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Missing Required Inputs"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "feasibility",
+          "evaluation_status"
+        ],
+        "title": "M1EvaluatedCandidate"
       },
       "M1NoiseSource": {
         "properties": {
@@ -1505,6 +3439,263 @@
         ],
         "title": "M1PredictRequest"
       },
+      "M1PredictResponse": {
+        "properties": {
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "calculation_status": {
+            "type": "string",
+            "enum": [
+              "calculated",
+              "simulated",
+              "deferred"
+            ],
+            "title": "Calculation Status"
+          },
+          "validation_status": {
+            "type": "string",
+            "enum": [
+              "not_evaluable",
+              "evaluated"
+            ],
+            "title": "Validation Status"
+          },
+          "slot_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slot Minutes"
+          },
+          "overlap_mode": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Overlap Mode"
+          },
+          "background": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Background"
+          },
+          "corrections": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Corrections"
+          },
+          "results": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/M1PredictionRow"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Results"
+          },
+          "missing_required_inputs": {
+            "items": {
+              "$ref": "#/components/schemas/MissingInput"
+            },
+            "type": "array",
+            "title": "Missing Required Inputs"
+          },
+          "accuracy_claim": {
+            "type": "null",
+            "title": "Accuracy Claim"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "model_version",
+          "calculation_status",
+          "validation_status",
+          "missing_required_inputs",
+          "disclaimer"
+        ],
+        "title": "M1PredictResponse"
+      },
+      "M1PredictionRow": {
+        "properties": {
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "slot_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot Start"
+          },
+          "slot_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot End"
+          },
+          "new_project_contribution_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Project Contribution Laeq Db"
+          },
+          "slot_laeq_dba": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Slot Laeq Dba"
+          },
+          "total_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Total Laeq Db"
+          },
+          "delta_total_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Delta Total Db"
+          },
+          "new_project_energy_exposure_65db_ref_minutes": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "New Project Energy Exposure 65Db Ref Minutes"
+          },
+          "incremental_impact_legacy_v1": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Incremental Impact Legacy V1"
+          },
+          "max_simultaneous_lp_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Simultaneous Lp Db"
+          },
+          "maximum_concurrent_combined_level_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Maximum Concurrent Combined Level Db"
+          },
+          "measured_lafmax_dba": {
+            "type": "null",
+            "title": "Measured Lafmax Dba"
+          },
+          "simultaneity": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Simultaneity"
+          },
+          "continuous_new_project_exposure": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Continuous New Project Exposure"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/M1SourceResult"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "receptor_id",
+          "slot_start",
+          "slot_end",
+          "new_project_contribution_laeq_db",
+          "slot_laeq_dba",
+          "total_laeq_db",
+          "delta_total_db",
+          "new_project_energy_exposure_65db_ref_minutes",
+          "incremental_impact_legacy_v1",
+          "max_simultaneous_lp_db",
+          "maximum_concurrent_combined_level_db",
+          "measured_lafmax_dba",
+          "simultaneity",
+          "continuous_new_project_exposure",
+          "sources"
+        ],
+        "title": "M1PredictionRow"
+      },
       "M1PropagationCorrection": {
         "properties": {
           "value_db": {
@@ -1647,6 +3838,117 @@
           "request"
         ],
         "title": "M1SensitivityCase"
+      },
+      "M1SourceResult": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "segment_id": {
+            "type": "string",
+            "title": "Segment Id"
+          },
+          "equipment_category": {
+            "type": "string",
+            "title": "Equipment Category"
+          },
+          "source_type": {
+            "type": "string",
+            "title": "Source Type"
+          },
+          "equipment_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment Model"
+          },
+          "simultaneous_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simultaneous Group"
+          },
+          "count": {
+            "type": "integer",
+            "title": "Count"
+          },
+          "lw_db": {
+            "type": "number",
+            "title": "Lw Db"
+          },
+          "distance_3d_m": {
+            "type": "number",
+            "title": "Distance 3D M"
+          },
+          "active_minutes": {
+            "type": "number",
+            "title": "Active Minutes"
+          },
+          "activity_ratio": {
+            "type": "number",
+            "title": "Activity Ratio"
+          },
+          "activity_basis": {
+            "type": "string",
+            "title": "Activity Basis"
+          },
+          "activity_provenance": {
+            "type": "string",
+            "title": "Activity Provenance"
+          },
+          "source_position": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Source Position"
+          },
+          "receptor_position": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Receptor Position"
+          },
+          "measurement_condition_verified": {
+            "type": "boolean",
+            "title": "Measurement Condition Verified"
+          },
+          "lw_source": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Lw Source"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "segment_id",
+          "equipment_category",
+          "source_type",
+          "equipment_model",
+          "simultaneous_group",
+          "count",
+          "lw_db",
+          "distance_3d_m",
+          "active_minutes",
+          "activity_ratio",
+          "activity_basis",
+          "activity_provenance",
+          "source_position",
+          "receptor_position",
+          "measurement_condition_verified",
+          "lw_source"
+        ],
+        "title": "M1SourceResult"
       },
       "M1TaskAcousticMapping": {
         "properties": {
@@ -1791,6 +4093,29 @@
         ],
         "title": "M1TaskAcousticMapping"
       },
+      "M1UncertaintyCaseResult": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "varied_variable": {
+            "type": "string",
+            "title": "Varied Variable"
+          },
+          "prediction": {
+            "$ref": "#/components/schemas/M1PredictResponse"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "varied_variable",
+          "prediction"
+        ],
+        "title": "M1UncertaintyCaseResult"
+      },
       "M1UncertaintyRequest": {
         "properties": {
           "cases": {
@@ -1807,6 +4132,446 @@
           "cases"
         ],
         "title": "M1UncertaintyRequest"
+      },
+      "M1UncertaintyResponse": {
+        "properties": {
+          "analysis_type": {
+            "type": "string",
+            "title": "Analysis Type"
+          },
+          "probability_distribution": {
+            "type": "null",
+            "title": "Probability Distribution"
+          },
+          "confidence_interval": {
+            "type": "null",
+            "title": "Confidence Interval"
+          },
+          "validation_status": {
+            "type": "string",
+            "const": "not_evaluable",
+            "title": "Validation Status"
+          },
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/M1UncertaintyCaseResult"
+            },
+            "type": "array",
+            "title": "Cases"
+          },
+          "ranges": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Ranges"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "analysis_type",
+          "probability_distribution",
+          "confidence_interval",
+          "validation_status",
+          "cases",
+          "ranges",
+          "note"
+        ],
+        "title": "M1UncertaintyResponse"
+      },
+      "MissingInput": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "status": {
+            "type": "string",
+            "title": "Status"
+          },
+          "source_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source Id"
+          },
+          "receptor_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Receptor Id"
+          },
+          "task_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Task Id"
+          },
+          "reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reason"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "field",
+          "status"
+        ],
+        "title": "MissingInput"
+      },
+      "MockNoticeExtractResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "const": "mock",
+            "title": "Mode"
+          },
+          "is_actual_ai": {
+            "type": "boolean",
+            "const": false,
+            "title": "Is Actual Ai"
+          },
+          "notice": {
+            "$ref": "#/components/schemas/ConstructionNotice"
+          },
+          "field_evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Field Evidence"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "mode",
+          "is_actual_ai",
+          "notice",
+          "field_evidence",
+          "warnings"
+        ],
+        "title": "MockNoticeExtractResponse"
+      },
+      "NoisePredictResponse": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "model_version": {
+            "type": "string",
+            "title": "Model Version"
+          },
+          "scoring_version": {
+            "type": "string",
+            "title": "Scoring Version"
+          },
+          "timezone": {
+            "type": "string",
+            "title": "Timezone"
+          },
+          "slot_minutes": {
+            "type": "integer",
+            "title": "Slot Minutes"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile"
+          },
+          "public_data_calendar_institution": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Data Calendar Institution"
+          },
+          "calendar_overlaps": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Calendar Overlaps"
+          },
+          "existing_event_acoustic_policy": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Existing Event Acoustic Policy"
+          },
+          "predictions": {
+            "items": {
+              "$ref": "#/components/schemas/M0PredictionRow"
+            },
+            "type": "array",
+            "title": "Predictions"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          },
+          "legal_assessment": {
+            "type": "null",
+            "title": "Legal Assessment"
+          },
+          "disclaimer": {
+            "type": "string",
+            "title": "Disclaimer"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "analysis_date",
+          "model_version",
+          "scoring_version",
+          "timezone",
+          "slot_minutes",
+          "background_profile",
+          "public_data_calendar_institution",
+          "calendar_overlaps",
+          "existing_event_acoustic_policy",
+          "predictions",
+          "warnings",
+          "legal_assessment",
+          "disclaimer"
+        ],
+        "title": "NoisePredictResponse"
+      },
+      "OptimizationDiagnostics": {
+        "properties": {
+          "generated_candidate_count": {
+            "type": "integer",
+            "title": "Generated Candidate Count"
+          },
+          "feasible_candidate_count": {
+            "type": "integer",
+            "title": "Feasible Candidate Count"
+          },
+          "infeasible_candidate_count": {
+            "type": "integer",
+            "title": "Infeasible Candidate Count"
+          },
+          "pareto_candidate_count": {
+            "type": "integer",
+            "title": "Pareto Candidate Count"
+          },
+          "pareto_axes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Axes"
+          },
+          "candidate_metrics": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Candidate Metrics"
+          },
+          "sensitivity_enabled": {
+            "type": "boolean",
+            "title": "Sensitivity Enabled"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile"
+          },
+          "objective_mode": {
+            "type": "string",
+            "title": "Objective Mode"
+          },
+          "objective_field": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective Field"
+          },
+          "objective_unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Objective Unit"
+          },
+          "default_objective_unchanged": {
+            "type": "boolean",
+            "title": "Default Objective Unchanged"
+          },
+          "balanced_selection": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Balanced Selection"
+          },
+          "policy_overlap_cost_included_in_pareto": {
+            "type": "boolean",
+            "title": "Policy Overlap Cost Included In Pareto"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "generated_candidate_count",
+          "feasible_candidate_count",
+          "infeasible_candidate_count",
+          "pareto_candidate_count",
+          "pareto_axes",
+          "candidate_metrics",
+          "sensitivity_enabled",
+          "background_profile",
+          "objective_mode",
+          "objective_field",
+          "objective_unit",
+          "default_objective_unchanged",
+          "balanced_selection",
+          "policy_overlap_cost_included_in_pareto"
+        ],
+        "title": "OptimizationDiagnostics"
+      },
+      "OptimizeInfeasibleResponse": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "optimization_status": {
+            "type": "string",
+            "const": "infeasible",
+            "title": "Optimization Status"
+          },
+          "scoring_version": {
+            "type": "string",
+            "title": "Scoring Version"
+          },
+          "metrics_version": {
+            "type": "string",
+            "title": "Metrics Version"
+          },
+          "valid_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleCandidate"
+            },
+            "type": "array",
+            "title": "Valid Candidates"
+          },
+          "pareto_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleCandidate"
+            },
+            "type": "array",
+            "title": "Pareto Candidates"
+          },
+          "recommended_options": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendedOption"
+            },
+            "type": "array",
+            "title": "Recommended Options"
+          },
+          "infeasible_result": {
+            "$ref": "#/components/schemas/ScheduleCandidate"
+          },
+          "relaxation_guidance": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Relaxation Guidance"
+          },
+          "solver": {
+            "type": "string",
+            "title": "Solver"
+          },
+          "diagnostics": {
+            "$ref": "#/components/schemas/OptimizationDiagnostics"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "analysis_date",
+          "optimization_status",
+          "scoring_version",
+          "metrics_version",
+          "valid_candidates",
+          "pareto_candidates",
+          "recommended_options",
+          "infeasible_result",
+          "relaxation_guidance",
+          "solver",
+          "diagnostics"
+        ],
+        "title": "OptimizeInfeasibleResponse"
       },
       "OptimizeRequest": {
         "properties": {
@@ -1847,6 +4612,80 @@
         },
         "type": "object",
         "title": "OptimizeRequest"
+      },
+      "OptimizeSuccessResponse": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "optimization_status": {
+            "type": "string",
+            "const": "optimal_enumeration",
+            "title": "Optimization Status"
+          },
+          "scoring_version": {
+            "type": "string",
+            "title": "Scoring Version"
+          },
+          "metrics_version": {
+            "type": "string",
+            "title": "Metrics Version"
+          },
+          "valid_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleCandidate"
+            },
+            "type": "array",
+            "title": "Valid Candidates"
+          },
+          "pareto_candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ScheduleCandidate"
+            },
+            "type": "array",
+            "title": "Pareto Candidates"
+          },
+          "recommended_options": {
+            "items": {
+              "$ref": "#/components/schemas/RecommendedOption"
+            },
+            "type": "array",
+            "title": "Recommended Options"
+          },
+          "solver": {
+            "type": "string",
+            "title": "Solver"
+          },
+          "note": {
+            "type": "string",
+            "title": "Note"
+          },
+          "diagnostics": {
+            "$ref": "#/components/schemas/OptimizationDiagnostics"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "analysis_date",
+          "optimization_status",
+          "scoring_version",
+          "metrics_version",
+          "valid_candidates",
+          "pareto_candidates",
+          "recommended_options",
+          "solver",
+          "note",
+          "diagnostics"
+        ],
+        "title": "OptimizeSuccessResponse"
       },
       "PredictRequest": {
         "properties": {
@@ -1889,6 +4728,643 @@
         "type": "object",
         "title": "PredictRequest"
       },
+      "ProvenanceStatus": {
+        "type": "string",
+        "enum": [
+          "verified_public",
+          "user_provided",
+          "assumed",
+          "derived",
+          "missing"
+        ],
+        "title": "ProvenanceStatus"
+      },
+      "PublicDataCatalogResponse": {
+        "properties": {
+          "manifest": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Manifest"
+          },
+          "equipment_noise": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Equipment Noise"
+          },
+          "construction_events": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Construction Events"
+          },
+          "cultural_events": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Cultural Events"
+          },
+          "receptors": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Receptors"
+          },
+          "official_facilities": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Official Facilities"
+          },
+          "receptor_distances": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Receptor Distances"
+          },
+          "official_equipment_noise": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Official Equipment Noise"
+          },
+          "official_construction_design": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Official Construction Design"
+          },
+          "academic_calendar": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Academic Calendar"
+          },
+          "waste_collection": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Waste Collection"
+          },
+          "land_use": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Land Use"
+          },
+          "policy": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Policy"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "manifest",
+          "equipment_noise",
+          "construction_events",
+          "cultural_events",
+          "receptors",
+          "official_facilities",
+          "receptor_distances",
+          "official_equipment_noise",
+          "official_construction_design",
+          "academic_calendar",
+          "waste_collection",
+          "land_use",
+          "policy"
+        ],
+        "title": "PublicDataCatalogResponse"
+      },
+      "Receptor": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "type": {
+            "type": "string",
+            "enum": [
+              "residential",
+              "school",
+              "hospital",
+              "university",
+              "commercial"
+            ],
+            "title": "Type"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "distance_to_source_m": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Distance To Source M"
+          },
+          "sensitivity_profile": {
+            "items": {
+              "$ref": "#/components/schemas/SensitivityProfile"
+            },
+            "type": "array",
+            "title": "Sensitivity Profile"
+          },
+          "noise_limit_profile": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Noise Limit Profile"
+          },
+          "latitude": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 90.0,
+                "minimum": -90.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Latitude"
+          },
+          "longitude": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 180.0,
+                "minimum": -180.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Longitude"
+          },
+          "coordinate_crs": {
+            "anyOf": [
+              {
+                "type": "string",
+                "const": "EPSG:4326"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Crs"
+          },
+          "coordinate_source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Coordinate Source"
+          },
+          "distance_method": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Distance Method"
+          },
+          "spatial_status": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "verified_public",
+                  "assumed",
+                  "deferred"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Spatial Status"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "location",
+          "distance_to_source_m"
+        ],
+        "title": "Receptor"
+      },
+      "RecommendedOption": {
+        "properties": {
+          "character": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Character"
+          },
+          "candidate": {
+            "$ref": "#/components/schemas/ScheduleCandidate"
+          },
+          "recommendation_reasons": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Recommendation Reasons"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "character",
+          "candidate",
+          "recommendation_reasons"
+        ],
+        "title": "RecommendedOption"
+      },
+      "ScenarioDetailResponse": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "expected_feasibility": {
+            "type": "boolean",
+            "title": "Expected Feasibility"
+          },
+          "settings": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Settings"
+          },
+          "notice": {
+            "$ref": "#/components/schemas/ConstructionNotice"
+          },
+          "equipment": {
+            "items": {
+              "$ref": "#/components/schemas/Equipment"
+            },
+            "type": "array",
+            "title": "Equipment"
+          },
+          "receptors": {
+            "items": {
+              "$ref": "#/components/schemas/Receptor"
+            },
+            "type": "array",
+            "title": "Receptors"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "expected_feasibility",
+          "settings",
+          "notice",
+          "equipment",
+          "receptors"
+        ],
+        "title": "ScenarioDetailResponse"
+      },
+      "ScenarioListResponse": {
+        "items": {
+          "$ref": "#/components/schemas/ScenarioSummary"
+        },
+        "type": "array",
+        "title": "ScenarioListResponse"
+      },
+      "ScenarioSummary": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "expected_feasibility": {
+            "type": "boolean",
+            "title": "Expected Feasibility"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "expected_feasibility"
+        ],
+        "title": "ScenarioSummary"
+      },
+      "ScheduleCandidate": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "task_assignments": {
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "type": "array",
+            "title": "Task Assignments"
+          },
+          "feasibility": {
+            "type": "boolean",
+            "title": "Feasibility"
+          },
+          "infeasibility_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Infeasibility Reasons"
+          },
+          "needs_confirmation": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Needs Confirmation"
+          },
+          "metrics": {
+            "$ref": "#/components/schemas/ScheduleMetrics"
+          },
+          "objective_values": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Objective Values"
+          },
+          "schedule_change_details": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Schedule Change Details"
+          },
+          "provenance": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "feasibility",
+          "provenance"
+        ],
+        "title": "ScheduleCandidate"
+      },
+      "ScheduleMetrics": {
+        "properties": {
+          "max_continuous_high_noise_minutes": {
+            "type": "integer",
+            "title": "Max Continuous High Noise Minutes",
+            "default": 0
+          },
+          "longest_quiet_window_minutes": {
+            "type": "integer",
+            "title": "Longest Quiet Window Minutes",
+            "default": 0
+          },
+          "sensitive_high_noise_minutes": {
+            "type": "integer",
+            "title": "Sensitive High Noise Minutes",
+            "default": 0
+          },
+          "max_impact_score": {
+            "type": "number",
+            "title": "Max Impact Score",
+            "default": 0
+          },
+          "total_impact_score": {
+            "type": "number",
+            "title": "Total Impact Score",
+            "default": 0
+          },
+          "absolute_impact_cost": {
+            "type": "number",
+            "title": "Absolute Impact Cost",
+            "default": 0
+          },
+          "incremental_impact_cost": {
+            "type": "number",
+            "title": "Incremental Impact Cost",
+            "default": 0
+          },
+          "new_project_additional_high_noise_minutes": {
+            "type": "integer",
+            "title": "New Project Additional High Noise Minutes",
+            "default": 0
+          },
+          "sensitive_new_project_exposure_minutes": {
+            "type": "integer",
+            "title": "Sensitive New Project Exposure Minutes",
+            "default": 0
+          },
+          "sensitive_new_project_receptor_minutes": {
+            "type": "integer",
+            "title": "Sensitive New Project Receptor Minutes",
+            "default": 0
+          },
+          "sensitivity_weighted_new_project_receptor_minutes": {
+            "type": "number",
+            "title": "Sensitivity Weighted New Project Receptor Minutes",
+            "default": 0
+          },
+          "new_project_receptor_minutes": {
+            "type": "integer",
+            "title": "New Project Receptor Minutes",
+            "default": 0
+          },
+          "new_project_inactive_minutes": {
+            "type": "integer",
+            "title": "New Project Inactive Minutes",
+            "default": 0
+          },
+          "max_continuous_new_project_minutes": {
+            "type": "integer",
+            "title": "Max Continuous New Project Minutes",
+            "default": 0
+          },
+          "new_project_energy_exposure_65db_ref_minutes": {
+            "type": "number",
+            "title": "New Project Energy Exposure 65Db Ref Minutes",
+            "default": 0
+          },
+          "cumulative_delta_db_minutes": {
+            "type": "number",
+            "title": "Cumulative Delta Db Minutes",
+            "default": 0
+          },
+          "existing_noise_overlap_receptor_minutes": {
+            "type": "integer",
+            "title": "Existing Noise Overlap Receptor Minutes",
+            "default": 0
+          },
+          "max_total_estimated_db": {
+            "type": "number",
+            "title": "Max Total Estimated Db",
+            "default": 0
+          },
+          "max_new_project_contribution_db": {
+            "type": "number",
+            "title": "Max New Project Contribution Db",
+            "default": 0
+          },
+          "saturation_slot_count": {
+            "type": "integer",
+            "title": "Saturation Slot Count",
+            "default": 0
+          },
+          "schedule_change_minutes": {
+            "type": "integer",
+            "title": "Schedule Change Minutes",
+            "default": 0
+          },
+          "project_start_change_minutes": {
+            "type": "integer",
+            "title": "Project Start Change Minutes",
+            "default": 0
+          },
+          "project_end_change_minutes": {
+            "type": "integer",
+            "title": "Project End Change Minutes",
+            "default": 0
+          }
+        },
+        "type": "object",
+        "title": "ScheduleMetrics"
+      },
+      "SensitivityProfile": {
+        "properties": {
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "time_period": {
+            "type": "string",
+            "title": "Time Period"
+          },
+          "base_weight": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Base Weight"
+          },
+          "situational_adjustments": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Situational Adjustments"
+          },
+          "calculation_notes": {
+            "type": "string",
+            "title": "Calculation Notes"
+          }
+        },
+        "type": "object",
+        "required": [
+          "receptor_id",
+          "time_period",
+          "base_weight",
+          "calculation_notes"
+        ],
+        "title": "SensitivityProfile"
+      },
+      "SourceMetadata": {
+        "properties": {
+          "status": {
+            "$ref": "#/components/schemas/ProvenanceStatus"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          },
+          "unit": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Unit"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "SourceMetadata"
+      },
       "TaskAssignment": {
         "properties": {
           "task_id": {
@@ -1913,6 +5389,26 @@
           "end"
         ],
         "title": "TaskAssignment"
+      },
+      "TimeWindow": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "time",
+            "title": "End"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "TimeWindow"
       },
       "ValidationError": {
         "properties": {

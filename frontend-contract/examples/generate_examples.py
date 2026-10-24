@@ -15,7 +15,8 @@ import httpx
 
 
 BASE_URL = os.getenv("SHH_API_BASE_URL", "http://127.0.0.1:8765")
-OUT = Path(__file__).resolve().parent
+OUT = Path(os.getenv("SHH_EXAMPLES_OUT_DIR", Path(__file__).resolve().parent))
+OUT.mkdir(parents=True, exist_ok=True)
 START = "2026-10-26T07:00:00+09:00"
 END = "2026-10-26T07:15:00+09:00"
 

@@ -365,6 +365,42 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        /** BackgroundProfile */
+        BackgroundProfile: {
+            /** Id */
+            id: string;
+            /** Label */
+            label: string;
+            /** Calculation Eligible */
+            calculation_eligible: boolean;
+            /** Metric */
+            metric: string;
+            /** Observation Period */
+            observation_period: string | {
+                [key: string]: unknown;
+            } | null;
+            /** Hourly Values */
+            hourly_values: {
+                [key: string]: unknown;
+            }[];
+            /** Source Metadata */
+            source_metadata: {
+                [key: string]: unknown;
+            };
+            /** Quality Warnings */
+            quality_warnings: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** BackgroundProfilesResponse */
+        BackgroundProfilesResponse: {
+            /** Profiles */
+            profiles: components["schemas"]["BackgroundProfile"][];
+            /** Default */
+            default: string;
+        } & {
+            [key: string]: unknown;
+        };
         /** Body_extract_file_api_notices_extract_file_post */
         Body_extract_file_api_notices_extract_file_post: {
             /** File */
@@ -392,6 +428,128 @@ export interface components {
              * @default assumed_demo
              */
             background_profile: string;
+        };
+        /** CompareResponse */
+        CompareResponse: {
+            before: components["schemas"]["ScheduleMetrics"];
+            after: components["schemas"]["ScheduleMetrics"];
+            /** Delta */
+            delta: {
+                [key: string]: number;
+            };
+            /** Schedule Change Details */
+            schedule_change_details: {
+                [key: string]: unknown;
+            };
+            /** Comparison Basis */
+            comparison_basis: {
+                [key: string]: unknown;
+            };
+        } & {
+            [key: string]: unknown;
+        };
+        /** ConstructionDesignResponse */
+        ConstructionDesignResponse: {
+            /** Data Version */
+            data_version: string;
+            /** Notice Id */
+            notice_id: string;
+            /** Project Name */
+            project_name: string;
+            /** Dataset Provenance */
+            dataset_provenance: string;
+            /** Provenance Policy */
+            provenance_policy: {
+                [key: string]: unknown;
+            };
+            /** Source Documents */
+            source_documents: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            };
+            /** Segments */
+            segments: {
+                [key: string]: unknown;
+            }[];
+            /** Route Length Total M */
+            route_length_total_m: {
+                [key: string]: unknown;
+            };
+            /** Work Packages */
+            work_packages: {
+                [key: string]: unknown;
+            }[];
+            /** Equipment Reference Matching */
+            equipment_reference_matching: {
+                [key: string]: unknown;
+            }[];
+            /** Schedule Metadata */
+            schedule_metadata: {
+                [key: string]: unknown;
+            };
+            /** Assumed Demo Schedule Reference */
+            assumed_demo_schedule_reference: {
+                [key: string]: unknown;
+            };
+            /** Calculation Readiness */
+            calculation_readiness: {
+                [key: string]: unknown;
+            };
+        } & {
+            [key: string]: unknown;
+        };
+        /** ConstructionNotice */
+        ConstructionNotice: {
+            /** Id */
+            id: string;
+            /** Name */
+            name?: string | null;
+            /** Location */
+            location?: string | null;
+            construction_period: components["schemas"]["ConstructionPeriod"];
+            original_work_window?: components["schemas"]["TimeWindow"] | null;
+            /** Tasks */
+            tasks: components["schemas"]["ConstructionTask"][];
+            /** Constraints */
+            constraints?: {
+                [key: string]: unknown;
+            };
+            /** Source Provenance */
+            source_provenance: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+        };
+        /** ConstructionPeriod */
+        ConstructionPeriod: {
+            /** Start */
+            start?: string | null;
+            /** End */
+            end?: string | null;
+            /** Raw Text */
+            raw_text?: string | null;
+        };
+        /** ConstructionTask */
+        ConstructionTask: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /** Equipment Id */
+            equipment_id?: string | null;
+            /** Duration Minutes */
+            duration_minutes?: number | null;
+            /** Permitted Time Windows */
+            permitted_time_windows?: components["schemas"]["TimeWindow"][];
+            /** Predecessors */
+            predecessors?: string[];
+            /**
+             * Is Movable
+             * @default true
+             */
+            is_movable: boolean;
+            /** Required Resources */
+            required_resources?: string[];
         };
         /** DesignBasedSimulationRequest */
         DesignBasedSimulationRequest: {
@@ -445,6 +603,199 @@ export interface components {
              */
             simulation_date: string;
         };
+        /** DesignCandidate */
+        DesignCandidate: {
+            /** Id */
+            id: string;
+            /** Method */
+            method: string;
+            /** Feasible */
+            feasible: boolean;
+            /** Pareto Included */
+            pareto_included: boolean;
+            /** Assignments */
+            assignments?: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Slot Results */
+            slot_results?: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Metrics */
+            metrics?: {
+                [key: string]: unknown;
+            } | null;
+            /** Acoustic Completeness */
+            acoustic_completeness?: ("partial" | "complete") | null;
+            /** Missing Noise Equipment */
+            missing_noise_equipment?: string[] | null;
+            /** Infeasibility Reasons */
+            infeasibility_reasons?: string[] | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** DesignSimulationCatalogResponse */
+        DesignSimulationCatalogResponse: {
+            /** Data Version */
+            data_version: string;
+            /** Simulation Version */
+            simulation_version: string;
+            /** Official Design Data */
+            official_design_data: {
+                [key: string]: unknown;
+            };
+            /** Official Reference Noise */
+            official_reference_noise: {
+                [key: string]: {
+                    [key: string]: unknown;
+                };
+            };
+            /** Excavator Capacity Match */
+            excavator_capacity_match: {
+                [key: string]: unknown;
+            };
+            /** Missing Required Inputs */
+            missing_required_inputs: string[];
+            /**
+             * Official Prediction Status
+             * @constant
+             */
+            official_prediction_status: "deferred";
+            /**
+             * Validation Status
+             * @constant
+             */
+            validation_status: "not_evaluable";
+        } & {
+            [key: string]: unknown;
+        };
+        /** DesignSimulationResponse */
+        DesignSimulationResponse: {
+            /** Simulation Version */
+            simulation_version: string;
+            /**
+             * Result Type
+             * @constant
+             */
+            result_type: "design_based_simulation";
+            /**
+             * Official Field Prediction Status
+             * @constant
+             */
+            official_field_prediction_status: "deferred";
+            /**
+             * Simulation Status
+             * @constant
+             */
+            simulation_status: "simulated";
+            /**
+             * Validation Status
+             * @constant
+             */
+            validation_status: "not_evaluable";
+            /** Segment */
+            segment: {
+                [key: string]: unknown;
+            };
+            /** Simulation Geometry */
+            simulation_geometry: {
+                [key: string]: unknown;
+            };
+            /** Background Profile */
+            background_profile: {
+                [key: string]: unknown;
+            };
+            /** Data Quality */
+            data_quality: {
+                [key: string]: string[];
+            };
+            /** Quantity Allocation */
+            quantity_allocation: string;
+            /** Process Assumptions */
+            process_assumptions: {
+                [key: string]: unknown;
+            }[];
+            /** Candidate Count */
+            candidate_count: number;
+            /** Feasible Candidate Count */
+            feasible_candidate_count: number;
+            /** Pareto Axes */
+            pareto_axes: string[];
+            /** Candidates */
+            candidates: components["schemas"]["DesignCandidate"][];
+            /** Pareto Candidates */
+            pareto_candidates: components["schemas"]["DesignCandidate"][];
+            recommended_candidate: components["schemas"]["DesignCandidate"];
+            /** Recommendation Reasons */
+            recommendation_reasons: {
+                [key: string]: unknown;
+            }[];
+            /** Accuracy Claim */
+            accuracy_claim: null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** DiagnosticsResponse */
+        DiagnosticsResponse: {
+            /** Generated Candidate Count */
+            generated_candidate_count: number;
+            /** Feasible Candidate Count */
+            feasible_candidate_count: number;
+            /** Infeasible Candidate Count */
+            infeasible_candidate_count: number;
+            /** Pareto Candidate Count */
+            pareto_candidate_count: number;
+            /** Pareto Axes */
+            pareto_axes: string[];
+            /** Candidate Metrics */
+            candidate_metrics: {
+                [key: string]: unknown;
+            }[];
+            /** Sensitivity Enabled */
+            sensitivity_enabled: boolean;
+            /** Background Profile */
+            background_profile: string;
+            /** Objective Mode */
+            objective_mode: string;
+            /** Objective Field */
+            objective_field: string | null;
+            /** Objective Unit */
+            objective_unit: string | null;
+            /** Default Objective Unchanged */
+            default_objective_unchanged: boolean;
+            /** Balanced Selection */
+            balanced_selection: string | null;
+            /** Policy Overlap Cost Included In Pareto */
+            policy_overlap_cost_included_in_pareto: boolean;
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** Equipment */
+        Equipment: {
+            /** Id */
+            id: string;
+            /** Category */
+            category: string;
+            /** Model Name */
+            model_name?: string | null;
+            /** Count */
+            count: number;
+            /** Sound Power Level Db */
+            sound_power_level_db?: number | null;
+            /**
+             * Acoustic Unit Type
+             * @enum {string}
+             */
+            acoustic_unit_type: "Lw_dBA" | "Lp_dBA" | "missing";
+            source_metadata: components["schemas"]["SourceMetadata"];
+        };
         /** ExperimentRequest */
         ExperimentRequest: {
             /**
@@ -469,6 +820,34 @@ export interface components {
              * @enum {string}
              */
             objective_mode: "incremental_impact" | "absolute_impact" | "physical_energy" | "sensitive_exposure" | "continuous_burden" | "multi_axis";
+        };
+        /** ExperimentResponse */
+        ExperimentResponse: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /** Objective Mode */
+            objective_mode: string;
+            /** Experiment A */
+            experiment_a: {
+                [key: string]: unknown;
+            };
+            /** Experiment B */
+            experiment_b: {
+                [key: string]: unknown;
+            };
+            /** Experiment C */
+            experiment_c: {
+                [key: string]: unknown;
+            }[];
+            /** Disclaimer */
+            disclaimer: string;
+        } & {
+            [key: string]: unknown;
         };
         /** ExtractRequest */
         ExtractRequest: {
@@ -562,10 +941,62 @@ export interface components {
             /** Predictions */
             predictions?: components["schemas"]["FieldPredictionRecord"][];
         };
+        /** FieldValidationResponse */
+        FieldValidationResponse: {
+            /**
+             * Validation Status
+             * @enum {string}
+             */
+            validation_status: "evaluated" | "not_evaluable";
+            /** Sample Count */
+            sample_count?: number | null;
+            /** Mae */
+            mae: number | null;
+            /** Rmse */
+            rmse: number | null;
+            /** Bias */
+            bias: number | null;
+            /** Reason */
+            reason?: string | null;
+            /** Aligned Sample Count */
+            aligned_sample_count?: number | null;
+            /** Receptor Errors */
+            receptor_errors: {
+                [key: string]: unknown;
+            }[];
+            /** Equipment Errors */
+            equipment_errors: {
+                [key: string]: unknown;
+            }[];
+            /** Alignment Failures */
+            alignment_failures: {
+                [key: string]: unknown;
+            }[];
+            /** Alignment Requirements */
+            alignment_requirements?: string[] | null;
+            /** Coordinate Tolerance Note */
+            coordinate_tolerance_note?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
         /** HTTPValidationError */
         HTTPValidationError: {
             /** Detail */
             detail?: components["schemas"]["ValidationError"][];
+        };
+        /** HealthResponse */
+        HealthResponse: {
+            /**
+             * Status
+             * @constant
+             */
+            status: "ok";
+            /** Model Version */
+            model_version: string;
+            /** Extractor Mode */
+            extractor_mode: string;
+        } & {
+            [key: string]: unknown;
         };
         /** ImpactRequest */
         ImpactRequest: {
@@ -590,6 +1021,162 @@ export interface components {
             /** Baseline Noise Db */
             baseline_noise_db?: number | null;
         };
+        /** ImpactResponse */
+        ImpactResponse: {
+            /** Score */
+            score: number;
+            /** Components */
+            components: {
+                [key: string]: number;
+            };
+            /** Weights */
+            weights: {
+                [key: string]: number;
+            };
+            /** Classification */
+            classification: string;
+            /** Baseline Score */
+            baseline_score?: number | null;
+            /** Incremental Score */
+            incremental_score?: number | null;
+            /** Saturation */
+            saturation?: {
+                [key: string]: boolean;
+            } | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** LLMNoticeExtractResponse */
+        LLMNoticeExtractResponse: {
+            /**
+             * Mode
+             * @constant
+             */
+            mode: "llm";
+            /**
+             * Is Actual Ai
+             * @constant
+             */
+            is_actual_ai: true;
+            /** Provider */
+            provider: string;
+            /** Model */
+            model: string;
+            notice: components["schemas"]["ConstructionNotice"];
+            /** Warnings */
+            warnings: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** M0M1CompareResponse */
+        M0M1CompareResponse: {
+            /**
+             * Comparison Status
+             * @enum {string}
+             */
+            comparison_status: "simulated" | "deferred";
+            /**
+             * Validation Status
+             * @constant
+             */
+            validation_status: "not_evaluable";
+            /** M0 Characterization */
+            m0_characterization?: string | null;
+            /** M1 Characterization */
+            m1_characterization?: string | null;
+            /** Comparisons */
+            comparisons?: components["schemas"]["M0M1ComparisonRow"][] | null;
+            m0?: components["schemas"]["M1PredictResponse"] | null;
+            m1: components["schemas"]["M1PredictResponse"];
+            /** Accuracy Improvement Claimed */
+            accuracy_improvement_claimed?: boolean | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** M0M1ComparisonRow */
+        M0M1ComparisonRow: {
+            /** Receptor Id */
+            receptor_id: string;
+            /** M0 New Project Laeq Db */
+            m0_new_project_laeq_db: number | null;
+            /** M1 New Project Laeq Db */
+            m1_new_project_laeq_db: number | null;
+            /** M0 Total Laeq Db */
+            m0_total_laeq_db: number | null;
+            /** M1 Total Laeq Db */
+            m1_total_laeq_db: number | null;
+            /** M0 Delta Total Db */
+            m0_delta_total_db: number | null;
+            /** M1 Delta Total Db */
+            m1_delta_total_db: number | null;
+            /** M0 Energy Exposure */
+            m0_energy_exposure: number | null;
+            /** M1 Energy Exposure */
+            m1_energy_exposure: number | null;
+            /** M0 Incremental Impact */
+            m0_incremental_impact: number | null;
+            /** M1 Incremental Impact */
+            m1_incremental_impact: number | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** M0PredictionRow */
+        M0PredictionRow: {
+            /** Receptor Id */
+            receptor_id: string;
+            /**
+             * Slot Start
+             * Format: date-time
+             */
+            slot_start: string;
+            /**
+             * Slot End
+             * Format: date-time
+             */
+            slot_end: string;
+            /** Active Task Ids */
+            active_task_ids: string[];
+            /** Construction Lp Db */
+            construction_lp_db: number | null;
+            /** New Project Contribution Db */
+            new_project_contribution_db: number | null;
+            /** Background Laeq Db */
+            background_laeq_db: number;
+            /** Background Only Db */
+            background_only_db: number;
+            /** Existing Noise Lp Db */
+            existing_noise_lp_db: number | null;
+            /** Existing Environment Db */
+            existing_environment_db: number;
+            /** Existing Event Ids */
+            existing_event_ids: string[];
+            /** Total Estimated Db */
+            total_estimated_db: number | null;
+            /** With New Project Db */
+            with_new_project_db: number | null;
+            /** Delta Total Db */
+            delta_total_db: number;
+            /** Total Impact */
+            total_impact: number;
+            /** Baseline Impact */
+            baseline_impact: number;
+            /** Incremental Impact */
+            incremental_impact: number;
+            /** Impact Saturation */
+            impact_saturation: {
+                [key: string]: unknown;
+            };
+            /** Sensitivity */
+            sensitivity: {
+                [key: string]: unknown;
+            };
+            /** Source Metadata */
+            source_metadata: {
+                [key: string]: unknown;
+            };
+        } & {
+            [key: string]: unknown;
+        };
         /** M1ActiveInterval */
         M1ActiveInterval: {
             /**
@@ -602,6 +1189,74 @@ export interface components {
              * Format: date-time
              */
             end: string;
+        };
+        /** M1CandidateEvaluationResponse */
+        M1CandidateEvaluationResponse: {
+            /**
+             * Evaluation Status
+             * @enum {string}
+             */
+            evaluation_status: "simulated" | "deferred";
+            /**
+             * Validation Status
+             * @constant
+             */
+            validation_status: "not_evaluable";
+            /** Scenario Id */
+            scenario_id?: string | null;
+            /** Base Optimizer Unchanged */
+            base_optimizer_unchanged?: boolean | null;
+            /** Generated Candidate Count */
+            generated_candidate_count?: number | null;
+            /** Feasible Candidate Count */
+            feasible_candidate_count?: number | null;
+            /** Candidates */
+            candidates: components["schemas"]["M1EvaluatedCandidate"][];
+            /** Pareto Axes */
+            pareto_axes?: string[] | null;
+            /** Pareto Candidates */
+            pareto_candidates: components["schemas"]["M1EvaluatedCandidate"][];
+            recommended_candidate?: components["schemas"]["M1EvaluatedCandidate"] | null;
+            /** Recommendation Reasons */
+            recommendation_reasons?: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Missing Required Inputs */
+            missing_required_inputs?: components["schemas"]["MissingInput"][] | null;
+            /** Note */
+            note?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** M1EvaluatedCandidate */
+        M1EvaluatedCandidate: {
+            /** Id */
+            id: string;
+            /** Feasibility */
+            feasibility: boolean;
+            /**
+             * Evaluation Status
+             * @enum {string}
+             */
+            evaluation_status: "simulated" | "deferred";
+            /** Task Assignments */
+            task_assignments?: components["schemas"]["TaskAssignment"][] | null;
+            /** Objective Axes */
+            objective_axes?: {
+                [key: string]: number;
+            } | null;
+            /** Slot Results */
+            slot_results?: {
+                [key: string]: unknown;
+            }[] | null;
+            /** Input Provenance */
+            input_provenance?: {
+                [key: string]: unknown;
+            } | null;
+            /** Missing Required Inputs */
+            missing_required_inputs?: components["schemas"]["MissingInput"][] | null;
+        } & {
+            [key: string]: unknown;
         };
         /** M1NoiseSource */
         M1NoiseSource: {
@@ -722,6 +1377,88 @@ export interface components {
                 [key: string]: components["schemas"]["M1PropagationCorrection"];
             };
         };
+        /** M1PredictResponse */
+        M1PredictResponse: {
+            /** Model Version */
+            model_version: string;
+            /**
+             * Calculation Status
+             * @enum {string}
+             */
+            calculation_status: "calculated" | "simulated" | "deferred";
+            /**
+             * Validation Status
+             * @enum {string}
+             */
+            validation_status: "not_evaluable" | "evaluated";
+            /** Slot Minutes */
+            slot_minutes?: number | null;
+            /** Overlap Mode */
+            overlap_mode?: string | null;
+            /** Background */
+            background?: {
+                [key: string]: unknown;
+            } | null;
+            /** Corrections */
+            corrections?: {
+                [key: string]: unknown;
+            } | null;
+            /** Results */
+            results?: components["schemas"]["M1PredictionRow"][] | null;
+            /** Missing Required Inputs */
+            missing_required_inputs: components["schemas"]["MissingInput"][];
+            /** Accuracy Claim */
+            accuracy_claim?: null;
+            /** Disclaimer */
+            disclaimer: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** M1PredictionRow */
+        M1PredictionRow: {
+            /** Receptor Id */
+            receptor_id: string;
+            /**
+             * Slot Start
+             * Format: date-time
+             */
+            slot_start: string;
+            /**
+             * Slot End
+             * Format: date-time
+             */
+            slot_end: string;
+            /** New Project Contribution Laeq Db */
+            new_project_contribution_laeq_db: number | null;
+            /** Slot Laeq Dba */
+            slot_laeq_dba: number | null;
+            /** Total Laeq Db */
+            total_laeq_db: number | null;
+            /** Delta Total Db */
+            delta_total_db: number | null;
+            /** New Project Energy Exposure 65Db Ref Minutes */
+            new_project_energy_exposure_65db_ref_minutes: number | null;
+            /** Incremental Impact Legacy V1 */
+            incremental_impact_legacy_v1: number | null;
+            /** Max Simultaneous Lp Db */
+            max_simultaneous_lp_db: number | null;
+            /** Maximum Concurrent Combined Level Db */
+            maximum_concurrent_combined_level_db: number | null;
+            /** Measured Lafmax Dba */
+            measured_lafmax_dba: null;
+            /** Simultaneity */
+            simultaneity: {
+                [key: string]: unknown;
+            };
+            /** Continuous New Project Exposure */
+            continuous_new_project_exposure: {
+                [key: string]: unknown;
+            };
+            /** Sources */
+            sources: components["schemas"]["M1SourceResult"][];
+        } & {
+            [key: string]: unknown;
+        };
         /** M1PropagationCorrection */
         M1PropagationCorrection: {
             /** Value Db */
@@ -778,6 +1515,51 @@ export interface components {
             varied_variable: "equipment_lw" | "activity_ratio" | "simultaneous_operation" | "source_position" | "receptor_position_or_height" | "background_profile" | "propagation_correction_availability";
             request: components["schemas"]["M1PredictRequest"];
         };
+        /** M1SourceResult */
+        M1SourceResult: {
+            /** Id */
+            id: string;
+            /** Segment Id */
+            segment_id: string;
+            /** Equipment Category */
+            equipment_category: string;
+            /** Source Type */
+            source_type: string;
+            /** Equipment Model */
+            equipment_model: string | null;
+            /** Simultaneous Group */
+            simultaneous_group: string | null;
+            /** Count */
+            count: number;
+            /** Lw Db */
+            lw_db: number;
+            /** Distance 3D M */
+            distance_3d_m: number;
+            /** Active Minutes */
+            active_minutes: number;
+            /** Activity Ratio */
+            activity_ratio: number;
+            /** Activity Basis */
+            activity_basis: string;
+            /** Activity Provenance */
+            activity_provenance: string;
+            /** Source Position */
+            source_position: {
+                [key: string]: unknown;
+            };
+            /** Receptor Position */
+            receptor_position: {
+                [key: string]: unknown;
+            };
+            /** Measurement Condition Verified */
+            measurement_condition_verified: boolean;
+            /** Lw Source */
+            lw_source: {
+                [key: string]: unknown;
+            };
+        } & {
+            [key: string]: unknown;
+        };
         /** M1TaskAcousticMapping */
         M1TaskAcousticMapping: {
             /** Task Id */
@@ -828,10 +1610,191 @@ export interface components {
              */
             measurement_condition_verified: boolean;
         };
+        /** M1UncertaintyCaseResult */
+        M1UncertaintyCaseResult: {
+            /** Id */
+            id: string;
+            /** Varied Variable */
+            varied_variable: string;
+            prediction: components["schemas"]["M1PredictResponse"];
+        } & {
+            [key: string]: unknown;
+        };
         /** M1UncertaintyRequest */
         M1UncertaintyRequest: {
             /** Cases */
             cases: components["schemas"]["M1SensitivityCase"][];
+        };
+        /** M1UncertaintyResponse */
+        M1UncertaintyResponse: {
+            /** Analysis Type */
+            analysis_type: string;
+            /** Probability Distribution */
+            probability_distribution: null;
+            /** Confidence Interval */
+            confidence_interval: null;
+            /**
+             * Validation Status
+             * @constant
+             */
+            validation_status: "not_evaluable";
+            /** Cases */
+            cases: components["schemas"]["M1UncertaintyCaseResult"][];
+            /** Ranges */
+            ranges: {
+                [key: string]: unknown;
+            }[];
+            /** Note */
+            note: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** MissingInput */
+        MissingInput: {
+            /** Field */
+            field: string;
+            /** Status */
+            status: string;
+            /** Source Id */
+            source_id?: string | null;
+            /** Receptor Id */
+            receptor_id?: string | null;
+            /** Task Id */
+            task_id?: string | null;
+            /** Reason */
+            reason?: string | null;
+        } & {
+            [key: string]: unknown;
+        };
+        /** MockNoticeExtractResponse */
+        MockNoticeExtractResponse: {
+            /**
+             * Mode
+             * @constant
+             */
+            mode: "mock";
+            /**
+             * Is Actual Ai
+             * @constant
+             */
+            is_actual_ai: false;
+            notice: components["schemas"]["ConstructionNotice"];
+            /** Field Evidence */
+            field_evidence: {
+                [key: string]: unknown;
+            };
+            /** Warnings */
+            warnings: string[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** NoisePredictResponse */
+        NoisePredictResponse: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /** Model Version */
+            model_version: string;
+            /** Scoring Version */
+            scoring_version: string;
+            /** Timezone */
+            timezone: string;
+            /** Slot Minutes */
+            slot_minutes: number;
+            /** Background Profile */
+            background_profile: string;
+            /** Public Data Calendar Institution */
+            public_data_calendar_institution: string | null;
+            /** Calendar Overlaps */
+            calendar_overlaps: {
+                [key: string]: unknown;
+            }[];
+            /** Existing Event Acoustic Policy */
+            existing_event_acoustic_policy: {
+                [key: string]: unknown;
+            };
+            /** Predictions */
+            predictions: components["schemas"]["M0PredictionRow"][];
+            /** Warnings */
+            warnings: string[];
+            /** Legal Assessment */
+            legal_assessment: null;
+            /** Disclaimer */
+            disclaimer: string;
+        } & {
+            [key: string]: unknown;
+        };
+        /** OptimizationDiagnostics */
+        OptimizationDiagnostics: {
+            /** Generated Candidate Count */
+            generated_candidate_count: number;
+            /** Feasible Candidate Count */
+            feasible_candidate_count: number;
+            /** Infeasible Candidate Count */
+            infeasible_candidate_count: number;
+            /** Pareto Candidate Count */
+            pareto_candidate_count: number;
+            /** Pareto Axes */
+            pareto_axes: string[];
+            /** Candidate Metrics */
+            candidate_metrics: {
+                [key: string]: unknown;
+            }[];
+            /** Sensitivity Enabled */
+            sensitivity_enabled: boolean;
+            /** Background Profile */
+            background_profile: string;
+            /** Objective Mode */
+            objective_mode: string;
+            /** Objective Field */
+            objective_field: string | null;
+            /** Objective Unit */
+            objective_unit: string | null;
+            /** Default Objective Unchanged */
+            default_objective_unchanged: boolean;
+            /** Balanced Selection */
+            balanced_selection: string | null;
+            /** Policy Overlap Cost Included In Pareto */
+            policy_overlap_cost_included_in_pareto: boolean;
+        } & {
+            [key: string]: unknown;
+        };
+        /** OptimizeInfeasibleResponse */
+        OptimizeInfeasibleResponse: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /**
+             * Optimization Status
+             * @constant
+             */
+            optimization_status: "infeasible";
+            /** Scoring Version */
+            scoring_version: string;
+            /** Metrics Version */
+            metrics_version: string;
+            /** Valid Candidates */
+            valid_candidates: components["schemas"]["ScheduleCandidate"][];
+            /** Pareto Candidates */
+            pareto_candidates: components["schemas"]["ScheduleCandidate"][];
+            /** Recommended Options */
+            recommended_options: components["schemas"]["RecommendedOption"][];
+            infeasible_result: components["schemas"]["ScheduleCandidate"];
+            /** Relaxation Guidance */
+            relaxation_guidance: string[];
+            /** Solver */
+            solver: string;
+            diagnostics: components["schemas"]["OptimizationDiagnostics"];
+        } & {
+            [key: string]: unknown;
         };
         /** OptimizeRequest */
         OptimizeRequest: {
@@ -863,6 +1826,38 @@ export interface components {
              */
             objective_mode: "incremental_impact" | "absolute_impact" | "physical_energy" | "sensitive_exposure" | "continuous_burden" | "multi_axis";
         };
+        /** OptimizeSuccessResponse */
+        OptimizeSuccessResponse: {
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            /**
+             * Optimization Status
+             * @constant
+             */
+            optimization_status: "optimal_enumeration";
+            /** Scoring Version */
+            scoring_version: string;
+            /** Metrics Version */
+            metrics_version: string;
+            /** Valid Candidates */
+            valid_candidates: components["schemas"]["ScheduleCandidate"][];
+            /** Pareto Candidates */
+            pareto_candidates: components["schemas"]["ScheduleCandidate"][];
+            /** Recommended Options */
+            recommended_options: components["schemas"]["RecommendedOption"][];
+            /** Solver */
+            solver: string;
+            /** Note */
+            note: string;
+            diagnostics: components["schemas"]["OptimizationDiagnostics"];
+        } & {
+            [key: string]: unknown;
+        };
         /** PredictRequest */
         PredictRequest: {
             /**
@@ -889,6 +1884,313 @@ export interface components {
              */
             background_profile: string;
         };
+        /**
+         * ProvenanceStatus
+         * @enum {string}
+         */
+        ProvenanceStatus: "verified_public" | "user_provided" | "assumed" | "derived" | "missing";
+        /** PublicDataCatalogResponse */
+        PublicDataCatalogResponse: {
+            /** Manifest */
+            manifest: {
+                [key: string]: unknown;
+            };
+            /** Equipment Noise */
+            equipment_noise: {
+                [key: string]: unknown;
+            }[];
+            /** Construction Events */
+            construction_events: {
+                [key: string]: unknown;
+            }[];
+            /** Cultural Events */
+            cultural_events: {
+                [key: string]: unknown;
+            }[];
+            /** Receptors */
+            receptors: {
+                [key: string]: unknown;
+            }[];
+            /** Official Facilities */
+            official_facilities: {
+                [key: string]: unknown;
+            }[];
+            /** Receptor Distances */
+            receptor_distances: {
+                [key: string]: unknown;
+            }[];
+            /** Official Equipment Noise */
+            official_equipment_noise: {
+                [key: string]: unknown;
+            }[];
+            /** Official Construction Design */
+            official_construction_design: {
+                [key: string]: unknown;
+            };
+            /** Academic Calendar */
+            academic_calendar: {
+                [key: string]: unknown;
+            }[];
+            /** Waste Collection */
+            waste_collection: {
+                [key: string]: unknown;
+            }[];
+            /** Land Use */
+            land_use: {
+                [key: string]: unknown;
+            }[];
+            /** Policy */
+            policy: {
+                [key: string]: boolean;
+            };
+        } & {
+            [key: string]: unknown;
+        };
+        /** Receptor */
+        Receptor: {
+            /** Id */
+            id: string;
+            /** Name */
+            name: string;
+            /**
+             * Type
+             * @enum {string}
+             */
+            type: "residential" | "school" | "hospital" | "university" | "commercial";
+            /** Location */
+            location: string;
+            /** Distance To Source M */
+            distance_to_source_m: number;
+            /** Sensitivity Profile */
+            sensitivity_profile?: components["schemas"]["SensitivityProfile"][];
+            /** Noise Limit Profile */
+            noise_limit_profile?: {
+                [key: string]: unknown;
+            } | null;
+            /** Latitude */
+            latitude?: number | null;
+            /** Longitude */
+            longitude?: number | null;
+            /** Coordinate Crs */
+            coordinate_crs?: "EPSG:4326" | null;
+            /** Coordinate Source */
+            coordinate_source?: string | null;
+            /** Distance Method */
+            distance_method?: string | null;
+            /** Spatial Status */
+            spatial_status?: ("verified_public" | "assumed" | "deferred") | null;
+        };
+        /** RecommendedOption */
+        RecommendedOption: {
+            /** Character */
+            character: string[];
+            candidate: components["schemas"]["ScheduleCandidate"];
+            /** Recommendation Reasons */
+            recommendation_reasons: {
+                [key: string]: unknown;
+            }[];
+        } & {
+            [key: string]: unknown;
+        };
+        /** ScenarioDetailResponse */
+        ScenarioDetailResponse: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Expected Feasibility */
+            expected_feasibility: boolean;
+            /** Settings */
+            settings: {
+                [key: string]: unknown;
+            };
+            notice: components["schemas"]["ConstructionNotice"];
+            /** Equipment */
+            equipment: components["schemas"]["Equipment"][];
+            /** Receptors */
+            receptors: components["schemas"]["Receptor"][];
+        } & {
+            [key: string]: unknown;
+        };
+        /** ScenarioListResponse */
+        ScenarioListResponse: components["schemas"]["ScenarioSummary"][];
+        /** ScenarioSummary */
+        ScenarioSummary: {
+            /** Id */
+            id: string;
+            /** Title */
+            title: string;
+            /** Expected Feasibility */
+            expected_feasibility: boolean;
+        } & {
+            [key: string]: unknown;
+        };
+        /** ScheduleCandidate */
+        ScheduleCandidate: {
+            /** Id */
+            id: string;
+            /** Task Assignments */
+            task_assignments?: components["schemas"]["TaskAssignment"][];
+            /** Feasibility */
+            feasibility: boolean;
+            /** Infeasibility Reasons */
+            infeasibility_reasons?: string[];
+            /** Needs Confirmation */
+            needs_confirmation?: string[];
+            metrics?: components["schemas"]["ScheduleMetrics"];
+            /** Objective Values */
+            objective_values?: {
+                [key: string]: number;
+            };
+            /** Schedule Change Details */
+            schedule_change_details?: {
+                [key: string]: unknown;
+            };
+            provenance: components["schemas"]["SourceMetadata"];
+        };
+        /** ScheduleMetrics */
+        ScheduleMetrics: {
+            /**
+             * Max Continuous High Noise Minutes
+             * @default 0
+             */
+            max_continuous_high_noise_minutes: number;
+            /**
+             * Longest Quiet Window Minutes
+             * @default 0
+             */
+            longest_quiet_window_minutes: number;
+            /**
+             * Sensitive High Noise Minutes
+             * @default 0
+             */
+            sensitive_high_noise_minutes: number;
+            /**
+             * Max Impact Score
+             * @default 0
+             */
+            max_impact_score: number;
+            /**
+             * Total Impact Score
+             * @default 0
+             */
+            total_impact_score: number;
+            /**
+             * Absolute Impact Cost
+             * @default 0
+             */
+            absolute_impact_cost: number;
+            /**
+             * Incremental Impact Cost
+             * @default 0
+             */
+            incremental_impact_cost: number;
+            /**
+             * New Project Additional High Noise Minutes
+             * @default 0
+             */
+            new_project_additional_high_noise_minutes: number;
+            /**
+             * Sensitive New Project Exposure Minutes
+             * @default 0
+             */
+            sensitive_new_project_exposure_minutes: number;
+            /**
+             * Sensitive New Project Receptor Minutes
+             * @default 0
+             */
+            sensitive_new_project_receptor_minutes: number;
+            /**
+             * Sensitivity Weighted New Project Receptor Minutes
+             * @default 0
+             */
+            sensitivity_weighted_new_project_receptor_minutes: number;
+            /**
+             * New Project Receptor Minutes
+             * @default 0
+             */
+            new_project_receptor_minutes: number;
+            /**
+             * New Project Inactive Minutes
+             * @default 0
+             */
+            new_project_inactive_minutes: number;
+            /**
+             * Max Continuous New Project Minutes
+             * @default 0
+             */
+            max_continuous_new_project_minutes: number;
+            /**
+             * New Project Energy Exposure 65Db Ref Minutes
+             * @default 0
+             */
+            new_project_energy_exposure_65db_ref_minutes: number;
+            /**
+             * Cumulative Delta Db Minutes
+             * @default 0
+             */
+            cumulative_delta_db_minutes: number;
+            /**
+             * Existing Noise Overlap Receptor Minutes
+             * @default 0
+             */
+            existing_noise_overlap_receptor_minutes: number;
+            /**
+             * Max Total Estimated Db
+             * @default 0
+             */
+            max_total_estimated_db: number;
+            /**
+             * Max New Project Contribution Db
+             * @default 0
+             */
+            max_new_project_contribution_db: number;
+            /**
+             * Saturation Slot Count
+             * @default 0
+             */
+            saturation_slot_count: number;
+            /**
+             * Schedule Change Minutes
+             * @default 0
+             */
+            schedule_change_minutes: number;
+            /**
+             * Project Start Change Minutes
+             * @default 0
+             */
+            project_start_change_minutes: number;
+            /**
+             * Project End Change Minutes
+             * @default 0
+             */
+            project_end_change_minutes: number;
+        };
+        /** SensitivityProfile */
+        SensitivityProfile: {
+            /** Receptor Id */
+            receptor_id: string;
+            /** Time Period */
+            time_period: string;
+            /** Base Weight */
+            base_weight: number;
+            /** Situational Adjustments */
+            situational_adjustments?: {
+                [key: string]: number;
+            };
+            /** Calculation Notes */
+            calculation_notes: string;
+        };
+        /** SourceMetadata */
+        SourceMetadata: {
+            status: components["schemas"]["ProvenanceStatus"];
+            /** Source */
+            source?: string | null;
+            /** Note */
+            note?: string | null;
+            /** Unit */
+            unit?: string | null;
+        };
         /** TaskAssignment */
         TaskAssignment: {
             /** Task Id */
@@ -901,6 +2203,19 @@ export interface components {
             /**
              * End
              * Format: date-time
+             */
+            end: string;
+        };
+        /** TimeWindow */
+        TimeWindow: {
+            /**
+             * Start
+             * Format: time
+             */
+            start: string;
+            /**
+             * End
+             * Format: time
              */
             end: string;
         };
@@ -941,7 +2256,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["HealthResponse"];
                 };
             };
         };
@@ -961,7 +2276,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ScenarioListResponse"];
                 };
             };
         };
@@ -983,7 +2298,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ScenarioDetailResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1016,7 +2331,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["MockNoticeExtractResponse"] | components["schemas"]["LLMNoticeExtractResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1049,7 +2364,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["MockNoticeExtractResponse"] | components["schemas"]["LLMNoticeExtractResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1082,7 +2397,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["NoisePredictResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1111,7 +2426,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["BackgroundProfilesResponse"];
                 };
             };
         };
@@ -1135,7 +2450,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["M1PredictResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1168,7 +2483,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["M0M1CompareResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1201,7 +2516,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["M1UncertaintyResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1234,7 +2549,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["M1CandidateEvaluationResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1267,7 +2582,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["FieldValidationResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1296,7 +2611,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["DesignSimulationCatalogResponse"];
                 };
             };
         };
@@ -1320,7 +2635,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["DesignSimulationResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1353,7 +2668,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ImpactResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1386,7 +2701,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["OptimizeSuccessResponse"] | components["schemas"]["OptimizeInfeasibleResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1419,7 +2734,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["CompareResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1455,7 +2770,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["DiagnosticsResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1488,7 +2803,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ExperimentResponse"];
                 };
             };
             /** @description Validation Error */
@@ -1517,7 +2832,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["PublicDataCatalogResponse"];
                 };
             };
         };
@@ -1537,7 +2852,7 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content: {
-                    "application/json": unknown;
+                    "application/json": components["schemas"]["ConstructionDesignResponse"];
                 };
             };
         };

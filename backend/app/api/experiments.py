@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 
 from app.models.domain import ExperimentRequest
+from app.models.responses import ExperimentResponse
 from app.services.data import get_scenario
 from app.services.metrics import compare
 from app.services.optimizer import optimize
@@ -9,7 +10,7 @@ from app.services.prediction import default_assignments
 router = APIRouter(prefix="/api/experiments", tags=["experiments"])
 
 
-@router.post("/run")
+@router.post("/run", response_model=ExperimentResponse)
 def experiments(request: ExperimentRequest):
     try:
         scenario = get_scenario(request.scenario_id)

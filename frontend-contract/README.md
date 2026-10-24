@@ -1,6 +1,6 @@
 # 쉿간표 프론트엔드 계약 패키지
 
-이 디렉터리는 백엔드 소스 변경 없이 FastAPI 앱의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-24이다.
+이 디렉터리는 21개 명시적 응답 모델이 적용된 FastAPI 앱의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-24이다.
 
 ## 구성
 
@@ -10,7 +10,7 @@
 - `examples/error-*.json`: 실제 재현한 404, 415, 422 응답
 - `examples/manifest.json`: 성공 검증 목록
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
-- `../docs/FRONTEND_API_CONTRACT_v1.md`: 프론트엔드용 확정 계약서
+- `../docs/FRONTEND_API_CONTRACT_v2.md`: 프론트엔드용 최종 확정 계약서
 
 ## 로컬 실행 및 재검증
 
@@ -36,7 +36,11 @@ SHH_API_BASE_URL=http://127.0.0.1:8000 python3 frontend-contract/examples/genera
 
 프론트엔드가 설정할 값은 배포 방식에 따른 API origin 하나뿐이다. 예: Vite는 `VITE_SHH_API_BASE_URL=http://127.0.0.1:8000`. 이 이름은 백엔드가 읽는 변수가 아니라 프론트엔드 측 관례이므로 필요에 맞게 바꿀 수 있다.
 
-현재 백엔드는 인증 토큰을 요구하지 않는다. 또한 CORS 미들웨어가 없으므로 브라우저 앱과 API의 origin이 다르면 reverse proxy를 사용하거나, 백엔드에 별도 CORS 변경이 이루어지기 전에는 브라우저 직접 호출이 차단된다.
+현재 백엔드는 인증 토큰을 요구하지 않는다. 개발 CORS 기본 origin은 `http://localhost:5173`, `http://127.0.0.1:5173`이다. 운영에서는 백엔드 환경변수에 JSON 배열을 설정한다.
+
+```env
+SHH_CORS_ALLOWED_ORIGINS=["https://shh.example.com"]
+```
 
 ## 타입 사용
 
@@ -44,10 +48,11 @@ SHH_API_BASE_URL=http://127.0.0.1:8000 python3 frontend-contract/examples/genera
 import type { components, paths } from "./types/api";
 
 type PredictRequest = components["schemas"]["PredictRequest"];
+type PredictResponse = components["schemas"]["NoisePredictResponse"];
 type PredictOperation = paths["/api/noise/predict"]["post"];
 ```
 
-주의: 현재 FastAPI 라우트에 `response_model`이 선언되지 않아 OpenAPI의 성공 응답 스키마는 빈 스키마 `{}`이고 생성 타입도 응답을 `unknown`으로 취급한다. 실제 응답 예시는 검증된 관찰값이지만 정적 응답 계약은 아니다. 프론트엔드에서 임의의 강한 응답 타입을 만들기보다 런타임 검증을 하거나 백엔드에 명시적 response model이 도입된 뒤 타입을 재생성해야 한다.
+21개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
 
 ## 최소 fetch 예시
 
@@ -55,17 +60,18 @@ type PredictOperation = paths["/api/noise/predict"]["post"];
 import type { components } from "./types/api";
 
 type OptimizeRequest = components["schemas"]["OptimizeRequest"];
+type OptimizeResponse = components["schemas"]["OptimizeSuccessResponse"] | components["schemas"]["OptimizeInfeasibleResponse"];
 
 const API_BASE_URL = import.meta.env.VITE_SHH_API_BASE_URL;
 
-export async function optimizeSchedule(body: OptimizeRequest): Promise<unknown> {
+export async function optimizeSchedule(body: OptimizeRequest): Promise<OptimizeResponse> {
   const response = await fetch(`${API_BASE_URL}/api/schedules/optimize`, {
     method: "POST",
     headers: { "Content-Type": "application/json", Accept: "application/json" },
     body: JSON.stringify(body),
   });
-  const payload: unknown = await response.json();
+  const payload = await response.json();
   if (!response.ok) throw new Error(`API ${response.status}: ${JSON.stringify(payload)}`);
-  return payload;
+  return payload as OptimizeResponse;
 }
 ```
