@@ -5,7 +5,7 @@ __pycache__/
 *.py[cod]
 dist/
 build/
-data/raw/
+data/raw/*
 data/processed/*.csv
 data/processed/*.log
 data/reports/*.tmp
@@ -19,3 +19,8 @@ data/reports/*.tmp
 !data/processed/official_facilities.csv
 !data/processed/official_equipment_noise.csv
 !data/processed/receptor_distances.csv
+!data/processed/residential_buildings.csv
+!data/processed/receptor_candidates.csv
+!data/raw/building_footprints/
+data/raw/building_footprints/*
+!data/raw/building_footprints/source_metadata.json

@@ -1,0 +1,622 @@
+{
+  "type": "FeatureCollection",
+  "name": "OSM residential-tagged buildings; not building-register verified",
+  "crs": {
+    "type": "name",
+    "properties": {
+      "name": "EPSG:4326"
+    }
+  },
+  "features": [
+    {
+      "type": "Feature",
+      "id": "osm-way-1141324829",
+      "properties": {
+        "building_id": "osm-way-1141324829",
+        "source_building_id": "way/1141324829",
+        "road_address": "서울특별시 서대문구 연세로2나길 16",
+        "parcel_address": "",
+        "building_name": "16",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5568011,
+        "centroid_lon": 126.9383423,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9382584,
+              37.556866
+            ],
+            [
+              126.9382325,
+              37.5566687
+            ],
+            [
+              126.9384099,
+              37.5566542
+            ],
+            [
+              126.9384351,
+              37.5568301
+            ],
+            [
+              126.9383994,
+              37.5568324
+            ],
+            [
+              126.938383,
+              37.5568443
+            ],
+            [
+              126.9383144,
+              37.5568492
+            ],
+            [
+              126.9383061,
+              37.5568638
+            ],
+            [
+              126.9382584,
+              37.556866
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1442814956",
+      "properties": {
+        "building_id": "osm-way-1442814956",
+        "source_building_id": "way/1442814956",
+        "road_address": "서울특별시 서대문구 신촌로 119",
+        "parcel_address": "",
+        "building_name": "119",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5561564,
+        "centroid_lon": 126.9389954,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9390309,
+              37.5559816
+            ],
+            [
+              126.9391266,
+              37.5560129
+            ],
+            [
+              126.9389767,
+              37.5563005
+            ],
+            [
+              126.9389279,
+              37.5562845
+            ],
+            [
+              126.9389787,
+              37.556187
+            ],
+            [
+              126.9389318,
+              37.5561716
+            ],
+            [
+              126.9390309,
+              37.5559816
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1442814969",
+      "properties": {
+        "building_id": "osm-way-1442814969",
+        "source_building_id": "way/1442814969",
+        "road_address": "서울특별시 서대문구 신촌로 127",
+        "parcel_address": "",
+        "building_name": "127",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5564618,
+        "centroid_lon": 126.9399658,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9399441,
+              37.5563178
+            ],
+            [
+              126.940109,
+              37.5563715
+            ],
+            [
+              126.9399876,
+              37.5566059
+            ],
+            [
+              126.9398226,
+              37.5565521
+            ],
+            [
+              126.9399441,
+              37.5563178
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1467799367",
+      "properties": {
+        "building_id": "osm-way-1467799367",
+        "source_building_id": "way/1467799367",
+        "road_address": "서울특별시 마포구 신촌로 142",
+        "parcel_address": "",
+        "building_name": "142",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5561324,
+        "centroid_lon": 126.9413323,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.941227,
+              37.5562149
+            ],
+            [
+              126.9412521,
+              37.5561601
+            ],
+            [
+              126.9412427,
+              37.5561573
+            ],
+            [
+              126.9412846,
+              37.556066
+            ],
+            [
+              126.9412978,
+              37.5560698
+            ],
+            [
+              126.9413115,
+              37.5560399
+            ],
+            [
+              126.9413675,
+              37.556056
+            ],
+            [
+              126.9413559,
+              37.5560813
+            ],
+            [
+              126.9413666,
+              37.5560844
+            ],
+            [
+              126.9413557,
+              37.5561081
+            ],
+            [
+              126.9413692,
+              37.556112
+            ],
+            [
+              126.9413604,
+              37.5561312
+            ],
+            [
+              126.9413754,
+              37.5561356
+            ],
+            [
+              126.9413619,
+              37.5561649
+            ],
+            [
+              126.9413723,
+              37.5561679
+            ],
+            [
+              126.941362,
+              37.5561904
+            ],
+            [
+              126.9413726,
+              37.5561934
+            ],
+            [
+              126.9413469,
+              37.5562495
+            ],
+            [
+              126.941227,
+              37.5562149
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1467800863",
+      "properties": {
+        "building_id": "osm-way-1467800863",
+        "source_building_id": "way/1467800863",
+        "road_address": "서울특별시 마포구 백범로1길 83",
+        "parcel_address": "",
+        "building_name": "83",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5560612,
+        "centroid_lon": 126.9409824,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9410773,
+              37.5559839
+            ],
+            [
+              126.9410263,
+              37.5560818
+            ],
+            [
+              126.9410146,
+              37.556078
+            ],
+            [
+              126.940979,
+              37.5561462
+            ],
+            [
+              126.940947,
+              37.5561357
+            ],
+            [
+              126.9409361,
+              37.5561565
+            ],
+            [
+              126.9408545,
+              37.5561298
+            ],
+            [
+              126.9409458,
+              37.5559548
+            ],
+            [
+              126.9410184,
+              37.5559786
+            ],
+            [
+              126.9410247,
+              37.5559667
+            ],
+            [
+              126.9410773,
+              37.5559839
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1492568744",
+      "properties": {
+        "building_id": "osm-way-1492568744",
+        "source_building_id": "way/1492568744",
+        "road_address": "서울특별시 서대문구 연세로2나길 79",
+        "parcel_address": "",
+        "building_name": "79",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5584519,
+        "centroid_lon": 126.9410116,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9409595,
+              37.5585021
+            ],
+            [
+              126.9409724,
+              37.5583949
+            ],
+            [
+              126.9410636,
+              37.5584018
+            ],
+            [
+              126.9410507,
+              37.558509
+            ],
+            [
+              126.9409595,
+              37.5585021
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1492568745",
+      "properties": {
+        "building_id": "osm-way-1492568745",
+        "source_building_id": "way/1492568745",
+        "road_address": "서울특별시 서대문구 연세로2나길 81",
+        "parcel_address": "",
+        "building_name": "81",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5584591,
+        "centroid_lon": 126.9411035,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9410515,
+              37.5585093
+            ],
+            [
+              126.9410643,
+              37.558402
+            ],
+            [
+              126.9411555,
+              37.5584089
+            ],
+            [
+              126.9411426,
+              37.5585161
+            ],
+            [
+              126.9410515,
+              37.5585093
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1492568746",
+      "properties": {
+        "building_id": "osm-way-1492568746",
+        "source_building_id": "way/1492568746",
+        "road_address": "서울특별시 서대문구 연세로2나길 83",
+        "parcel_address": "",
+        "building_name": "83",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5584659,
+        "centroid_lon": 126.9411952,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9411432,
+              37.5585161
+            ],
+            [
+              126.9411561,
+              37.5584088
+            ],
+            [
+              126.9412472,
+              37.5584157
+            ],
+            [
+              126.9412344,
+              37.558523
+            ],
+            [
+              126.9411432,
+              37.5585161
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1492568747",
+      "properties": {
+        "building_id": "osm-way-1492568747",
+        "source_building_id": "way/1492568747",
+        "road_address": "서울특별시 서대문구 연세로2나길 85",
+        "parcel_address": "",
+        "building_name": "85",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5584729,
+        "centroid_lon": 126.9412869,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9412348,
+              37.5585231
+            ],
+            [
+              126.9412477,
+              37.5584158
+            ],
+            [
+              126.9413389,
+              37.5584227
+            ],
+            [
+              126.941326,
+              37.55853
+            ],
+            [
+              126.9412348,
+              37.5585231
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-328333538",
+      "properties": {
+        "building_id": "osm-way-328333538",
+        "source_building_id": "way/328333538",
+        "road_address": "서울특별시 서대문구 신촌로 121",
+        "parcel_address": "",
+        "building_name": "121",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5562052,
+        "centroid_lon": 126.939293,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_tag_only",
+        "residential_classification_confidence": "low_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.939146,
+              37.5560178
+            ],
+            [
+              126.9390719,
+              37.5561606
+            ],
+            [
+              126.9392478,
+              37.556218
+            ],
+            [
+              126.9392215,
+              37.5562687
+            ],
+            [
+              126.9393006,
+              37.5562945
+            ],
+            [
+              126.939328,
+              37.5562416
+            ],
+            [
+              126.9394777,
+              37.5562904
+            ],
+            [
+              126.9395506,
+              37.5561497
+            ],
+            [
+              126.939146,
+              37.5560178
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
