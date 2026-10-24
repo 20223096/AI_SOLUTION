@@ -1,78 +1,63 @@
 {
-  "generated_at": "2026-10-24T08:26:55+00:00",
-  "raw_files": [
-    {
-      "filename": "nominatim_yeonse_20261024.json",
-      "bytes": 1511,
-      "sha256": "60d2b1e8635c06a05e6a291e6229f1c509b70e73f0b8b339abfc8f03ce164dee"
-    },
-    {
-      "filename": "nominatim_chungjeong_20261024.json",
-      "bytes": 3502,
-      "sha256": "6018b62e43f372ca87f25ffc45f87b6e212af834084754ee4f95991cb71a147c"
-    },
-    {
-      "filename": "osm_yeonse_300m_20261024.json",
-      "bytes": 525751,
-      "sha256": "77707dbd572e43667b62a817391bede270f3bff88caf6285ff3b79f9b05c6fd5"
-    },
-    {
-      "filename": "osm_chungjeong_search_500m_20261024.json",
-      "bytes": 431064,
-      "sha256": "c2c76657a79f8bd95d521058e63dee1d80b3d548910b91ebb36b81729b7d9792"
-    }
-  ],
-  "anchors": {
-    "segment-yeonse-ro-2na-gil": {
-      "address": "서울특별시 서대문구 연세로2나길 20",
-      "lat": 37.5569953,
-      "lon": 126.9384393,
-      "quality": "exact_road_address_osm_building_match",
-      "source_id": "way/1499237143"
-    },
-    "segment-chungjeong-ro": {
-      "address": "서울특별시 서대문구 충정로 35-17",
-      "lat": null,
-      "lon": null,
-      "quality": "unresolved_exact_address",
-      "source_id": null
-    }
-  },
+  "data_version": "residential-receptor-verification-v1",
   "source_license": "OpenStreetMap contributors, ODbL 1.0",
+  "raw_polygon_count": 1559,
+  "unique_osm_polygon_count": 1559,
   "segments": {
     "segment-yeonse-ro-2na-gil": {
       "downloaded_building_polygons": 748,
       "residential_tagged_candidates": 10,
+      "search_area_osm_residential_candidates": 10,
       "officially_verified_residential": 0,
-      "unclassified_or_nonresidential_osm_polygons": 738,
-      "counts_by_address_anchor_boundary_radius_m": {
-        "100": 2,
-        "200": 4,
-        "300": 10
-      }
+      "classification_counts": {
+        "official_residential_verified": 0,
+        "osm_residential_candidate": 10,
+        "unknown_building_use": 447,
+        "verified_non_residential": 291
+      },
+      "duplicate_ids": 0
     },
     "segment-chungjeong-ro": {
-      "downloaded_search_building_polygons": 811,
+      "downloaded_building_polygons": 811,
       "residential_tagged_candidates": 0,
+      "search_area_osm_residential_candidates": 94,
       "officially_verified_residential": 0,
-      "counts_by_address_anchor_boundary_radius_m": {
-        "100": 0,
-        "200": 0,
-        "300": 0
+      "classification_counts": {
+        "official_residential_verified": 0,
+        "osm_residential_candidate": 94,
+        "unknown_building_use": 690,
+        "verified_non_residential": 27
       },
-      "failure": "exact road-address anchor unresolved; search-area polygons were not promoted to candidates"
+      "duplicate_ids": 0
     }
   },
+  "segment_a_address_anchor_counts_by_radius_m": {
+    "100": 2,
+    "200": 4,
+    "300": 10
+  },
+  "segment_b_radius_counts_status": "deferred_no_official_coordinate",
+  "official_residential_verified": 0,
   "official_polygon_count": 0,
-  "address_only_confirmed_buildings": 1,
+  "osm_residential_candidates": 104,
+  "eligible_receptor_candidates": 10,
+  "official_non_residential_address_buildings_verified": 1,
   "receptor_wall_points_verified": 0,
   "official_construction_geometry_status": "null_unchanged",
   "field_prediction_status": "deferred",
   "validation_status": "not_evaluable",
+  "building_hub_diagnostic": {
+    "http_status": 200,
+    "result_code": "00",
+    "authenticated": true,
+    "prior_403_cause": "encoded service key was encoded a second time in one-off curl diagnostic",
+    "secret_logged": false
+  },
+  "juso_coordinate_status": "deferred_missing_separate_confm_key",
   "limitations": [
-    "VWorld GIS building download requires interactive access/login and no Seoul extract was acquired",
-    "Building HUB API returned HTTP 403 for the approved project key",
-    "OSM residential tags were not cross-verified against Building HUB",
-    "Chungjeong-ro exact address geocoding did not resolve"
+    "OSM geometry is not an official building polygon",
+    "No fuzzy address join was accepted",
+    "B search-area polygons have no official anchor distance",
+    "Building centroids are not facade receptors or construction source locations"
   ]
 }

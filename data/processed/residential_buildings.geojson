@@ -1,6 +1,6 @@
 {
   "type": "FeatureCollection",
-  "name": "OSM residential-tagged buildings; not building-register verified",
+  "name": "OSM residential candidates; official use not verified",
   "crs": {
     "type": "name",
     "properties": {
@@ -10,10 +10,5415 @@
   "features": [
     {
       "type": "Feature",
+      "id": "osm-way-1041113629",
+      "properties": {
+        "building_id": "osm-way-1041113629",
+        "source_building_id": "way/1041113629",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시 서대문구 북아현로4아길 3",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5602796,
+        "centroid_lon": 126.959134,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9591837,
+              37.5602425
+            ],
+            [
+              126.9591886,
+              37.5603128
+            ],
+            [
+              126.959085,
+              37.5603173
+            ],
+            [
+              126.9590786,
+              37.5602459
+            ],
+            [
+              126.9591837,
+              37.5602425
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1084526503",
+      "properties": {
+        "building_id": "osm-way-1084526503",
+        "source_building_id": "way/1084526503",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5611823,
+        "centroid_lon": 126.9570586,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9572442,
+              37.5612865
+            ],
+            [
+              126.957283,
+              37.5611764
+            ],
+            [
+              126.9571999,
+              37.561158
+            ],
+            [
+              126.9571337,
+              37.5611433
+            ],
+            [
+              126.9571458,
+              37.5611088
+            ],
+            [
+              126.956864,
+              37.5610463
+            ],
+            [
+              126.9568236,
+              37.5611606
+            ],
+            [
+              126.9569188,
+              37.5611818
+            ],
+            [
+              126.9569017,
+              37.5612304
+            ],
+            [
+              126.9570616,
+              37.5612659
+            ],
+            [
+              126.9570681,
+              37.5612475
+            ],
+            [
+              126.9572442,
+              37.5612865
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628062",
+      "properties": {
+        "building_id": "osm-way-1103628062",
+        "source_building_id": "way/1103628062",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5564751,
+        "centroid_lon": 126.9608454,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9608888,
+              37.5565066
+            ],
+            [
+              126.9609141,
+              37.5565245
+            ],
+            [
+              126.9609661,
+              37.5564783
+            ],
+            [
+              126.9608253,
+              37.5563785
+            ],
+            [
+              126.960771,
+              37.5564267
+            ],
+            [
+              126.9608015,
+              37.5564482
+            ],
+            [
+              126.9607557,
+              37.5564888
+            ],
+            [
+              126.9608409,
+              37.5565491
+            ],
+            [
+              126.9608888,
+              37.5565066
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628066",
+      "properties": {
+        "building_id": "osm-way-1103628066",
+        "source_building_id": "way/1103628066",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5563315,
+        "centroid_lon": 126.9609432,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9608448,
+              37.5563544
+            ],
+            [
+              126.96094,
+              37.5564125
+            ],
+            [
+              126.9610445,
+              37.556308
+            ],
+            [
+              126.9609437,
+              37.5562513
+            ],
+            [
+              126.9608448,
+              37.5563544
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628067",
+      "properties": {
+        "building_id": "osm-way-1103628067",
+        "source_building_id": "way/1103628067",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5563977,
+        "centroid_lon": 126.9610471,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.961051,
+              37.5564594
+            ],
+            [
+              126.9611206,
+              37.5563861
+            ],
+            [
+              126.9610464,
+              37.5563374
+            ],
+            [
+              126.9609704,
+              37.5564079
+            ],
+            [
+              126.961051,
+              37.5564594
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628068",
+      "properties": {
+        "building_id": "osm-way-1103628068",
+        "source_building_id": "way/1103628068",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5568799,
+        "centroid_lon": 126.9613331,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9612375,
+              37.5569103
+            ],
+            [
+              126.9613609,
+              37.5568013
+            ],
+            [
+              126.9614287,
+              37.5568496
+            ],
+            [
+              126.9613053,
+              37.5569585
+            ],
+            [
+              126.9612375,
+              37.5569103
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628069",
+      "properties": {
+        "building_id": "osm-way-1103628069",
+        "source_building_id": "way/1103628069",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5570434,
+        "centroid_lon": 126.9613494,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9614367,
+              37.5570387
+            ],
+            [
+              126.9613509,
+              37.556974
+            ],
+            [
+              126.961262,
+              37.5570481
+            ],
+            [
+              126.9613478,
+              37.5571128
+            ],
+            [
+              126.9614367,
+              37.5570387
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628070",
+      "properties": {
+        "building_id": "osm-way-1103628070",
+        "source_building_id": "way/1103628070",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5571409,
+        "centroid_lon": 126.9612242,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9613115,
+              37.5571362
+            ],
+            [
+              126.9612258,
+              37.5570715
+            ],
+            [
+              126.9611369,
+              37.5571456
+            ],
+            [
+              126.9612226,
+              37.5572103
+            ],
+            [
+              126.9613115,
+              37.5571362
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628071",
+      "properties": {
+        "building_id": "osm-way-1103628071",
+        "source_building_id": "way/1103628071",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.557264,
+        "centroid_lon": 126.9610717,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9611617,
+              37.5572411
+            ],
+            [
+              126.9610943,
+              37.5571912
+            ],
+            [
+              126.9609817,
+              37.557287
+            ],
+            [
+              126.9610492,
+              37.5573368
+            ],
+            [
+              126.9611617,
+              37.5572411
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628072",
+      "properties": {
+        "building_id": "osm-way-1103628072",
+        "source_building_id": "way/1103628072",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5571532,
+        "centroid_lon": 126.9610115,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9609688,
+              37.5572426
+            ],
+            [
+              126.9611221,
+              37.5571151
+            ],
+            [
+              126.9610542,
+              37.5570638
+            ],
+            [
+              126.9609009,
+              37.5571913
+            ],
+            [
+              126.9609688,
+              37.5572426
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1103628077",
+      "properties": {
+        "building_id": "osm-way-1103628077",
+        "source_building_id": "way/1103628077",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5576788,
+        "centroid_lon": 126.9604761,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9605275,
+              37.5577425
+            ],
+            [
+              126.9606271,
+              37.5576603
+            ],
+            [
+              126.9605814,
+              37.5576255
+            ],
+            [
+              126.9605461,
+              37.5576546
+            ],
+            [
+              126.9604483,
+              37.5575801
+            ],
+            [
+              126.9603981,
+              37.5576215
+            ],
+            [
+              126.9603839,
+              37.5576332
+            ],
+            [
+              126.9603706,
+              37.5576537
+            ],
+            [
+              126.9603791,
+              37.5576758
+            ],
+            [
+              126.9604042,
+              37.5577002
+            ],
+            [
+              126.9604951,
+              37.5577693
+            ],
+            [
+              126.9605094,
+              37.5577575
+            ],
+            [
+              126.9605181,
+              37.5577503
+            ],
+            [
+              126.9605275,
+              37.5577425
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1176843824",
+      "properties": {
+        "building_id": "osm-way-1176843824",
+        "source_building_id": "way/1176843824",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5626238,
+        "centroid_lon": 126.9628112,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.962456,
+              37.5626866
+            ],
+            [
+              126.9626877,
+              37.5626705
+            ],
+            [
+              126.9626918,
+              37.5626882
+            ],
+            [
+              126.9629438,
+              37.5626705
+            ],
+            [
+              126.9629438,
+              37.5626882
+            ],
+            [
+              126.9631715,
+              37.5626737
+            ],
+            [
+              126.9631613,
+              37.5625625
+            ],
+            [
+              126.9629316,
+              37.5625738
+            ],
+            [
+              126.9629316,
+              37.5625593
+            ],
+            [
+              126.9626857,
+              37.5625754
+            ],
+            [
+              126.9626857,
+              37.5625609
+            ],
+            [
+              126.9624438,
+              37.5625754
+            ],
+            [
+              126.962456,
+              37.5626866
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1176843828",
+      "properties": {
+        "building_id": "osm-way-1176843828",
+        "source_building_id": "way/1176843828",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "미동아파트",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5632032,
+        "centroid_lon": 126.9641371,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9638862,
+              37.5633585
+            ],
+            [
+              126.9642999,
+              37.5633341
+            ],
+            [
+              126.964282,
+              37.5631436
+            ],
+            [
+              126.9642468,
+              37.5631456
+            ],
+            [
+              126.9642433,
+              37.5631075
+            ],
+            [
+              126.9638647,
+              37.5631297
+            ],
+            [
+              126.9638862,
+              37.5633585
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356232",
+      "properties": {
+        "building_id": "osm-way-1216356232",
+        "source_building_id": "way/1216356232",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5633426,
+        "centroid_lon": 126.9618612,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9618131,
+              37.5634277
+            ],
+            [
+              126.9617719,
+              37.5633449
+            ],
+            [
+              126.9618298,
+              37.5633271
+            ],
+            [
+              126.96184,
+              37.5633416
+            ],
+            [
+              126.9618826,
+              37.5633263
+            ],
+            [
+              126.9618725,
+              37.5633086
+            ],
+            [
+              126.9619202,
+              37.5632925
+            ],
+            [
+              126.9619599,
+              37.5633723
+            ],
+            [
+              126.9618131,
+              37.5634277
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356233",
+      "properties": {
+        "building_id": "osm-way-1216356233",
+        "source_building_id": "way/1216356233",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5634388,
+        "centroid_lon": 126.9619659,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9618789,
+              37.5634588
+            ],
+            [
+              126.9619338,
+              37.5633887
+            ],
+            [
+              126.9619734,
+              37.5634121
+            ],
+            [
+              126.9619531,
+              37.5634435
+            ],
+            [
+              126.9619694,
+              37.5634515
+            ],
+            [
+              126.9620009,
+              37.5634169
+            ],
+            [
+              126.9620344,
+              37.5634354
+            ],
+            [
+              126.9619836,
+              37.5635031
+            ],
+            [
+              126.9618789,
+              37.5634588
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356234",
+      "properties": {
+        "building_id": "osm-way-1216356234",
+        "source_building_id": "way/1216356234",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5635064,
+        "centroid_lon": 126.961924,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9618624,
+              37.563539
+            ],
+            [
+              126.9618778,
+              37.5634707
+            ],
+            [
+              126.9619202,
+              37.563481
+            ],
+            [
+              126.9619163,
+              37.5635018
+            ],
+            [
+              126.9619317,
+              37.5635061
+            ],
+            [
+              126.9619364,
+              37.5634902
+            ],
+            [
+              126.961981,
+              37.5635067
+            ],
+            [
+              126.9619664,
+              37.5635561
+            ],
+            [
+              126.9618624,
+              37.563539
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356235",
+      "properties": {
+        "building_id": "osm-way-1216356235",
+        "source_building_id": "way/1216356235",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5635611,
+        "centroid_lon": 126.9620286,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.961961,
+              37.5635964
+            ],
+            [
+              126.9619833,
+              37.5635232
+            ],
+            [
+              126.9620296,
+              37.5635323
+            ],
+            [
+              126.9620342,
+              37.5635421
+            ],
+            [
+              126.962095,
+              37.5635549
+            ],
+            [
+              126.9620688,
+              37.5636178
+            ],
+            [
+              126.961961,
+              37.5635964
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356236",
+      "properties": {
+        "building_id": "osm-way-1216356236",
+        "source_building_id": "way/1216356236",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5634978,
+        "centroid_lon": 126.9620568,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9619913,
+              37.563512
+            ],
+            [
+              126.9620299,
+              37.5634552
+            ],
+            [
+              126.9621161,
+              37.5634833
+            ],
+            [
+              126.9620899,
+              37.5635407
+            ],
+            [
+              126.9619913,
+              37.563512
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356237",
+      "properties": {
+        "building_id": "osm-way-1216356237",
+        "source_building_id": "way/1216356237",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5634145,
+        "centroid_lon": 126.9621398,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620776,
+              37.5634594
+            ],
+            [
+              126.9620383,
+              37.563388
+            ],
+            [
+              126.9621901,
+              37.5633379
+            ],
+            [
+              126.9622294,
+              37.563421
+            ],
+            [
+              126.9621554,
+              37.5634454
+            ],
+            [
+              126.9621477,
+              37.563435
+            ],
+            [
+              126.9620776,
+              37.5634594
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356238",
+      "properties": {
+        "building_id": "osm-way-1216356238",
+        "source_building_id": "way/1216356238",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5633162,
+        "centroid_lon": 126.9619946,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9619768,
+              37.5633738
+            ],
+            [
+              126.9619321,
+              37.5632852
+            ],
+            [
+              126.9620134,
+              37.563257
+            ],
+            [
+              126.9620561,
+              37.5633488
+            ],
+            [
+              126.9619768,
+              37.5633738
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356239",
+      "properties": {
+        "building_id": "osm-way-1216356239",
+        "source_building_id": "way/1216356239",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5632855,
+        "centroid_lon": 126.9621034,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.962069,
+              37.5633545
+            ],
+            [
+              126.9620258,
+              37.5632527
+            ],
+            [
+              126.9621355,
+              37.5632175
+            ],
+            [
+              126.9621834,
+              37.5633174
+            ],
+            [
+              126.962069,
+              37.5633545
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356240",
+      "properties": {
+        "building_id": "osm-way-1216356240",
+        "source_building_id": "way/1216356240",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.563195,
+        "centroid_lon": 126.9620711,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620382,
+              37.5632299
+            ],
+            [
+              126.9620143,
+              37.5631983
+            ],
+            [
+              126.9621063,
+              37.5631527
+            ],
+            [
+              126.9621258,
+              37.563199
+            ],
+            [
+              126.9620382,
+              37.5632299
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356241",
+      "properties": {
+        "building_id": "osm-way-1216356241",
+        "source_building_id": "way/1216356241",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5631264,
+        "centroid_lon": 126.9620281,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620055,
+              37.5631808
+            ],
+            [
+              126.9619657,
+              37.5631155
+            ],
+            [
+              126.9620179,
+              37.5630959
+            ],
+            [
+              126.9620276,
+              37.5631134
+            ],
+            [
+              126.9620656,
+              37.5630987
+            ],
+            [
+              126.962086,
+              37.5631541
+            ],
+            [
+              126.9620055,
+              37.5631808
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356242",
+      "properties": {
+        "building_id": "osm-way-1216356242",
+        "source_building_id": "way/1216356242",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5631981,
+        "centroid_lon": 126.9619485,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.961937,
+              37.5632614
+            ],
+            [
+              126.9618804,
+              37.5631653
+            ],
+            [
+              126.96196,
+              37.5631324
+            ],
+            [
+              126.9620167,
+              37.5632333
+            ],
+            [
+              126.961937,
+              37.5632614
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356243",
+      "properties": {
+        "building_id": "osm-way-1216356243",
+        "source_building_id": "way/1216356243",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5635744,
+        "centroid_lon": 126.9619018,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9618361,
+              37.5636058
+            ],
+            [
+              126.9618521,
+              37.5635455
+            ],
+            [
+              126.9619025,
+              37.5635532
+            ],
+            [
+              126.9618972,
+              37.5635742
+            ],
+            [
+              126.9619051,
+              37.563577
+            ],
+            [
+              126.9619122,
+              37.563556
+            ],
+            [
+              126.9619627,
+              37.5635616
+            ],
+            [
+              126.9619467,
+              37.5636219
+            ],
+            [
+              126.9618361,
+              37.5636058
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356244",
+      "properties": {
+        "building_id": "osm-way-1216356244",
+        "source_building_id": "way/1216356244",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5636517,
+        "centroid_lon": 126.9620037,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9619359,
+              37.5636845
+            ],
+            [
+              126.9619573,
+              37.5636043
+            ],
+            [
+              126.9620713,
+              37.563625
+            ],
+            [
+              126.9620613,
+              37.5636548
+            ],
+            [
+              126.9619895,
+              37.5636431
+            ],
+            [
+              126.9619868,
+              37.5636516
+            ],
+            [
+              126.9620197,
+              37.5636553
+            ],
+            [
+              126.9620076,
+              37.5636952
+            ],
+            [
+              126.9619359,
+              37.5636845
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356245",
+      "properties": {
+        "building_id": "osm-way-1216356245",
+        "source_building_id": "way/1216356245",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5636594,
+        "centroid_lon": 126.9618505,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9618104,
+              37.5637217
+            ],
+            [
+              126.9617727,
+              37.5636307
+            ],
+            [
+              126.9618236,
+              37.5636137
+            ],
+            [
+              126.9618419,
+              37.5636588
+            ],
+            [
+              126.9619201,
+              37.5636395
+            ],
+            [
+              126.9619344,
+              37.5636919
+            ],
+            [
+              126.9618104,
+              37.5637217
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356253",
+      "properties": {
+        "building_id": "osm-way-1216356253",
+        "source_building_id": "way/1216356253",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.563532,
+        "centroid_lon": 126.9609082,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9608604,
+              37.5635729
+            ],
+            [
+              126.9608492,
+              37.5635551
+            ],
+            [
+              126.9608594,
+              37.5635511
+            ],
+            [
+              126.9608401,
+              37.5635068
+            ],
+            [
+              126.9610118,
+              37.5634504
+            ],
+            [
+              126.9610423,
+              37.5635197
+            ],
+            [
+              126.9608944,
+              37.563568
+            ],
+            [
+              126.9608604,
+              37.5635729
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216356254",
+      "properties": {
+        "building_id": "osm-way-1216356254",
+        "source_building_id": "way/1216356254",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5636063,
+        "centroid_lon": 126.9609856,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9609193,
+              37.5636784
+            ],
+            [
+              126.9608797,
+              37.5636148
+            ],
+            [
+              126.9609143,
+              37.5636035
+            ],
+            [
+              126.960901,
+              37.5635785
+            ],
+            [
+              126.9610586,
+              37.563531
+            ],
+            [
+              126.9610952,
+              37.5636011
+            ],
+            [
+              126.9610545,
+              37.5636131
+            ],
+            [
+              126.9610626,
+              37.5636301
+            ],
+            [
+              126.9609193,
+              37.5636784
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216976417",
+      "properties": {
+        "building_id": "osm-way-1216976417",
+        "source_building_id": "way/1216976417",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5641666,
+        "centroid_lon": 126.9605336,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9605135,
+              37.5642516
+            ],
+            [
+              126.9604587,
+              37.5641285
+            ],
+            [
+              126.9605229,
+              37.5641082
+            ],
+            [
+              126.9605649,
+              37.5641257
+            ],
+            [
+              126.9606081,
+              37.5642192
+            ],
+            [
+              126.9605135,
+              37.5642516
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216976418",
+      "properties": {
+        "building_id": "osm-way-1216976418",
+        "source_building_id": "way/1216976418",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.564226,
+        "centroid_lon": 126.9603468,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.960302,
+              37.5643027
+            ],
+            [
+              126.9602518,
+              37.564213
+            ],
+            [
+              126.9602655,
+              37.5642088
+            ],
+            [
+              126.9604327,
+              37.5641584
+            ],
+            [
+              126.9604818,
+              37.5642472
+            ],
+            [
+              126.960302,
+              37.5643027
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216976419",
+      "properties": {
+        "building_id": "osm-way-1216976419",
+        "source_building_id": "way/1216976419",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5640654,
+        "centroid_lon": 126.9604532,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9604164,
+              37.5641352
+            ],
+            [
+              126.960365,
+              37.564039
+            ],
+            [
+              126.96049,
+              37.5639983
+            ],
+            [
+              126.9605413,
+              37.564089
+            ],
+            [
+              126.9604164,
+              37.5641352
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216976420",
+      "properties": {
+        "building_id": "osm-way-1216976420",
+        "source_building_id": "way/1216976420",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5641473,
+        "centroid_lon": 126.960318,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9602655,
+              37.5642088
+            ],
+            [
+              126.9602273,
+              37.5641324
+            ],
+            [
+              126.960372,
+              37.5640908
+            ],
+            [
+              126.9604071,
+              37.5641574
+            ],
+            [
+              126.9602655,
+              37.5642088
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1216976422",
+      "properties": {
+        "building_id": "osm-way-1216976422",
+        "source_building_id": "way/1216976422",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5641916,
+        "centroid_lon": 126.9600871,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9600444,
+              37.564269
+            ],
+            [
+              126.9599997,
+              37.5641803
+            ],
+            [
+              126.9600353,
+              37.5641699
+            ],
+            [
+              126.9600414,
+              37.5641803
+            ],
+            [
+              126.9601786,
+              37.5641344
+            ],
+            [
+              126.9602233,
+              37.5642158
+            ],
+            [
+              126.9600444,
+              37.564269
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427347821",
+      "properties": {
+        "building_id": "osm-way-1427347821",
+        "source_building_id": "way/1427347821",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5557374,
+        "centroid_lon": 126.9623023,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9622201,
+              37.5557618
+            ],
+            [
+              126.9623183,
+              37.5558058
+            ],
+            [
+              126.9623845,
+              37.5557131
+            ],
+            [
+              126.9622863,
+              37.555669
+            ],
+            [
+              126.9622201,
+              37.5557618
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427347822",
+      "properties": {
+        "building_id": "osm-way-1427347822",
+        "source_building_id": "way/1427347822",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5556125,
+        "centroid_lon": 126.9622198,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9622357,
+              37.5556646
+            ],
+            [
+              126.9622853,
+              37.5556259
+            ],
+            [
+              126.962204,
+              37.5555604
+            ],
+            [
+              126.9621544,
+              37.5555991
+            ],
+            [
+              126.9622357,
+              37.5556646
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427347823",
+      "properties": {
+        "building_id": "osm-way-1427347823",
+        "source_building_id": "way/1427347823",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5556858,
+        "centroid_lon": 126.962116,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620216,
+              37.5556979
+            ],
+            [
+              126.9621679,
+              37.5557495
+            ],
+            [
+              126.9622104,
+              37.5556737
+            ],
+            [
+              126.9620641,
+              37.5556222
+            ],
+            [
+              126.9620216,
+              37.5556979
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427347824",
+      "properties": {
+        "building_id": "osm-way-1427347824",
+        "source_building_id": "way/1427347824",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5555868,
+        "centroid_lon": 126.9619823,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9619746,
+              37.5556453
+            ],
+            [
+              126.9621025,
+              37.5555663
+            ],
+            [
+              126.9620404,
+              37.5555031
+            ],
+            [
+              126.9619365,
+              37.5555673
+            ],
+            [
+              126.9619525,
+              37.5555836
+            ],
+            [
+              126.9619387,
+              37.5555921
+            ],
+            [
+              126.9619615,
+              37.5556153
+            ],
+            [
+              126.9619513,
+              37.5556216
+            ],
+            [
+              126.9619746,
+              37.5556453
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626703",
+      "properties": {
+        "building_id": "osm-way-1427626703",
+        "source_building_id": "way/1427626703",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.556253,
+        "centroid_lon": 126.9605172,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9605019,
+              37.5563249
+            ],
+            [
+              126.9606043,
+              37.5562295
+            ],
+            [
+              126.9605324,
+              37.5561811
+            ],
+            [
+              126.9604301,
+              37.5562765
+            ],
+            [
+              126.9605019,
+              37.5563249
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626704",
+      "properties": {
+        "building_id": "osm-way-1427626704",
+        "source_building_id": "way/1427626704",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.556427,
+        "centroid_lon": 126.9602877,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9602642,
+              37.5565102
+            ],
+            [
+              126.9603875,
+              37.5563953
+            ],
+            [
+              126.9603112,
+              37.5563438
+            ],
+            [
+              126.9601879,
+              37.5564587
+            ],
+            [
+              126.9602642,
+              37.5565102
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626705",
+      "properties": {
+        "building_id": "osm-way-1427626705",
+        "source_building_id": "way/1427626705",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5565218,
+        "centroid_lon": 126.9604355,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9604791,
+              37.5565995
+            ],
+            [
+              126.9605392,
+              37.5565435
+            ],
+            [
+              126.960392,
+              37.5564442
+            ],
+            [
+              126.9603319,
+              37.5565002
+            ],
+            [
+              126.9604791,
+              37.5565995
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626706",
+      "properties": {
+        "building_id": "osm-way-1427626706",
+        "source_building_id": "way/1427626706",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5564561,
+        "centroid_lon": 126.9605011,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9605412,
+              37.5565288
+            ],
+            [
+              126.960598,
+              37.5564758
+            ],
+            [
+              126.960461,
+              37.5563834
+            ],
+            [
+              126.9604042,
+              37.5564364
+            ],
+            [
+              126.9605412,
+              37.5565288
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626707",
+      "properties": {
+        "building_id": "osm-way-1427626707",
+        "source_building_id": "way/1427626707",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5563947,
+        "centroid_lon": 126.9605693,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9606092,
+              37.5564692
+            ],
+            [
+              126.9606686,
+              37.5564139
+            ],
+            [
+              126.9605294,
+              37.5563201
+            ],
+            [
+              126.9604701,
+              37.5563754
+            ],
+            [
+              126.9606092,
+              37.5564692
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1427626708",
+      "properties": {
+        "building_id": "osm-way-1427626708",
+        "source_building_id": "way/1427626708",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.556327,
+        "centroid_lon": 126.9606777,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9607111,
+              37.5563976
+            ],
+            [
+              126.9607709,
+              37.5563419
+            ],
+            [
+              126.9606442,
+              37.5562564
+            ],
+            [
+              126.9605844,
+              37.5563122
+            ],
+            [
+              126.9607111,
+              37.5563976
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1456682039",
+      "properties": {
+        "building_id": "osm-way-1456682039",
+        "source_building_id": "way/1456682039",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5587358,
+        "centroid_lon": 126.966426,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.966376,
+              37.5587696
+            ],
+            [
+              126.9664903,
+              37.5587466
+            ],
+            [
+              126.9664759,
+              37.558702
+            ],
+            [
+              126.9663617,
+              37.5587251
+            ],
+            [
+              126.966376,
+              37.5587696
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1456682040",
+      "properties": {
+        "building_id": "osm-way-1456682040",
+        "source_building_id": "way/1456682040",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5588095,
+        "centroid_lon": 126.9664508,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9663924,
+              37.5588459
+            ],
+            [
+              126.9665225,
+              37.5588246
+            ],
+            [
+              126.9665091,
+              37.5587731
+            ],
+            [
+              126.966379,
+              37.5587944
+            ],
+            [
+              126.9663924,
+              37.5588459
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1468467876",
+      "properties": {
+        "building_id": "osm-way-1468467876",
+        "source_building_id": "way/1468467876",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5578783,
+        "centroid_lon": 126.9577692,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9576783,
+              37.5577794
+            ],
+            [
+              126.9579191,
+              37.5578491
+            ],
+            [
+              126.9578601,
+              37.5579771
+            ],
+            [
+              126.9576193,
+              37.5579074
+            ],
+            [
+              126.9576783,
+              37.5577794
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1487430303",
+      "properties": {
+        "building_id": "osm-way-1487430303",
+        "source_building_id": "way/1487430303",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5614341,
+        "centroid_lon": 126.9624794,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9623963,
+              37.5611794
+            ],
+            [
+              126.9623711,
+              37.5615872
+            ],
+            [
+              126.9624619,
+              37.5615908
+            ],
+            [
+              126.9624658,
+              37.5615278
+            ],
+            [
+              126.9625801,
+              37.5615322
+            ],
+            [
+              126.9626013,
+              37.5611873
+            ],
+            [
+              126.9623963,
+              37.5611794
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-1487430304",
+      "properties": {
+        "building_id": "osm-way-1487430304",
+        "source_building_id": "way/1487430304",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5610703,
+        "centroid_lon": 126.962203,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620109,
+              37.5609865
+            ],
+            [
+              126.9623916,
+              37.5610065
+            ],
+            [
+              126.9623817,
+              37.5611251
+            ],
+            [
+              126.9622598,
+              37.5611187
+            ],
+            [
+              126.9622609,
+              37.5611054
+            ],
+            [
+              126.9621554,
+              37.5610998
+            ],
+            [
+              126.9621584,
+              37.5610641
+            ],
+            [
+              126.962005,
+              37.561056
+            ],
+            [
+              126.9620109,
+              37.5609865
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-328442788",
+      "properties": {
+        "building_id": "osm-way-328442788",
+        "source_building_id": "way/328442788",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.560306,
+        "centroid_lon": 126.9648996,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9646372,
+              37.5600481
+            ],
+            [
+              126.9645165,
+              37.5601736
+            ],
+            [
+              126.965162,
+              37.5605638
+            ],
+            [
+              126.9652827,
+              37.5604383
+            ],
+            [
+              126.9646372,
+              37.5600481
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599294",
+      "properties": {
+        "building_id": "osm-way-422599294",
+        "source_building_id": "way/422599294",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "107동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5583091,
+        "centroid_lon": 126.9645913,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9645283,
+              37.5584135
+            ],
+            [
+              126.9644157,
+              37.5582774
+            ],
+            [
+              126.9646249,
+              37.5581753
+            ],
+            [
+              126.9647376,
+              37.5583199
+            ],
+            [
+              126.9646498,
+              37.5583592
+            ],
+            [
+              126.9645283,
+              37.5584135
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599295",
+      "properties": {
+        "building_id": "osm-way-422599295",
+        "source_building_id": "way/422599295",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "112동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5579361,
+        "centroid_lon": 126.9644833,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9644264,
+              37.5580903
+            ],
+            [
+              126.9642816,
+              37.5579074
+            ],
+            [
+              126.9645069,
+              37.5578011
+            ],
+            [
+              126.9645661,
+              37.5578892
+            ],
+            [
+              126.9646356,
+              37.5579925
+            ],
+            [
+              126.9644264,
+              37.5580903
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599296",
+      "properties": {
+        "building_id": "osm-way-422599296",
+        "source_building_id": "way/422599296",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "101동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5586864,
+        "centroid_lon": 126.9645798,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9643862,
+              37.5586458
+            ],
+            [
+              126.9645471,
+              37.5588371
+            ],
+            [
+              126.9647349,
+              37.5587563
+            ],
+            [
+              126.9646517,
+              37.5586449
+            ],
+            [
+              126.9645793,
+              37.558548
+            ],
+            [
+              126.9643862,
+              37.5586458
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599297",
+      "properties": {
+        "building_id": "osm-way-422599297",
+        "source_building_id": "way/422599297",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "108동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5578834,
+        "centroid_lon": 126.9652277,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9650004,
+              37.5578564
+            ],
+            [
+              126.9650809,
+              37.5579627
+            ],
+            [
+              126.9652257,
+              37.5578989
+            ],
+            [
+              126.9653008,
+              37.5579882
+            ],
+            [
+              126.9654135,
+              37.5579372
+            ],
+            [
+              126.9653145,
+              37.5578073
+            ],
+            [
+              126.9652579,
+              37.5577331
+            ],
+            [
+              126.9650004,
+              37.5578564
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599298",
+      "properties": {
+        "building_id": "osm-way-422599298",
+        "source_building_id": "way/422599298",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "106동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5582563,
+        "centroid_lon": 126.9651926,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9649843,
+              37.5582136
+            ],
+            [
+              126.9651399,
+              37.5584092
+            ],
+            [
+              126.9653545,
+              37.5583199
+            ],
+            [
+              126.9652854,
+              37.5582273
+            ],
+            [
+              126.9651989,
+              37.5581116
+            ],
+            [
+              126.9649843,
+              37.5582136
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599299",
+      "properties": {
+        "building_id": "osm-way-422599299",
+        "source_building_id": "way/422599299",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "110동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5574424,
+        "centroid_lon": 126.965172,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9650326,
+              37.5573418
+            ],
+            [
+              126.9651506,
+              37.5572908
+            ],
+            [
+              126.9653116,
+              37.5574992
+            ],
+            [
+              126.9652451,
+              37.557529
+            ],
+            [
+              126.9651882,
+              37.5575545
+            ],
+            [
+              126.9651037,
+              37.557439
+            ],
+            [
+              126.9650326,
+              37.5573418
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599300",
+      "properties": {
+        "building_id": "osm-way-422599300",
+        "source_building_id": "way/422599300",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "102동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5587052,
+        "centroid_lon": 126.9652303,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9650058,
+              37.5586431
+            ],
+            [
+              126.965215,
+              37.5585411
+            ],
+            [
+              126.9652711,
+              37.5586047
+            ],
+            [
+              126.9654182,
+              37.5587713
+            ],
+            [
+              126.9652963,
+              37.5588147
+            ],
+            [
+              126.9652542,
+              37.5587651
+            ],
+            [
+              126.9651513,
+              37.5587962
+            ],
+            [
+              126.9650058,
+              37.5586431
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599301",
+      "properties": {
+        "building_id": "osm-way-422599301",
+        "source_building_id": "way/422599301",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "103동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5583966,
+        "centroid_lon": 126.9657734,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9657622,
+              37.5585368
+            ],
+            [
+              126.9656737,
+              37.55841
+            ],
+            [
+              126.9656227,
+              37.5583369
+            ],
+            [
+              126.9658265,
+              37.5582519
+            ],
+            [
+              126.9659821,
+              37.5584475
+            ],
+            [
+              126.9657622,
+              37.5585368
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599302",
+      "properties": {
+        "building_id": "osm-way-422599302",
+        "source_building_id": "way/422599302",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "104동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5581215,
+        "centroid_lon": 126.9663378,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9663362,
+              37.5582349
+            ],
+            [
+              126.9664187,
+              37.5581963
+            ],
+            [
+              126.9665454,
+              37.5581371
+            ],
+            [
+              126.9663844,
+              37.5579415
+            ],
+            [
+              126.9661752,
+              37.5580563
+            ],
+            [
+              126.9662257,
+              37.5581124
+            ],
+            [
+              126.9662792,
+              37.5581717
+            ],
+            [
+              126.9663362,
+              37.5582349
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599303",
+      "properties": {
+        "building_id": "osm-way-422599303",
+        "source_building_id": "way/422599303",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "105동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5579603,
+        "centroid_lon": 126.9657771,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.965907,
+              37.5580478
+            ],
+            [
+              126.965826,
+              37.5579421
+            ],
+            [
+              126.9657407,
+              37.5578309
+            ],
+            [
+              126.9656173,
+              37.5578777
+            ],
+            [
+              126.9657943,
+              37.5581031
+            ],
+            [
+              126.965907,
+              37.5580478
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599304",
+      "properties": {
+        "building_id": "osm-way-422599304",
+        "source_building_id": "way/422599304",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "109동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5575629,
+        "centroid_lon": 126.9655605,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9654671,
+              37.5576608
+            ],
+            [
+              126.9655962,
+              37.5576008
+            ],
+            [
+              126.9657139,
+              37.557546
+            ],
+            [
+              126.9656334,
+              37.5574439
+            ],
+            [
+              126.965392,
+              37.557563
+            ],
+            [
+              126.9654671,
+              37.5576608
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599305",
+      "properties": {
+        "building_id": "osm-way-422599305",
+        "source_building_id": "way/422599305",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "111동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5576529,
+        "centroid_lon": 126.964679,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9647215,
+              37.5577926
+            ],
+            [
+              126.9648288,
+              37.5577373
+            ],
+            [
+              126.9647362,
+              37.5576223
+            ],
+            [
+              126.9646678,
+              37.5575375
+            ],
+            [
+              126.9645444,
+              37.557597
+            ],
+            [
+              126.9645751,
+              37.5576309
+            ],
+            [
+              126.9647215,
+              37.5577926
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599306",
+      "properties": {
+        "building_id": "osm-way-422599306",
+        "source_building_id": "way/422599306",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "201동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5572844,
+        "centroid_lon": 126.9643706,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9643138,
+              37.5573844
+            ],
+            [
+              126.9644425,
+              37.5573844
+            ],
+            [
+              126.9644425,
+              37.5573121
+            ],
+            [
+              126.9645283,
+              37.5573036
+            ],
+            [
+              126.964523,
+              37.5571632
+            ],
+            [
+              126.9643299,
+              37.5571717
+            ],
+            [
+              126.9643245,
+              37.5572228
+            ],
+            [
+              126.9642387,
+              37.5572313
+            ],
+            [
+              126.964244,
+              37.5573376
+            ],
+            [
+              126.9643191,
+              37.5573333
+            ],
+            [
+              126.9643138,
+              37.5573844
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-422599307",
+      "properties": {
+        "building_id": "osm-way-422599307",
+        "source_building_id": "way/422599307",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "202동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5570658,
+        "centroid_lon": 126.9647923,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9646571,
+              37.5571164
+            ],
+            [
+              126.9647322,
+              37.5571164
+            ],
+            [
+              126.9647322,
+              37.5571675
+            ],
+            [
+              126.9648556,
+              37.557159
+            ],
+            [
+              126.9648609,
+              37.5570824
+            ],
+            [
+              126.9649682,
+              37.5570782
+            ],
+            [
+              126.9649682,
+              37.5569506
+            ],
+            [
+              126.9647483,
+              37.5569591
+            ],
+            [
+              126.9647483,
+              37.5570144
+            ],
+            [
+              126.9646517,
+              37.5570144
+            ],
+            [
+              126.9646571,
+              37.5571164
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-464233659",
+      "properties": {
+        "building_id": "osm-way-464233659",
+        "source_building_id": "way/464233659",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "성요셉아파트",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5595805,
+        "centroid_lon": 126.9672105,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9669424,
+              37.5595934
+            ],
+            [
+              126.9674892,
+              37.5595982
+            ],
+            [
+              126.9678511,
+              37.5596981
+            ],
+            [
+              126.9678917,
+              37.5596192
+            ],
+            [
+              126.9675177,
+              37.559508
+            ],
+            [
+              126.9671559,
+              37.5594983
+            ],
+            [
+              126.9669302,
+              37.5595015
+            ],
+            [
+              126.966544,
+              37.5595579
+            ],
+            [
+              126.9665725,
+              37.5596498
+            ],
+            [
+              126.9669424,
+              37.5595934
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-464233662",
+      "properties": {
+        "building_id": "osm-way-464233662",
+        "source_building_id": "way/464233662",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5592048,
+        "centroid_lon": 126.9667405,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9666012,
+              37.5592897
+            ],
+            [
+              126.9669007,
+              37.559262
+            ],
+            [
+              126.9668798,
+              37.5591199
+            ],
+            [
+              126.9665803,
+              37.5591477
+            ],
+            [
+              126.9666012,
+              37.5592897
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-464233663",
+      "properties": {
+        "building_id": "osm-way-464233663",
+        "source_building_id": "way/464233663",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5592003,
+        "centroid_lon": 126.9670032,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9669479,
+              37.5592714
+            ],
+            [
+              126.9670646,
+              37.5592682
+            ],
+            [
+              126.9670585,
+              37.5591291
+            ],
+            [
+              126.9669418,
+              37.5591323
+            ],
+            [
+              126.9669479,
+              37.5592714
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-464233664",
+      "properties": {
+        "building_id": "osm-way-464233664",
+        "source_building_id": "way/464233664",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5590223,
+        "centroid_lon": 126.9670488,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.966983,
+              37.5591002
+            ],
+            [
+              126.9671171,
+              37.5590989
+            ],
+            [
+              126.9671147,
+              37.5589444
+            ],
+            [
+              126.9669806,
+              37.5589457
+            ],
+            [
+              126.966983,
+              37.5591002
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-464233665",
+      "properties": {
+        "building_id": "osm-way-464233665",
+        "source_building_id": "way/464233665",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5594293,
+        "centroid_lon": 126.9667794,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9665787,
+              37.5594871
+            ],
+            [
+              126.9666544,
+              37.5594815
+            ],
+            [
+              126.9666625,
+              37.5594928
+            ],
+            [
+              126.966887,
+              37.5594761
+            ],
+            [
+              126.9668851,
+              37.5594596
+            ],
+            [
+              126.967043,
+              37.5594479
+            ],
+            [
+              126.9670341,
+              37.5593723
+            ],
+            [
+              126.9668834,
+              37.5593834
+            ],
+            [
+              126.9668808,
+              37.5593614
+            ],
+            [
+              126.9666358,
+              37.5593795
+            ],
+            [
+              126.9666385,
+              37.5594025
+            ],
+            [
+              126.9665693,
+              37.5594076
+            ],
+            [
+              126.9665787,
+              37.5594871
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-469138834",
+      "properties": {
+        "building_id": "osm-way-469138834",
+        "source_building_id": "way/469138834",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시 서대문구 경기대로 36",
+        "parcel_address": "",
+        "building_name": "웰컴고시텔",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5626507,
+        "centroid_lon": 126.9620451,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.962021,
+              37.5627451
+            ],
+            [
+              126.9619556,
+              37.5626001
+            ],
+            [
+              126.9620755,
+              37.5625718
+            ],
+            [
+              126.9621282,
+              37.5626859
+            ],
+            [
+              126.962021,
+              37.5627451
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-469138835",
+      "properties": {
+        "building_id": "osm-way-469138835",
+        "source_building_id": "way/469138835",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시 서대문구 경기대로 26-7",
+        "parcel_address": "",
+        "building_name": "충정유앤미아파트",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5619799,
+        "centroid_lon": 126.9624346,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9620541,
+              37.5620001
+            ],
+            [
+              126.9620944,
+              37.5618959
+            ],
+            [
+              126.9624998,
+              37.561944
+            ],
+            [
+              126.9627757,
+              37.5619767
+            ],
+            [
+              126.9627488,
+              37.562083
+            ],
+            [
+              126.9620541,
+              37.5620001
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-471659259",
+      "properties": {
+        "building_id": "osm-way-471659259",
+        "source_building_id": "way/471659259",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시 서대문구 충정로 30",
+        "parcel_address": "",
+        "building_name": "충정아파트",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5615512,
+        "centroid_lon": 126.9641607,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9641382,
+              37.5617419
+            ],
+            [
+              126.9639771,
+              37.5615105
+            ],
+            [
+              126.9639865,
+              37.5613754
+            ],
+            [
+              126.9643671,
+              37.561455
+            ],
+            [
+              126.9643344,
+              37.5616734
+            ],
+            [
+              126.9641382,
+              37.5617419
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113132",
+      "properties": {
+        "building_id": "osm-way-472113132",
+        "source_building_id": "way/472113132",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "삼우빌라",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5612122,
+        "centroid_lon": 126.9583696,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9583177,
+              37.5611144
+            ],
+            [
+              126.9582604,
+              37.5612737
+            ],
+            [
+              126.9584214,
+              37.5613101
+            ],
+            [
+              126.9584787,
+              37.5611508
+            ],
+            [
+              126.9583177,
+              37.5611144
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113134",
+      "properties": {
+        "building_id": "osm-way-472113134",
+        "source_building_id": "way/472113134",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "성진아르테",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5610011,
+        "centroid_lon": 126.9584634,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9583503,
+              37.5610539
+            ],
+            [
+              126.9585133,
+              37.5610974
+            ],
+            [
+              126.9585765,
+              37.5609484
+            ],
+            [
+              126.9584136,
+              37.5609049
+            ],
+            [
+              126.9583503,
+              37.5610539
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113138",
+      "properties": {
+        "building_id": "osm-way-472113138",
+        "source_building_id": "way/472113138",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "아림빌라",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5608445,
+        "centroid_lon": 126.9585248,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9584306,
+              37.5608799
+            ],
+            [
+              126.958465,
+              37.5607768
+            ],
+            [
+              126.958619,
+              37.560809
+            ],
+            [
+              126.9585846,
+              37.5609122
+            ],
+            [
+              126.9584306,
+              37.5608799
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113140",
+      "properties": {
+        "building_id": "osm-way-472113140",
+        "source_building_id": "way/472113140",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "경남2차 아파트",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5613916,
+        "centroid_lon": 126.9578071,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9576616,
+              37.5614106
+            ],
+            [
+              126.9577028,
+              37.561309
+            ],
+            [
+              126.9579526,
+              37.5613725
+            ],
+            [
+              126.9579114,
+              37.5614742
+            ],
+            [
+              126.9576616,
+              37.5614106
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113142",
+      "properties": {
+        "building_id": "osm-way-472113142",
+        "source_building_id": "way/472113142",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "세종화이트빌",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5611577,
+        "centroid_lon": 126.9581922,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9580856,
+              37.5612282
+            ],
+            [
+              126.9581475,
+              37.5610535
+            ],
+            [
+              126.9582987,
+              37.5610872
+            ],
+            [
+              126.9582368,
+              37.5612619
+            ],
+            [
+              126.9580856,
+              37.5612282
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113144",
+      "properties": {
+        "building_id": "osm-way-472113144",
+        "source_building_id": "way/472113144",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5610152,
+        "centroid_lon": 126.958243,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9581605,
+              37.5610332
+            ],
+            [
+              126.9582973,
+              37.5610676
+            ],
+            [
+              126.9583255,
+              37.5609973
+            ],
+            [
+              126.9581887,
+              37.5609628
+            ],
+            [
+              126.9581605,
+              37.5610332
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113146",
+      "properties": {
+        "building_id": "osm-way-472113146",
+        "source_building_id": "way/472113146",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5609223,
+        "centroid_lon": 126.9582855,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9581978,
+              37.5609455
+            ],
+            [
+              126.9582316,
+              37.5608628
+            ],
+            [
+              126.9583732,
+              37.5608991
+            ],
+            [
+              126.9583394,
+              37.5609819
+            ],
+            [
+              126.9581978,
+              37.5609455
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113147",
+      "properties": {
+        "building_id": "osm-way-472113147",
+        "source_building_id": "way/472113147",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "아현렉스빌",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5607923,
+        "centroid_lon": 126.9583375,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9582413,
+              37.5608427
+            ],
+            [
+              126.9582931,
+              37.560708
+            ],
+            [
+              126.9584337,
+              37.560742
+            ],
+            [
+              126.9583819,
+              37.5608767
+            ],
+            [
+              126.9582413,
+              37.5608427
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113168",
+      "properties": {
+        "building_id": "osm-way-472113168",
+        "source_building_id": "way/472113168",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5606035,
+        "centroid_lon": 126.9585383,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9583244,
+              37.5606812
+            ],
+            [
+              126.9586326,
+              37.5607496
+            ],
+            [
+              126.9587065,
+              37.5606055
+            ],
+            [
+              126.9586171,
+              37.5605175
+            ],
+            [
+              126.9584107,
+              37.5604638
+            ],
+            [
+              126.9583244,
+              37.5606812
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113171",
+      "properties": {
+        "building_id": "osm-way-472113171",
+        "source_building_id": "way/472113171",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5603844,
+        "centroid_lon": 126.958537,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9584323,
+              37.5604296
+            ],
+            [
+              126.958497,
+              37.5602684
+            ],
+            [
+              126.9585802,
+              37.5603539
+            ],
+            [
+              126.9586387,
+              37.5604858
+            ],
+            [
+              126.9584323,
+              37.5604296
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113172",
+      "properties": {
+        "building_id": "osm-way-472113172",
+        "source_building_id": "way/472113172",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "house",
+        "residential_type": "house",
+        "centroid_lat": 37.5617256,
+        "centroid_lon": 126.9584614,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9583026,
+              37.5617968
+            ],
+            [
+              126.9584077,
+              37.5616043
+            ],
+            [
+              126.9586085,
+              37.5616562
+            ],
+            [
+              126.9585268,
+              37.561845
+            ],
+            [
+              126.9583026,
+              37.5617968
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-472113179",
+      "properties": {
+        "building_id": "osm-way-472113179",
+        "source_building_id": "way/472113179",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "",
+        "primary_use": "residential",
+        "residential_type": "residential",
+        "centroid_lat": 37.5602058,
+        "centroid_lon": 126.9583375,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9582126,
+              37.5602334
+            ],
+            [
+              126.9582635,
+              37.5601335
+            ],
+            [
+              126.9583842,
+              37.5601739
+            ],
+            [
+              126.9584298,
+              37.5602079
+            ],
+            [
+              126.9583976,
+              37.5602802
+            ],
+            [
+              126.9582126,
+              37.5602334
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-641472124",
+      "properties": {
+        "building_id": "osm-way-641472124",
+        "source_building_id": "way/641472124",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "108",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.555541,
+        "centroid_lon": 126.9629187,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9626666,
+              37.555427
+            ],
+            [
+              126.9630389,
+              37.5554225
+            ],
+            [
+              126.9630381,
+              37.5555553
+            ],
+            [
+              126.9630745,
+              37.5556326
+            ],
+            [
+              126.9629716,
+              37.5556669
+            ],
+            [
+              126.9629626,
+              37.5555725
+            ],
+            [
+              126.9629228,
+              37.5555728
+            ],
+            [
+              126.9629297,
+              37.555509
+            ],
+            [
+              126.9626638,
+              37.5555103
+            ],
+            [
+              126.9626666,
+              37.555427
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-840905000",
+      "properties": {
+        "building_id": "osm-way-840905000",
+        "source_building_id": "way/840905000",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "1동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5608597,
+        "centroid_lon": 126.9682953,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9679142,
+              37.5613207
+            ],
+            [
+              126.9681978,
+              37.5614
+            ],
+            [
+              126.9686809,
+              37.5603993
+            ],
+            [
+              126.9683882,
+              37.5603188
+            ],
+            [
+              126.9679142,
+              37.5613207
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-840905001",
+      "properties": {
+        "building_id": "osm-way-840905001",
+        "source_building_id": "way/840905001",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "1동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5611711,
+        "centroid_lon": 126.9681606,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.967995,
+              37.5612338
+            ],
+            [
+              126.9680884,
+              37.5610374
+            ],
+            [
+              126.9683262,
+              37.5611085
+            ],
+            [
+              126.9682329,
+              37.5613048
+            ],
+            [
+              126.967995,
+              37.5612338
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-840905002",
+      "properties": {
+        "building_id": "osm-way-840905002",
+        "source_building_id": "way/840905002",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "1동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5605344,
+        "centroid_lon": 126.968454,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9682884,
+              37.560597
+            ],
+            [
+              126.9683818,
+              37.5604007
+            ],
+            [
+              126.9686196,
+              37.5604717
+            ],
+            [
+              126.9685263,
+              37.5606681
+            ],
+            [
+              126.9682884,
+              37.560597
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-843955951",
+      "properties": {
+        "building_id": "osm-way-843955951",
+        "source_building_id": "way/843955951",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "리하우스 아파트",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5599822,
+        "centroid_lon": 126.9665108,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9666722,
+              37.5600081
+            ],
+            [
+              126.966853,
+              37.55997
+            ],
+            [
+              126.9667796,
+              37.5597512
+            ],
+            [
+              126.9663186,
+              37.5598484
+            ],
+            [
+              126.9663572,
+              37.5599637
+            ],
+            [
+              126.9662724,
+              37.5599808
+            ],
+            [
+              126.9662898,
+              37.560027
+            ],
+            [
+              126.9664004,
+              37.5600393
+            ],
+            [
+              126.9664347,
+              37.5600124
+            ],
+            [
+              126.9665231,
+              37.5600395
+            ],
+            [
+              126.9665396,
+              37.5600886
+            ],
+            [
+              126.9666887,
+              37.5600572
+            ],
+            [
+              126.9666722,
+              37.5600081
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-854278903",
+      "properties": {
+        "building_id": "osm-way-854278903",
+        "source_building_id": "way/854278903",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "101",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5636646,
+        "centroid_lon": 126.9631617,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9629069,
+              37.5636022
+            ],
+            [
+              126.9629242,
+              37.5637093
+            ],
+            [
+              126.9629756,
+              37.5637041
+            ],
+            [
+              126.9629844,
+              37.5637587
+            ],
+            [
+              126.9632801,
+              37.5637287
+            ],
+            [
+              126.9632856,
+              37.5637627
+            ],
+            [
+              126.9634416,
+              37.5637469
+            ],
+            [
+              126.9634094,
+              37.5635469
+            ],
+            [
+              126.9633151,
+              37.5635565
+            ],
+            [
+              126.9633255,
+              37.5636212
+            ],
+            [
+              126.9630512,
+              37.5636491
+            ],
+            [
+              126.9630414,
+              37.5635885
+            ],
+            [
+              126.9629069,
+              37.5636022
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-902543988",
+      "properties": {
+        "building_id": "osm-way-902543988",
+        "source_building_id": "way/902543988",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "103동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5621611,
+        "centroid_lon": 126.9655582,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9654126,
+              37.5621655
+            ],
+            [
+              126.9655863,
+              37.5623044
+            ],
+            [
+              126.9656862,
+              37.5622336
+            ],
+            [
+              126.9656984,
+              37.5622445
+            ],
+            [
+              126.9657938,
+              37.56217
+            ],
+            [
+              126.9655936,
+              37.5620149
+            ],
+            [
+              126.9654707,
+              37.5621189
+            ],
+            [
+              126.9654552,
+              37.5621043
+            ],
+            [
+              126.9654381,
+              37.5621177
+            ],
+            [
+              126.965447,
+              37.5621373
+            ],
+            [
+              126.9654126,
+              37.5621655
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-902543989",
+      "properties": {
+        "building_id": "osm-way-902543989",
+        "source_building_id": "way/902543989",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "101동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5618052,
+        "centroid_lon": 126.9660515,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9659172,
+              37.5617785
+            ],
+            [
+              126.9659601,
+              37.5618188
+            ],
+            [
+              126.9659677,
+              37.5618151
+            ],
+            [
+              126.9660185,
+              37.5618555
+            ],
+            [
+              126.9660403,
+              37.5618387
+            ],
+            [
+              126.9660619,
+              37.5618524
+            ],
+            [
+              126.9660352,
+              37.5618714
+            ],
+            [
+              126.9661367,
+              37.5619496
+            ],
+            [
+              126.9661936,
+              37.5619098
+            ],
+            [
+              126.9661782,
+              37.561896
+            ],
+            [
+              126.9663045,
+              37.5618016
+            ],
+            [
+              126.966117,
+              37.5616505
+            ],
+            [
+              126.9660939,
+              37.5616695
+            ],
+            [
+              126.9659886,
+              37.5617438
+            ],
+            [
+              126.9659709,
+              37.5617303
+            ],
+            [
+              126.9659426,
+              37.5617519
+            ],
+            [
+              126.965948,
+              37.5617552
+            ],
+            [
+              126.9659172,
+              37.5617785
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-902543990",
+      "properties": {
+        "building_id": "osm-way-902543990",
+        "source_building_id": "way/902543990",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "102동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5621211,
+        "centroid_lon": 126.9660106,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9658434,
+              37.5621437
+            ],
+            [
+              126.9659429,
+              37.5622191
+            ],
+            [
+              126.966003,
+              37.5621673
+            ],
+            [
+              126.9661012,
+              37.5622461
+            ],
+            [
+              126.9662063,
+              37.5621705
+            ],
+            [
+              126.9661153,
+              37.5620987
+            ],
+            [
+              126.966129,
+              37.5620882
+            ],
+            [
+              126.9660264,
+              37.5620042
+            ],
+            [
+              126.9659687,
+              37.5620487
+            ],
+            [
+              126.965979,
+              37.5620579
+            ],
+            [
+              126.9659122,
+              37.5621085
+            ],
+            [
+              126.9659003,
+              37.5620999
+            ],
+            [
+              126.9658434,
+              37.5621437
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "osm-way-902569334",
+      "properties": {
+        "building_id": "osm-way-902569334",
+        "source_building_id": "way/902569334",
+        "segment_id": "segment-chungjeong-ro",
+        "road_address": "서울특별시",
+        "parcel_address": "",
+        "building_name": "101동",
+        "primary_use": "apartments",
+        "residential_type": "apartments",
+        "centroid_lat": 37.5566032,
+        "centroid_lon": 126.9593407,
+        "polygon_source": "OpenStreetMap",
+        "attribute_source": "OpenStreetMap building tag",
+        "geometry_crs": "EPSG:4326",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
+        "source_url": "https://www.openstreetmap.org/copyright",
+        "source_date": "2026-10-24T08:22:09Z"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              126.9591319,
+              37.5565297
+            ],
+            [
+              126.9594114,
+              37.5567752
+            ],
+            [
+              126.9595494,
+              37.5566766
+            ],
+            [
+              126.9592699,
+              37.5564311
+            ],
+            [
+              126.9591319,
+              37.5565297
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
       "id": "osm-way-1141324829",
       "properties": {
         "building_id": "osm-way-1141324829",
         "source_building_id": "way/1141324829",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 연세로2나길 16",
         "parcel_address": "",
         "building_name": "16",
@@ -24,8 +5429,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -79,6 +5484,7 @@
       "properties": {
         "building_id": "osm-way-1442814956",
         "source_building_id": "way/1442814956",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 신촌로 119",
         "parcel_address": "",
         "building_name": "119",
@@ -89,8 +5495,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -136,6 +5542,7 @@
       "properties": {
         "building_id": "osm-way-1442814969",
         "source_building_id": "way/1442814969",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 신촌로 127",
         "parcel_address": "",
         "building_name": "127",
@@ -146,8 +5553,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -185,6 +5592,7 @@
       "properties": {
         "building_id": "osm-way-1467799367",
         "source_building_id": "way/1467799367",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 마포구 신촌로 142",
         "parcel_address": "",
         "building_name": "142",
@@ -195,8 +5603,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -290,6 +5698,7 @@
       "properties": {
         "building_id": "osm-way-1467800863",
         "source_building_id": "way/1467800863",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 마포구 백범로1길 83",
         "parcel_address": "",
         "building_name": "83",
@@ -300,8 +5709,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -363,6 +5772,7 @@
       "properties": {
         "building_id": "osm-way-1492568744",
         "source_building_id": "way/1492568744",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 연세로2나길 79",
         "parcel_address": "",
         "building_name": "79",
@@ -373,8 +5783,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -412,6 +5822,7 @@
       "properties": {
         "building_id": "osm-way-1492568745",
         "source_building_id": "way/1492568745",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 연세로2나길 81",
         "parcel_address": "",
         "building_name": "81",
@@ -422,8 +5833,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -461,6 +5872,7 @@
       "properties": {
         "building_id": "osm-way-1492568746",
         "source_building_id": "way/1492568746",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 연세로2나길 83",
         "parcel_address": "",
         "building_name": "83",
@@ -471,8 +5883,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -510,6 +5922,7 @@
       "properties": {
         "building_id": "osm-way-1492568747",
         "source_building_id": "way/1492568747",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 연세로2나길 85",
         "parcel_address": "",
         "building_name": "85",
@@ -520,8 +5933,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
@@ -559,6 +5972,7 @@
       "properties": {
         "building_id": "osm-way-328333538",
         "source_building_id": "way/328333538",
+        "segment_id": "segment-yeonse-ro-2na-gil",
         "road_address": "서울특별시 서대문구 신촌로 121",
         "parcel_address": "",
         "building_name": "121",
@@ -569,8 +5983,8 @@
         "polygon_source": "OpenStreetMap",
         "attribute_source": "OpenStreetMap building tag",
         "geometry_crs": "EPSG:4326",
-        "classification_status": "osm_residential_tag_only",
-        "residential_classification_confidence": "low_not_building_register_verified",
+        "classification_status": "osm_residential_candidate",
+        "residential_classification_confidence": "candidate_not_building_register_verified",
         "source_url": "https://www.openstreetmap.org/copyright",
         "source_date": "2026-10-24T08:22:09Z"
       },
