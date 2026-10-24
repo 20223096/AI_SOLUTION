@@ -5,10 +5,14 @@ import math
 from datetime import datetime
 from functools import lru_cache
 
-from app.models.domain import ImpactRequest, M1NoiseSource, M1Point, M1PredictRequest, M1UncertaintyRequest
+from app.models.domain import ImpactRequest, M1NoiseSource, M1Point, M1PredictRequest, M1ScheduleEvaluationRequest, M1UncertaintyRequest
 from app.services.acoustics import energy_sum, reference_energy_exposure, sound_power_to_pressure
 from app.services.impact import calculate_impact
+from app.services.optimizer import optimize
+from app.services.pareto import non_dominated_multi
+from app.services.prediction import predict
 from app.services.public_data import PROCESSED
+from app.services.timegrid import slots
 
 SLOT_MINUTES = 15.0
 SUPPORTED_PROJECTED_CRS = {"EPSG:5179", "EPSG:5186"}
@@ -130,35 +134,100 @@ def _corrections(request: M1PredictRequest) -> tuple[float, dict]:
     return applied, details
 
 
-def _peak_level(source_rows: list[dict], mode: str) -> tuple[float | None, dict]:
-    active = [row for row in source_rows if row["active_minutes"] > 0]
-    if not active:
-        return None, {"mode": mode, "interpretation": "no active source"}
-    levels = [row["full_activity_lp_db"] for row in active]
-    concurrent = energy_sum(levels)
-    sequential = max(levels)
-    if mode == "complete_concurrent":
-        return concurrent, {"mode": mode, "bound": "complete temporal overlap assumption"}
-    if mode == "sequential_possible":
-        return sequential, {"mode": mode, "bound": "non-overlap assumption where feasible"}
-    if mode == "overlap_unknown":
-        return None, {"mode": mode, "min_sequential_lp_db": round(sequential, 2), "max_concurrent_lp_db": round(concurrent, 2), "confidence_interval": None}
+def _pair_overlap_bounds(a: float, b: float, slot_minutes: float = SLOT_MINUTES) -> dict:
+    return {
+        "minimum_overlap_minutes": max(0.0, a + b - slot_minutes),
+        "maximum_overlap_minutes": min(a, b),
+        "complete_sequential_feasible": a + b <= slot_minutes,
+    }
+
+
+def _exact_temporal_metrics(active: list[dict]) -> tuple[float | None, dict]:
     events = []
+    pairwise = []
+    intervals_by_id = {row["id"]: row["active_intervals"] for row in active}
     for row in active:
         for interval in row["active_intervals"]:
             events.append((interval.start, 1, row["full_activity_lp_db"], row["id"]))
             events.append((interval.end, -1, row["full_activity_lp_db"], row["id"]))
-    if not events:
-        return None, {"mode": mode, "reason": "exact mode requires active_intervals"}
-    current, maximum = {}, None
-    for _, direction, level, source_id in sorted(events, key=lambda x: (x[0], x[1])):
+    for index, left in enumerate(active):
+        for right in active[index + 1:]:
+            overlap = sum(
+                max(0.0, (min(a.end, b.end) - max(a.start, b.start)).total_seconds() / 60)
+                for a in intervals_by_id[left["id"]] for b in intervals_by_id[right["id"]]
+            )
+            pairwise.append({"source_ids": [left["id"], right["id"]], "actual_overlap_minutes": overlap})
+    current, maximum, max_count = {}, None, 0
+    for moment, direction, level, source_id in sorted(events, key=lambda x: (x[0], x[1])):
         if direction < 0:
             current.pop(source_id, None)
         else:
             current[source_id] = level
             value = energy_sum(current.values())
             maximum = value if maximum is None else max(maximum, value or maximum)
-    return maximum, {"mode": mode, "bound": "explicit interval overlap"}
+            max_count = max(max_count, len(current))
+    all_intervals = sorted((interval.start, interval.end) for row in active for interval in row["active_intervals"])
+    merged = []
+    for start, end in all_intervals:
+        if merged and start <= merged[-1][1]:
+            merged[-1] = (merged[-1][0], max(merged[-1][1], end))
+        else:
+            merged.append((start, end))
+    maximum_continuous = max(((end - start).total_seconds() / 60 for start, end in merged), default=0.0)
+    return maximum, {
+        "mode": "exact", "bound": "explicit interval overlap", "pairwise_overlap": pairwise,
+        "maximum_concurrent_source_count": max_count,
+        "maximum_continuous_construction_noise_minutes": round(maximum_continuous, 6),
+    }
+
+
+def _peak_level(source_rows: list[dict], mode: str) -> tuple[float | None, dict]:
+    active = [row for row in source_rows if row["active_minutes"] > 0]
+    if not active:
+        return None, {"mode": mode, "interpretation": "no active source"}
+    levels = [row["full_activity_lp_db"] for row in active]
+    durations = [row["active_minutes"] for row in active]
+    total_activity = sum(durations)
+    sequential_feasible = total_activity <= SLOT_MINUTES
+    minimum_concurrency = max(1, math.ceil(total_activity / SLOT_MINUTES - 1e-12))
+    concurrent = energy_sum(levels)
+    sequential = max(levels)
+    pairwise = []
+    for index, left in enumerate(active):
+        for right in active[index + 1:]:
+            pairwise.append({"source_ids": [left["id"], right["id"]], **_pair_overlap_bounds(left["active_minutes"], right["active_minutes"])})
+    temporal = {
+        "total_source_activity_minutes": total_activity,
+        "complete_sequential_feasible": sequential_feasible,
+        "minimum_feasible_concurrent_source_count": minimum_concurrency,
+        "maximum_concurrent_source_count": len(active),
+        "pairwise_overlap": pairwise,
+        "maximum_continuous_construction_noise_minutes_range": {
+            "minimum": max(durations), "maximum": min(SLOT_MINUTES, total_activity)
+        },
+    }
+    if mode == "complete_concurrent":
+        return concurrent, {"mode": mode, "bound": "complete temporal overlap assumption", **temporal}
+    if mode == "sequential_possible":
+        if not sequential_feasible:
+            raise ValueError(f"complete sequential operation is infeasible: {total_activity:g} source-minutes exceed {SLOT_MINUTES:g}-minute slot")
+        return sequential, {"mode": mode, "bound": "feasible non-overlap assumption", **temporal}
+    if mode == "overlap_unknown":
+        meta = {"mode": mode, "maximum_possible_combined_level_db": round(concurrent, 2), "confidence_interval": None, **temporal}
+        if len(active) == 2:
+            required = pairwise[0]["minimum_overlap_minutes"]
+            minimum_peak = concurrent if required > 0 else sequential
+            meta["minimum_feasible_combined_level_db"] = round(minimum_peak, 2)
+            meta["minimum_peak_basis"] = "two-source overlap capacity exact bound"
+        else:
+            average_energy_bound = 10 * math.log10(sum(10 ** (level / 10) * duration / SLOT_MINUTES for level, duration in zip(levels, durations)))
+            meta["minimum_feasible_combined_level_db"] = None
+            meta["minimum_peak_lower_bound_db"] = round(max(sequential, average_energy_bound), 2)
+            meta["minimum_peak_basis"] = "multi-source lower bound; exact ordering is unspecified"
+        return None, meta
+    if not all(row["active_intervals"] for row in active):
+        return None, {"mode": mode, "reason": "exact mode requires active_intervals", **temporal}
+    return _exact_temporal_metrics(active)
 
 
 def predict_m1(request: M1PredictRequest) -> dict:
@@ -227,14 +296,21 @@ def predict_m1(request: M1PredictRequest) -> dict:
             "maximum_minutes": min(SLOT_MINUTES, sum(active_values)),
             "interpretation": "range from complete overlap to sequential union; not a confidence interval",
         }
+        if request.overlap_mode == "exact" and peak_meta.get("maximum_continuous_construction_noise_minutes") is not None:
+            exact_continuous = peak_meta["maximum_continuous_construction_noise_minutes"]
+            continuous_range = {"minimum_minutes": exact_continuous, "maximum_minutes": exact_continuous, "interpretation": "explicit interval union"}
+        maximum_concurrent_level = peak if peak is not None else peak_meta.get("maximum_possible_combined_level_db")
         results.append({
             "receptor_id": receptor.id, "slot_start": request.slot_start, "slot_end": request.slot_end,
             "new_project_contribution_laeq_db": None if construction is None else round(construction, 2),
+            "slot_laeq_dba": None if construction is None else round(construction, 2),
             "total_laeq_db": None if total is None else round(total, 2),
             "delta_total_db": None if delta is None else round(delta, 2),
             "new_project_energy_exposure_65db_ref_minutes": None if construction is None else round(reference_energy_exposure(construction, SLOT_MINUTES), 6),
             "incremental_impact_legacy_v1": incremental_impact,
             "max_simultaneous_lp_db": None if peak is None else round(peak, 2),
+            "maximum_concurrent_combined_level_db": None if maximum_concurrent_level is None else round(maximum_concurrent_level, 2),
+            "measured_lafmax_dba": None,
             "simultaneity": peak_meta, "continuous_new_project_exposure": continuous_range,
             "sources": [{key: value for key, value in row.items() if key not in {"full_activity_lp_db", "active_intervals"}} for row in rows],
         })
@@ -323,4 +399,125 @@ def analyze_uncertainty(request: M1UncertaintyRequest) -> dict:
         "confidence_interval": None, "validation_status": "not_evaluable",
         "cases": cases, "ranges": ranges,
         "note": "Ranges are declared-assumption scenario bounds, not statistical confidence intervals.",
+    }
+
+
+def evaluate_m1_schedule_candidates(request: M1ScheduleEvaluationRequest) -> dict:
+    """Score only candidates already found feasible by the existing optimizer."""
+    missing = []
+    receptor_ids = {x.id for x in request.receptors}
+    for receptor in request.receptors:
+        if receptor.position is None:
+            missing.append({"receptor_id": receptor.id, "field": "position", "status": "unknown"})
+    for mapping in request.task_mappings:
+        if mapping.position is None:
+            missing.append({"task_id": mapping.task_id, "field": "position", "status": "unknown"})
+        if mapping.active_ratio is None:
+            missing.append({"task_id": mapping.task_id, "field": "active_ratio", "status": "unknown"})
+    if missing:
+        return {"evaluation_status": "deferred", "validation_status": "not_evaluable", "missing_required_inputs": missing, "candidates": [], "pareto_candidates": []}
+
+    base = optimize(request.scenario_id, request.analysis_date, background_profile=request.background_profile)
+    mappings = {x.task_id: x for x in request.task_mappings}
+    expected_tasks = {assignment.task_id for candidate in base.get("valid_candidates", []) for assignment in candidate.task_assignments}
+    unmapped = sorted(expected_tasks - mappings.keys())
+    if unmapped:
+        return {"evaluation_status": "deferred", "validation_status": "not_evaluable", "missing_required_inputs": [{"task_id": x, "field": "task_acoustic_mapping", "status": "unknown"} for x in unmapped], "candidates": [], "pareto_candidates": []}
+
+    evaluated = []
+    for candidate in base.get("valid_candidates", []):
+        baseline = predict(request.scenario_id, request.analysis_date, candidate.task_assignments, background_profile=request.background_profile)["predictions"]
+        baseline_index = {(row["receptor_id"], row["slot_start"]): row for row in baseline}
+        slot_start = min(row["slot_start"] for row in baseline)
+        slot_end = max(row["slot_end"] for row in baseline)
+        energy = impact = 0.0
+        sensitive_minutes = overlap_minutes = 0
+        active_slot_flags = []
+        slot_results = []
+        deferred = []
+        for start, end in slots(slot_start, slot_end):
+            active_assignments = [x for x in candidate.task_assignments if x.start < end and start < x.end]
+            active_slot_flags.append(bool(active_assignments))
+            sources = []
+            for assignment in active_assignments:
+                mapping = mappings[assignment.task_id]
+                deployed_start, deployed_end = max(start, assignment.start), min(end, assignment.end)
+                deployed_minutes = (deployed_end - deployed_start).total_seconds() / 60
+                sources.append(M1NoiseSource(
+                    id=f"{candidate.id}:{assignment.task_id}:{start.isoformat()}", segment_id=mapping.segment_id,
+                    source_type=mapping.source_type, equipment_category=mapping.equipment_category,
+                    equipment_model=mapping.equipment_model, count=mapping.count,
+                    sound_power_level_db=mapping.sound_power_level_db, lw_provenance=mapping.lw_provenance,
+                    reference_scenario=mapping.reference_scenario, position=mapping.position,
+                    deployment_start=deployed_start, deployment_end=deployed_end,
+                    actual_active_minutes=deployed_minutes * (mapping.active_ratio or 0),
+                    activity_provenance=mapping.activity_provenance,
+                    simultaneous_group=mapping.simultaneous_group,
+                    measurement_condition_verified=mapping.measurement_condition_verified,
+                ))
+            if not sources:
+                continue
+            for receptor in request.receptors:
+                base_row = baseline_index.get((receptor.id, start))
+                if base_row is None:
+                    deferred.append({"receptor_id": receptor.id, "slot_start": start, "field": "matching_scenario_receptor"})
+                    continue
+                m1_request = M1PredictRequest(
+                    slot_start=start, slot_end=end, sources=sources, receptors=[receptor],
+                    background_laeq_db=base_row["existing_environment_db"], background_provenance="derived",
+                    overlap_mode=request.overlap_mode,
+                )
+                result = predict_m1(m1_request)
+                if result["calculation_status"] == "deferred":
+                    deferred.extend(result["missing_required_inputs"])
+                    continue
+                row = result["results"][0]
+                energy += row["new_project_energy_exposure_65db_ref_minutes"] or 0
+                impact += row["incremental_impact_legacy_v1"] or 0
+                if base_row["sensitivity"]["is_sensitive_time"]:
+                    sensitive_minutes += 15
+                if base_row["existing_event_ids"]:
+                    overlap_minutes += 15
+                slot_results.append(row)
+        if deferred:
+            evaluated.append({"id": candidate.id, "feasibility": False, "evaluation_status": "deferred", "missing_required_inputs": deferred})
+            continue
+        current = maximum_run = 0
+        for active in active_slot_flags:
+            current = current + 15 if active else 0
+            maximum_run = max(maximum_run, current)
+        axes = {
+            "new_project_energy_exposure": round(energy, 6),
+            "sensitive_exposure_receptor_minutes": sensitive_minutes,
+            "maximum_continuous_exposure_upper_bound_minutes": maximum_run,
+            "existing_event_overlap_receptor_minutes": overlap_minutes,
+            "incremental_impact_legacy_v1": round(impact, 2),
+            "schedule_change_minutes": candidate.metrics.schedule_change_minutes,
+        }
+        evaluated.append({
+            "id": candidate.id, "feasibility": True, "evaluation_status": "simulated",
+            "task_assignments": candidate.task_assignments, "objective_axes": axes,
+            "slot_results": slot_results,
+            "input_provenance": {"positions": sorted({x.position.provenance for x in request.task_mappings if x.position}), "activities": sorted({x.activity_provenance for x in request.task_mappings})},
+        })
+    feasible = [x for x in evaluated if x.get("feasibility")]
+    pareto_axes = ["new_project_energy_exposure", "sensitive_exposure_receptor_minutes", "maximum_continuous_exposure_upper_bound_minutes", "schedule_change_minutes"]
+    points = [{"id": x["id"], **x["objective_axes"]} for x in feasible]
+    frontier_points = non_dominated_multi(points, pareto_axes)
+    frontier_ids = {x["id"] for x in frontier_points}
+    frontier = [x for x in feasible if x["id"] in frontier_ids]
+    recommendation = min(frontier, key=lambda x: tuple(x["objective_axes"][axis] for axis in pareto_axes) + (x["id"],)) if frontier else None
+    reasons = [] if recommendation is None else [
+        {"code": "non_dominated_m1", "evidence_fields": [f"objective_axes.{axis}" for axis in pareto_axes]},
+        {"code": "lexicographic_reference_without_cross_unit_sum", "axis_order": pareto_axes},
+        {"code": "simulation_inputs_not_field_verified", "provenance": recommendation["input_provenance"]},
+    ]
+    return {
+        "evaluation_status": "simulated", "validation_status": "not_evaluable",
+        "scenario_id": request.scenario_id, "base_optimizer_unchanged": True,
+        "generated_candidate_count": base["diagnostics"]["generated_candidate_count"],
+        "feasible_candidate_count": len(feasible), "candidates": evaluated,
+        "pareto_axes": pareto_axes, "pareto_candidates": frontier,
+        "recommended_candidate": recommendation, "recommendation_reasons": reasons,
+        "note": "M1 evaluates only existing optimizer-feasible candidates; no objective weights were adjusted.",
     }

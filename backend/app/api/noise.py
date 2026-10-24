@@ -1,7 +1,8 @@
 from fastapi import APIRouter, HTTPException
 
-from app.models.domain import M1PredictRequest, M1UncertaintyRequest, PredictRequest
-from app.services.m1_acoustics import analyze_uncertainty, compare_m0_m1, predict_m1
+from app.models.domain import FieldValidationRequest, M1PredictRequest, M1ScheduleEvaluationRequest, M1UncertaintyRequest, PredictRequest
+from app.services.field_validation import evaluate_field_validation
+from app.services.m1_acoustics import analyze_uncertainty, compare_m0_m1, evaluate_m1_schedule_candidates, predict_m1
 from app.services.prediction import predict
 from app.services.background_profiles import list_profiles
 
@@ -45,3 +46,18 @@ def noise_m1_uncertainty(request: M1UncertaintyRequest):
         return analyze_uncertainty(request)
     except ValueError as exc:
         raise HTTPException(422, str(exc)) from exc
+
+
+@router.post("/evaluate-m1-candidates")
+def noise_evaluate_m1_candidates(request: M1ScheduleEvaluationRequest):
+    try:
+        return evaluate_m1_schedule_candidates(request)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
+
+
+@router.post("/validate-m1-field")
+def noise_validate_m1_field(request: FieldValidationRequest):
+    return evaluate_field_validation(request)

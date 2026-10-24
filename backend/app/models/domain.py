@@ -264,6 +264,74 @@ class M1UncertaintyRequest(BaseModel):
     cases: list[M1SensitivityCase] = Field(min_length=1)
 
 
+class M1TaskAcousticMapping(BaseModel):
+    task_id: str
+    segment_id: Literal["segment-yeonse-ro-2na-gil", "segment-chungjeong-ro"]
+    source_type: Literal["fixed", "moving_work", "moving_vehicle", "impulsive"]
+    equipment_category: str
+    equipment_model: str | None = None
+    count: int = Field(default=1, ge=1)
+    sound_power_level_db: float | None = None
+    lw_provenance: Literal["official_reference", "field_verified", "assumed", "unknown"] = "unknown"
+    reference_scenario: Literal["low", "median", "high"] | None = None
+    position: M1Point | None = None
+    active_ratio: float | None = Field(default=None, ge=0, le=1)
+    activity_provenance: Literal["field_verified", "derived", "assumed", "unknown"] = "unknown"
+    simultaneous_group: str | None = None
+    measurement_condition_verified: bool = False
+
+
+class M1ScheduleEvaluationRequest(BaseModel):
+    scenario_id: str
+    analysis_date: date = date(2026, 10, 26)
+    background_profile: str = "assumed_demo"
+    receptors: list[M1Receptor]
+    task_mappings: list[M1TaskAcousticMapping]
+    overlap_mode: Literal["complete_concurrent", "sequential_possible", "overlap_unknown"] = "overlap_unknown"
+
+
+class FieldObservation(BaseModel):
+    id: str
+    receptor_id: str
+    receptor_position: M1Point
+    start: datetime
+    end: datetime
+    laeq_dba: float
+    acoustic_scope: Literal["total_environment", "new_project_contribution"] = "total_environment"
+    measurement_duration_minutes: float = Field(gt=0)
+    equipment_active: dict[str, bool]
+    instrument: str = Field(min_length=1)
+    calibration_before: str = Field(min_length=1)
+    calibration_after: str = Field(min_length=1)
+    weather: dict[str, float | str]
+    source: str = Field(min_length=1)
+
+    @model_validator(mode="after")
+    def measurement_duration_matches_interval(self):
+        actual = (self.end - self.start).total_seconds() / 60
+        if actual <= 0 or abs(actual - self.measurement_duration_minutes) > 1e-6:
+            raise ValueError("measurement duration must match start/end interval")
+        if not self.weather:
+            raise ValueError("weather conditions are required")
+        return self
+
+
+class FieldPredictionRecord(BaseModel):
+    receptor_id: str
+    receptor_position: M1Point
+    start: datetime
+    end: datetime
+    predicted_laeq_dba: float
+    acoustic_scope: Literal["total_environment", "new_project_contribution"] = "total_environment"
+    equipment_ids: list[str] = Field(default_factory=list)
+    metric: Literal["LAeq_dBA"] = "LAeq_dBA"
+
+
+class FieldValidationRequest(BaseModel):
+    observations: list[FieldObservation] = Field(default_factory=list)
+    predictions: list[FieldPredictionRecord] = Field(default_factory=list)
+
+
 class ImpactRequest(BaseModel):
     total_noise_db: float
     threshold_db: float = 65.0

@@ -92,11 +92,13 @@ def two_source_payload(mode, intervals=False, partial=False):
     return data
 
 
-def test_complete_concurrent_and_sequential_have_same_slot_energy_but_different_peak():
+def test_complete_concurrent_and_unknown_overlap_have_same_slot_energy_but_feasible_peak_bound():
     concurrent = result(two_source_payload("complete_concurrent"))
-    sequential = result(two_source_payload("sequential_possible"))
-    assert concurrent["new_project_contribution_laeq_db"] == sequential["new_project_contribution_laeq_db"]
-    assert concurrent["max_simultaneous_lp_db"] == pytest.approx(sequential["max_simultaneous_lp_db"] + 3.01, abs=0.02)
+    unknown = result(two_source_payload("overlap_unknown"))
+    assert concurrent["new_project_contribution_laeq_db"] == unknown["new_project_contribution_laeq_db"]
+    assert unknown["simultaneity"]["complete_sequential_feasible"] is False
+    assert unknown["simultaneity"]["pairwise_overlap"][0]["minimum_overlap_minutes"] == 5
+    assert unknown["simultaneity"]["minimum_feasible_combined_level_db"] == concurrent["maximum_concurrent_combined_level_db"]
 
 
 def test_partial_overlap_exact_intervals_detects_concurrent_peak():
@@ -109,7 +111,7 @@ def test_unknown_overlap_returns_bounds_not_false_precision():
     row = result(two_source_payload("overlap_unknown"))
     assert row["max_simultaneous_lp_db"] is None
     assert row["simultaneity"]["confidence_interval"] is None
-    assert row["simultaneity"]["max_concurrent_lp_db"] > row["simultaneity"]["min_sequential_lp_db"]
+    assert row["simultaneity"]["maximum_possible_combined_level_db"] == row["simultaneity"]["minimum_feasible_combined_level_db"]
 
 
 def test_rammer_cannot_match_roller_model_and_missing_reference_defers():
