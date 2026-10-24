@@ -1,0 +1,59 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/notices/extract-file",
+    "headers": {
+      "content-type": "multipart/form-data; boundary=<generated-by-client>"
+    },
+    "multipart": {
+      "file": {
+        "filename": "notice.txt",
+        "content-type": "text/plain",
+        "text": "신촌 공사, 시간 미정"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "mode": "mock",
+      "is_actual_ai": false,
+      "notice": {
+        "id": "extracted-mock",
+        "name": null,
+        "location": "서울 서대문구 신촌역~현대백화점 인근 연세로 일대",
+        "construction_period": {
+          "start": null,
+          "end": null,
+          "raw_text": null
+        },
+        "original_work_window": null,
+        "tasks": [],
+        "constraints": {},
+        "source_provenance": {
+          "document": {
+            "status": "user_provided",
+            "source": "request text",
+            "note": null,
+            "unit": null
+          },
+          "unfound_fields": {
+            "status": "missing",
+            "source": null,
+            "note": "Fields not present remain null; mock uses no inference",
+            "unit": null
+          }
+        }
+      },
+      "field_evidence": {
+        "name": null
+      },
+      "warnings": [
+        "MockExtractor의 결정적 규칙 결과이며 실제 AI 추출이 아닙니다."
+      ]
+    }
+  }
+}

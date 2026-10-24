@@ -1,0 +1,1959 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "쉿간표 PoC",
+    "description": "행정 참고용 PoC. 법적 허가·준수 인증이 아닙니다.",
+    "version": "poc-0.1.0"
+  },
+  "paths": {
+    "/api/health": {
+      "get": {
+        "summary": "Health",
+        "operationId": "health_api_health_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/poc/scenarios": {
+      "get": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "List Scenarios",
+        "operationId": "list_scenarios_api_poc_scenarios_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/poc/scenarios/{scenario_id}": {
+      "get": {
+        "tags": [
+          "scenarios"
+        ],
+        "summary": "Scenario Detail",
+        "operationId": "scenario_detail_api_poc_scenarios__scenario_id__get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notices/extract": {
+      "post": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Extract Json",
+        "operationId": "extract_json_api_notices_extract_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExtractRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/notices/extract-file": {
+      "post": {
+        "tags": [
+          "notices"
+        ],
+        "summary": "Extract File",
+        "operationId": "extract_file_api_notices_extract_file_post",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_extract_file_api_notices_extract_file_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/predict": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Predict",
+        "operationId": "noise_predict_api_noise_predict_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/background-profiles": {
+      "get": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Background Profiles",
+        "operationId": "background_profiles_api_noise_background_profiles_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/predict-m1": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Predict M1",
+        "operationId": "noise_predict_m1_api_noise_predict_m1_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/M1PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/compare-m0-m1": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Compare M0 M1",
+        "operationId": "noise_compare_m0_m1_api_noise_compare_m0_m1_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/M1PredictRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/m1-uncertainty": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise M1 Uncertainty",
+        "operationId": "noise_m1_uncertainty_api_noise_m1_uncertainty_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/M1UncertaintyRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/evaluate-m1-candidates": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Evaluate M1 Candidates",
+        "operationId": "noise_evaluate_m1_candidates_api_noise_evaluate_m1_candidates_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/M1ScheduleEvaluationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/validate-m1-field": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Validate M1 Field",
+        "operationId": "noise_validate_m1_field_api_noise_validate_m1_field_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FieldValidationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/design-simulation/catalog": {
+      "get": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Design Simulation Catalog",
+        "operationId": "noise_design_simulation_catalog_api_noise_design_simulation_catalog_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/noise/design-simulation/reschedule": {
+      "post": {
+        "tags": [
+          "noise"
+        ],
+        "summary": "Noise Design Simulation Reschedule",
+        "operationId": "noise_design_simulation_reschedule_api_noise_design_simulation_reschedule_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DesignBasedSimulationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/impact/calculate": {
+      "post": {
+        "tags": [
+          "impact"
+        ],
+        "summary": "Impact",
+        "operationId": "impact_api_impact_calculate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ImpactRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schedules/optimize": {
+      "post": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Optimize Schedule",
+        "operationId": "optimize_schedule_api_schedules_optimize_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/OptimizeRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schedules/compare": {
+      "post": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Compare Schedules",
+        "operationId": "compare_schedules_api_schedules_compare_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CompareRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/schedules/optimize/{scenario_id}/diagnostics": {
+      "get": {
+        "tags": [
+          "schedules"
+        ],
+        "summary": "Optimization Diagnostics",
+        "operationId": "optimization_diagnostics_api_schedules_optimize__scenario_id__diagnostics_get",
+        "parameters": [
+          {
+            "name": "scenario_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Scenario Id"
+            }
+          },
+          {
+            "name": "analysis_date",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date",
+              "default": "2026-10-26",
+              "title": "Analysis Date"
+            }
+          },
+          {
+            "name": "sensitivity_enabled",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean",
+              "default": true,
+              "title": "Sensitivity Enabled"
+            }
+          },
+          {
+            "name": "background_profile",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "assumed_demo",
+              "title": "Background Profile"
+            }
+          },
+          {
+            "name": "objective_mode",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "default": "incremental_impact",
+              "title": "Objective Mode"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/experiments/run": {
+      "post": {
+        "tags": [
+          "experiments"
+        ],
+        "summary": "Experiments",
+        "operationId": "experiments_api_experiments_run_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ExperimentRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public-data/catalog": {
+      "get": {
+        "tags": [
+          "public-data"
+        ],
+        "summary": "Catalog",
+        "operationId": "catalog_api_public_data_catalog_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public-data/construction-design": {
+      "get": {
+        "tags": [
+          "public-data"
+        ],
+        "summary": "Construction Design",
+        "operationId": "construction_design_api_public_data_construction_design_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Body_extract_file_api_notices_extract_file_post": {
+        "properties": {
+          "file": {
+            "type": "string",
+            "contentMediaType": "application/octet-stream",
+            "title": "File"
+          }
+        },
+        "type": "object",
+        "required": [
+          "file"
+        ],
+        "title": "Body_extract_file_api_notices_extract_file_post"
+      },
+      "CompareRequest": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id",
+            "default": "case-a"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date",
+            "default": "2026-10-26"
+          },
+          "before": {
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "type": "array",
+            "title": "Before"
+          },
+          "after": {
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "type": "array",
+            "title": "After"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "assumed_demo"
+          }
+        },
+        "type": "object",
+        "required": [
+          "before",
+          "after"
+        ],
+        "title": "CompareRequest"
+      },
+      "DesignBasedSimulationRequest": {
+        "properties": {
+          "segment_id": {
+            "type": "string",
+            "enum": [
+              "segment-yeonse-ro-2na-gil",
+              "segment-chungjeong-ro"
+            ],
+            "title": "Segment Id"
+          },
+          "receptor_id": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Receptor Id"
+          },
+          "receptor_segment_id": {
+            "type": "string",
+            "enum": [
+              "segment-yeonse-ro-2na-gil",
+              "segment-chungjeong-ro"
+            ],
+            "title": "Receptor Segment Id"
+          },
+          "distance_m": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Distance M"
+          },
+          "background_laeq_db": {
+            "type": "number",
+            "title": "Background Laeq Db",
+            "default": 55.0
+          },
+          "workday_start": {
+            "type": "string",
+            "format": "time",
+            "title": "Workday Start",
+            "default": "07:00:00"
+          },
+          "workday_end": {
+            "type": "string",
+            "format": "time",
+            "title": "Workday End",
+            "default": "18:00:00"
+          },
+          "sensitive_start": {
+            "type": "string",
+            "format": "time",
+            "title": "Sensitive Start",
+            "default": "08:00:00"
+          },
+          "sensitive_end": {
+            "type": "string",
+            "format": "time",
+            "title": "Sensitive End",
+            "default": "11:00:00"
+          },
+          "simulation_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Simulation Date",
+            "default": "2026-10-26"
+          }
+        },
+        "type": "object",
+        "required": [
+          "segment_id",
+          "receptor_id",
+          "receptor_segment_id",
+          "distance_m"
+        ],
+        "title": "DesignBasedSimulationRequest"
+      },
+      "ExperimentRequest": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id",
+            "default": "case-a"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date",
+            "default": "2026-10-26"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "assumed_demo"
+          },
+          "objective_mode": {
+            "type": "string",
+            "enum": [
+              "incremental_impact",
+              "absolute_impact",
+              "physical_energy",
+              "sensitive_exposure",
+              "continuous_burden",
+              "multi_axis"
+            ],
+            "title": "Objective Mode",
+            "default": "incremental_impact"
+          }
+        },
+        "type": "object",
+        "title": "ExperimentRequest"
+      },
+      "ExtractRequest": {
+        "properties": {
+          "text": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "text"
+        ],
+        "title": "ExtractRequest"
+      },
+      "FieldObservation": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "physical_location_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Physical Location Id"
+          },
+          "receptor_position": {
+            "$ref": "#/components/schemas/M1Point"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          },
+          "laeq_dba": {
+            "type": "number",
+            "title": "Laeq Dba"
+          },
+          "acoustic_scope": {
+            "type": "string",
+            "enum": [
+              "total_environment",
+              "new_project_contribution"
+            ],
+            "title": "Acoustic Scope",
+            "default": "total_environment"
+          },
+          "measurement_duration_minutes": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Measurement Duration Minutes"
+          },
+          "equipment_active": {
+            "additionalProperties": {
+              "type": "boolean"
+            },
+            "type": "object",
+            "title": "Equipment Active"
+          },
+          "instrument": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Instrument"
+          },
+          "calibration_before": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Calibration Before"
+          },
+          "calibration_after": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Calibration After"
+          },
+          "weather": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Weather"
+          },
+          "source": {
+            "type": "string",
+            "minLength": 1,
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "receptor_id",
+          "receptor_position",
+          "start",
+          "end",
+          "laeq_dba",
+          "measurement_duration_minutes",
+          "equipment_active",
+          "instrument",
+          "calibration_before",
+          "calibration_after",
+          "weather",
+          "source"
+        ],
+        "title": "FieldObservation"
+      },
+      "FieldPredictionRecord": {
+        "properties": {
+          "receptor_id": {
+            "type": "string",
+            "title": "Receptor Id"
+          },
+          "physical_location_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Physical Location Id"
+          },
+          "receptor_position": {
+            "$ref": "#/components/schemas/M1Point"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          },
+          "predicted_laeq_dba": {
+            "type": "number",
+            "title": "Predicted Laeq Dba"
+          },
+          "acoustic_scope": {
+            "type": "string",
+            "enum": [
+              "total_environment",
+              "new_project_contribution"
+            ],
+            "title": "Acoustic Scope",
+            "default": "total_environment"
+          },
+          "equipment_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Equipment Ids"
+          },
+          "metric": {
+            "type": "string",
+            "const": "LAeq_dBA",
+            "title": "Metric",
+            "default": "LAeq_dBA"
+          }
+        },
+        "type": "object",
+        "required": [
+          "receptor_id",
+          "receptor_position",
+          "start",
+          "end",
+          "predicted_laeq_dba"
+        ],
+        "title": "FieldPredictionRecord"
+      },
+      "FieldValidationRequest": {
+        "properties": {
+          "observations": {
+            "items": {
+              "$ref": "#/components/schemas/FieldObservation"
+            },
+            "type": "array",
+            "title": "Observations"
+          },
+          "predictions": {
+            "items": {
+              "$ref": "#/components/schemas/FieldPredictionRecord"
+            },
+            "type": "array",
+            "title": "Predictions"
+          }
+        },
+        "type": "object",
+        "title": "FieldValidationRequest"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "ImpactRequest": {
+        "properties": {
+          "total_noise_db": {
+            "type": "number",
+            "title": "Total Noise Db"
+          },
+          "threshold_db": {
+            "type": "number",
+            "title": "Threshold Db",
+            "default": 65.0
+          },
+          "duration_minutes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Duration Minutes"
+          },
+          "continuous_minutes": {
+            "type": "integer",
+            "minimum": 0.0,
+            "title": "Continuous Minutes"
+          },
+          "sensitivity_weight": {
+            "type": "number",
+            "exclusiveMinimum": 0.0,
+            "title": "Sensitivity Weight"
+          },
+          "cumulative_burden": {
+            "type": "number",
+            "minimum": 0.0,
+            "title": "Cumulative Burden",
+            "default": 0
+          },
+          "baseline_noise_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Baseline Noise Db"
+          }
+        },
+        "type": "object",
+        "required": [
+          "total_noise_db",
+          "duration_minutes",
+          "continuous_minutes",
+          "sensitivity_weight"
+        ],
+        "title": "ImpactRequest"
+      },
+      "M1ActiveInterval": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "M1ActiveInterval"
+      },
+      "M1NoiseSource": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "segment_id": {
+            "type": "string",
+            "enum": [
+              "segment-yeonse-ro-2na-gil",
+              "segment-chungjeong-ro"
+            ],
+            "title": "Segment Id"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "moving_work",
+              "moving_vehicle",
+              "impulsive"
+            ],
+            "title": "Source Type"
+          },
+          "equipment_category": {
+            "type": "string",
+            "title": "Equipment Category"
+          },
+          "equipment_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment Model"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Count",
+            "default": 1
+          },
+          "sound_power_level_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sound Power Level Db"
+          },
+          "lw_provenance": {
+            "type": "string",
+            "enum": [
+              "official_reference",
+              "field_verified",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Lw Provenance",
+            "default": "unknown"
+          },
+          "reference_scenario": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "median",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Scenario"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/M1Point"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "deployment_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Deployment Start"
+          },
+          "deployment_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Deployment End"
+          },
+          "actual_active_minutes": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 15.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Actual Active Minutes"
+          },
+          "activity_provenance": {
+            "type": "string",
+            "enum": [
+              "field_verified",
+              "derived",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Activity Provenance",
+            "default": "unknown"
+          },
+          "active_intervals": {
+            "items": {
+              "$ref": "#/components/schemas/M1ActiveInterval"
+            },
+            "type": "array",
+            "title": "Active Intervals"
+          },
+          "simultaneous_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simultaneous Group"
+          },
+          "measurement_condition_verified": {
+            "type": "boolean",
+            "title": "Measurement Condition Verified",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "segment_id",
+          "source_type",
+          "equipment_category",
+          "deployment_start",
+          "deployment_end"
+        ],
+        "title": "M1NoiseSource"
+      },
+      "M1Point": {
+        "properties": {
+          "x": {
+            "type": "number",
+            "title": "X"
+          },
+          "y": {
+            "type": "number",
+            "title": "Y"
+          },
+          "z_m": {
+            "type": "number",
+            "title": "Z M",
+            "default": 0.0
+          },
+          "crs": {
+            "type": "string",
+            "enum": [
+              "EPSG:4326",
+              "EPSG:5179",
+              "EPSG:5186"
+            ],
+            "title": "Crs"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "official_design",
+              "field_verified",
+              "derived",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y",
+          "crs",
+          "provenance"
+        ],
+        "title": "M1Point"
+      },
+      "M1PredictRequest": {
+        "properties": {
+          "slot_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot Start"
+          },
+          "slot_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Slot End"
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/M1NoiseSource"
+            },
+            "type": "array",
+            "title": "Sources"
+          },
+          "receptors": {
+            "items": {
+              "$ref": "#/components/schemas/M1Receptor"
+            },
+            "type": "array",
+            "title": "Receptors"
+          },
+          "background_laeq_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Background Laeq Db"
+          },
+          "background_provenance": {
+            "type": "string",
+            "enum": [
+              "official_reference",
+              "field_verified",
+              "derived",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Background Provenance",
+            "default": "unknown"
+          },
+          "overlap_mode": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "complete_concurrent",
+              "sequential_possible",
+              "overlap_unknown"
+            ],
+            "title": "Overlap Mode",
+            "default": "overlap_unknown"
+          },
+          "corrections": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/M1PropagationCorrection"
+            },
+            "propertyNames": {
+              "enum": [
+                "ground",
+                "atmospheric",
+                "barrier",
+                "building",
+                "reflection",
+                "meteorology"
+              ]
+            },
+            "type": "object",
+            "title": "Corrections"
+          }
+        },
+        "type": "object",
+        "required": [
+          "slot_start",
+          "slot_end",
+          "sources",
+          "receptors"
+        ],
+        "title": "M1PredictRequest"
+      },
+      "M1PropagationCorrection": {
+        "properties": {
+          "value_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Value Db"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "field_verified",
+              "derived",
+              "assumed",
+              "not_modelled"
+            ],
+            "title": "Status",
+            "default": "not_modelled"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Source"
+          }
+        },
+        "type": "object",
+        "title": "M1PropagationCorrection"
+      },
+      "M1Receptor": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/M1Point"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "id"
+        ],
+        "title": "M1Receptor"
+      },
+      "M1ScheduleEvaluationRequest": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date",
+            "default": "2026-10-26"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "assumed_demo"
+          },
+          "receptors": {
+            "items": {
+              "$ref": "#/components/schemas/M1Receptor"
+            },
+            "type": "array",
+            "title": "Receptors"
+          },
+          "task_mappings": {
+            "items": {
+              "$ref": "#/components/schemas/M1TaskAcousticMapping"
+            },
+            "type": "array",
+            "title": "Task Mappings"
+          },
+          "overlap_mode": {
+            "type": "string",
+            "enum": [
+              "complete_concurrent",
+              "sequential_possible",
+              "overlap_unknown"
+            ],
+            "title": "Overlap Mode",
+            "default": "overlap_unknown"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scenario_id",
+          "receptors",
+          "task_mappings"
+        ],
+        "title": "M1ScheduleEvaluationRequest"
+      },
+      "M1SensitivityCase": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "varied_variable": {
+            "type": "string",
+            "enum": [
+              "equipment_lw",
+              "activity_ratio",
+              "simultaneous_operation",
+              "source_position",
+              "receptor_position_or_height",
+              "background_profile",
+              "propagation_correction_availability"
+            ],
+            "title": "Varied Variable"
+          },
+          "request": {
+            "$ref": "#/components/schemas/M1PredictRequest"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "varied_variable",
+          "request"
+        ],
+        "title": "M1SensitivityCase"
+      },
+      "M1TaskAcousticMapping": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "segment_id": {
+            "type": "string",
+            "enum": [
+              "segment-yeonse-ro-2na-gil",
+              "segment-chungjeong-ro"
+            ],
+            "title": "Segment Id"
+          },
+          "source_type": {
+            "type": "string",
+            "enum": [
+              "fixed",
+              "moving_work",
+              "moving_vehicle",
+              "impulsive"
+            ],
+            "title": "Source Type"
+          },
+          "equipment_category": {
+            "type": "string",
+            "title": "Equipment Category"
+          },
+          "equipment_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Equipment Model"
+          },
+          "count": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Count",
+            "default": 1
+          },
+          "sound_power_level_db": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Sound Power Level Db"
+          },
+          "lw_provenance": {
+            "type": "string",
+            "enum": [
+              "official_reference",
+              "field_verified",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Lw Provenance",
+            "default": "unknown"
+          },
+          "reference_scenario": {
+            "anyOf": [
+              {
+                "type": "string",
+                "enum": [
+                  "low",
+                  "median",
+                  "high"
+                ]
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Reference Scenario"
+          },
+          "position": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/M1Point"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "active_ratio": {
+            "anyOf": [
+              {
+                "type": "number",
+                "maximum": 1.0,
+                "minimum": 0.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Active Ratio"
+          },
+          "activity_provenance": {
+            "type": "string",
+            "enum": [
+              "field_verified",
+              "derived",
+              "assumed",
+              "unknown"
+            ],
+            "title": "Activity Provenance",
+            "default": "unknown"
+          },
+          "simultaneous_group": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Simultaneous Group"
+          },
+          "measurement_condition_verified": {
+            "type": "boolean",
+            "title": "Measurement Condition Verified",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "segment_id",
+          "source_type",
+          "equipment_category"
+        ],
+        "title": "M1TaskAcousticMapping"
+      },
+      "M1UncertaintyRequest": {
+        "properties": {
+          "cases": {
+            "items": {
+              "$ref": "#/components/schemas/M1SensitivityCase"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Cases"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cases"
+        ],
+        "title": "M1UncertaintyRequest"
+      },
+      "OptimizeRequest": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id",
+            "default": "case-a"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date",
+            "default": "2026-10-26"
+          },
+          "sensitivity_enabled": {
+            "type": "boolean",
+            "title": "Sensitivity Enabled",
+            "default": true
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "assumed_demo"
+          },
+          "objective_mode": {
+            "type": "string",
+            "enum": [
+              "incremental_impact",
+              "absolute_impact",
+              "physical_energy",
+              "sensitive_exposure",
+              "continuous_burden",
+              "multi_axis"
+            ],
+            "title": "Objective Mode",
+            "default": "incremental_impact"
+          }
+        },
+        "type": "object",
+        "title": "OptimizeRequest"
+      },
+      "PredictRequest": {
+        "properties": {
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id",
+            "default": "case-a"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date",
+            "default": "2026-10-26"
+          },
+          "assignments": {
+            "anyOf": [
+              {
+                "items": {
+                  "$ref": "#/components/schemas/TaskAssignment"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Assignments"
+          },
+          "sensitivity_enabled": {
+            "type": "boolean",
+            "title": "Sensitivity Enabled",
+            "default": true
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "assumed_demo"
+          }
+        },
+        "type": "object",
+        "title": "PredictRequest"
+      },
+      "TaskAssignment": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "start",
+          "end"
+        ],
+        "title": "TaskAssignment"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          },
+          "input": {
+            "title": "Input"
+          },
+          "ctx": {
+            "type": "object",
+            "title": "Context"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      }
+    }
+  }
+}
