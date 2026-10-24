@@ -10,7 +10,7 @@
 - `examples/error-*.json`: 실제 재현한 404, 415, 422 응답
 - `examples/manifest.json`: 성공 검증 목록
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
-- `../docs/FRONTEND_API_CONTRACT_v2.md`: 프론트엔드용 최종 확정 계약서
+- `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 프론트엔드용 최종 확정 계약서
 
 ## 로컬 실행 및 재검증
 
@@ -53,6 +53,8 @@ type PredictOperation = paths["/api/noise/predict"]["post"];
 ```
 
 21개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
+
+현재 API로 시나리오 목록·상세, M0 소음 그래프, 최적화, 전후 비교, 공식자료/설계 시뮬레이션, M1 분석 화면을 구현할 수 있다. 주민 안내문 생성, 주민 전용 조회, 자연어 조건 수정, 법적 위반 판정 API는 존재하지 않는다. PoC 시나리오와 `/api/public-data/construction-design`의 공식 설계자료를 같은 데이터로 취급하지 않는다.
 
 ## 최소 fetch 예시
 
