@@ -9,6 +9,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[3]
 PROCESSED = ROOT / "data" / "processed"
 MANIFEST = ROOT / "data" / "reports" / "public_data_manifest.json"
+OFFICIAL_CONSTRUCTION_DESIGN = PROCESSED / "official_construction_design_v1.json"
 
 
 def _csv(name: str) -> list[dict]:
@@ -17,6 +18,19 @@ def _csv(name: str) -> list[dict]:
         return []
     with path.open(encoding="utf-8-sig", newline="") as handle:
         return list(csv.DictReader(handle))
+
+
+@lru_cache
+def official_construction_design() -> dict:
+    """Load official design metadata without promoting it to an acoustic scenario."""
+    if not OFFICIAL_CONSTRUCTION_DESIGN.exists():
+        return {}
+    return json.loads(OFFICIAL_CONSTRUCTION_DESIGN.read_text(encoding="utf-8"))
+
+
+def construction_design_distance_ready(segment: dict) -> bool:
+    """Distance needs an actual geometry/source point, not a nominal address."""
+    return bool(segment.get("geometry") or segment.get("representative_point"))
 
 
 def public_catalog() -> dict:
@@ -30,6 +44,7 @@ def public_catalog() -> dict:
         "official_facilities": _csv("official_facilities.csv"),
         "receptor_distances": _csv("receptor_distances.csv"),
         "official_equipment_noise": _csv("official_equipment_noise.csv"),
+        "official_construction_design": official_construction_design(),
         "academic_calendar": _csv("academic_calendar.csv"),
         "waste_collection": _csv("waste_collection.csv"),
         "land_use": _csv("land_use.csv"),
@@ -39,6 +54,8 @@ def public_catalog() -> dict:
             "unverified_values_used_for_acoustic_calculation": False,
             "official_equipment_requires_model_match": True,
             "spatial_distance_is_horizontal_not_propagation_path": True,
+            "official_design_is_acoustic_scenario": False,
+            "nominal_address_is_distance_source": False,
         },
     }
 
