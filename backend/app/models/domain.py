@@ -293,6 +293,7 @@ class M1ScheduleEvaluationRequest(BaseModel):
 class FieldObservation(BaseModel):
     id: str
     receptor_id: str
+    physical_location_id: str | None = Field(default=None, min_length=1)
     receptor_position: M1Point
     start: datetime
     end: datetime
@@ -318,6 +319,7 @@ class FieldObservation(BaseModel):
 
 class FieldPredictionRecord(BaseModel):
     receptor_id: str
+    physical_location_id: str | None = Field(default=None, min_length=1)
     receptor_position: M1Point
     start: datetime
     end: datetime

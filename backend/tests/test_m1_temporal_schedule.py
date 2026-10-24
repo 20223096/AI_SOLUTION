@@ -120,10 +120,10 @@ def test_field_validation_without_observations_is_not_evaluable():
 
 def test_field_loader_and_alignment_require_same_time_position_and_metric(tmp_path):
     path = tmp_path / "observations.json"
-    path.write_text('''[{"id":"obs-1","receptor_id":"r1","receptor_position":{"x":200010,"y":550000,"z_m":1,"crs":"EPSG:5186","provenance":"field_verified"},"start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T07:15:00+09:00","laeq_dba":65,"measurement_duration_minutes":15,"equipment_active":{"excavator-a":true},"instrument":"Class 1 meter","calibration_before":"verified","calibration_after":"verified","weather":{"wind_mps":1.2},"source":"field campaign"}]''', encoding="utf-8")
+    path.write_text('''[{"id":"obs-1","receptor_id":"r1","physical_location_id":"site-r1-v1","receptor_position":{"x":200010,"y":550000,"z_m":1,"crs":"EPSG:5186","provenance":"field_verified"},"start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T07:15:00+09:00","laeq_dba":65,"measurement_duration_minutes":15,"equipment_active":{"excavator-a":true},"instrument":"Class 1 meter","calibration_before":"verified","calibration_after":"verified","weather":{"wind_mps":1.2},"source":"field campaign"}]''', encoding="utf-8")
     observations = load_field_observations(path)
     request = FieldValidationRequest.model_validate({"observations": [x.model_dump(mode="json") for x in observations], "predictions": [{
-        "receptor_id": "r1", "receptor_position": {"x": 200010, "y": 550000, "z_m": 1, "crs": "EPSG:5186", "provenance": "assumed"},
+        "receptor_id": "r1", "physical_location_id": "site-r1-v1", "receptor_position": {"x": 200010, "y": 550000, "z_m": 1, "crs": "EPSG:5186", "provenance": "assumed"},
         "start": START.isoformat(), "end": END.isoformat(), "predicted_laeq_dba": 66, "acoustic_scope": "total_environment", "equipment_ids": ["excavator-a"], "metric": "LAeq_dBA"
     }]})
     evaluated = evaluate_field_validation(request)

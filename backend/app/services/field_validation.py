@@ -33,6 +33,9 @@ def evaluate_field_validation(request: FieldValidationRequest) -> dict:
         if prediction is None:
             failures.append({"observation_id": observation.id, "reason": "time_or_receptor_mismatch"})
             continue
+        if prediction.physical_location_id != observation.physical_location_id:
+            failures.append({"observation_id": observation.id, "reason": "physical_location_id_mismatch"})
+            continue
         if prediction.acoustic_scope != observation.acoustic_scope:
             failures.append({"observation_id": observation.id, "reason": "acoustic_scope_mismatch"})
             continue
@@ -66,5 +69,6 @@ def evaluate_field_validation(request: FieldValidationRequest) -> dict:
         **overall, "aligned_sample_count": len(aligned),
         "receptor_errors": receptor_errors, "equipment_errors": equipment_errors,
         "alignment_failures": failures,
-        "alignment_requirements": ["same receptor id", "same start/end", "same LAeq_dBA metric", "same acoustic scope", "same CRS and position within 0.01m"],
+        "alignment_requirements": ["same receptor id", "same physical location id", "same start/end", "same LAeq_dBA metric", "same acoustic scope", "same CRS and numeric coordinates within 0.01m"],
+        "coordinate_tolerance_note": "0.01m is a numeric equality tolerance, not evidence that two records represent the same surveyed physical position.",
     }
