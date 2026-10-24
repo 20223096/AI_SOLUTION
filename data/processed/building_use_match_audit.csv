@@ -1559,3 +1559,4 @@ segment-chungjeong-ro,way/1556403207,yes,서울특별시,unknown_building_use,,,
 segment-chungjeong-ro,way/1556403208,yes,서울특별시,unknown_building_use,,,not_matched_no_exact_official_identifier,false,OSM tag only; generic building=yes is not residential
 segment-chungjeong-ro,way/1556403209,yes,서울특별시,unknown_building_use,,,not_matched_no_exact_official_identifier,false,OSM tag only; generic building=yes is not residential
 segment-chungjeong-ro,,,서울특별시 서대문구 충정로 35-17,verified_non_residential,101411159,제2종근린생활시설,official_address_building_identity_verified_not_polygon_joined,false,Building HUB exact parcel 충정로3가 120-1 and exact road address; general register title
+segment-yeonse-ro-2na-gil,,,서울특별시 서대문구 연세로2나길 20,verified_non_residential,1014112097,숙박시설,official_address_building_identity_verified_not_polygon_joined,false,Building HUB exact parcel 창천동 13-68 and exact road address; general register title

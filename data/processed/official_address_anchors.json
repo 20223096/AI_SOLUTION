@@ -1,17 +1,21 @@
 {
-  "data_version": "official-address-anchors-v1",
+  "data_version": "official-address-anchors-v2",
   "official_construction_geometry_status": "null_unchanged",
+  "coordinate_api_source": "https://business.juso.go.kr/addrlink/addrCoordApi.do",
   "anchors": [
     {
       "segment_id": "segment-yeonse-ro-2na-gil",
       "address": "서울특별시 서대문구 연세로2나길 20",
+      "parcel_address": "서울특별시 서대문구 창천동 13-68",
+      "official_building_id": "1014112097",
+      "official_primary_use": "숙박시설",
       "official_coordinate": null,
       "exploratory_osm_address_building_coordinate": {
         "lat": 37.5569953,
         "lon": 126.9384393,
         "crs": "EPSG:4326"
       },
-      "status": "official_juso_coordinate_deferred_missing_confm_key"
+      "status": "official_juso_coordinate_deferred_missing_coordinate_key"
     },
     {
       "segment_id": "segment-chungjeong-ro",
@@ -21,7 +25,7 @@
       "official_building_id": "101411159",
       "official_primary_use": "제2종근린생활시설",
       "official_coordinate": null,
-      "status": "official_juso_coordinate_deferred_missing_confm_key"
+      "status": "official_juso_coordinate_deferred_missing_coordinate_key"
     }
   ]
 }

@@ -20,22 +20,40 @@ def redact_key(value: str | None) -> str:
     return f"present(length={len(value)},redacted)"
 
 
-def juso_lookup(address: str, confm_key: str | None, get: Callable[..., Any]) -> dict:
+def _canonical_road_address(value: str) -> str:
+    """Ignore the API's parenthesized legal-dong suffix for exact matching."""
+    return value.split(" (", 1)[0].strip()
+
+
+def juso_lookup(
+    address: str,
+    search_confm_key: str | None,
+    coordinate_confm_key: str | None,
+    get: Callable[..., Any],
+) -> dict:
     """Run the required address-code -> coordinate sequence without logging keys."""
-    if not confm_key:
-        return {"status": "deferred_missing_confm_key", "coordinate": None}
-    common = {"confmKey": confm_key.strip(), "resultType": "json"}
-    search = get(JUSO_SEARCH_URL, params={**common, "keyword": address, "currentPage": 1, "countPerPage": 10})
+    if not search_confm_key:
+        return {"status": "deferred_missing_search_confm_key", "coordinate": None}
+    search_common = {"confmKey": search_confm_key.strip(), "resultType": "json"}
+    search = get(JUSO_SEARCH_URL, params={**search_common, "keyword": address, "currentPage": 1, "countPerPage": 10})
     search.raise_for_status()
     body = search.json()["results"]
     if body["common"]["errorCode"] != "0" or not body.get("juso"):
         return {"status": "address_not_resolved", "coordinate": None, "error_code": body["common"]["errorCode"]}
-    matches = [row for row in body["juso"] if row.get("roadAddr") == address or row.get("roadAddrPart1") == address]
+    matches = [row for row in body["juso"] if _canonical_road_address(row.get("roadAddr", "")) == address or _canonical_road_address(row.get("roadAddrPart1", "")) == address]
     if len(matches) != 1:
         return {"status": "deferred_ambiguous_address", "coordinate": None, "match_count": len(matches)}
     row = matches[0]
     keys = ("admCd", "rnMgtSn", "udrtYn", "buldMnnm", "buldSlno")
-    coord = get(JUSO_COORD_URL, params={**common, **{key: row[key] for key in keys}})
+    address_match = {
+        "road_address": row.get("roadAddr"), "parcel_address": row.get("jibunAddr"),
+        "building_management_number": row.get("bdMgtSn"),
+        "address_codes": {key: row[key] for key in keys},
+    }
+    if not coordinate_confm_key:
+        return {"status": "deferred_missing_coordinate_confm_key", "address_match": address_match, "coordinate": None}
+    coord_common = {"confmKey": coordinate_confm_key.strip(), "resultType": "json"}
+    coord = get(JUSO_COORD_URL, params={**coord_common, **{key: row[key] for key in keys}})
     coord.raise_for_status()
     result = coord.json()["results"]
     points = result.get("juso") or []
@@ -45,7 +63,7 @@ def juso_lookup(address: str, confm_key: str | None, get: Callable[..., Any]) ->
     lon, lat = epsg5179_to_wgs84(float(point["entX"]), float(point["entY"]))
     return {
         "status": "official_address_anchor_resolved",
-        "address_codes": {key: row[key] for key in keys},
+        "address_match": address_match,
         "coordinate": {"source_x": float(point["entX"]), "source_y": float(point["entY"]), "source_crs": "EPSG:5179", "lon": lon, "lat": lat, "target_crs": "EPSG:4326"},
     }
 

@@ -1,8 +1,9 @@
 {
-  "data_version": "residential-receptor-verification-v1",
+  "data_version": "residential-receptor-verification-v2",
   "source_license": "OpenStreetMap contributors, ODbL 1.0",
   "raw_polygon_count": 1559,
   "unique_osm_polygon_count": 1559,
+  "official_target_buildings_queried": 2,
   "segments": {
     "segment-yeonse-ro-2na-gil": {
       "downloaded_building_polygons": 748,
@@ -36,12 +37,12 @@
     "200": 4,
     "300": 10
   },
-  "segment_b_radius_counts_status": "deferred_no_official_coordinate",
+  "segment_b_radius_counts_status": "deferred_missing_official_coordinate",
   "official_residential_verified": 0,
   "official_polygon_count": 0,
   "osm_residential_candidates": 104,
   "eligible_receptor_candidates": 10,
-  "official_non_residential_address_buildings_verified": 1,
+  "official_non_residential_address_buildings_verified": 2,
   "receptor_wall_points_verified": 0,
   "official_construction_geometry_status": "null_unchanged",
   "field_prediction_status": "deferred",
@@ -50,14 +51,22 @@
     "http_status": 200,
     "result_code": "00",
     "authenticated": true,
-    "prior_403_cause": "encoded service key was encoded a second time in one-off curl diagnostic",
+    "queried_buildings": 2,
     "secret_logged": false
   },
-  "juso_coordinate_status": "deferred_missing_separate_confm_key",
+  "juso_search_status": "resolved_two_target_addresses",
+  "juso_coordinate_status": "deferred_missing_coordinate_key",
+  "seoul_recap_title": {
+    "service": "aiVBigDjrRecapTitle",
+    "rows_scanned": 19204,
+    "exact_target_matches": 0,
+    "record_type": "총괄표제부"
+  },
   "limitations": [
+    "JUSO_COORD_API_KEY is empty; the search key returned E0001 at the coordinate endpoint",
     "OSM geometry is not an official building polygon",
     "No fuzzy address join was accepted",
-    "B search-area polygons have no official anchor distance",
+    "Chungjeong search-area polygons have no official anchor distance",
     "Building centroids are not facade receptors or construction source locations"
   ]
 }
