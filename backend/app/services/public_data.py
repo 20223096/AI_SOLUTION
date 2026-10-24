@@ -55,4 +55,32 @@ def is_exam_period(day: date, institution: str) -> bool:
 def acoustic_public_events() -> list[dict]:
     """Only return records with an explicit verified acoustic level and time range."""
     rows = _csv("construction_events.csv") + _csv("cultural_events.csv")
-    return [row for row in rows if row.get("noise_db") and row.get("start_time") and row.get("end_time") and row.get("status") in {"processed", "integrated"}]
+    return [row for row in rows if row.get("noise_db") and row.get("start_time") and row.get("end_time") and row.get("status") == "verified_public"]
+
+
+def calendar_overlaps(day: date) -> list[dict]:
+    """Date-level public schedule context; never implies acoustic eligibility."""
+    result = []
+    mappings = (
+        ("construction", _csv("construction_events.csv"), "project_start_date", "project_end_date", "work_start_time", "work_end_time"),
+        ("cultural_event", _csv("cultural_events.csv"), "event_start_date", "event_end_date", "start_time", "end_time"),
+    )
+    for category, rows, start_key, end_key, time_start_key, time_end_key in mappings:
+        for row in rows:
+            if not row.get(start_key) or not row.get(end_key):
+                continue
+            if not (date.fromisoformat(row[start_key]) <= day <= date.fromisoformat(row[end_key])):
+                continue
+            has_times = bool(row.get(time_start_key) and row.get(time_end_key))
+            has_noise = bool(row.get("noise_db"))
+            acoustic_eligible = has_times and has_noise and row.get("status") == "verified_public"
+            result.append({
+                "event_id": row.get("event_id"), "name": row.get("name"), "category": category,
+                "date_overlap": True, "time_verified": has_times, "noise_level_verified": has_noise,
+                "acoustic_synthesis_eligible": acoustic_eligible,
+                "start_time": row.get(time_start_key) or None, "end_time": row.get(time_end_key) or None,
+                "noise_db": float(row["noise_db"]) if has_noise else None,
+                "status": row.get("status"), "source_url": row.get("source_url"),
+                "note": "Calendar context only" if not acoustic_eligible else "Verified normalized time and acoustic value",
+            })
+    return result

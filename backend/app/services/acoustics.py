@@ -16,6 +16,13 @@ def energy_sum(levels_db: Iterable[float]) -> float | None:
     return 10 * math.log10(sum(10 ** (x / 10) for x in values))
 
 
+def reference_energy_exposure(level_db: float, duration_minutes: float, reference_db: float = 65.0) -> float:
+    """Linear sound-exposure ratio integrated over minutes relative to reference_db."""
+    if duration_minutes < 0:
+        raise ValueError("duration_minutes must be non-negative")
+    return 10 ** ((level_db - reference_db) / 10) * duration_minutes
+
+
 def source_noise(equipment: dict, catalog: list[dict]) -> tuple[float | None, dict]:
     model = equipment.get("model_name")
     category = equipment["category"]

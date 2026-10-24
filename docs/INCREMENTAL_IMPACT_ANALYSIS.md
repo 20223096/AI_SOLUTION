@@ -13,7 +13,7 @@
 - `total_impact = Impact(with_new_project_db)`
 - `incremental_impact = max(0, total_impact - baseline_impact)`
 
-신규 공사가 없는 슬롯은 `new_project_contribution_db=null`, `delta_total_db=0`, `incremental_impact=0`입니다. 음원을 산술 dB 차감해 신규 공사 레벨을 역산하지 않습니다. Impact는 같은 시간·수음점·민감도·65dB 분석 임계값·`poc-0.1.0` 점수식을 사용합니다.
+신규 공사가 없는 슬롯은 `new_project_contribution_db=null`, `delta_total_db=0`, `incremental_impact=0`입니다. 음원을 산술 dB 차감해 신규 공사 레벨을 역산하지 않습니다. Impact는 같은 시간·수음점·민감도·65dB 분석 임계값·`legacy_v1` 점수식을 사용합니다.
 
 ## 최적화 목적
 

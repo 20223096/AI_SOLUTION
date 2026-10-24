@@ -19,4 +19,5 @@ def sensitivity(moment: datetime, receptor_type: str, exam_period: bool = False,
         adjustments["weekend_residential_rest"] = 0.3
     if receptor_type in {"hospital", "school"}:
         adjustments["hospital_or_school_within_assumed_300m"] = 0.5
-    return {"time_period": period, "base_weight": base, "adjustments": adjustments, "weight": base + sum(adjustments.values()), "status": "assumed"}
+    weight = base + sum(adjustments.values())
+    return {"time_period": period, "base_weight": base, "adjustments": adjustments, "weight": weight, "is_sensitive_time": weight > 1, "weight_status": "assumed", "status": "assumed"}

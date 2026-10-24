@@ -84,7 +84,9 @@ POST /api/schedules/optimize
 {"scenario_id":"official_reference_equipment","analysis_date":"2026-10-26","sensitivity_enabled":true,"background_profile":"road_traffic_observed_profile","objective_mode":"incremental_impact"}
 ```
 
-기본 `objective_mode`는 계속 `incremental_impact`입니다. 9차 실험 모드 `physical_energy`, `sensitive_exposure`, `continuous_burden`은 비교 화면에서만 명시적으로 요청합니다. 응답의 `diagnostics.objective_field`와 `objective_unit`을 라벨에 사용하고 서로 다른 모드의 `resident_cost`를 같은 단위처럼 직접 비교하거나 합산하지 않습니다. 실험 모드는 `diagnostics.balanced_selection=null`이며 `balanced` 배지를 만들지 않습니다. `scoring_version=impact-v8-unchanged`, `metrics_version=schedule-metrics-v9-experimental`을 결과와 함께 보존합니다.
+기본 `objective_mode`는 계속 `incremental_impact`입니다. 실험 모드 `physical_energy`, `sensitive_exposure`, `continuous_burden`, `multi_axis`는 비교할 때만 명시적으로 요청합니다. 응답의 `diagnostics.objective_field`, `objective_unit`, `pareto_axes`를 사용하고 서로 다른 단위를 직접 합산하지 않습니다. 실험 모드는 `diagnostics.balanced_selection=null`입니다. `scoring_version=legacy_v1`, `metrics_version=robust_experimental_v1`을 결과와 함께 보존합니다.
+
+`recommended_options[].recommendation_reasons[]`는 `code`, `message`, `evidence[].field/value/delta/unit`을 제공합니다. 화면에서 근거 문구를 재계산하지 말고 해당 필드와 연결해 표시합니다. `multi_axis_pareto_reference`는 단일 최적안이 아니라 비지배 참조 후보입니다.
 
 ```json
 {"optimization_status":"optimal_enumeration","recommended_options":[{"character":["construction_convenience","balanced"],"candidate":{"id":"offset-0","feasibility":true,"task_assignments":[{"task_id":"cut","start":"2026-10-26T07:00:00+09:00","end":"2026-10-26T08:00:00+09:00"}],"objective_values":{"resident_cost":13.72,"change_cost":0.0}}},{"character":["resident_protection"],"candidate":{"id":"offset-120","objective_values":{"resident_cost":13.20,"change_cost":480.0}}}],"diagnostics":{"generated_candidate_count":9,"feasible_candidate_count":9,"infeasible_candidate_count":0,"pareto_candidate_count":9}}
@@ -105,7 +107,7 @@ POST /api/schedules/compare
 
 ## 기존 공사·행사 일정
 
-`GET /api/public-data/catalog`의 `construction_events`와 `cultural_events`를 달력 레이어로 표시합니다. 공사의 `project_start_date/end_date`는 사업기간이지 일일 작업시간이 아닙니다. `work_start_time/end_time` 또는 `noise_db`가 빈 문자열이면 미확인 배지를 표시하고 소음 그래프에 합산하지 않습니다. 행사의 날짜별 시간이 `time_text`에만 있으면 원문은 표시하되 단일 시간으로 축약하지 않습니다.
+`GET /api/public-data/catalog`의 `construction_events`와 `cultural_events`를 달력 레이어로 표시합니다. 예측 응답의 `calendar_overlaps[]`에는 `time_verified`, `noise_level_verified`, `acoustic_synthesis_eligible`이 추가됩니다. 공사의 `project_start_date/end_date`는 사업기간이지 일일 작업시간이 아닙니다. 시간 또는 `noise_db`가 미확인이면 소음 그래프에 합산하지 않습니다. `existing_event_acoustic_policy.assumed_events_allowed=true`인 B도 실측이 아니라 명시적 가정 시뮬레이션입니다.
 
 `final-demo-congestion` 예측의 `existing_event_ids`와 `source_metadata.existing_events[].status=assumed`는 별도 “가정 실험” 레이어입니다. 서울시 원본 일정과 같은 색상이나 실측 배지를 쓰지 않습니다.
 
@@ -129,7 +131,9 @@ POST /api/schedules/compare
 
 `threshold_db=65`는 PoC 분석 임계값이며 법정 기준이 아닙니다.
 
-추가 비교지표 `absolute_impact_cost`, `incremental_impact_cost`, `new_project_additional_high_noise_minutes`, `sensitive_new_project_exposure_minutes`를 별도 라벨로 표시합니다. 9차 추가 필드는 `new_project_inactive_minutes`, `sensitive_new_project_receptor_minutes`, `max_continuous_new_project_minutes`, `new_project_energy_exposure_65db_ref_minutes`, `cumulative_delta_db_minutes`, `existing_noise_overlap_receptor_minutes`입니다. 기본 추천 배지는 증분 목적이며, 절대 목적 비교가 필요하면 같은 요청을 `objective_mode=absolute_impact`로 재호출합니다. 후보 `objective_values.existing_noise_overlap_minutes`와 metrics의 `existing_noise_overlap_receptor_minutes`는 같은 receptor-minutes 값이며, `policy_overlap_cost`는 임의 정책점수입니다. 이들은 현재 기본 Pareto 비용에 포함되지 않습니다.
+추가 비교지표 `absolute_impact_cost`, `incremental_impact_cost`, `new_project_additional_high_noise_minutes`, `sensitive_new_project_exposure_minutes`를 별도 라벨로 표시합니다. 추가 필드는 `new_project_inactive_minutes`, `new_project_receptor_minutes`, `sensitive_new_project_receptor_minutes`, `sensitivity_weighted_new_project_receptor_minutes`, `max_continuous_new_project_minutes`, `new_project_energy_exposure_65db_ref_minutes`, `cumulative_delta_db_minutes`, `existing_noise_overlap_receptor_minutes`, `max_total_estimated_db`, `max_new_project_contribution_db`입니다. `sensitivity.weight_status=assumed`를 함께 표시합니다.
+
+후보 및 compare 응답의 `schedule_change_details`는 `task_start_shift_minutes`, `total_task_start_shift_minutes`, `project_start_shift_minutes`, `project_end_shift_minutes`, 프로젝트 종료시각을 분리합니다. 기존 `change_cost`는 `total_task_start_shift_minutes`와 같으며 전체 공사 시작 이동량이 아닙니다. `policy_overlap_cost`는 현재 기본 Pareto에 포함되지 않습니다.
 
 ## 출처 표시
 

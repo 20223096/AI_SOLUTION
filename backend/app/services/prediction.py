@@ -7,7 +7,7 @@ from app.services.data import get_scenario, load_json_rows
 from app.services.impact import calculate_impact
 from app.models.domain import ImpactRequest
 from app.services.sensitivity import sensitivity
-from app.services.public_data import is_exam_period
+from app.services.public_data import calendar_overlaps, is_exam_period
 from app.services.timegrid import TZ, at, overlaps, slots
 
 
@@ -44,6 +44,7 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
     existing_events = load_json_rows("existing_events.json")
     settings = scenario.get("settings", {})
     event_group = settings.get("existing_event_group")
+    allow_assumed_event_acoustics = bool(settings.get("allow_assumed_event_acoustics", False))
     analysis_start, analysis_end = at(day, time(7)), at(day, time(18))
     results, warnings = [], []
     for eq in equipment.values():
@@ -84,8 +85,11 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
                     level = event.get("source_noise_data", {}).get("level_db")
                     if level is None:
                         warnings.append(f"{event['id']}: existing noise level missing; excluded")
+                    elif event.get("provenance", {}).get("status") != "verified_public" and not allow_assumed_event_acoustics:
+                        warnings.append(f"{event['id']}: unverified acoustic event excluded; calendar/context only")
                     else:
-                        event_levels.append(float(level)); event_ids.append(event["id"]); event_sources.append(event["provenance"])
+                        acoustic_basis = "verified_observation" if event.get("provenance", {}).get("status") == "verified_public" else "assumed_simulation_opt_in"
+                        event_levels.append(float(level)); event_ids.append(event["id"]); event_sources.append(event["provenance"] | {"acoustic_basis": acoustic_basis})
             existing_db = energy_sum(event_levels)
             baseline_levels = ([background_db] if background_db is not None else []) + ([existing_db] if existing_db is not None else [])
             existing_environment_db = energy_sum(baseline_levels)
@@ -94,7 +98,7 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             calendar_institution = settings.get("public_data_calendar_institution")
             calendar_exam = is_exam_period(day, calendar_institution) if calendar_institution else False
             exam_active = (bool(settings.get("exam_period")) or calendar_exam) and _within_windows(start, settings.get("exam_windows", [{"start":"00:00", "end":"23:59"}]))
-            sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "status":"disabled_for_experiment"}
+            sensitivity_data = sensitivity(start, receptor.type, exam_period=exam_active) if sensitivity_enabled else {"time_period":"disabled", "base_weight":1.0, "adjustments":{}, "weight":1.0, "is_sensitive_time":False, "weight_status":"disabled", "status":"disabled_for_experiment"}
             if sensitivity_enabled and calendar_exam and receptor.type == "university":
                 sensitivity_data = {**sensitivity_data, "status": "derived", "calendar_source_status": "processed", "calendar_institution": calendar_institution}
             total_impact = baseline_impact = incremental_impact = 0.0
@@ -110,4 +114,4 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
                 if saturation["incremental_zero_despite_physical_increase"]:
                     warnings.append(f"{receptor.id} {start.strftime('%H:%M')}: incremental Impact is zero despite positive physical dB increase due to score clipping/rounding")
             results.append({"receptor_id": receptor.id, "slot_start": start, "slot_end": end, "active_task_ids": active, "construction_lp_db": None if construction_db is None else round(construction_db, 2), "new_project_contribution_db": None if construction_db is None else round(construction_db, 2), "background_laeq_db": background_db, "background_only_db": background_db, "existing_noise_lp_db": None if existing_db is None else round(existing_db, 2), "existing_environment_db": None if existing_environment_db is None else round(existing_environment_db, 2), "existing_event_ids": event_ids, "total_estimated_db": None if total_db is None else round(total_db, 2), "with_new_project_db": None if total_db is None else round(total_db, 2), "delta_total_db": round(delta_total_db, 2), "total_impact": total_impact, "baseline_impact": baseline_impact, "incremental_impact": incremental_impact, "impact_saturation": saturation, "sensitivity": sensitivity_data, "source_metadata": {"background": background_meta, "equipment": sources, "existing_events": event_sources}})
-    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "scoring_version": "impact-v8-unchanged", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "public_data_calendar_institution": settings.get("public_data_calendar_institution"), "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}
+    return {"scenario_id": scenario_id, "analysis_date": day, "model_version": "poc-0.1.0", "scoring_version": "legacy_v1", "timezone": "Asia/Seoul", "slot_minutes": 15, "background_profile": background_profile, "public_data_calendar_institution": settings.get("public_data_calendar_institution"), "calendar_overlaps": calendar_overlaps(day), "existing_event_acoustic_policy": {"verified_events_allowed": True, "assumed_events_allowed": allow_assumed_event_acoustics, "assumed_event_use": "simulation_only" if allow_assumed_event_acoustics else "excluded"}, "predictions": results, "warnings": sorted(set(warnings)), "legal_assessment": None, "disclaimer": "예측 모델값이며 법적 측정·평가값 또는 적합 판정이 아닙니다."}

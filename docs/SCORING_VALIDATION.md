@@ -2,7 +2,7 @@
 
 ## 범위와 버전 보존
 
-검산일은 2026-10-24이다. 8차의 `impact-v8-unchanged` 점수식, 기본 `objective_mode=incremental_impact`, 15분 후보, 일정 제약과 A/B 입력은 변경하지 않았다. 9차 지표는 `schedule-metrics-v9-experimental`로 응답에 추가되며 기본 추천을 대체하지 않는다. 아래 값은 `road_traffic_observed_profile`로 실제 실행한 결과다.
+검산일은 2026-10-24이다. 8차 점수식은 `legacy_v1`으로 이름을 고정했고 기본 `objective_mode=incremental_impact`, 15분 후보, 일정 제약과 A/B 입력은 변경하지 않았다. 추가 지표는 `robust_experimental_v1`로 응답하며 기본 추천을 대체하지 않는다. 최신 다목적 검증과 전체 후보표는 `NOISE_OBJECTIVE_VALIDATION.md`에 기록한다.
 
 ## 왜 82 dB와 겹칠 때 증분 Impact가 작아지는가
 
