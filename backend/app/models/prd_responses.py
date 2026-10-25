@@ -5,7 +5,8 @@ from typing import Literal
 
 from pydantic import BaseModel, ConfigDict
 
-from app.models.domain import ScheduleMetrics
+from app.models.domain import ConstructionPeriod, ScheduleMetrics, SourceMetadata, TaskAssignment, TimeWindow
+from app.models.prd_v2_1 import PRDNoticePlanningInput
 
 
 class PRDResponse(BaseModel):
@@ -197,3 +198,73 @@ class PRDSensitivityExperimentResponse(PRDResponse):
     experiments: list[SensitivityDateExperiment]
     default_m0_m1_unchanged: Literal[True]
     disclaimer: str
+
+
+class DraftEquipmentConstraint(PRDResponse):
+    equipment_id: str
+    category: str | None
+    specification: str | None
+    model_name: str | None
+    max_daily_count: int | None
+    required_usage_minutes: int | None
+    permitted_time_windows: list[TimeWindow]
+    source_metadata: SourceMetadata
+
+
+class PRDPlanningDraft(PRDResponse):
+    notice_id: str
+    project_name: str | None
+    location: str | None
+    construction_period: ConstructionPeriod
+    total_work_window: TimeWindow | None
+    road_excavation: bool | None
+    road_occupancy_permit_window: TimeWindow | None
+    equipment_constraints: list[DraftEquipmentConstraint]
+    fixed_tasks: list[dict]
+    predecessors: dict[str, list[str]]
+    same_day_restoration_required: bool | None
+    source_evidence: dict[str, object]
+    field_provenance: dict[str, SourceMetadata]
+
+
+class PRDPlanningDraftResponse(PRDResponse):
+    status: Literal["needs_confirmation", "ready_for_confirmation"]
+    extractor_mode: Literal["mock", "llm", "manual"]
+    is_actual_ai: bool
+    planning_draft: PRDPlanningDraft
+    missing_fields: list[str]
+    confirmation_required_fields: list[str]
+    warnings: list[str]
+
+
+class ConstraintCandidateResult(PRDResponse):
+    candidate_id: str
+    assignments: list[TaskAssignment]
+    base_optimizer_feasible: bool
+    prd_feasible: bool
+    recommendable: bool
+    violations: list[ConstraintViolation]
+    pareto_after_constraint_filter: bool
+    schedule_change_minutes: int
+    project_start_change_minutes: int
+    project_end_change_minutes: int
+    noise_impact: ScheduleMetrics
+    objective_values: dict[str, float]
+
+
+class PRDConstraintRecommendationResponse(PRDResponse):
+    input_planning: PRDNoticePlanningInput
+    input_provenance: dict[str, SourceMetadata]
+    policy_version: Literal["prd_v2_1_explicit_input_only"]
+    candidate_generation_mode: Literal["existing_optimizer_15_minute_offsets_0_to_120"]
+    optimization_claim: Literal["constraint_filtered_candidate_set_not_global_optimum"]
+    scenario_id: str
+    analysis_date: date
+    original_schedule: ConstraintCandidateResult | None
+    candidates: list[ConstraintCandidateResult]
+    recommendable_candidate_ids: list[str]
+    recommendation_status: Literal["available", "none_feasible"]
+    no_recommendation_reasons: list[str]
+    simulation_status: Literal["simulated"]
+    missing_information: list[str]
+    caveats: list[str]

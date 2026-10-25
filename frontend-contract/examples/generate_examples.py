@@ -103,6 +103,32 @@ def prd_validation_payload() -> dict[str, Any]:
         "predecessors": {"restore": ["dig"]}, "equipment_by_task": {"dig": "excavator", "restore": None},
         "equipment_count_by_task": {"dig": 1}, "restoration_task_ids": ["restore"],
     }
+
+
+def prd_integrated_payload() -> dict[str, Any]:
+    payload = prd_validation_payload()
+    source = {"status": "user_provided", "source": "confirmed form", "note": None, "unit": None}
+    payload["planning"].update({
+        "notice_id": "integrated-demo", "road_excavation": False, "road_occupancy_permit_window": None,
+        "equipment_constraints": [
+            {"equipment_id": equipment_id, "category": category, "specification": None, "model_name": None,
+             "max_daily_count": 1, "required_usage_minutes": minutes,
+             "permitted_time_windows": [{"start": "07:00", "end": "18:00"}], "source_metadata": source}
+            for equipment_id, category, minutes in (
+                ("cutter", "절단기", 60), ("breaker", "브레이커", 120),
+                ("excavator", "굴착기", 300), ("roller", "롤러", 60),
+            )
+        ],
+        "fixed_tasks": [], "same_day_restoration_required": False,
+        "field_provenance": {name: source for name in ("construction_period", "total_work_window", "road_excavation", "equipment_constraints")},
+    })
+    return {
+        "analysis_date": payload["analysis_date"], "planning": payload["planning"],
+        "predecessors": {"break": ["cut"], "excavate": ["break"], "compact": ["excavate"]},
+        "equipment_by_task": {"cut": "cutter", "break": "breaker", "excavate": "excavator", "compact": "roller"},
+        "equipment_count_by_task": {"cut": 1, "break": 1, "excavate": 1, "compact": 1},
+        "restoration_task_ids": [],
+    }
 def write_capture(name: str, request: dict[str, Any], response: httpx.Response) -> dict[str, Any]:
     try:
         body: Any = response.json()
@@ -155,6 +181,16 @@ def main() -> None:
         ("23-prd-schedule-validate", "POST", "/api/prd/schedules/validate", prd_validation_payload()),
         ("24-prd-recommendation-diagnostics", "GET", "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11", None),
         ("25-prd-sensitivity-experiment", "POST", "/api/prd/sensitivity/experiment", {}),
+        ("26-prd-planning-from-notice", "POST", "/api/prd/planning/from-notice", {
+            "extractor_mode": "manual", "is_actual_ai": False, "field_evidence": {"name": "연세로"},
+            "notice": {"id": "extracted-draft", "name": "신촌 공사", "location": "서울 서대문구 신촌동",
+                "construction_period": {"start": None, "end": None, "raw_text": "기간 미정"},
+                "original_work_window": {"start": "07:00", "end": "18:00"},
+                "tasks": [{"id": "excavate", "name": "굴착", "equipment_id": "excavator", "duration_minutes": None,
+                    "permitted_time_windows": [], "predecessors": [], "is_movable": True, "required_resources": []}],
+                "constraints": {}, "source_provenance": {"document": {"status": "user_provided", "source": "request text"}}},
+        }),
+        ("27-prd-constraint-filtered-recommendations", "POST", "/api/prd/recommendations/constraint-filtered", prd_integrated_payload()),
     ]
     manifest: list[dict[str, Any]] = []
     for name, method, url, payload in captures:

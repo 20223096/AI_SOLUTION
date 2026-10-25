@@ -2,9 +2,9 @@ from datetime import date
 
 from fastapi import APIRouter, HTTPException, Query
 
-from app.models.prd_responses import DemoFixtureResponse, PRDScheduleValidationResponse, PRDSensitivityExperimentResponse, RecommendationDiagnosticsResponse
-from app.models.prd_v2_1 import PRDScheduleValidationRequest, PRDSensitivityExperimentRequest
-from app.services.prd_v2_1 import demo_fixture, demo_sensitivity_policy_experiment, recommendation_diagnostics, validate_prd_schedule
+from app.models.prd_responses import DemoFixtureResponse, PRDConstraintRecommendationResponse, PRDPlanningDraftResponse, PRDScheduleValidationResponse, PRDSensitivityExperimentResponse, RecommendationDiagnosticsResponse
+from app.models.prd_v2_1 import PRDConstraintRecommendationRequest, PRDPlanningDraftRequest, PRDScheduleValidationRequest, PRDSensitivityExperimentRequest
+from app.services.prd_v2_1 import constraint_filtered_recommendations, demo_fixture, demo_sensitivity_policy_experiment, planning_draft_from_notice, recommendation_diagnostics, validate_prd_schedule
 
 
 router = APIRouter(prefix="/api/prd", tags=["prd-v2.1"])
@@ -27,6 +27,21 @@ def validate_schedule(request: PRDScheduleValidationRequest):
         request.equipment_count_by_task,
     )
     return {**result, "notice_id": request.planning.notice_id, "analysis_date": request.analysis_date}
+
+
+@router.post("/planning/from-notice", response_model=PRDPlanningDraftResponse)
+def create_planning_draft(request: PRDPlanningDraftRequest):
+    return planning_draft_from_notice(request)
+
+
+@router.post("/recommendations/constraint-filtered", response_model=PRDConstraintRecommendationResponse)
+def get_constraint_filtered_recommendations(request: PRDConstraintRecommendationRequest):
+    try:
+        return constraint_filtered_recommendations(request)
+    except KeyError as exc:
+        raise HTTPException(404, str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(422, str(exc)) from exc
 
 
 @router.get("/recommendation-diagnostics", response_model=RecommendationDiagnosticsResponse)

@@ -1,17 +1,17 @@
 # 쉿간표 프론트엔드 계약 패키지
 
-이 디렉터리는 기존 21개 API와 PRD v2.1 전용 4개 API, 총 25개의 명시적 응답 모델이 적용된 FastAPI 앱의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-24이다.
+이 디렉터리는 기존 25개 API를 보존하고 Sprint 21 통합 API 2개를 추가한 총 27개 FastAPI operation의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-25이다.
 
 ## 구성
 
 - `../docs/openapi.json`: `app.openapi()`가 생성한 OpenAPI 3.1.0 원본
 - `types/api.d.ts`: 위 파일에서 `openapi-typescript@7.10.1`로 자동 생성한 타입
-- `examples/01-*.json` ~ `25-*.json`: 등록된 25개 API의 성공 요청/응답 전문
+- `examples/01-*.json` ~ `27-*.json`: 등록된 27개 API의 성공 요청/응답 전문
 - `examples/error-*.json`: 실제 재현한 404, 415, 422 응답
 - `examples/manifest.json`: 성공 검증 목록
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
-- `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 기존 21개 API의 동결된 계약서
-- `../docs/PRD_V2_1_API_INTEGRATION_REPORT.md`: 신규 4개 API의 검증 결과와 연동 안내. 차기 계약서 발행 전 검토본
+- `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 기존 계약서(보존)
+- `../docs/FRONTEND_API_CONTRACT_v3_1.md`: Sprint 21 신규 API까지 실제 검증한 확정 계약서
 
 ## 로컬 실행 및 재검증
 
@@ -53,7 +53,7 @@ type PredictResponse = components["schemas"]["NoisePredictResponse"];
 type PredictOperation = paths["/api/noise/predict"]["post"];
 ```
 
-25개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
+27개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
 
 ## PRD v2.1 전용 API
 

@@ -1,6 +1,6 @@
 {
   "base_url": "http://127.0.0.1:8765",
-  "success_count": 25,
+  "success_count": 27,
   "endpoints": [
     {
       "name": "19-experiments-run",
@@ -105,9 +105,21 @@
       "status": 200
     },
     {
+      "name": "26-prd-planning-from-notice",
+      "method": "POST",
+      "path": "/api/prd/planning/from-notice",
+      "status": 200
+    },
+    {
       "name": "24-prd-recommendation-diagnostics",
       "method": "GET",
       "path": "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11",
+      "status": 200
+    },
+    {
+      "name": "27-prd-constraint-filtered-recommendations",
+      "method": "POST",
+      "path": "/api/prd/recommendations/constraint-filtered",
       "status": 200
     },
     {

@@ -3,10 +3,12 @@ from __future__ import annotations
 import json
 from datetime import date
 
-from app.models.domain import TaskAssignment
-from app.models.prd_v2_1 import PRDNoticePlanningInput
+from app.models.domain import ConstructionNotice, SourceMetadata, TaskAssignment
+from app.models.prd_v2_1 import PRDConstraintRecommendationRequest, PRDNoticePlanningInput, PRDPlanningDraftRequest
 from app.core.config import get_settings
 from app.services.optimizer import optimize
+from app.services.pareto import non_dominated, non_dominated_multi
+from app.services.optimizer import MULTI_AXES
 from app.services.timegrid import at as _at
 
 
@@ -106,6 +108,138 @@ def validate_prd_schedule(
     if planning.project_completion_date is not None and any(item.end.date() > planning.project_completion_date for item in assignments):
         violations.append({"code": "project_completion_date_exceeded"})
     return {"feasible": not violations, "violations": violations, "policy_version": "prd_v2_1_explicit_input_only"}
+
+
+def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
+    """Map only fields present in an extracted notice; never complete missing facts."""
+    notice: ConstructionNotice = request.notice
+    document_source = notice.source_provenance.get("document") or notice.source_provenance.get("scenario") or SourceMetadata(
+        status="missing", note="No document-level provenance supplied"
+    )
+    equipment = []
+    for task in notice.tasks:
+        if task.equipment_id is None:
+            continue
+        equipment.append({
+            "equipment_id": task.equipment_id,
+            "category": task.name,
+            "specification": None,
+            "model_name": None,
+            "max_daily_count": None,
+            "required_usage_minutes": task.duration_minutes,
+            "permitted_time_windows": task.permitted_time_windows,
+            "source_metadata": document_source,
+        })
+    constraints = notice.constraints
+    road_excavation = constraints.get("road_excavation") if isinstance(constraints.get("road_excavation"), bool) else None
+    same_day = constraints.get("same_day") if isinstance(constraints.get("same_day"), bool) else None
+    field_values = {
+        "project_name": notice.name,
+        "location": notice.location,
+        "construction_period": notice.construction_period.start if notice.construction_period.start and notice.construction_period.end else None,
+        "total_work_window": notice.original_work_window,
+        "road_excavation": road_excavation,
+    }
+    missing = [name for name, value in field_values.items() if value is None]
+    if not equipment:
+        missing.append("equipment_constraints")
+    if any(row["required_usage_minutes"] is None for row in equipment):
+        missing.append("equipment_required_usage_minutes")
+    missing.extend(["road_occupancy_permit_window", "max_daily_equipment_count"])
+    missing = list(dict.fromkeys(missing))
+    provenance = {name: document_source for name, value in field_values.items() if value is not None}
+    provenance.update({name: SourceMetadata(status="missing", note="Not confirmed in extracted notice") for name in missing})
+    return {
+        "status": "needs_confirmation" if missing else "ready_for_confirmation",
+        "extractor_mode": request.extractor_mode,
+        "is_actual_ai": request.is_actual_ai,
+        "planning_draft": {
+            "notice_id": notice.id,
+            "project_name": notice.name,
+            "location": notice.location,
+            "construction_period": notice.construction_period,
+            "total_work_window": notice.original_work_window,
+            "road_excavation": road_excavation,
+            "road_occupancy_permit_window": None,
+            "equipment_constraints": equipment,
+            "fixed_tasks": [],
+            "predecessors": {task.id: task.predecessors for task in notice.tasks if task.predecessors},
+            "same_day_restoration_required": same_day,
+            "source_evidence": request.field_evidence,
+            "field_provenance": provenance,
+        },
+        "missing_fields": missing,
+        "confirmation_required_fields": sorted(set(missing + ["project_name", "location", "construction_period", "total_work_window", "equipment_constraints"])),
+        "warnings": [
+            "Extraction output is an unconfirmed draft and is not an official filing fact.",
+            "Null and missing values must be confirmed by a user; no constraint was inferred.",
+        ],
+    }
+
+
+def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequest) -> dict:
+    scenario_id, _, _ = demo_scenario_for_date(request.analysis_date)
+    result = optimize(scenario_id, request.analysis_date, background_profile=request.background_profile, objective_mode=request.objective_mode)
+    base_candidates = result.get("valid_candidates", [])
+    rows = []
+    feasible_points = []
+    axes = MULTI_AXES if request.objective_mode == "multi_axis" else ["resident_cost", "change_cost"]
+    for candidate in base_candidates:
+        validation = validate_prd_schedule(
+            request.planning, request.analysis_date, candidate.task_assignments, request.predecessors,
+            request.equipment_by_task, request.restoration_task_ids, request.equipment_count_by_task,
+        )
+        if validation["feasible"]:
+            feasible_points.append({"id": candidate.id, **candidate.objective_values})
+        rows.append((candidate, validation))
+    frontier_points = non_dominated_multi(feasible_points, axes) if request.objective_mode == "multi_axis" else non_dominated(feasible_points)
+    frontier_ids = {row["id"] for row in frontier_points}
+    candidates = []
+    for candidate, validation in rows:
+        candidates.append({
+            "candidate_id": candidate.id,
+            "assignments": candidate.task_assignments,
+            "base_optimizer_feasible": True,
+            "prd_feasible": validation["feasible"],
+            "recommendable": validation["feasible"] and candidate.id in frontier_ids,
+            "violations": validation["violations"],
+            "pareto_after_constraint_filter": candidate.id in frontier_ids,
+            "schedule_change_minutes": candidate.metrics.schedule_change_minutes,
+            "project_start_change_minutes": candidate.metrics.project_start_change_minutes,
+            "project_end_change_minutes": candidate.metrics.project_end_change_minutes,
+            "noise_impact": candidate.metrics,
+            "objective_values": candidate.objective_values,
+        })
+    missing = []
+    task_ids = {assignment.task_id for candidate in base_candidates for assignment in candidate.task_assignments}
+    missing.extend(f"equipment_by_task.{task_id}" for task_id in sorted(task_ids - request.equipment_by_task.keys()))
+    missing.extend(f"field_provenance.{field}" for field in (
+        "construction_period", "total_work_window", "road_excavation"
+    ) if field not in request.planning.field_provenance)
+    recommendable = [row["candidate_id"] for row in candidates if row["recommendable"]]
+    original = next((row for row in candidates if row["candidate_id"] == "offset-0"), None)
+    return {
+        "input_planning": request.planning,
+        "input_provenance": request.planning.field_provenance,
+        "policy_version": "prd_v2_1_explicit_input_only",
+        "candidate_generation_mode": "existing_optimizer_15_minute_offsets_0_to_120",
+        "optimization_claim": "constraint_filtered_candidate_set_not_global_optimum",
+        "scenario_id": scenario_id,
+        "analysis_date": request.analysis_date,
+        "original_schedule": original,
+        "candidates": candidates,
+        "recommendable_candidate_ids": recommendable,
+        "recommendation_status": "available" if recommendable else "none_feasible",
+        "no_recommendation_reasons": [] if recommendable else ["All candidates in the 0..120 minute, 15-minute offset search set violate explicit PRD constraints."],
+        "simulation_status": "simulated",
+        "missing_information": missing,
+        "caveats": [
+            "This is a constraint-filtered result over the existing offset candidate set, not a global optimum.",
+            "No unspecified time limit or relaxed constraint was introduced.",
+            "S-DoT observations are not added to the acoustic synthesis.",
+            "Official construction geometry and residential facade receptors remain unavailable; field accuracy is not_evaluable.",
+        ],
+    }
 
 
 def demo_fixture() -> dict:

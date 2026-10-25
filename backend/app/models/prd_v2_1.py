@@ -5,7 +5,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field, model_validator
 
-from app.models.domain import ConstructionPeriod, SourceMetadata, TaskAssignment, TimeWindow
+from app.models.domain import ConstructionNotice, ConstructionPeriod, SourceMetadata, TaskAssignment, TimeWindow
 
 
 class EquipmentPlanningConstraint(BaseModel):
@@ -95,4 +95,28 @@ class PRDSensitivityExperimentRequest(BaseModel):
             raise ValueError("analysis_dates must contain only 2026-09-11 or 2026-10-07")
         if len(self.analysis_dates) != len(set(self.analysis_dates)) or len(self.multipliers) != len(set(self.multipliers)):
             raise ValueError("analysis_dates and multipliers must not contain duplicates")
+        return self
+
+
+class PRDPlanningDraftRequest(BaseModel):
+    notice: ConstructionNotice
+    extractor_mode: Literal["mock", "llm", "manual"]
+    is_actual_ai: bool
+    field_evidence: dict[str, object] = Field(default_factory=dict)
+
+
+class PRDConstraintRecommendationRequest(BaseModel):
+    analysis_date: date
+    planning: PRDNoticePlanningInput
+    predecessors: dict[str, list[str]] = Field(default_factory=dict)
+    equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
+    equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
+    restoration_task_ids: set[str] = Field(default_factory=set)
+    background_profile: str = "road_traffic_observed_profile"
+    objective_mode: Literal["incremental_impact", "absolute_impact", "physical_energy", "sensitive_exposure", "continuous_burden", "multi_axis"] = "incremental_impact"
+
+    @model_validator(mode="after")
+    def supported_demo_dates_only(self):
+        if self.analysis_date not in {date(2026, 9, 11), date(2026, 10, 7)}:
+            raise ValueError("analysis_date must be 2026-09-11 or 2026-10-07")
         return self

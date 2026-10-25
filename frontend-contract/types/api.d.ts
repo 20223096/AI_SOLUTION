@@ -395,6 +395,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/prd/planning/from-notice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Planning Draft */
+        post: operations["create_planning_draft_api_prd_planning_from_notice_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/prd/recommendations/constraint-filtered": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Get Constraint Filtered Recommendations */
+        post: operations["get_constraint_filtered_recommendations_api_prd_recommendations_constraint_filtered_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/prd/recommendation-diagnostics": {
         parameters: {
             query?: never;
@@ -559,6 +593,34 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** ConstraintCandidateResult */
+        ConstraintCandidateResult: {
+            /** Candidate Id */
+            candidate_id: string;
+            /** Assignments */
+            assignments: components["schemas"]["TaskAssignment"][];
+            /** Base Optimizer Feasible */
+            base_optimizer_feasible: boolean;
+            /** Prd Feasible */
+            prd_feasible: boolean;
+            /** Recommendable */
+            recommendable: boolean;
+            /** Violations */
+            violations: components["schemas"]["ConstraintViolation"][];
+            /** Pareto After Constraint Filter */
+            pareto_after_constraint_filter: boolean;
+            /** Schedule Change Minutes */
+            schedule_change_minutes: number;
+            /** Project Start Change Minutes */
+            project_start_change_minutes: number;
+            /** Project End Change Minutes */
+            project_end_change_minutes: number;
+            noise_impact: components["schemas"]["ScheduleMetrics"];
+            /** Objective Values */
+            objective_values: {
+                [key: string]: number;
+            };
+        };
         /** ConstraintViolation */
         ConstraintViolation: {
             /** Code */
@@ -632,7 +694,28 @@ export interface components {
             [key: string]: unknown;
         };
         /** ConstructionNotice */
-        ConstructionNotice: {
+        "ConstructionNotice-Input": {
+            /** Id */
+            id: string;
+            /** Name */
+            name?: string | null;
+            /** Location */
+            location?: string | null;
+            construction_period: components["schemas"]["ConstructionPeriod"];
+            original_work_window?: components["schemas"]["TimeWindow"] | null;
+            /** Tasks */
+            tasks: components["schemas"]["ConstructionTask"][];
+            /** Constraints */
+            constraints?: {
+                [key: string]: unknown;
+            };
+            /** Source Provenance */
+            source_provenance: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+        };
+        /** ConstructionNotice */
+        "ConstructionNotice-Output": {
             /** Id */
             id: string;
             /** Name */
@@ -1018,6 +1101,24 @@ export interface components {
             /** Reason */
             reason: string;
         };
+        /** DraftEquipmentConstraint */
+        DraftEquipmentConstraint: {
+            /** Equipment Id */
+            equipment_id: string;
+            /** Category */
+            category: string | null;
+            /** Specification */
+            specification: string | null;
+            /** Model Name */
+            model_name: string | null;
+            /** Max Daily Count */
+            max_daily_count: number | null;
+            /** Required Usage Minutes */
+            required_usage_minutes: number | null;
+            /** Permitted Time Windows */
+            permitted_time_windows: components["schemas"]["TimeWindow"][];
+            source_metadata: components["schemas"]["SourceMetadata"];
+        };
         /** Equipment */
         Equipment: {
             /** Id */
@@ -1038,7 +1139,25 @@ export interface components {
             source_metadata: components["schemas"]["SourceMetadata"];
         };
         /** EquipmentPlanningConstraint */
-        EquipmentPlanningConstraint: {
+        "EquipmentPlanningConstraint-Input": {
+            /** Equipment Id */
+            equipment_id: string;
+            /** Category */
+            category: string;
+            /** Specification */
+            specification?: string | null;
+            /** Model Name */
+            model_name?: string | null;
+            /** Max Daily Count */
+            max_daily_count?: number | null;
+            /** Required Usage Minutes */
+            required_usage_minutes: number;
+            /** Permitted Time Windows */
+            permitted_time_windows?: components["schemas"]["TimeWindow"][];
+            source_metadata: components["schemas"]["SourceMetadata"];
+        };
+        /** EquipmentPlanningConstraint */
+        "EquipmentPlanningConstraint-Output": {
             /** Equipment Id */
             equipment_id: string;
             /** Category */
@@ -1239,7 +1358,19 @@ export interface components {
             [key: string]: unknown;
         };
         /** FixedTaskConstraint */
-        FixedTaskConstraint: {
+        "FixedTaskConstraint-Input": {
+            /** Task Id */
+            task_id: string;
+            /** Fixed Start */
+            fixed_start?: string | null;
+            /** Fixed End */
+            fixed_end?: string | null;
+            /** Reason */
+            reason: string;
+            source_metadata: components["schemas"]["SourceMetadata"];
+        };
+        /** FixedTaskConstraint */
+        "FixedTaskConstraint-Output": {
             /** Task Id */
             task_id: string;
             /** Fixed Start */
@@ -1333,7 +1464,7 @@ export interface components {
             provider: string;
             /** Model */
             model: string;
-            notice: components["schemas"]["ConstructionNotice"];
+            notice: components["schemas"]["ConstructionNotice-Output"];
             /** Warnings */
             warnings: string[];
         } & {
@@ -1949,7 +2080,7 @@ export interface components {
              * @constant
              */
             is_actual_ai: false;
-            notice: components["schemas"]["ConstructionNotice"];
+            notice: components["schemas"]["ConstructionNotice-Output"];
             /** Field Evidence */
             field_evidence: {
                 [key: string]: unknown;
@@ -2154,8 +2285,93 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** PRDConstraintRecommendationRequest */
+        PRDConstraintRecommendationRequest: {
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            planning: components["schemas"]["PRDNoticePlanningInput-Input"];
+            /** Predecessors */
+            predecessors?: {
+                [key: string]: string[];
+            };
+            /** Equipment By Task */
+            equipment_by_task?: {
+                [key: string]: string | null;
+            };
+            /** Equipment Count By Task */
+            equipment_count_by_task?: {
+                [key: string]: number;
+            };
+            /** Restoration Task Ids */
+            restoration_task_ids?: string[];
+            /**
+             * Background Profile
+             * @default road_traffic_observed_profile
+             */
+            background_profile: string;
+            /**
+             * Objective Mode
+             * @default incremental_impact
+             * @enum {string}
+             */
+            objective_mode: "incremental_impact" | "absolute_impact" | "physical_energy" | "sensitive_exposure" | "continuous_burden" | "multi_axis";
+        };
+        /** PRDConstraintRecommendationResponse */
+        PRDConstraintRecommendationResponse: {
+            input_planning: components["schemas"]["PRDNoticePlanningInput-Output"];
+            /** Input Provenance */
+            input_provenance: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+            /**
+             * Policy Version
+             * @constant
+             */
+            policy_version: "prd_v2_1_explicit_input_only";
+            /**
+             * Candidate Generation Mode
+             * @constant
+             */
+            candidate_generation_mode: "existing_optimizer_15_minute_offsets_0_to_120";
+            /**
+             * Optimization Claim
+             * @constant
+             */
+            optimization_claim: "constraint_filtered_candidate_set_not_global_optimum";
+            /** Scenario Id */
+            scenario_id: string;
+            /**
+             * Analysis Date
+             * Format: date
+             */
+            analysis_date: string;
+            original_schedule: components["schemas"]["ConstraintCandidateResult"] | null;
+            /** Candidates */
+            candidates: components["schemas"]["ConstraintCandidateResult"][];
+            /** Recommendable Candidate Ids */
+            recommendable_candidate_ids: string[];
+            /**
+             * Recommendation Status
+             * @enum {string}
+             */
+            recommendation_status: "available" | "none_feasible";
+            /** No Recommendation Reasons */
+            no_recommendation_reasons: string[];
+            /**
+             * Simulation Status
+             * @constant
+             */
+            simulation_status: "simulated";
+            /** Missing Information */
+            missing_information: string[];
+            /** Caveats */
+            caveats: string[];
+        };
         /** PRDNoticePlanningInput */
-        PRDNoticePlanningInput: {
+        "PRDNoticePlanningInput-Input": {
             /** Notice Id */
             notice_id: string;
             /** Project Name */
@@ -2168,9 +2384,9 @@ export interface components {
             road_excavation: boolean;
             road_occupancy_permit_window?: components["schemas"]["TimeWindow"] | null;
             /** Equipment Constraints */
-            equipment_constraints?: components["schemas"]["EquipmentPlanningConstraint"][];
+            equipment_constraints?: components["schemas"]["EquipmentPlanningConstraint-Input"][];
             /** Fixed Tasks */
-            fixed_tasks?: components["schemas"]["FixedTaskConstraint"][];
+            fixed_tasks?: components["schemas"]["FixedTaskConstraint-Input"][];
             /**
              * Same Day Restoration Required
              * @default false
@@ -2194,6 +2410,117 @@ export interface components {
              */
             provenance: "field_measured" | "official_document" | "user_provided" | "assumed";
         };
+        /** PRDNoticePlanningInput */
+        "PRDNoticePlanningInput-Output": {
+            /** Notice Id */
+            notice_id: string;
+            /** Project Name */
+            project_name: string;
+            /** Location */
+            location: string;
+            construction_period: components["schemas"]["ConstructionPeriod"];
+            total_work_window: components["schemas"]["TimeWindow"];
+            /** Road Excavation */
+            road_excavation: boolean;
+            road_occupancy_permit_window?: components["schemas"]["TimeWindow"] | null;
+            /** Equipment Constraints */
+            equipment_constraints?: components["schemas"]["EquipmentPlanningConstraint-Output"][];
+            /** Fixed Tasks */
+            fixed_tasks?: components["schemas"]["FixedTaskConstraint-Output"][];
+            /**
+             * Same Day Restoration Required
+             * @default false
+             */
+            same_day_restoration_required: boolean;
+            /** Project Completion Date */
+            project_completion_date?: string | null;
+            /** Non Adjustable Conditions */
+            non_adjustable_conditions?: string[];
+            /** Source Evidence */
+            source_evidence?: {
+                [key: string]: string;
+            };
+            /** Field Provenance */
+            field_provenance?: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+            /**
+             * Provenance
+             * @enum {string}
+             */
+            provenance: "field_measured" | "official_document" | "user_provided" | "assumed";
+        };
+        /** PRDPlanningDraft */
+        PRDPlanningDraft: {
+            /** Notice Id */
+            notice_id: string;
+            /** Project Name */
+            project_name: string | null;
+            /** Location */
+            location: string | null;
+            construction_period: components["schemas"]["ConstructionPeriod"];
+            total_work_window: components["schemas"]["TimeWindow"] | null;
+            /** Road Excavation */
+            road_excavation: boolean | null;
+            road_occupancy_permit_window: components["schemas"]["TimeWindow"] | null;
+            /** Equipment Constraints */
+            equipment_constraints: components["schemas"]["DraftEquipmentConstraint"][];
+            /** Fixed Tasks */
+            fixed_tasks: {
+                [key: string]: unknown;
+            }[];
+            /** Predecessors */
+            predecessors: {
+                [key: string]: string[];
+            };
+            /** Same Day Restoration Required */
+            same_day_restoration_required: boolean | null;
+            /** Source Evidence */
+            source_evidence: {
+                [key: string]: unknown;
+            };
+            /** Field Provenance */
+            field_provenance: {
+                [key: string]: components["schemas"]["SourceMetadata"];
+            };
+        };
+        /** PRDPlanningDraftRequest */
+        PRDPlanningDraftRequest: {
+            notice: components["schemas"]["ConstructionNotice-Input"];
+            /**
+             * Extractor Mode
+             * @enum {string}
+             */
+            extractor_mode: "mock" | "llm" | "manual";
+            /** Is Actual Ai */
+            is_actual_ai: boolean;
+            /** Field Evidence */
+            field_evidence?: {
+                [key: string]: unknown;
+            };
+        };
+        /** PRDPlanningDraftResponse */
+        PRDPlanningDraftResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "needs_confirmation" | "ready_for_confirmation";
+            /**
+             * Extractor Mode
+             * @enum {string}
+             */
+            extractor_mode: "mock" | "llm" | "manual";
+            /** Is Actual Ai */
+            is_actual_ai: boolean;
+            planning_draft: components["schemas"]["PRDPlanningDraft"];
+            /** Missing Fields */
+            missing_fields: string[];
+            /** Confirmation Required Fields */
+            confirmation_required_fields: string[];
+            /** Warnings */
+            warnings: string[];
+        };
         /** PRDScheduleValidationRequest */
         PRDScheduleValidationRequest: {
             /**
@@ -2201,7 +2528,7 @@ export interface components {
              * Format: date
              */
             analysis_date: string;
-            planning: components["schemas"]["PRDNoticePlanningInput"];
+            planning: components["schemas"]["PRDNoticePlanningInput-Input"];
             /** Assignments */
             assignments: components["schemas"]["TaskAssignment"][];
             /** Predecessors */
@@ -2525,7 +2852,7 @@ export interface components {
             settings: {
                 [key: string]: unknown;
             };
-            notice: components["schemas"]["ConstructionNotice"];
+            notice: components["schemas"]["ConstructionNotice-Output"];
             /** Equipment */
             equipment: components["schemas"]["Equipment"][];
             /** Receptors */
@@ -3469,6 +3796,72 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PRDScheduleValidationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_planning_draft_api_prd_planning_from_notice_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PRDPlanningDraftRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PRDPlanningDraftResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_constraint_filtered_recommendations_api_prd_recommendations_constraint_filtered_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["PRDConstraintRecommendationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PRDConstraintRecommendationResponse"];
                 };
             };
             /** @description Validation Error */

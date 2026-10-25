@@ -873,6 +873,88 @@
         }
       }
     },
+    "/api/prd/planning/from-notice": {
+      "post": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Create Planning Draft",
+        "operationId": "create_planning_draft_api_prd_planning_from_notice_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PRDPlanningDraftRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PRDPlanningDraftResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/prd/recommendations/constraint-filtered": {
+      "post": {
+        "tags": [
+          "prd-v2.1"
+        ],
+        "summary": "Get Constraint Filtered Recommendations",
+        "operationId": "get_constraint_filtered_recommendations_api_prd_recommendations_constraint_filtered_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PRDConstraintRecommendationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PRDConstraintRecommendationResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/prd/recommendation-diagnostics": {
       "get": {
         "tags": [
@@ -1295,6 +1377,83 @@
         ],
         "title": "CompareResponse"
       },
+      "ConstraintCandidateResult": {
+        "properties": {
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/TaskAssignment"
+            },
+            "type": "array",
+            "title": "Assignments"
+          },
+          "base_optimizer_feasible": {
+            "type": "boolean",
+            "title": "Base Optimizer Feasible"
+          },
+          "prd_feasible": {
+            "type": "boolean",
+            "title": "Prd Feasible"
+          },
+          "recommendable": {
+            "type": "boolean",
+            "title": "Recommendable"
+          },
+          "violations": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintViolation"
+            },
+            "type": "array",
+            "title": "Violations"
+          },
+          "pareto_after_constraint_filter": {
+            "type": "boolean",
+            "title": "Pareto After Constraint Filter"
+          },
+          "schedule_change_minutes": {
+            "type": "integer",
+            "title": "Schedule Change Minutes"
+          },
+          "project_start_change_minutes": {
+            "type": "integer",
+            "title": "Project Start Change Minutes"
+          },
+          "project_end_change_minutes": {
+            "type": "integer",
+            "title": "Project End Change Minutes"
+          },
+          "noise_impact": {
+            "$ref": "#/components/schemas/ScheduleMetrics"
+          },
+          "objective_values": {
+            "additionalProperties": {
+              "type": "number"
+            },
+            "type": "object",
+            "title": "Objective Values"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "candidate_id",
+          "assignments",
+          "base_optimizer_feasible",
+          "prd_feasible",
+          "recommendable",
+          "violations",
+          "pareto_after_constraint_filter",
+          "schedule_change_minutes",
+          "project_start_change_minutes",
+          "project_end_change_minutes",
+          "noise_impact",
+          "objective_values"
+        ],
+        "title": "ConstraintCandidateResult"
+      },
       "ConstraintViolation": {
         "properties": {
           "code": {
@@ -1492,7 +1651,77 @@
         ],
         "title": "ConstructionDesignResponse"
       },
-      "ConstructionNotice": {
+      "ConstructionNotice-Input": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Name"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "construction_period": {
+            "$ref": "#/components/schemas/ConstructionPeriod"
+          },
+          "original_work_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "tasks": {
+            "items": {
+              "$ref": "#/components/schemas/ConstructionTask"
+            },
+            "type": "array",
+            "title": "Tasks"
+          },
+          "constraints": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Constraints"
+          },
+          "source_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Source Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "construction_period",
+          "tasks",
+          "source_provenance"
+        ],
+        "title": "ConstructionNotice"
+      },
+      "ConstructionNotice-Output": {
         "properties": {
           "id": {
             "type": "string",
@@ -2446,6 +2675,92 @@
         ],
         "title": "DominatedReason"
       },
+      "DraftEquipmentConstraint": {
+        "properties": {
+          "equipment_id": {
+            "type": "string",
+            "title": "Equipment Id"
+          },
+          "category": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category"
+          },
+          "specification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specification"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "max_daily_count": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Daily Count"
+          },
+          "required_usage_minutes": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Required Usage Minutes"
+          },
+          "permitted_time_windows": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "type": "array",
+            "title": "Permitted Time Windows"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "equipment_id",
+          "category",
+          "specification",
+          "model_name",
+          "max_daily_count",
+          "required_usage_minutes",
+          "permitted_time_windows",
+          "source_metadata"
+        ],
+        "title": "DraftEquipmentConstraint"
+      },
       "Equipment": {
         "properties": {
           "id": {
@@ -2506,7 +2821,76 @@
         ],
         "title": "Equipment"
       },
-      "EquipmentPlanningConstraint": {
+      "EquipmentPlanningConstraint-Input": {
+        "properties": {
+          "equipment_id": {
+            "type": "string",
+            "title": "Equipment Id"
+          },
+          "category": {
+            "type": "string",
+            "title": "Category"
+          },
+          "specification": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Specification"
+          },
+          "model_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Model Name"
+          },
+          "max_daily_count": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 1.0
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Max Daily Count"
+          },
+          "required_usage_minutes": {
+            "type": "integer",
+            "exclusiveMinimum": 0.0,
+            "title": "Required Usage Minutes"
+          },
+          "permitted_time_windows": {
+            "items": {
+              "$ref": "#/components/schemas/TimeWindow"
+            },
+            "type": "array",
+            "title": "Permitted Time Windows"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "equipment_id",
+          "category",
+          "required_usage_minutes",
+          "source_metadata"
+        ],
+        "title": "EquipmentPlanningConstraint"
+      },
+      "EquipmentPlanningConstraint-Output": {
         "properties": {
           "equipment_id": {
             "type": "string",
@@ -3015,7 +3399,53 @@
         ],
         "title": "FieldValidationResponse"
       },
-      "FixedTaskConstraint": {
+      "FixedTaskConstraint-Input": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "title": "Task Id"
+          },
+          "fixed_start": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed Start"
+          },
+          "fixed_end": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Fixed End"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          },
+          "source_metadata": {
+            "$ref": "#/components/schemas/SourceMetadata"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "reason",
+          "source_metadata"
+        ],
+        "title": "FixedTaskConstraint"
+      },
+      "FixedTaskConstraint-Output": {
         "properties": {
           "task_id": {
             "type": "string",
@@ -3244,7 +3674,7 @@
             "title": "Model"
           },
           "notice": {
-            "$ref": "#/components/schemas/ConstructionNotice"
+            "$ref": "#/components/schemas/ConstructionNotice-Output"
           },
           "warnings": {
             "items": {
@@ -5049,7 +5479,7 @@
             "title": "Is Actual Ai"
           },
           "notice": {
-            "$ref": "#/components/schemas/ConstructionNotice"
+            "$ref": "#/components/schemas/ConstructionNotice-Output"
           },
           "field_evidence": {
             "additionalProperties": true,
@@ -5526,7 +5956,198 @@
         ],
         "title": "OptimizeSuccessResponse"
       },
-      "PRDNoticePlanningInput": {
+      "PRDConstraintRecommendationRequest": {
+        "properties": {
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "planning": {
+            "$ref": "#/components/schemas/PRDNoticePlanningInput-Input"
+          },
+          "predecessors": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Predecessors"
+          },
+          "equipment_by_task": {
+            "additionalProperties": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "type": "object",
+            "title": "Equipment By Task"
+          },
+          "equipment_count_by_task": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Equipment Count By Task"
+          },
+          "restoration_task_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "uniqueItems": true,
+            "title": "Restoration Task Ids"
+          },
+          "background_profile": {
+            "type": "string",
+            "title": "Background Profile",
+            "default": "road_traffic_observed_profile"
+          },
+          "objective_mode": {
+            "type": "string",
+            "enum": [
+              "incremental_impact",
+              "absolute_impact",
+              "physical_energy",
+              "sensitive_exposure",
+              "continuous_burden",
+              "multi_axis"
+            ],
+            "title": "Objective Mode",
+            "default": "incremental_impact"
+          }
+        },
+        "type": "object",
+        "required": [
+          "analysis_date",
+          "planning"
+        ],
+        "title": "PRDConstraintRecommendationRequest"
+      },
+      "PRDConstraintRecommendationResponse": {
+        "properties": {
+          "input_planning": {
+            "$ref": "#/components/schemas/PRDNoticePlanningInput-Output"
+          },
+          "input_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Input Provenance"
+          },
+          "policy_version": {
+            "type": "string",
+            "const": "prd_v2_1_explicit_input_only",
+            "title": "Policy Version"
+          },
+          "candidate_generation_mode": {
+            "type": "string",
+            "const": "existing_optimizer_15_minute_offsets_0_to_120",
+            "title": "Candidate Generation Mode"
+          },
+          "optimization_claim": {
+            "type": "string",
+            "const": "constraint_filtered_candidate_set_not_global_optimum",
+            "title": "Optimization Claim"
+          },
+          "scenario_id": {
+            "type": "string",
+            "title": "Scenario Id"
+          },
+          "analysis_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Analysis Date"
+          },
+          "original_schedule": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ConstraintCandidateResult"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/ConstraintCandidateResult"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "recommendable_candidate_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Recommendable Candidate Ids"
+          },
+          "recommendation_status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "none_feasible"
+            ],
+            "title": "Recommendation Status"
+          },
+          "no_recommendation_reasons": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "No Recommendation Reasons"
+          },
+          "simulation_status": {
+            "type": "string",
+            "const": "simulated",
+            "title": "Simulation Status"
+          },
+          "missing_information": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Information"
+          },
+          "caveats": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Caveats"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "input_planning",
+          "input_provenance",
+          "policy_version",
+          "candidate_generation_mode",
+          "optimization_claim",
+          "scenario_id",
+          "analysis_date",
+          "original_schedule",
+          "candidates",
+          "recommendable_candidate_ids",
+          "recommendation_status",
+          "no_recommendation_reasons",
+          "simulation_status",
+          "missing_information",
+          "caveats"
+        ],
+        "title": "PRDConstraintRecommendationResponse"
+      },
+      "PRDNoticePlanningInput-Input": {
         "properties": {
           "notice_id": {
             "type": "string",
@@ -5562,14 +6183,14 @@
           },
           "equipment_constraints": {
             "items": {
-              "$ref": "#/components/schemas/EquipmentPlanningConstraint"
+              "$ref": "#/components/schemas/EquipmentPlanningConstraint-Input"
             },
             "type": "array",
             "title": "Equipment Constraints"
           },
           "fixed_tasks": {
             "items": {
-              "$ref": "#/components/schemas/FixedTaskConstraint"
+              "$ref": "#/components/schemas/FixedTaskConstraint-Input"
             },
             "type": "array",
             "title": "Fixed Tasks"
@@ -5635,6 +6256,338 @@
         ],
         "title": "PRDNoticePlanningInput"
       },
+      "PRDNoticePlanningInput-Output": {
+        "properties": {
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "project_name": {
+            "type": "string",
+            "title": "Project Name"
+          },
+          "location": {
+            "type": "string",
+            "title": "Location"
+          },
+          "construction_period": {
+            "$ref": "#/components/schemas/ConstructionPeriod"
+          },
+          "total_work_window": {
+            "$ref": "#/components/schemas/TimeWindow"
+          },
+          "road_excavation": {
+            "type": "boolean",
+            "title": "Road Excavation"
+          },
+          "road_occupancy_permit_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "equipment_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/EquipmentPlanningConstraint-Output"
+            },
+            "type": "array",
+            "title": "Equipment Constraints"
+          },
+          "fixed_tasks": {
+            "items": {
+              "$ref": "#/components/schemas/FixedTaskConstraint-Output"
+            },
+            "type": "array",
+            "title": "Fixed Tasks"
+          },
+          "same_day_restoration_required": {
+            "type": "boolean",
+            "title": "Same Day Restoration Required",
+            "default": false
+          },
+          "project_completion_date": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Completion Date"
+          },
+          "non_adjustable_conditions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Non Adjustable Conditions"
+          },
+          "source_evidence": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Source Evidence"
+          },
+          "field_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Field Provenance"
+          },
+          "provenance": {
+            "type": "string",
+            "enum": [
+              "field_measured",
+              "official_document",
+              "user_provided",
+              "assumed"
+            ],
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "notice_id",
+          "project_name",
+          "location",
+          "construction_period",
+          "total_work_window",
+          "road_excavation",
+          "provenance"
+        ],
+        "title": "PRDNoticePlanningInput"
+      },
+      "PRDPlanningDraft": {
+        "properties": {
+          "notice_id": {
+            "type": "string",
+            "title": "Notice Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Location"
+          },
+          "construction_period": {
+            "$ref": "#/components/schemas/ConstructionPeriod"
+          },
+          "total_work_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "road_excavation": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Road Excavation"
+          },
+          "road_occupancy_permit_window": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TimeWindow"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "equipment_constraints": {
+            "items": {
+              "$ref": "#/components/schemas/DraftEquipmentConstraint"
+            },
+            "type": "array",
+            "title": "Equipment Constraints"
+          },
+          "fixed_tasks": {
+            "items": {
+              "additionalProperties": true,
+              "type": "object"
+            },
+            "type": "array",
+            "title": "Fixed Tasks"
+          },
+          "predecessors": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Predecessors"
+          },
+          "same_day_restoration_required": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Same Day Restoration Required"
+          },
+          "source_evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Source Evidence"
+          },
+          "field_provenance": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/SourceMetadata"
+            },
+            "type": "object",
+            "title": "Field Provenance"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "notice_id",
+          "project_name",
+          "location",
+          "construction_period",
+          "total_work_window",
+          "road_excavation",
+          "road_occupancy_permit_window",
+          "equipment_constraints",
+          "fixed_tasks",
+          "predecessors",
+          "same_day_restoration_required",
+          "source_evidence",
+          "field_provenance"
+        ],
+        "title": "PRDPlanningDraft"
+      },
+      "PRDPlanningDraftRequest": {
+        "properties": {
+          "notice": {
+            "$ref": "#/components/schemas/ConstructionNotice-Input"
+          },
+          "extractor_mode": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "llm",
+              "manual"
+            ],
+            "title": "Extractor Mode"
+          },
+          "is_actual_ai": {
+            "type": "boolean",
+            "title": "Is Actual Ai"
+          },
+          "field_evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Field Evidence"
+          }
+        },
+        "type": "object",
+        "required": [
+          "notice",
+          "extractor_mode",
+          "is_actual_ai"
+        ],
+        "title": "PRDPlanningDraftRequest"
+      },
+      "PRDPlanningDraftResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "needs_confirmation",
+              "ready_for_confirmation"
+            ],
+            "title": "Status"
+          },
+          "extractor_mode": {
+            "type": "string",
+            "enum": [
+              "mock",
+              "llm",
+              "manual"
+            ],
+            "title": "Extractor Mode"
+          },
+          "is_actual_ai": {
+            "type": "boolean",
+            "title": "Is Actual Ai"
+          },
+          "planning_draft": {
+            "$ref": "#/components/schemas/PRDPlanningDraft"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          },
+          "confirmation_required_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Confirmation Required Fields"
+          },
+          "warnings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Warnings"
+          }
+        },
+        "additionalProperties": false,
+        "type": "object",
+        "required": [
+          "status",
+          "extractor_mode",
+          "is_actual_ai",
+          "planning_draft",
+          "missing_fields",
+          "confirmation_required_fields",
+          "warnings"
+        ],
+        "title": "PRDPlanningDraftResponse"
+      },
       "PRDScheduleValidationRequest": {
         "properties": {
           "analysis_date": {
@@ -5643,7 +6596,7 @@
             "title": "Analysis Date"
           },
           "planning": {
-            "$ref": "#/components/schemas/PRDNoticePlanningInput"
+            "$ref": "#/components/schemas/PRDNoticePlanningInput-Input"
           },
           "assignments": {
             "items": {
@@ -6462,7 +7415,7 @@
             "title": "Settings"
           },
           "notice": {
-            "$ref": "#/components/schemas/ConstructionNotice"
+            "$ref": "#/components/schemas/ConstructionNotice-Output"
           },
           "equipment": {
             "items": {
