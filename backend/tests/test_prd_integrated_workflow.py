@@ -1,4 +1,4 @@
-from copy import deepcopy
+from pathlib import Path
 
 from fastapi.testclient import TestClient
 
@@ -7,6 +7,7 @@ from tests.test_prd_api import validation_payload
 
 
 client = TestClient(app)
+ROOT = Path(__file__).resolve().parents[2]
 
 
 def integrated_payload() -> dict:
@@ -173,3 +174,66 @@ def test_10_07_demo_regression_remains_13_72_to_13_20_with_equal_sensitive_expos
     assert shifted["noise_impact"]["incremental_impact_cost"] == 13.20
     assert original["noise_impact"]["sensitive_new_project_receptor_minutes"] == shifted["noise_impact"]["sensitive_new_project_receptor_minutes"]
     assert set(body["recommendable_candidate_ids"]) == {f"offset-{n}" for n in range(0, 121, 15)}
+
+
+def test_s1_to_s4_user_correction_partial_feasibility_and_comparison_flow():
+    extraction = client.post("/api/notices/extract", json={
+        "text": "2026년 신촌 연세로 공사 07:00~18:00, 절단기, 브레이커, 굴착기, 롤러"
+    })
+    assert extraction.status_code == 200
+    extracted = extraction.json()
+    draft_response = client.post("/api/prd/planning/from-notice", json={
+        "notice": extracted["notice"], "extractor_mode": extracted["mode"],
+        "is_actual_ai": extracted["is_actual_ai"], "field_evidence": extracted["field_evidence"],
+    })
+    assert draft_response.status_code == 200
+    assert "road_excavation" in draft_response.json()["missing_fields"]
+
+    request = integrated_payload()
+    request["planning"]["total_work_window"] = {"start": "08:00", "end": "18:00"}
+    for equipment in request["planning"]["equipment_constraints"]:
+        equipment["permitted_time_windows"] = [{"start": "08:00", "end": "18:00"}]
+
+    original_assignments = [
+        {"task_id": "cut", "start": "2026-09-11T07:00:00+09:00", "end": "2026-09-11T08:00:00+09:00"},
+        {"task_id": "break", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T10:00:00+09:00"},
+        {"task_id": "excavate", "start": "2026-09-11T10:00:00+09:00", "end": "2026-09-11T15:00:00+09:00"},
+        {"task_id": "compact", "start": "2026-09-11T15:00:00+09:00", "end": "2026-09-11T16:00:00+09:00"},
+    ]
+    validation = client.post("/api/prd/schedules/validate", json={
+        **request, "assignments": original_assignments,
+    })
+    assert validation.status_code == 200
+    assert validation.json()["feasible"] is False
+    assert "outside_total_work_window" in {row["code"] for row in validation.json()["violations"]}
+
+    recommendations = client.post("/api/prd/recommendations/constraint-filtered", json=request)
+    assert recommendations.status_code == 200
+    recommendation = recommendations.json()
+    feasible = [row for row in recommendation["candidates"] if row["prd_feasible"]]
+    infeasible = [row for row in recommendation["candidates"] if not row["prd_feasible"]]
+    assert feasible and infeasible
+    assert recommendation["recommendable_candidate_ids"] == ["offset-60"]
+
+    selected = next(row for row in recommendation["candidates"] if row["candidate_id"] == "offset-60")
+    comparison = client.post("/api/schedules/compare", json={
+        "scenario_id": recommendation["scenario_id"], "analysis_date": request["analysis_date"],
+        "background_profile": "road_traffic_observed_profile",
+        "before": recommendation["original_schedule"]["assignments"], "after": selected["assignments"],
+    })
+    assert comparison.status_code == 200
+    assert comparison.json()["before"]["schedule_change_minutes"] == 0
+    assert recommendation["simulation_status"] == "simulated"
+
+
+def test_v3_1_types_include_both_integrated_operations_and_models():
+    declaration = (ROOT / "frontend-contract" / "types" / "api.d.ts").read_text(encoding="utf-8")
+    for token in (
+        '"/api/prd/planning/from-notice"',
+        '"/api/prd/recommendations/constraint-filtered"',
+        "PRDPlanningDraftRequest",
+        "PRDPlanningDraftResponse",
+        "PRDConstraintRecommendationRequest",
+        "PRDConstraintRecommendationResponse",
+    ):
+        assert token in declaration

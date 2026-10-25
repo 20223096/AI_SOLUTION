@@ -2,6 +2,8 @@
 
 이 디렉터리는 기존 25개 API를 보존하고 Sprint 21 통합 API 2개를 추가한 총 27개 FastAPI operation의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-25이다.
 
+Sprint 22 전달 파일은 저장소 루트의 `shh-frontend-api-contract-v3_1.zip`이다. 이전 v3 대비 신규 PRD API 2개, 해당 타입/예시, S1~S4 순차 연동 가이드와 실제 HTTP 재생 결과가 추가됐다. 미구현 S7/S8 API는 포함하지 않는다.
+
 ## 구성
 
 - `../docs/openapi.json`: `app.openapi()`가 생성한 OpenAPI 3.1.0 원본
@@ -10,8 +12,11 @@
 - `examples/error-*.json`: 실제 재현한 404, 415, 422 응답
 - `examples/manifest.json`: 성공 검증 목록
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
+- `examples/verify_prd_s1_s4_workflow.py`: S1~S4 순차 HTTP 재생 스크립트
+- `examples/prd-s1-s4-workflow.json`: 사용자 확인·부분 feasible·단일 추천·비교까지의 실제 응답
 - `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 기존 계약서(보존)
 - `../docs/FRONTEND_API_CONTRACT_v3_1.md`: Sprint 21 신규 API까지 실제 검증한 확정 계약서
+- `../docs/PRD_FRONTEND_INTEGRATION_GUIDE.md`: 화면 상태와 필드 전달 규칙
 
 ## 로컬 실행 및 재검증
 
@@ -24,6 +29,7 @@ python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8765
 
 ```bash
 python3 frontend-contract/examples/generate_examples.py
+python3 frontend-contract/examples/verify_prd_s1_s4_workflow.py
 npx --yes openapi-typescript@7.10.1 docs/openapi.json -o frontend-contract/types/api.d.ts
 ```
 
@@ -62,6 +68,8 @@ GET  /api/prd/demo/2026-09-11
 POST /api/prd/schedules/validate
 GET  /api/prd/recommendation-diagnostics?analysis_date=2026-09-11
 POST /api/prd/sensitivity/experiment
+POST /api/prd/planning/from-notice
+POST /api/prd/recommendations/constraint-filtered
 ```
 
 추천 진단은 `analysis_date`로 `2026-09-11` 또는 `2026-10-07`만 받는다. 9/11에는 날짜 한정 가정 혼잡 오버레이가 있는 `final-demo-congestion`, 10/7에는 그 오버레이를 제외한 `official_reference_equipment`를 사용한다. S-DoT는 화면의 관측·품질 맥락이며 음향 합성 입력이 아니다.
