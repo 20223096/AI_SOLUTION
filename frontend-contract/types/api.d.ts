@@ -463,6 +463,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/locations/address-coordinate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Address Coordinate */
+        post: operations["address_coordinate_api_locations_address_coordinate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -475,6 +492,74 @@ export interface components {
             assumed_congestion_overlay: string;
             /** Claim Limit */
             claim_limit: string;
+        };
+        /** AddressCandidate */
+        AddressCandidate: {
+            /** Address Id */
+            address_id: string;
+            /** Road Address */
+            road_address: string;
+            /** Parcel Address */
+            parcel_address?: string | null;
+            /** Building Name */
+            building_name?: string | null;
+        };
+        /** AddressCoordinateRequest */
+        AddressCoordinateRequest: {
+            /**
+             * Address
+             * @description 신고서 추출 또는 사용자가 입력한 공사 주소
+             */
+            address: string;
+            /**
+             * Selected Address Id
+             * @description selection_required 응답의 후보 ID. 동일 주소로 다시 요청할 때 사용
+             */
+            selected_address_id?: string | null;
+        };
+        /** AddressCoordinateResponse */
+        AddressCoordinateResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "resolved" | "selection_required" | "not_found" | "invalid_selection" | "configuration_error" | "provider_auth_error" | "provider_rate_limited" | "provider_timeout" | "provider_error" | "invalid_provider_coordinate";
+            /** Original Address */
+            original_address: string;
+            /** Normalized Official Address */
+            normalized_official_address?: string | null;
+            source_coordinate?: components["schemas"]["SourceCoordinate"] | null;
+            map_coordinate?: components["schemas"]["MapCoordinate"] | null;
+            coordinate_source?: components["schemas"]["CoordinateSource"] | null;
+            /**
+             * Address Match Status
+             * @enum {string}
+             */
+            address_match_status: "exact" | "normalized" | "user_selected" | "multiple_candidates" | "no_match" | "not_evaluated";
+            /** User Confirmation Required */
+            user_confirmation_required: boolean;
+            /** Failure Reason */
+            failure_reason?: string | null;
+            /** Candidates */
+            candidates?: components["schemas"]["AddressCandidate"][];
+            official_address_coordinate?: components["schemas"]["MapCoordinate"] | null;
+            /** Construction Geometry */
+            construction_geometry?: null;
+            /** Demo Geometry */
+            demo_geometry?: null;
+            /** Residential Facade Receptor */
+            residential_facade_receptor?: null;
+            /**
+             * Site Accuracy Status
+             * @default not_validated
+             * @constant
+             */
+            site_accuracy_status: "not_validated";
+            /**
+             * Limitation
+             * @default 공식 주소 좌표는 도로명주소 건물 출입구 대표점이며 공사 중심점·공사 선형·수음점이 아닙니다.
+             */
+            limitation: string;
         };
         /** BackgroundProfile */
         BackgroundProfile: {
@@ -765,6 +850,26 @@ export interface components {
             is_movable: boolean;
             /** Required Resources */
             required_resources?: string[];
+        };
+        /** CoordinateSource */
+        CoordinateSource: {
+            /**
+             * Provider
+             * @constant
+             */
+            provider: "행정안전부 주소기반산업지원서비스";
+            /**
+             * Api
+             * @constant
+             */
+            api: "좌표제공 검색 API";
+            /**
+             * Point Semantics
+             * @constant
+             */
+            point_semantics: "도로명주소 건물 출입구 대표점";
+            /** Retrieved Live */
+            retrieved_live: boolean;
         };
         /** DemoContextEvent */
         DemoContextEvent: {
@@ -2051,6 +2156,18 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** MapCoordinate */
+        MapCoordinate: {
+            /** Longitude */
+            longitude: number;
+            /** Latitude */
+            latitude: number;
+            /**
+             * Crs
+             * @constant
+             */
+            crs: "EPSG:4326";
+        };
         /** MissingInput */
         MissingInput: {
             /** Field */
@@ -3080,6 +3197,18 @@ export interface components {
             /** Calculation Notes */
             calculation_notes: string;
         };
+        /** SourceCoordinate */
+        SourceCoordinate: {
+            /** X */
+            x: number;
+            /** Y */
+            y: number;
+            /**
+             * Crs
+             * @constant
+             */
+            crs: "EPSG:5179";
+        };
         /** SourceMetadata */
         SourceMetadata: {
             status: components["schemas"]["ProvenanceStatus"];
@@ -3937,6 +4066,57 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    address_coordinate_api_locations_address_coordinate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddressCoordinateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddressCoordinateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+            /** @description JUSO 공급자 오류 또는 잘못된 좌표 */
+            502: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddressCoordinateResponse"];
+                };
+            };
+            /** @description 키 설정·인증·호출 제한·타임아웃 오류 */
+            503: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["AddressCoordinateResponse"];
                 };
             };
         };

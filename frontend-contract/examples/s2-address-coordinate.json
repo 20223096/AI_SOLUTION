@@ -1,0 +1,45 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/locations/address-coordinate",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "address": "서울특별시 서대문구 연세로2나길 20",
+      "selected_address_id": null
+    }
+  },
+  "response": {
+    "status": 200,
+    "body": {
+      "status": "resolved",
+      "original_address": "서울특별시 서대문구 연세로2나길 20",
+      "normalized_official_address": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+      "source_coordinate": {"x": 950396.8997951334, "y": 1950996.389126, "crs": "EPSG:5179"},
+      "map_coordinate": {"longitude": 126.93839122, "latitude": 37.55698305, "crs": "EPSG:4326"},
+      "coordinate_source": {
+        "provider": "행정안전부 주소기반산업지원서비스",
+        "api": "좌표제공 검색 API",
+        "point_semantics": "도로명주소 건물 출입구 대표점",
+        "retrieved_live": true
+      },
+      "address_match_status": "exact",
+      "user_confirmation_required": false,
+      "failure_reason": null,
+      "candidates": [{
+        "address_id": "1141011600100130068022668",
+        "road_address": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "parcel_address": "서울특별시 서대문구 창천동 13-68",
+        "building_name": null
+      }],
+      "official_address_coordinate": {"longitude": 126.93839122, "latitude": 37.55698305, "crs": "EPSG:4326"},
+      "construction_geometry": null,
+      "demo_geometry": null,
+      "residential_facade_receptor": null,
+      "site_accuracy_status": "not_validated",
+      "limitation": "공식 주소 좌표는 도로명주소 건물 출입구 대표점이며 공사 중심점·공사 선형·수음점이 아닙니다."
+    }
+  }
+}

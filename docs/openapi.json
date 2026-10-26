@@ -1059,6 +1059,67 @@
           }
         }
       }
+    },
+    "/api/locations/address-coordinate": {
+      "post": {
+        "tags": [
+          "locations"
+        ],
+        "summary": "Address Coordinate",
+        "operationId": "address_coordinate_api_locations_address_coordinate_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressCoordinateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressCoordinateResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "JUSO 공급자 오류 또는 잘못된 좌표",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressCoordinateResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "키 설정·인증·호출 제한·타임아웃 오류",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressCoordinateResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -1086,6 +1147,216 @@
           "claim_limit"
         ],
         "title": "AcousticOverlapPolicy"
+      },
+      "AddressCandidate": {
+        "properties": {
+          "address_id": {
+            "type": "string",
+            "title": "Address Id"
+          },
+          "road_address": {
+            "type": "string",
+            "title": "Road Address"
+          },
+          "parcel_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Parcel Address"
+          },
+          "building_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Building Name"
+          }
+        },
+        "type": "object",
+        "required": [
+          "address_id",
+          "road_address"
+        ],
+        "title": "AddressCandidate"
+      },
+      "AddressCoordinateRequest": {
+        "properties": {
+          "address": {
+            "type": "string",
+            "maxLength": 300,
+            "minLength": 2,
+            "title": "Address",
+            "description": "신고서 추출 또는 사용자가 입력한 공사 주소"
+          },
+          "selected_address_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 30,
+                "minLength": 1
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Selected Address Id",
+            "description": "selection_required 응답의 후보 ID. 동일 주소로 다시 요청할 때 사용"
+          }
+        },
+        "type": "object",
+        "required": [
+          "address"
+        ],
+        "title": "AddressCoordinateRequest"
+      },
+      "AddressCoordinateResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "resolved",
+              "selection_required",
+              "not_found",
+              "invalid_selection",
+              "configuration_error",
+              "provider_auth_error",
+              "provider_rate_limited",
+              "provider_timeout",
+              "provider_error",
+              "invalid_provider_coordinate"
+            ],
+            "title": "Status"
+          },
+          "original_address": {
+            "type": "string",
+            "title": "Original Address"
+          },
+          "normalized_official_address": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Normalized Official Address"
+          },
+          "source_coordinate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/SourceCoordinate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "map_coordinate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MapCoordinate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "coordinate_source": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/CoordinateSource"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "address_match_status": {
+            "type": "string",
+            "enum": [
+              "exact",
+              "normalized",
+              "user_selected",
+              "multiple_candidates",
+              "no_match",
+              "not_evaluated"
+            ],
+            "title": "Address Match Status"
+          },
+          "user_confirmation_required": {
+            "type": "boolean",
+            "title": "User Confirmation Required"
+          },
+          "failure_reason": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Failure Reason"
+          },
+          "candidates": {
+            "items": {
+              "$ref": "#/components/schemas/AddressCandidate"
+            },
+            "type": "array",
+            "title": "Candidates"
+          },
+          "official_address_coordinate": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/MapCoordinate"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "construction_geometry": {
+            "type": "null",
+            "title": "Construction Geometry"
+          },
+          "demo_geometry": {
+            "type": "null",
+            "title": "Demo Geometry"
+          },
+          "residential_facade_receptor": {
+            "type": "null",
+            "title": "Residential Facade Receptor"
+          },
+          "site_accuracy_status": {
+            "type": "string",
+            "const": "not_validated",
+            "title": "Site Accuracy Status",
+            "default": "not_validated"
+          },
+          "limitation": {
+            "type": "string",
+            "title": "Limitation",
+            "default": "공식 주소 좌표는 도로명주소 건물 출입구 대표점이며 공사 중심점·공사 선형·수음점이 아닙니다."
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "original_address",
+          "address_match_status",
+          "user_confirmation_required"
+        ],
+        "title": "AddressCoordinateResponse"
       },
       "BackgroundProfile": {
         "properties": {
@@ -1898,6 +2169,37 @@
           "name"
         ],
         "title": "ConstructionTask"
+      },
+      "CoordinateSource": {
+        "properties": {
+          "provider": {
+            "type": "string",
+            "const": "행정안전부 주소기반산업지원서비스",
+            "title": "Provider"
+          },
+          "api": {
+            "type": "string",
+            "const": "좌표제공 검색 API",
+            "title": "Api"
+          },
+          "point_semantics": {
+            "type": "string",
+            "const": "도로명주소 건물 출입구 대표점",
+            "title": "Point Semantics"
+          },
+          "retrieved_live": {
+            "type": "boolean",
+            "title": "Retrieved Live"
+          }
+        },
+        "type": "object",
+        "required": [
+          "provider",
+          "api",
+          "point_semantics",
+          "retrieved_live"
+        ],
+        "title": "CoordinateSource"
       },
       "DemoContextEvent": {
         "properties": {
@@ -5403,6 +5705,34 @@
         ],
         "title": "M1UncertaintyResponse"
       },
+      "MapCoordinate": {
+        "properties": {
+          "longitude": {
+            "type": "number",
+            "maximum": 180.0,
+            "minimum": -180.0,
+            "title": "Longitude"
+          },
+          "latitude": {
+            "type": "number",
+            "maximum": 90.0,
+            "minimum": -90.0,
+            "title": "Latitude"
+          },
+          "crs": {
+            "type": "string",
+            "const": "EPSG:4326",
+            "title": "Crs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "longitude",
+          "latitude",
+          "crs"
+        ],
+        "title": "MapCoordinate"
+      },
       "MissingInput": {
         "properties": {
           "field": {
@@ -7844,6 +8174,30 @@
           "calculation_notes"
         ],
         "title": "SensitivityProfile"
+      },
+      "SourceCoordinate": {
+        "properties": {
+          "x": {
+            "type": "number",
+            "title": "X"
+          },
+          "y": {
+            "type": "number",
+            "title": "Y"
+          },
+          "crs": {
+            "type": "string",
+            "const": "EPSG:5179",
+            "title": "Crs"
+          }
+        },
+        "type": "object",
+        "required": [
+          "x",
+          "y",
+          "crs"
+        ],
+        "title": "SourceCoordinate"
       },
       "SourceMetadata": {
         "properties": {

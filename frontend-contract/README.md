@@ -1,6 +1,6 @@
 # 쉿간표 프론트엔드 계약 패키지
 
-이 디렉터리는 기존 25개 API를 보존하고 Sprint 21 통합 API 2개를 추가한 총 27개 FastAPI operation의 실제 OpenAPI와 로컬 HTTP 응답을 캡처한 결과다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-25이다.
+이 디렉터리는 v3.1의 27개 API를 보존하고 Sprint 23 주소 좌표 API 1개를 추가한 총 28개 FastAPI operation의 OpenAPI와 HTTP 응답 예시다. 기준 앱 버전은 `poc-0.1.0`, 검증일은 2026-10-26이다.
 
 Sprint 22 전달 파일은 저장소 루트의 `shh-frontend-api-contract-v3_1.zip`이다. 이전 v3 대비 신규 PRD API 2개, 해당 타입/예시, S1~S4 순차 연동 가이드와 실제 HTTP 재생 결과가 추가됐다. 미구현 S7/S8 API는 포함하지 않는다.
 
@@ -14,8 +14,10 @@ Sprint 22 전달 파일은 저장소 루트의 `shh-frontend-api-contract-v3_1.z
 - `examples/generate_examples.py`: 실행 중인 로컬 서버에 대해 예시를 재생성하는 스크립트
 - `examples/verify_prd_s1_s4_workflow.py`: S1~S4 순차 HTTP 재생 스크립트
 - `examples/prd-s1-s4-workflow.json`: 사용자 확인·부분 feasible·단일 추천·비교까지의 실제 응답
+- `examples/s2-address-coordinate.json`: 승인된 JUSO API의 S2 실제 주소 좌표 응답
 - `../docs/FRONTEND_API_CONTRACT_v2_1.md`: 기존 계약서(보존)
 - `../docs/FRONTEND_API_CONTRACT_v3_1.md`: Sprint 21 신규 API까지 실제 검증한 확정 계약서
+- `../docs/FRONTEND_API_CONTRACT_v3_2.md`: Sprint 23 주소 좌표 확장 계약서
 - `../docs/PRD_FRONTEND_INTEGRATION_GUIDE.md`: 화면 상태와 필드 전달 규칙
 
 ## 로컬 실행 및 재검증
@@ -59,7 +61,7 @@ type PredictResponse = components["schemas"]["NoisePredictResponse"];
 type PredictOperation = paths["/api/noise/predict"]["post"];
 ```
 
-27개 API의 200 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
+28개 API의 성공 응답은 모두 명시적 스키마로 생성된다. 최적화처럼 성공 분기가 둘인 응답은 TypeScript union으로 생성된다.
 
 ## PRD v2.1 전용 API
 

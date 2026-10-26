@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-from app.api import experiments, impact, noise, notices, prd, public_data, scenarios, schedules
+from app.api import coordinates, experiments, impact, noise, notices, prd, public_data, scenarios, schedules
 from app.core.config import get_settings
 from app.models.responses import HealthResponse
 
@@ -21,5 +21,5 @@ def health():
     return {"status": "ok", "model_version": settings.model_version, "extractor_mode": settings.extractor_mode}
 
 
-for router in (scenarios.router, notices.router, noise.router, impact.router, schedules.router, experiments.router, public_data.router, prd.router):
+for router in (scenarios.router, notices.router, noise.router, impact.router, schedules.router, experiments.router, public_data.router, prd.router, coordinates.router):
     app.include_router(router)
