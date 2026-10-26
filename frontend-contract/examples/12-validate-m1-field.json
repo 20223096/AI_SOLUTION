@@ -1,0 +1,30 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/noise/validate-m1-field",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "observations": [],
+      "predictions": []
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "validation_status": "not_evaluable",
+      "mae": null,
+      "rmse": null,
+      "bias": null,
+      "reason": "no field observations",
+      "receptor_errors": [],
+      "equipment_errors": [],
+      "alignment_failures": []
+    }
+  }
+}

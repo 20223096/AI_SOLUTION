@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/notices/extract-file",
+    "headers": {},
+    "multipart": {
+      "file": {
+        "filename": "notice.bin",
+        "content-type": "application/octet-stream"
+      }
+    }
+  },
+  "response": {
+    "status": 415,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": "Only UTF-8 text or text-extractable PDF is supported"
+    }
+  }
+}

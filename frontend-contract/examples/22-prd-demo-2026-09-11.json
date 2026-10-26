@@ -1,0 +1,196 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8765/api/prd/demo/2026-09-11",
+    "headers": {
+      "accept": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "fixture_version": "demo_2026_09_11_v1",
+      "analysis_date": "2026-09-11",
+      "comparison_date": "2026-10-07",
+      "timezone": "Asia/Seoul",
+      "provenance_summary": {
+        "official_values": [
+          "공식 설계 수량·기간 산정자료",
+          "주변 공사 사업기간",
+          "축제 날짜별 시간"
+        ],
+        "observed_values": [
+          "S-DoT 원본의 센서별 시각·측정값·품질상태"
+        ],
+        "literature_reference_values": [],
+        "assumed_values": [
+          "9/11 신규 신고 조건",
+          "시연 작업창",
+          "07:00~09:00 기존 공사 음향 오버레이",
+          "폐기물 수거시간·소음"
+        ],
+        "missing_values": [
+          "공식 일일 공사시간",
+          "실제 장비 가동시간",
+          "공사·행사 공식 음향값",
+          "공식 날짜별 공정표"
+        ]
+      },
+      "official_new_construction_design": {
+        "notice_id": "R26BK01661205",
+        "project_name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+        "source": "data/processed/official_construction_design_v1.json",
+        "status": "official_document",
+        "daily_work_window": null,
+        "calendar_schedule": null,
+        "acoustic_prediction_status": "deferred",
+        "note": "공식 설계의 수량·기간 산정자료다. 날짜별 공정표, 장비 실제 가동시간 및 현장 음향값은 없다."
+      },
+      "demo_work_plan": {
+        "scenario_id": "final-demo-congestion",
+        "analysis_date": "2026-09-11",
+        "work_window": "07:00~18:00",
+        "status": "assumed",
+        "source": "hackathon prompt and PoC scenario",
+        "task_duration_status": "user_provided",
+        "existing_congestion_overlay_status": "assumed",
+        "note": "공식 설계자료가 아니며 9/11 시연 계산에만 쓰는 작업계획이다. 복구 공정시간은 결측이다."
+      },
+      "new_demo_notice": {
+        "scenario_id": "final-demo-congestion",
+        "status": "assumed",
+        "note": "분석일에 신규 신고된 공사라는 시연 조건이며 실제 신고 사실이 아니다."
+      },
+      "sdot_daily_audit": {
+        "source": "data/processed/sdot_sinchon_clean.csv",
+        "metric_caveat": "원자료가 정확한 음향 지표 정의를 제공하지 않아 공사소음 물리 합성에 사용하지 않는다.",
+        "days": [
+          {
+            "date": "2026-09-11",
+            "row_count": 72,
+            "first_observed_at": "2026-09-11T00:07:00+09:00",
+            "last_observed_at": "2026-09-11T23:07:00+09:00",
+            "duplicate_count": 0,
+            "sensors": [
+              {
+                "sensor_serial": "V02Q1940138",
+                "valid_count": 24,
+                "held_count": 0,
+                "noise_avg_min": 39.0,
+                "noise_avg_max": 43.0,
+                "noise_avg_mean": 41.83
+              },
+              {
+                "sensor_serial": "V02Q1940422",
+                "valid_count": 24,
+                "held_count": 0,
+                "noise_avg_min": 35.0,
+                "noise_avg_max": 36.0,
+                "noise_avg_mean": 35.96
+              },
+              {
+                "sensor_serial": "V02Q1940585",
+                "valid_count": 0,
+                "held_count": 24,
+                "noise_avg_min": null,
+                "noise_avg_max": null,
+                "noise_avg_mean": null
+              }
+            ]
+          },
+          {
+            "date": "2026-10-07",
+            "row_count": 72,
+            "first_observed_at": "2026-10-07T00:07:00+09:00",
+            "last_observed_at": "2026-10-07T23:07:00+09:00",
+            "duplicate_count": 0,
+            "sensors": [
+              {
+                "sensor_serial": "V02Q1940138",
+                "valid_count": 24,
+                "held_count": 0,
+                "noise_avg_min": 38.0,
+                "noise_avg_max": 51.0,
+                "noise_avg_mean": 41.17
+              },
+              {
+                "sensor_serial": "V02Q1940422",
+                "valid_count": 24,
+                "held_count": 0,
+                "noise_avg_min": 36.0,
+                "noise_avg_max": 37.0,
+                "noise_avg_mean": 36.38
+              },
+              {
+                "sensor_serial": "V02Q1940585",
+                "valid_count": 0,
+                "held_count": 24,
+                "noise_avg_min": null,
+                "noise_avg_max": null,
+                "noise_avg_mean": null
+              }
+            ]
+          }
+        ]
+      },
+      "context_events": [
+        {
+          "kind": "existing_construction",
+          "event_id": "7042025092297",
+          "name": "신촌동 주민센터 복합화 건설사업 석면해체 및 건축물 철거공사",
+          "period_start": "2025-09-22",
+          "period_end": "2026-09-15",
+          "operation_time": null,
+          "noise_db": null,
+          "status": "verified_public",
+          "source": "data/processed/construction_events.csv",
+          "note": "사업기간만 확인됨. 일일 가동 여부와 시간은 확인되지 않았다."
+        },
+        {
+          "kind": "existing_construction",
+          "event_id": "6132026083144",
+          "name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+          "period_start": "2026-08-31",
+          "period_end": "2026-12-18",
+          "operation_time": null,
+          "noise_db": null,
+          "status": "verified_public",
+          "source": "data/processed/construction_events.csv",
+          "note": "사업기간만 확인됨. 일일 가동 여부와 시간은 확인되지 않았다."
+        },
+        {
+          "kind": "cultural_event",
+          "event_id": "https://culture.seoul.go.kr/culture/culture/cultureEvent/view.do?cultcode=159193&menuNo=200010",
+          "name": "2026 신촌글로벌대학문화축제",
+          "period_start": "2026-09-11",
+          "period_end": "2026-09-13",
+          "operation_time": "17:30~20:00",
+          "noise_db": null,
+          "status": "verified_public",
+          "source": "data/processed/cultural_events.csv",
+          "note": "9월 11일 날짜별 공식 표기 시간. 정규화 start_time/end_time 열은 비어 있고 음향값은 없다."
+        },
+        {
+          "kind": "waste_collection",
+          "event_id": "demo-waste-assumption",
+          "name": null,
+          "period_start": null,
+          "period_end": null,
+          "operation_time": "09:00~09:30",
+          "noise_db": 75.0,
+          "status": "assumed",
+          "source": null,
+          "note": "processed waste_collection 자료는 0행이다. 시간과 소음은 시연 가정이며 실측이 아니다."
+        }
+      ],
+      "acoustic_overlap_policy": {
+        "official_events": "달력 맥락만 표시하며 가동시간·음향값이 없으면 합성하지 않는다.",
+        "assumed_congestion_overlay": "07:00~09:00, 82 Lp_dBA 가정은 final-demo-congestion 실험에만 사용한다.",
+        "claim_limit": "가정 운영시간으로 공식 실측 동시 소음 발생을 주장하지 않는다."
+      }
+    }
+  }
+}

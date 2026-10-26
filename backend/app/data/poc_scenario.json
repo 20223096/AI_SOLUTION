@@ -1,0 +1,42 @@
+[
+  {
+    "id":"case-a","title":"CASE A — 07:00~18:00 순차 배치","expected_feasibility":true,"settings":{"default_background_laeq_db":55.0,"exam_period":false,"source_metadata":{"status":"assumed","source":"PoC baseline background","unit":"LAeq_dBA"}},
+    "notice":{"id":"sinchon-sewer-2026","name":"연세로2나길 20 일대 외 1개소 하수관로 개량공사","location":"서울 서대문구 신촌역~현대백화점 인근 연세로 일대","construction_period":{"start":"2026-08-01","end":"2026-12-31","raw_text":"2026년 8월~12월 (일자는 PoC 범위 표현)"},"original_work_window":{"start":"07:00:00","end":"18:00:00"},"tasks":[
+      {"id":"cut","name":"포장 절단","equipment_id":"cutter","duration_minutes":60,"permitted_time_windows":[{"start":"07:00:00","end":"18:00:00"}],"predecessors":[],"is_movable":true,"required_resources":["road-work-zone"]},
+      {"id":"break","name":"포장 깨기","equipment_id":"breaker","duration_minutes":120,"permitted_time_windows":[{"start":"07:00:00","end":"18:00:00"}],"predecessors":["cut"],"is_movable":true,"required_resources":["road-work-zone"]},
+      {"id":"excavate","name":"터파기 및 관 교체","equipment_id":"excavator","duration_minutes":300,"permitted_time_windows":[{"start":"07:00:00","end":"18:00:00"}],"predecessors":["break"],"is_movable":true,"required_resources":["road-work-zone"]},
+      {"id":"compact","name":"되메우기 및 다짐","equipment_id":"roller","duration_minutes":60,"permitted_time_windows":[{"start":"07:00:00","end":"18:00:00"}],"predecessors":["excavate"],"is_movable":true,"required_resources":["road-work-zone"]},
+      {"id":"restore","name":"포장 복구","equipment_id":null,"duration_minutes":null,"permitted_time_windows":[],"predecessors":["compact"],"is_movable":true,"required_resources":[]}
+    ],"constraints":{"sequential":true,"same_day":true,"road_open_after_work":true,"forbidden_windows":[]},"source_provenance":{"scenario":{"status":"user_provided","source":"hackathon prompt","note":"Scenario, not verified official notice"},"durations":{"status":"user_provided","source":"hackathon prompt","unit":"minutes"},"missing_processes":{"status":"missing","note":"Pipe replacement and pavement restoration duration not supplied"}}},
+    "equipment":[
+      {"id":"cutter","category":"콘크리트 절단기","model_name":null,"count":1,"sound_power_level_db":113,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","note":"Unverified representative value","unit":"dB(A) sound power level"}},
+      {"id":"breaker","category":"브레이커","model_name":null,"count":1,"sound_power_level_db":122,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","note":"Unverified representative value","unit":"dB(A) sound power level"}},
+      {"id":"excavator","category":"굴착기","model_name":null,"count":1,"sound_power_level_db":100,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","note":"Unverified representative value","unit":"dB(A) sound power level"}},
+      {"id":"roller","category":"롤러","model_name":null,"count":1,"sound_power_level_db":102,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","note":"Unverified representative value","unit":"dB(A) sound power level"}},
+      {"id":"dump-truck","category":"덤프트럭","model_name":null,"count":1,"sound_power_level_db":null,"acoustic_unit_type":"missing","source_metadata":{"status":"missing","source":"demo scenario","note":"Intermittent use; numeric source value not supplied","unit":null}}
+    ],
+    "receptors":[
+      {"id":"residential-1","name":"신촌 주거 수음점","type":"residential","location":"시연용 상대 위치","distance_to_source_m":30,"sensitivity_profile":[],"noise_limit_profile":null},
+      {"id":"university-1","name":"대학가 수음점","type":"university","location":"시연용 상대 위치","distance_to_source_m":50,"sensitivity_profile":[],"noise_limit_profile":null},
+      {"id":"school-1","name":"학교 인근 수음점","type":"school","location":"시연용 상대 위치","distance_to_source_m":100,"sensitivity_profile":[],"noise_limit_profile":null}
+    ]
+  },
+  {
+    "id":"case-b","title":"CASE B — 8시간 순차 제한","expected_feasibility":false,"settings":{"default_background_laeq_db":55.0,"exam_period":false,"source_metadata":{"status":"assumed","source":"PoC baseline background","unit":"LAeq_dBA"}},
+    "notice":{"id":"sinchon-sewer-2026-b","name":"연세로2나길 20 일대 외 1개소 하수관로 개량공사","location":"서울 서대문구 신촌역~현대백화점 인근 연세로 일대","construction_period":{"start":"2026-08-01","end":"2026-12-31","raw_text":"2026년 8월~12월"},"original_work_window":{"start":"07:00:00","end":"18:00:00"},"tasks":[
+      {"id":"cut","name":"포장 절단","equipment_id":"cutter","duration_minutes":60,"predecessors":[],"required_resources":["road-work-zone"]},
+      {"id":"break","name":"포장 깨기","equipment_id":"breaker","duration_minutes":120,"predecessors":["cut"],"required_resources":["road-work-zone"]},
+      {"id":"excavate","name":"터파기 및 관 교체","equipment_id":"excavator","duration_minutes":300,"predecessors":["break"],"required_resources":["road-work-zone"]},
+      {"id":"compact","name":"되메우기 및 다짐","equipment_id":"roller","duration_minutes":60,"predecessors":["excavate"],"required_resources":["road-work-zone"]},
+      {"id":"restore","name":"포장 복구","equipment_id":null,"duration_minutes":null,"predecessors":["compact"]}
+    ],"constraints":{"sequential":true,"same_day":true,"max_daily_sequential_minutes":480},"source_provenance":{"scenario":{"status":"user_provided","source":"hackathon CASE B"},"durations":{"status":"user_provided","source":"hackathon prompt","unit":"minutes"},"missing_processes":{"status":"missing","note":"Unspecified process durations excluded, never invented"}}},
+    "equipment":[
+      {"id":"cutter","category":"콘크리트 절단기","count":1,"sound_power_level_db":113,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","unit":"dB(A) sound power level"}},
+      {"id":"breaker","category":"브레이커","count":1,"sound_power_level_db":122,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","unit":"dB(A) sound power level"}},
+      {"id":"excavator","category":"굴착기","count":1,"sound_power_level_db":100,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","unit":"dB(A) sound power level"}},
+      {"id":"roller","category":"롤러","count":1,"sound_power_level_db":102,"acoustic_unit_type":"Lw_dBA","source_metadata":{"status":"user_provided","source":"demo scenario","unit":"dB(A) sound power level"}},
+      {"id":"dump-truck","category":"덤프트럭","count":1,"sound_power_level_db":null,"acoustic_unit_type":"missing","source_metadata":{"status":"missing","note":"No source value"}}
+    ],
+    "receptors":[{"id":"residential-1","name":"신촌 주거 수음점","type":"residential","location":"시연용 상대 위치","distance_to_source_m":30,"sensitivity_profile":[],"noise_limit_profile":null}]
+  }
+]

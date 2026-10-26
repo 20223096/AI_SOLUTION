@@ -1,0 +1,12 @@
+{
+  "retrieved_at": "2026-10-24",
+  "secrets_logged": false,
+  "address_search": {"http_status": 200, "result_code": "0", "exact_target_count": 2},
+  "coordinate_api": {"status": "failed_missing_separate_key", "coordinate_key_present": false, "search_key_probe_result_code": "E0001", "coordinates": []},
+  "building_hub": {"http_status": 200, "result_code": "00", "queried_building_count": 2, "items": [
+    {"road_address": "서울특별시 서대문구 충정로 35-17 (충정로3가)", "parcel_address": "서울특별시 서대문구 충정로3가 120-1", "management_register_pk": "101411159", "primary_use": "제2종근린생활시설", "official_residential": false},
+    {"road_address": "서울특별시 서대문구 연세로2나길 20 (창천동)", "parcel_address": "서울특별시 서대문구 창천동 13-68", "management_register_pk": "1014112097", "primary_use": "숙박시설", "other_use": "근린생활시설및숙박시설", "official_residential": false}
+  ]},
+  "seoul_recap_title": {"service": "aiVBigDjrRecapTitle", "http_status": 200, "result_code": "INFO-000", "total_rows_scanned": 19204, "exact_target_matches": 0, "note": "총괄표제부는 개별 건물 표제부가 아님"},
+  "sources": ["https://business.juso.go.kr/addrlink/addrLinkApi.do", "https://business.juso.go.kr/addrlink/addrCoordApi.do", "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo", "http://openapi.seoul.go.kr:8088/{redacted}/json/aiVBigDjrRecapTitle"]
+}

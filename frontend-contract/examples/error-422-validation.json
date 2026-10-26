@@ -1,0 +1,37 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/impact/calculate",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "total_noise_db": 70,
+      "duration_minutes": -1,
+      "continuous_minutes": 0,
+      "sensitivity_weight": 1
+    }
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": [
+        {
+          "type": "greater_than_equal",
+          "loc": [
+            "body",
+            "duration_minutes"
+          ],
+          "msg": "Input should be greater than or equal to 0",
+          "input": -1,
+          "ctx": {
+            "ge": 0
+          }
+        }
+      ]
+    }
+  }
+}

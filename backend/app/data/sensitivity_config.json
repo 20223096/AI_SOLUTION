@@ -1,0 +1,1 @@
+{"time_weights":{"night":2.0,"evening_morning":1.5,"day":1.0},"adjustments":{"university_exam":0.5,"weekend_residential_rest":0.3,"hospital_or_school_within_radius":0.5},"hospital_school_radius_m":300,"source_metadata":{"status":"assumed","source":"team PoC configuration","note":"Not statutory or research-validated"}}

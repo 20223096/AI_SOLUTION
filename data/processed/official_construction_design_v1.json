@@ -1,0 +1,170 @@
+{
+  "data_version": "official-construction-design-v1",
+  "notice_id": "R26BK01661205",
+  "project_name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+  "dataset_provenance": "official_design_document",
+  "provenance_policy": {
+    "allowed_values": ["official_design_document", "official_equipment_reference", "derived", "assumed", "unknown"],
+    "inheritance": "별도 provenance가 없는 설계 필드는 dataset_provenance를 상속하며, null 값은 unknown이다.",
+    "equipment_reference_rule": "검사자료의 장비 레코드·건수에만 official_equipment_reference를 적용하며 현장 장비값으로 승격하지 않는다."
+  },
+  "source_documents": {
+    "description": {
+      "filename": "03 공사설명서.hwpx",
+      "sha256": "11b073a85813e1b53d7eaf5945eaac5ca86567b21c5778a126ca6969bdda73c6"
+    },
+    "quantity_sheet": {
+      "filename": "#물량내역서[연세로2나길 20 일대 외 1개소 하수관로 개량공사].xlsx",
+      "sha256": "2709c9bb994b3bf8978d5e6559e458a0eae4edfd7d6dc4d74ad8a66dedc95286"
+    },
+    "specification": {
+      "filename": "04 공사시방서.hwpx",
+      "sha256": "3b82c089e3409616e815163cb96156bd589b10cd7eeca8e6c15c58eeb2021084"
+    }
+  },
+  "segments": [
+    {
+      "id": "segment-yeonse-ro-2na-gil",
+      "nominal_address": "연세로2나길 20 일대",
+      "representative_point": null,
+      "geometry": null,
+      "diameter_mm": 450,
+      "route_length_m": 328,
+      "location_status": "approximate_map_only",
+      "provenance": "official_design_document",
+      "source_reference": "공사설명서 표 1 첫 번째 위치도 행 및 BIN0001.bmp"
+    },
+    {
+      "id": "segment-chungjeong-ro",
+      "nominal_address": "충정로 35-17 일대",
+      "representative_point": null,
+      "geometry": null,
+      "diameter_mm": 600,
+      "route_length_m": 155,
+      "location_status": "approximate_map_only",
+      "provenance": "official_design_document",
+      "source_reference": "공사설명서 표 1 두 번째 위치도 행 및 BIN0002.bmp"
+    }
+  ],
+  "route_length_total_m": {
+    "value": 483,
+    "provenance": "derived",
+    "derivation": "328 + 155; 공사설명서와 물량내역서 갑지의 공식 총연장 483m와 일치"
+  },
+  "work_packages": [
+    {
+      "category": "포장절단",
+      "items": [
+        {"name": "포장절단(아스팔트)", "specification": "20cm 이하", "quantity": 1095, "unit": "m", "equipment": [{"type": "콘크리트 절단기", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A15:D15"},
+        {"name": "포장절단(콘크리트)", "specification": "20cm 이하", "quantity": 198, "unit": "m", "equipment": [{"type": "콘크리트 절단기", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A16:D16"}
+      ]
+    },
+    {
+      "category": "포장깨기",
+      "items": [
+        {"name": "아스팔트포장깨기", "specification": "굴삭기 0.2m3+브레이커", "quantity": 102, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}, {"type": "브레이커", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A17:D17"},
+        {"name": "아스팔트포장깨기", "specification": "굴삭기 0.4m3+브레이커", "quantity": 14, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "브레이커", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A18:D18"},
+        {"name": "콘크리트포장깨기", "specification": "굴삭기 0.2m3+브레이커", "quantity": 24, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}, {"type": "브레이커", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A19:D19"},
+        {"name": "콘크리트깨기(무근, 30cm 미만)", "specification": "굴삭기 0.4m3+브레이커", "quantity": 23, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "브레이커", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A20:D20"},
+        {"name": "콘크리트깨기(철근, 30cm 미만)", "specification": "굴삭기 0.4m3+브레이커", "quantity": 27, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "브레이커", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A21:D21"}
+      ]
+    },
+    {
+      "category": "관 철거",
+      "items": [
+        {"name": "기존관 철거", "specification": "흄관 D450mm", "quantity": 342.5, "unit": "m", "equipment": [], "source_reference": "물량내역서!A22:D22"},
+        {"name": "기존관 철거", "specification": "흄관 D600mm", "quantity": 162.5, "unit": "m", "equipment": [], "source_reference": "물량내역서!A23:D23"}
+      ]
+    },
+    {
+      "category": "굴착",
+      "items": [
+        {"name": "인력터파기(10%)", "specification": "보통토사", "quantity": 121, "unit": "m3", "equipment": [], "source_reference": "물량내역서!A29:D29"},
+        {"name": "기계터파기(90%)", "specification": "굴삭기 0.2m3", "quantity": 956, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A30:D30"},
+        {"name": "기계터파기(90%)", "specification": "굴삭기 0.4m3", "quantity": 128, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A31:D31"}
+      ]
+    },
+    {
+      "category": "되메우기·다짐",
+      "items": [
+        {"name": "관주위 되메우기 및 다짐", "specification": "모래, 인력", "quantity": 38, "unit": "m3", "equipment": [], "source_reference": "물량내역서!A32:D32"},
+        {"name": "관주위 되메우기 및 다짐", "specification": "모래, 굴삭기 0.2m3+램머 80kg", "quantity": 283, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}, {"type": "램머", "specification": "80kg", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A33:D33"},
+        {"name": "관주위 되메우기 및 다짐", "specification": "모래, 굴삭기 0.4m3+램머 80kg", "quantity": 60, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "램머", "specification": "80kg", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A34:D34"},
+        {"name": "관상단 되메우기 및 다짐", "specification": "토사, 굴삭기 0.2m3", "quantity": 405, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A35:D35"},
+        {"name": "관상단 되메우기 및 다짐", "specification": "토사, 굴삭기 0.4m3", "quantity": 58, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A36:D36"},
+        {"name": "기초지정 및 다짐", "specification": "잡석, 기계", "quantity": 59, "unit": "m3", "equipment": [{"type": "다짐기계", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A37:D37"}
+      ]
+    },
+    {
+      "category": "하수관 부설",
+      "items": [
+        {"name": "흄관 접합 및 부설", "specification": "D450mm, 기계", "quantity": 345, "unit": "m", "equipment": [{"type": "관부설 장비", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A44:D44"},
+        {"name": "흄관 접합 및 부설", "specification": "D600mm, 기계", "quantity": 173, "unit": "m", "equipment": [{"type": "관부설 장비", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A45:D45"}
+      ]
+    },
+    {
+      "category": "포장복구",
+      "items": [
+        {"name": "절삭 후 아스팔트 덧씌우기", "specification": "T=5cm, 비연속구간", "quantity": 23.44, "unit": "a", "equipment": [{"type": "포장장비", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A77:D77"},
+        {"name": "아스콘중층공", "specification": "인력, 신설포장, T=12.5cm", "quantity": 8.187999999999999, "unit": "a", "equipment": [], "source_reference": "물량내역서!A78:D78"},
+        {"name": "콘크리트포장공(중층)", "specification": "기계비빔타설, T=20cm", "quantity": 1.56, "unit": "a", "equipment": [{"type": "콘크리트 혼합·타설 장비", "specification": "unknown", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A79:D79"},
+        {"name": "혼합기층공", "specification": "인력, T=20cm", "quantity": 8.187999999999999, "unit": "a", "equipment": [], "source_reference": "물량내역서!A80:D80"},
+        {"name": "보조기층공", "specification": "인력, T=30cm", "quantity": 6.991666666666667, "unit": "a", "equipment": [], "source_reference": "물량내역서!A81:D81"}
+      ]
+    },
+    {
+      "category": "토사·폐기물 운반",
+      "items": [
+        {"name": "파쇄물 현장→적치장", "specification": "BH 0.2m3+DT 2.5t", "quantity": 198, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}, {"type": "덤프트럭", "specification": "2.5t", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A26:D26"},
+        {"name": "파쇄물 현장→적치장", "specification": "BH 0.4m3+DT 4.5t", "quantity": 147, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "덤프트럭", "specification": "4.5t", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A27:D27"},
+        {"name": "폐기물 적치장 상차", "specification": "굴삭기 0.7m3", "quantity": 345, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.7m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A28:D28"},
+        {"name": "잔토 현장→적치장", "specification": "BH 0.2m3+DT 4.5t", "quantity": 658, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.2m3", "actual_model": null, "actual_operating_time": null}, {"type": "덤프트럭", "specification": "4.5t", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A38:D38"},
+        {"name": "잔토 현장→적치장", "specification": "BH 0.4m3+DT 15t", "quantity": 84, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.4m3", "actual_model": null, "actual_operating_time": null}, {"type": "덤프트럭", "specification": "15t", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A39:D39"},
+        {"name": "잔토 적치장 상차", "specification": "굴삭기 0.7m3", "quantity": 742, "unit": "m3", "equipment": [{"type": "굴삭기", "specification": "버킷 0.7m3", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A40:D40"},
+        {"name": "잔토 집하장→사토장", "specification": "DT 24t, L=42.9km", "quantity": 742, "unit": "m3", "equipment": [{"type": "덤프트럭", "specification": "24t", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A41:D41"}
+      ]
+    },
+    {
+      "category": "물푸기",
+      "items": [
+        {"name": "물푸기", "specification": "펌프 D150mm+디젤엔진 20hp", "quantity": 328, "unit": "hr", "equipment": [{"type": "디젤펌프", "specification": "D150mm, 20hp", "actual_model": null, "actual_operating_time": null}], "source_reference": "물량내역서!A95:D95", "quantity_interpretation": "설계수량이며 일별 작업창 또는 연속 운전시간으로 자동 변환하지 않음"}
+      ]
+    }
+  ],
+  "equipment_reference_matching": [
+    {"design_equipment": "콘크리트 절단기", "match_status": "official_inspection_category_available", "reference_category": "콘크리트 절단기", "reference_count": 31, "direct_noise_assignment_allowed": false, "provenance": "official_equipment_reference", "reason": "공종은 대응하지만 실제 제작사·모델과 운전조건이 미확인"},
+    {"design_equipment": "브레이커", "match_status": "official_inspection_category_available", "reference_category": "브레이커", "reference_count": 198, "direct_noise_assignment_allowed": false, "provenance": "official_equipment_reference", "reason": "종류만 대응하며 실제 브레이커 모델과 결합조건이 미확인"},
+    {"design_equipment": "굴삭기", "match_status": "equipment_type_similar_only", "reference_category": "굴착기", "reference_count": 405, "direct_noise_assignment_allowed": false, "provenance": "official_equipment_reference", "reason": "명칭과 장비군은 유사하지만 설계 버킷 용량에 대응하는 검사 모델이 식별되지 않음"},
+    {"design_equipment": "램머 80kg", "match_status": "classification_mismatch", "reference_category": "롤러/다짐기계", "reference_count": 119, "direct_noise_assignment_allowed": false, "provenance": "official_equipment_reference", "reason": "검사자료 119건의 모델은 롤러이며 램머 레코드가 없어 동일 장비로 취급할 수 없음"},
+    {"design_equipment": "다짐기계(규격 미상)", "match_status": "equipment_type_similar_only", "reference_category": "롤러/다짐기계", "reference_count": 119, "direct_noise_assignment_allowed": false, "provenance": "official_equipment_reference", "reason": "설계내역이 롤러인지 확인되지 않아 모델 매칭 불가"},
+    {"design_equipment": "덤프트럭 2.5/4.5/15/24t", "match_status": "no_official_noise_data", "reference_category": null, "reference_count": 0, "direct_noise_assignment_allowed": false, "reason": "보유 753건에 덤프트럭 분류 없음"},
+    {"design_equipment": "디젤펌프 D150mm 20hp", "match_status": "no_official_noise_data", "reference_category": null, "reference_count": 0, "direct_noise_assignment_allowed": false, "reason": "보유 753건에 펌프 분류 없음"},
+    {"design_equipment": "관부설·포장·혼합타설 장비", "match_status": "exact_equipment_class_unknown", "reference_category": null, "reference_count": 0, "direct_noise_assignment_allowed": false, "reason": "설계내역에서 정확한 장비 분류가 확정되지 않음"}
+  ],
+  "schedule_metadata": {
+    "total_planned_duration_days": {"value": 140, "provenance": "official_design_document"},
+    "preparation_days": {"value": 7, "provenance": "official_design_document"},
+    "non_working_days": {"value": 59, "provenance": "official_design_document"},
+    "working_days": {"value": 67, "provenance": "official_design_document"},
+    "closeout_days": {"value": 7, "provenance": "official_design_document"},
+    "earthwork_and_backfill_days": {"value": 31, "provenance": "official_design_document"},
+    "pipe_installation_days": {"value": 31, "provenance": "official_design_document"},
+    "paving_days": {"value": 5, "provenance": "official_design_document"},
+    "daily_work_window": {"value": null, "provenance": "unknown"},
+    "calendar_schedule": {"value": null, "provenance": "unknown"},
+    "interpretation": "기간 산정 메타데이터이며 날짜별 확정 공정표가 아님. 31+31+5를 착공일부터 기계적으로 배치하지 않음."
+  },
+  "assumed_demo_schedule_reference": {
+    "work_window": "07:00-18:00",
+    "active_sequence_minutes": 540,
+    "provenance": "assumed",
+    "isolated_from_official_schedule": true
+  },
+  "calculation_readiness": {
+    "acoustic_prediction": "deferred",
+    "distance_calculation": "deferred",
+    "missing_required_inputs": ["segment_geometry_or_source_point", "segment_receptors", "actual_equipment_models", "equipment_operating_times_and_duty_cycles", "simultaneous_operation_plan", "unmatched_equipment_noise_data", "field_measurements"],
+    "available_for_calculation": ["design_quantity_reporting", "route_length_total_validation", "equipment_data_gap_analysis"],
+    "provenance": "derived"
+  }
+}

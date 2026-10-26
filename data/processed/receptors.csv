@@ -1,0 +1,7 @@
+﻿receptor_id,name,type,address,latitude,longitude,crs,coordinate_accuracy,source_url,status
+yonsei,연세대학교 신촌캠퍼스,university,서울특별시 서대문구 연세로 50,,,,address_verified_coordinates_unavailable,https://mirae.yonsei.ac.kr/sc/502/subview.do,pending_verification
+severance,세브란스병원,hospital,서울특별시 서대문구 연세로 50-1,,,,address_verified_coordinates_unavailable,https://sev.severance.healthcare/sev/about/location/map.do,pending_verification
+changseo-elementary,창서초등학교,school,,,,,unverified,,pending_verification
+changcheon-middle,창천중학교,school,,,,,unverified,,pending_verification
+ewha,이화여자대학교,university,,,,,unverified,,pending_verification
+residential-1,신촌 주거 수음점,residential,,,,,assumed_receptor,,assumed

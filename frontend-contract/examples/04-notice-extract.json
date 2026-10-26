@@ -1,0 +1,106 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/notices/extract",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "text": "2026년 신촌 연세로 공사 07:00~18:00, 절단기, 브레이커, 굴착기, 롤러"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "mode": "mock",
+      "is_actual_ai": false,
+      "notice": {
+        "id": "extracted-mock",
+        "name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+        "location": "서울 서대문구 신촌역~현대백화점 인근 연세로 일대",
+        "construction_period": {
+          "start": null,
+          "end": null,
+          "raw_text": "2026년 8월~12월"
+        },
+        "original_work_window": {
+          "start": "07:00:00",
+          "end": "18:00:00"
+        },
+        "tasks": [
+          {
+            "id": "cut",
+            "name": "콘크리트 절단",
+            "equipment_id": "cutter",
+            "duration_minutes": 60,
+            "permitted_time_windows": [],
+            "predecessors": [],
+            "is_movable": true,
+            "required_resources": []
+          },
+          {
+            "id": "break",
+            "name": "포장 깨기",
+            "equipment_id": "breaker",
+            "duration_minutes": 120,
+            "permitted_time_windows": [],
+            "predecessors": [
+              "cut"
+            ],
+            "is_movable": true,
+            "required_resources": []
+          },
+          {
+            "id": "excavate",
+            "name": "터파기",
+            "equipment_id": "excavator",
+            "duration_minutes": 300,
+            "permitted_time_windows": [],
+            "predecessors": [
+              "break"
+            ],
+            "is_movable": true,
+            "required_resources": []
+          },
+          {
+            "id": "compact",
+            "name": "되메우기 및 다짐",
+            "equipment_id": "roller",
+            "duration_minutes": 60,
+            "permitted_time_windows": [],
+            "predecessors": [
+              "excavate"
+            ],
+            "is_movable": true,
+            "required_resources": []
+          }
+        ],
+        "constraints": {},
+        "source_provenance": {
+          "document": {
+            "status": "user_provided",
+            "source": "request text",
+            "note": null,
+            "unit": null
+          },
+          "unfound_fields": {
+            "status": "missing",
+            "source": null,
+            "note": "Fields not present remain null; mock uses no inference",
+            "unit": null
+          }
+        }
+      },
+      "field_evidence": {
+        "name": "연세로"
+      },
+      "warnings": [
+        "MockExtractor의 결정적 규칙 결과이며 실제 AI 추출이 아닙니다."
+      ]
+    }
+  }
+}

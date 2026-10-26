@@ -1,0 +1,687 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8765/api/schedules/optimize/case-a/diagnostics?analysis_date=2026-10-26",
+    "headers": {
+      "accept": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "generated_candidate_count": 9,
+      "feasible_candidate_count": 9,
+      "infeasible_candidate_count": 0,
+      "pareto_candidate_count": 1,
+      "pareto_axes": [
+        "resident_cost",
+        "change_cost"
+      ],
+      "candidate_metrics": [
+        {
+          "id": "offset-0",
+          "feasibility": true,
+          "pareto_included": true,
+          "objective_values": {
+            "resident_cost": 1464.9,
+            "change_cost": 0.0,
+            "total_task_start_shift_minutes": 0.0,
+            "project_start_shift_minutes": 0.0,
+            "project_end_shift_minutes": 0.0,
+            "base_impact_cost": 1472.4,
+            "absolute_impact_cost": 1472.4,
+            "incremental_impact_cost": 1464.9,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 480,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.4,
+            "absolute_impact_cost": 1472.4,
+            "incremental_impact_cost": 1464.9,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13753.8,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 0,
+            "project_start_change_minutes": 0,
+            "project_end_change_minutes": 0
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 0,
+              "break": 0,
+              "excavate": 0,
+              "compact": 0
+            },
+            "total_task_start_shift_minutes": 0,
+            "project_start_shift_minutes": 0,
+            "project_end_shift_minutes": 0,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T16:00:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": null
+        },
+        {
+          "id": "offset-15",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 60.0,
+            "total_task_start_shift_minutes": 60.0,
+            "project_start_shift_minutes": 15.0,
+            "project_end_shift_minutes": 15.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 465,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 60,
+            "project_start_change_minutes": 15,
+            "project_end_change_minutes": 15
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 15,
+              "break": 15,
+              "excavate": 15,
+              "compact": 15
+            },
+            "total_task_start_shift_minutes": 60,
+            "project_start_shift_minutes": 15,
+            "project_end_shift_minutes": 15,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T16:15:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-30",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 120.0,
+            "total_task_start_shift_minutes": 120.0,
+            "project_start_shift_minutes": 30.0,
+            "project_end_shift_minutes": 30.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 450,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 120,
+            "project_start_change_minutes": 30,
+            "project_end_change_minutes": 30
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 30,
+              "break": 30,
+              "excavate": 30,
+              "compact": 30
+            },
+            "total_task_start_shift_minutes": 120,
+            "project_start_shift_minutes": 30,
+            "project_end_shift_minutes": 30,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T16:30:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-45",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 180.0,
+            "total_task_start_shift_minutes": 180.0,
+            "project_start_shift_minutes": 45.0,
+            "project_end_shift_minutes": 45.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 435,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 180,
+            "project_start_change_minutes": 45,
+            "project_end_change_minutes": 45
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 45,
+              "break": 45,
+              "excavate": 45,
+              "compact": 45
+            },
+            "total_task_start_shift_minutes": 180,
+            "project_start_shift_minutes": 45,
+            "project_end_shift_minutes": 45,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T16:45:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-60",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 240.0,
+            "total_task_start_shift_minutes": 240.0,
+            "project_start_shift_minutes": 60.0,
+            "project_end_shift_minutes": 60.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 420,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 240,
+            "project_start_change_minutes": 60,
+            "project_end_change_minutes": 60
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 60,
+              "break": 60,
+              "excavate": 60,
+              "compact": 60
+            },
+            "total_task_start_shift_minutes": 240,
+            "project_start_shift_minutes": 60,
+            "project_end_shift_minutes": 60,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T17:00:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-75",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 300.0,
+            "total_task_start_shift_minutes": 300.0,
+            "project_start_shift_minutes": 75.0,
+            "project_end_shift_minutes": 75.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 405,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 300,
+            "project_start_change_minutes": 75,
+            "project_end_change_minutes": 75
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 75,
+              "break": 75,
+              "excavate": 75,
+              "compact": 75
+            },
+            "total_task_start_shift_minutes": 300,
+            "project_start_shift_minutes": 75,
+            "project_end_shift_minutes": 75,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T17:15:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-90",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 360.0,
+            "total_task_start_shift_minutes": 360.0,
+            "project_start_shift_minutes": 90.0,
+            "project_end_shift_minutes": 90.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 390,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 360,
+            "project_start_change_minutes": 90,
+            "project_end_change_minutes": 90
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 90,
+              "break": 90,
+              "excavate": 90,
+              "compact": 90
+            },
+            "total_task_start_shift_minutes": 360,
+            "project_start_shift_minutes": 90,
+            "project_end_shift_minutes": 90,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T17:30:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-105",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 420.0,
+            "total_task_start_shift_minutes": 420.0,
+            "project_start_shift_minutes": 105.0,
+            "project_end_shift_minutes": 105.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 375,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 420,
+            "project_start_change_minutes": 105,
+            "project_end_change_minutes": 105
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 105,
+              "break": 105,
+              "excavate": 105,
+              "compact": 105
+            },
+            "total_task_start_shift_minutes": 420,
+            "project_start_shift_minutes": 105,
+            "project_end_shift_minutes": 105,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T17:45:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        },
+        {
+          "id": "offset-120",
+          "feasibility": true,
+          "pareto_included": false,
+          "objective_values": {
+            "resident_cost": 1464.96,
+            "change_cost": 480.0,
+            "total_task_start_shift_minutes": 480.0,
+            "project_start_shift_minutes": 120.0,
+            "project_end_shift_minutes": 120.0,
+            "base_impact_cost": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "physical_energy_cost": 8363.273191,
+            "sensitive_exposure_cost": 540.0,
+            "weighted_sensitive_exposure": 810.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 0.0,
+            "existing_noise_overlap_minutes": 0.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "metrics": {
+            "max_continuous_high_noise_minutes": 180,
+            "longest_quiet_window_minutes": 360,
+            "sensitive_high_noise_minutes": 180,
+            "max_impact_score": 41.59,
+            "total_impact_score": 1472.46,
+            "absolute_impact_cost": 1472.46,
+            "incremental_impact_cost": 1464.96,
+            "new_project_additional_high_noise_minutes": 180,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 540,
+            "sensitivity_weighted_new_project_receptor_minutes": 810.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 8363.273191,
+            "cumulative_delta_db_minutes": 13739.4,
+            "existing_noise_overlap_receptor_minutes": 0,
+            "max_total_estimated_db": 81.48,
+            "max_new_project_contribution_db": 81.47,
+            "saturation_slot_count": 0,
+            "schedule_change_minutes": 480,
+            "project_start_change_minutes": 120,
+            "project_end_change_minutes": 120
+          },
+          "schedule_change_details": {
+            "definition": "sum of absolute per-task start shifts",
+            "task_start_shift_minutes": {
+              "cut": 120,
+              "break": 120,
+              "excavate": 120,
+              "compact": 120
+            },
+            "total_task_start_shift_minutes": 480,
+            "project_start_shift_minutes": 120,
+            "project_end_shift_minutes": 120,
+            "original_project_end": "2026-10-26T16:00:00+09:00",
+            "candidate_project_end": "2026-10-26T18:00:00+09:00",
+            "predecessor_order_preserved": true,
+            "resource_conflicts": []
+          },
+          "infeasibility_reasons": [],
+          "dominated_reason": {
+            "dominated_by": "offset-0",
+            "axes": [
+              "resident_cost",
+              "change_cost"
+            ],
+            "reason": "모든 비교 축이 같거나 낮고 하나 이상 엄격히 낮음"
+          }
+        }
+      ],
+      "sensitivity_enabled": true,
+      "background_profile": "assumed_demo",
+      "objective_mode": "incremental_impact",
+      "objective_field": "incremental_impact_cost",
+      "objective_unit": "experimental Impact points",
+      "default_objective_unchanged": true,
+      "balanced_selection": "legacy_v1_normalized_impact_plus_change",
+      "policy_overlap_cost_included_in_pareto": false,
+      "scenario_id": "case-a",
+      "analysis_date": "2026-10-26"
+    }
+  }
+}

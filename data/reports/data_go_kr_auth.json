@@ -1,0 +1,19 @@
+{
+  "checked_at": "2026-10-23T18:06:51+09:00",
+  "dataset_id": "15000988",
+  "dataset_name": "기후에너지환경부 국립환경과학원_자동차 배출가스 및 소음인증 정보",
+  "endpoint": "https://apis.data.go.kr/1480523/Kencis/getVems",
+  "request_method": "GET",
+  "authentication_parameter": "serviceKey",
+  "client_parameter_mode": "httpx.params",
+  "key_normalization": "percent-decode-once_then_httpx-encode-once",
+  "key_logged": false,
+  "http_status": 403,
+  "result_code": "30",
+  "result_message": "SERVICE_KEY_IS_NOT_REGISTERED_ERROR",
+  "authenticated": false,
+  "required_for_shh_schedule": false,
+  "interpretation": "The tested key is not registered for this endpoint. This is not evidence of successful approval and was not treated as collection success.",
+  "equipment_noise_dataset_id": "3038414",
+  "equipment_noise_delivery_type": "fileData CSV; no serviceKey authentication endpoint"
+}

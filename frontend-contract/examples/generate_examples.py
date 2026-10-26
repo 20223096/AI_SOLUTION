@@ -1,0 +1,256 @@
+"""Generate reproducible request/response captures against a running local API.
+
+Run from the repository root while uvicorn serves backend/app/main.py:
+    python3 frontend-contract/examples/generate_examples.py
+"""
+
+from __future__ import annotations
+
+import json
+import os
+from pathlib import Path
+from typing import Any
+
+import httpx
+
+
+BASE_URL = os.getenv("SHH_API_BASE_URL", "http://127.0.0.1:8765")
+OUT = Path(os.getenv("SHH_EXAMPLES_OUT_DIR", Path(__file__).resolve().parent))
+OUT.mkdir(parents=True, exist_ok=True)
+START = "2026-10-26T07:00:00+09:00"
+END = "2026-10-26T07:15:00+09:00"
+
+
+def m1_payload(*, active_minutes: float = 15) -> dict[str, Any]:
+    return {
+        "slot_start": START,
+        "slot_end": END,
+        "background_laeq_db": 50,
+        "background_provenance": "assumed",
+        "overlap_mode": "complete_concurrent",
+        "sources": [{
+            "id": "excavator-a",
+            "segment_id": "segment-yeonse-ro-2na-gil",
+            "source_type": "moving_work",
+            "equipment_category": "굴삭기",
+            "count": 1,
+            "sound_power_level_db": 100,
+            "lw_provenance": "assumed",
+            "position": {"x": 200000, "y": 550000, "z_m": 1, "crs": "EPSG:5186", "provenance": "assumed"},
+            "deployment_start": START,
+            "deployment_end": END,
+            "actual_active_minutes": active_minutes,
+            "activity_provenance": "assumed",
+        }],
+        "receptors": [{
+            "id": "r1",
+            "position": {"x": 200010, "y": 550000, "z_m": 1, "crs": "EPSG:5186", "provenance": "assumed"},
+        }],
+    }
+
+
+def schedule_evaluation_payload() -> dict[str, Any]:
+    categories = {
+        "cut": ("moving_work", "콘크리트 절단기", 113),
+        "break": ("impulsive", "브레이커", 122),
+        "excavate": ("moving_work", "굴삭기", 100),
+        "compact": ("moving_work", "롤러", 102),
+    }
+    mappings = [{
+        "task_id": task_id,
+        "segment_id": "segment-yeonse-ro-2na-gil",
+        "source_type": source_type,
+        "equipment_category": category,
+        "sound_power_level_db": lw,
+        "lw_provenance": "assumed",
+        "position": {"x": 200000, "y": 550000, "z_m": 1, "crs": "EPSG:5186", "provenance": "assumed"},
+        "active_ratio": 0.5,
+        "activity_provenance": "assumed",
+    } for task_id, (source_type, category, lw) in categories.items()]
+    receptors = [{
+        "id": receptor_id,
+        "position": {"x": 200000 + distance, "y": 550000, "z_m": 1.5, "crs": "EPSG:5186", "provenance": "assumed"},
+    } for receptor_id, distance in (("residential-1", 30), ("university-1", 50), ("school-1", 100))]
+    return {
+        "scenario_id": "case-a",
+        "analysis_date": "2026-10-26",
+        "background_profile": "assumed_demo",
+        "receptors": receptors,
+        "task_mappings": mappings,
+        "overlap_mode": "overlap_unknown",
+    }
+
+
+def prd_validation_payload() -> dict[str, Any]:
+    source = {"status": "user_provided", "source": "demo form", "note": None, "unit": None}
+    return {
+        "analysis_date": "2026-09-11",
+        "planning": {
+            "notice_id": "demo-notice", "project_name": "신촌 시연 공사", "location": "서울특별시 서대문구 신촌동",
+            "construction_period": {"start": "2026-09-11", "end": "2026-09-11", "raw_text": "시연 입력"},
+            "total_work_window": {"start": "07:00", "end": "18:00"}, "road_excavation": True,
+            "road_occupancy_permit_window": {"start": "08:00", "end": "17:00"},
+            "equipment_constraints": [{"equipment_id": "excavator", "category": "굴착기", "specification": "06W", "model_name": None, "max_daily_count": 1, "required_usage_minutes": 60, "permitted_time_windows": [{"start": "08:00", "end": "17:00"}], "source_metadata": source}],
+            "fixed_tasks": [{"task_id": "restore", "fixed_start": "16:00", "fixed_end": "17:00", "reason": "당일 복구", "source_metadata": source}],
+            "same_day_restoration_required": True, "project_completion_date": "2026-09-11",
+            "non_adjustable_conditions": ["restore fixed"], "source_evidence": {"page": "2"},
+            "field_provenance": {"total_work_window": {**source, "note": "not an official permit"}}, "provenance": "user_provided",
+        },
+        "assignments": [
+            {"task_id": "dig", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T09:00:00+09:00"},
+            {"task_id": "restore", "start": "2026-09-11T16:00:00+09:00", "end": "2026-09-11T17:00:00+09:00"},
+        ],
+        "predecessors": {"restore": ["dig"]}, "equipment_by_task": {"dig": "excavator", "restore": None},
+        "equipment_count_by_task": {"dig": 1}, "restoration_task_ids": ["restore"],
+    }
+
+
+def prd_integrated_payload() -> dict[str, Any]:
+    payload = prd_validation_payload()
+    source = {"status": "user_provided", "source": "confirmed form", "note": None, "unit": None}
+    payload["planning"].update({
+        "notice_id": "integrated-demo", "road_excavation": False, "road_occupancy_permit_window": None,
+        "equipment_constraints": [
+            {"equipment_id": equipment_id, "category": category, "specification": None, "model_name": None,
+             "max_daily_count": 1, "required_usage_minutes": minutes,
+             "permitted_time_windows": [{"start": "07:00", "end": "18:00"}], "source_metadata": source}
+            for equipment_id, category, minutes in (
+                ("cutter", "절단기", 60), ("breaker", "브레이커", 120),
+                ("excavator", "굴착기", 300), ("roller", "롤러", 60),
+            )
+        ],
+        "fixed_tasks": [], "same_day_restoration_required": False,
+        "field_provenance": {name: source for name in ("construction_period", "total_work_window", "road_excavation", "equipment_constraints")},
+    })
+    return {
+        "analysis_date": payload["analysis_date"], "planning": payload["planning"],
+        "predecessors": {"break": ["cut"], "excavate": ["break"], "compact": ["excavate"]},
+        "equipment_by_task": {"cut": "cutter", "break": "breaker", "excavate": "excavator", "compact": "roller"},
+        "equipment_count_by_task": {"cut": 1, "break": 1, "excavate": 1, "compact": 1},
+        "restoration_task_ids": [],
+    }
+def write_capture(name: str, request: dict[str, Any], response: httpx.Response) -> dict[str, Any]:
+    try:
+        body: Any = response.json()
+    except ValueError:
+        body = response.text
+    record = {
+        "request": request,
+        "response": {
+            "status": response.status_code,
+            "headers": {"content-type": response.headers.get("content-type")},
+            "body": body,
+        },
+    }
+    (OUT / f"{name}.json").write_text(json.dumps(record, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8")
+    return record
+
+
+def main() -> None:
+    client = httpx.Client(base_url=BASE_URL, timeout=120)
+    captures: list[tuple[str, str, str, dict[str, Any] | None]] = [
+        ("01-health", "GET", "/api/health", None),
+        ("02-scenarios", "GET", "/api/poc/scenarios", None),
+        ("03-scenario-detail", "GET", "/api/poc/scenarios/case-a", None),
+        ("04-notice-extract", "POST", "/api/notices/extract", {"text": "2026년 신촌 연세로 공사 07:00~18:00, 절단기, 브레이커, 굴착기, 롤러"}),
+        ("06-noise-predict", "POST", "/api/noise/predict", {"scenario_id": "case-a", "analysis_date": "2026-10-26"}),
+        ("07-background-profiles", "GET", "/api/noise/background-profiles", None),
+        ("08-noise-predict-m1", "POST", "/api/noise/predict-m1", m1_payload()),
+        ("09-noise-compare-m0-m1", "POST", "/api/noise/compare-m0-m1", m1_payload(active_minutes=7.5)),
+        ("10-m1-uncertainty", "POST", "/api/noise/m1-uncertainty", {"cases": [
+            {"id": "activity-50", "varied_variable": "activity_ratio", "request": m1_payload(active_minutes=7.5)},
+            {"id": "activity-100", "varied_variable": "activity_ratio", "request": m1_payload(active_minutes=15)},
+        ]}),
+        ("11-evaluate-m1-candidates", "POST", "/api/noise/evaluate-m1-candidates", schedule_evaluation_payload()),
+        ("12-validate-m1-field", "POST", "/api/noise/validate-m1-field", {"observations": [], "predictions": []}),
+        ("13-design-simulation-catalog", "GET", "/api/noise/design-simulation/catalog", None),
+        ("14-design-simulation-reschedule", "POST", "/api/noise/design-simulation/reschedule", {
+            "segment_id": "segment-yeonse-ro-2na-gil", "receptor_id": "yeonse-sim-r1",
+            "receptor_segment_id": "segment-yeonse-ro-2na-gil", "distance_m": 30,
+        }),
+        ("15-impact-calculate", "POST", "/api/impact/calculate", {
+            "total_noise_db": 70, "baseline_noise_db": 60, "duration_minutes": 60,
+            "continuous_minutes": 30, "sensitivity_weight": 1.5,
+        }),
+        ("16-schedule-optimize", "POST", "/api/schedules/optimize", {"scenario_id": "case-a", "analysis_date": "2026-10-26"}),
+        ("18-optimization-diagnostics", "GET", "/api/schedules/optimize/case-a/diagnostics?analysis_date=2026-10-26", None),
+        ("19-experiments-run", "POST", "/api/experiments/run", {"scenario_id": "case-a", "analysis_date": "2026-10-26"}),
+        ("20-public-data-catalog", "GET", "/api/public-data/catalog", None),
+        ("21-construction-design", "GET", "/api/public-data/construction-design", None),
+        ("22-prd-demo-2026-09-11", "GET", "/api/prd/demo/2026-09-11", None),
+        ("23-prd-schedule-validate", "POST", "/api/prd/schedules/validate", prd_validation_payload()),
+        ("24-prd-recommendation-diagnostics", "GET", "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11", None),
+        ("25-prd-sensitivity-experiment", "POST", "/api/prd/sensitivity/experiment", {}),
+        ("26-prd-planning-from-notice", "POST", "/api/prd/planning/from-notice", {
+            "extractor_mode": "manual", "is_actual_ai": False, "field_evidence": {"name": "연세로"},
+            "notice": {"id": "extracted-draft", "name": "신촌 공사", "location": "서울 서대문구 신촌동",
+                "construction_period": {"start": None, "end": None, "raw_text": "기간 미정"},
+                "original_work_window": {"start": "07:00", "end": "18:00"},
+                "tasks": [{"id": "excavate", "name": "굴착", "equipment_id": "excavator", "duration_minutes": None,
+                    "permitted_time_windows": [], "predecessors": [], "is_movable": True, "required_resources": []}],
+                "constraints": {}, "source_provenance": {"document": {"status": "user_provided", "source": "request text"}}},
+        }),
+        ("27-prd-constraint-filtered-recommendations", "POST", "/api/prd/recommendations/constraint-filtered", prd_integrated_payload()),
+    ]
+    manifest: list[dict[str, Any]] = []
+    for name, method, url, payload in captures:
+        response = client.request(method, url, json=payload)
+        request_record = {"method": method, "url": f"{BASE_URL}{url}", "headers": {"accept": "application/json"}}
+        if payload is not None:
+            request_record["headers"]["content-type"] = "application/json"
+            request_record["body"] = payload
+        record = write_capture(name, request_record, response)
+        assert response.status_code == 200, (name, response.status_code, response.text)
+        manifest.append({"name": name, "method": method, "path": url, "status": record["response"]["status"]})
+
+    upload_response = client.post(
+        "/api/notices/extract-file",
+        files={"file": ("notice.txt", "신촌 공사, 시간 미정".encode(), "text/plain")},
+    )
+    upload_request = {
+        "method": "POST", "url": f"{BASE_URL}/api/notices/extract-file",
+        "headers": {"content-type": "multipart/form-data; boundary=<generated-by-client>"},
+        "multipart": {"file": {"filename": "notice.txt", "content-type": "text/plain", "text": "신촌 공사, 시간 미정"}},
+    }
+    write_capture("05-notice-extract-file", upload_request, upload_response)
+    assert upload_response.status_code == 200
+    manifest.append({"name": "05-notice-extract-file", "method": "POST", "path": "/api/notices/extract-file", "status": 200})
+
+    optimize = client.post("/api/schedules/optimize", json={"scenario_id": "case-a", "analysis_date": "2026-10-26"}).json()
+    before = next(candidate for candidate in optimize["valid_candidates"] if candidate["id"] == "offset-0")["task_assignments"]
+    after = optimize["recommended_options"][0]["candidate"]["task_assignments"]
+    compare_payload = {"scenario_id": "case-a", "analysis_date": "2026-10-26", "before": before, "after": after}
+    compare_response = client.post("/api/schedules/compare", json=compare_payload)
+    compare_request = {
+        "method": "POST", "url": f"{BASE_URL}/api/schedules/compare",
+        "headers": {"accept": "application/json", "content-type": "application/json"}, "body": compare_payload,
+    }
+    write_capture("17-schedule-compare", compare_request, compare_response)
+    assert compare_response.status_code == 200
+    manifest.append({"name": "17-schedule-compare", "method": "POST", "path": "/api/schedules/compare", "status": 200})
+
+    error_cases = [
+        ("error-404-scenario", "POST", "/api/noise/predict", {"scenario_id": "missing"}, None, 404),
+        ("error-422-validation", "POST", "/api/impact/calculate", {"total_noise_db": 70, "duration_minutes": -1, "continuous_minutes": 0, "sensitivity_weight": 1}, None, 422),
+        ("error-422-domain", "POST", "/api/noise/predict", {"scenario_id": "case-a", "background_profile": "does-not-exist"}, None, 422),
+        ("error-415-upload", "POST", "/api/notices/extract-file", None, {"file": ("notice.bin", b"abc", "application/octet-stream")}, 415),
+        ("error-422-prd-date", "GET", "/api/prd/recommendation-diagnostics?analysis_date=2026-09-12", None, None, 422),
+    ]
+    for name, method, url, payload, files, expected in error_cases:
+        response = client.request(method, url, json=payload, files=files)
+        request_record = {"method": method, "url": f"{BASE_URL}{url}", "headers": {}}
+        if payload is not None:
+            request_record["headers"]["content-type"] = "application/json"
+            request_record["body"] = payload
+        if files is not None:
+            request_record["multipart"] = {"file": {"filename": files["file"][0], "content-type": files["file"][2]}}
+        write_capture(name, request_record, response)
+        assert response.status_code == expected, (name, response.status_code, response.text)
+
+    manifest.sort(key=lambda row: row["path"])
+    (OUT / "manifest.json").write_text(json.dumps({"base_url": BASE_URL, "success_count": len(manifest), "endpoints": manifest}, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    print(f"captured {len(manifest)} successful endpoints and {len(error_cases)} error cases")
+
+
+if __name__ == "__main__":
+    main()

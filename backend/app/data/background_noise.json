@@ -1,0 +1,5 @@
+[
+  {"receptor_id":"residential-1","time":"07:00","laeq_db":55,"source_metadata":{"status":"assumed","source":"PoC synthetic background","note":"replaceable JSON/CSV series","unit":"LAeq_dBA"}},
+  {"receptor_id":"residential-1","time":"12:00","laeq_db":60,"source_metadata":{"status":"assumed","source":"PoC synthetic background","note":"replaceable JSON/CSV series","unit":"LAeq_dBA"}},
+  {"receptor_id":"university-1","time":"07:00","laeq_db":54,"source_metadata":{"status":"assumed","source":"PoC synthetic background","note":"replaceable JSON/CSV series","unit":"LAeq_dBA"}}
+]
