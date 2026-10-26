@@ -1,0 +1,172 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/prd/planning/from-notice",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "extractor_mode": "manual",
+      "is_actual_ai": false,
+      "field_evidence": {
+        "name": "연세로"
+      },
+      "notice": {
+        "id": "extracted-draft",
+        "name": "신촌 공사",
+        "location": "서울 서대문구 신촌동",
+        "construction_period": {
+          "start": null,
+          "end": null,
+          "raw_text": "기간 미정"
+        },
+        "original_work_window": {
+          "start": "07:00",
+          "end": "18:00"
+        },
+        "tasks": [
+          {
+            "id": "excavate",
+            "name": "굴착",
+            "equipment_id": "excavator",
+            "duration_minutes": null,
+            "permitted_time_windows": [],
+            "predecessors": [],
+            "is_movable": true,
+            "required_resources": []
+          }
+        ],
+        "constraints": {},
+        "source_provenance": {
+          "document": {
+            "status": "user_provided",
+            "source": "request text"
+          }
+        }
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "status": "needs_confirmation",
+      "extractor_mode": "manual",
+      "is_actual_ai": false,
+      "planning_draft": {
+        "notice_id": "extracted-draft",
+        "project_name": "신촌 공사",
+        "location": "서울 서대문구 신촌동",
+        "construction_period": {
+          "start": null,
+          "end": null,
+          "raw_text": "기간 미정"
+        },
+        "total_work_window": {
+          "start": "07:00:00",
+          "end": "18:00:00"
+        },
+        "road_excavation": null,
+        "road_occupancy_permit_window": null,
+        "equipment_constraints": [
+          {
+            "equipment_id": "excavator",
+            "category": "굴착",
+            "specification": null,
+            "model_name": null,
+            "max_daily_count": null,
+            "required_usage_minutes": null,
+            "permitted_time_windows": [],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            }
+          }
+        ],
+        "fixed_tasks": [],
+        "predecessors": {},
+        "same_day_restoration_required": null,
+        "source_evidence": {
+          "name": "연세로"
+        },
+        "field_provenance": {
+          "project_name": {
+            "status": "user_provided",
+            "source": "request text",
+            "note": null,
+            "unit": null
+          },
+          "location": {
+            "status": "user_provided",
+            "source": "request text",
+            "note": null,
+            "unit": null
+          },
+          "total_work_window": {
+            "status": "user_provided",
+            "source": "request text",
+            "note": null,
+            "unit": null
+          },
+          "construction_period": {
+            "status": "missing",
+            "source": null,
+            "note": "Not confirmed in extracted notice",
+            "unit": null
+          },
+          "road_excavation": {
+            "status": "missing",
+            "source": null,
+            "note": "Not confirmed in extracted notice",
+            "unit": null
+          },
+          "equipment_required_usage_minutes": {
+            "status": "missing",
+            "source": null,
+            "note": "Not confirmed in extracted notice",
+            "unit": null
+          },
+          "road_occupancy_permit_window": {
+            "status": "missing",
+            "source": null,
+            "note": "Not confirmed in extracted notice",
+            "unit": null
+          },
+          "max_daily_equipment_count": {
+            "status": "missing",
+            "source": null,
+            "note": "Not confirmed in extracted notice",
+            "unit": null
+          }
+        }
+      },
+      "missing_fields": [
+        "construction_period",
+        "road_excavation",
+        "equipment_required_usage_minutes",
+        "road_occupancy_permit_window",
+        "max_daily_equipment_count"
+      ],
+      "confirmation_required_fields": [
+        "construction_period",
+        "equipment_constraints",
+        "equipment_required_usage_minutes",
+        "location",
+        "max_daily_equipment_count",
+        "project_name",
+        "road_excavation",
+        "road_occupancy_permit_window",
+        "total_work_window"
+      ],
+      "warnings": [
+        "Extraction output is an unconfirmed draft and is not an official filing fact.",
+        "Null and missing values must be confirmed by a user; no constraint was inferred."
+      ]
+    }
+  }
+}

@@ -1,0 +1,25 @@
+/* 목업 .tl/.lane/.ev 스타일 기준 */
+.stl { display: grid; grid-template-columns: 96px 1fr; row-gap: 6px; min-width: 600px; margin-bottom: 8px }
+.stl-axis { position: relative; height: 20px; font-size: 12px; color: var(--muted) }
+.stl-axis span { position: absolute; transform: translateX(-50%); white-space: nowrap }
+.stl-lane-wrap { display: contents }
+.stl-label { font-size: 13px; font-weight: 500; align-self: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; padding-right: 8px }
+.stl-lane {
+  position: relative; height: 34px; border-radius: 6px;
+  background: var(--bg);
+}
+.stl-window {
+  position: absolute; top: 0; bottom: 0; background: var(--quiet-soft);
+  border-left: 1px dashed var(--quiet); border-right: 1px dashed var(--quiet);
+}
+.stl-ev {
+  position: absolute; top: 3px; bottom: 3px; border-radius: 6px; color: #fff; font-size: 12px;
+  padding: 0 6px; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+  display: flex; align-items: center; transition: all .25s ease;
+  border: 1px solid var(--panel);
+}
+.stl-ev.build { background: var(--build) }
+.stl-ev.new { background: var(--new); color: var(--panel) }
+.stl-ev.bad { background: var(--s4); color: #fff; box-shadow: 0 0 0 2px var(--s4) }
+.stl-legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 12.5px; color: var(--muted); margin: 4px 0 12px }
+.stl-legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; margin-right: 5px; vertical-align: -1px }

@@ -1,0 +1,48 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/impact/calculate",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "total_noise_db": 70,
+      "baseline_noise_db": 60,
+      "duration_minutes": 60,
+      "continuous_minutes": 30,
+      "sensitivity_weight": 1.5
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "score": 30.0,
+      "components": {
+        "level": 0.5,
+        "duration": 0.125,
+        "continuous": 0.16666666666666666,
+        "sensitivity": 0.16666666666666666,
+        "cumulative": 0.0
+      },
+      "weights": {
+        "level": 0.45,
+        "duration": 0.2,
+        "continuous": 0.15,
+        "sensitivity": 0.15,
+        "cumulative": 0.05
+      },
+      "classification": "experimental_impact_index_not_legal_compliance",
+      "baseline_score": 13.33,
+      "incremental_score": 16.67,
+      "saturation": {
+        "score_at_ceiling": false,
+        "level_component_at_ceiling": false,
+        "incremental_zero_despite_increase": false
+      }
+    }
+  }
+}

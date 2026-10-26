@@ -1,0 +1,82 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "http://127.0.0.1:8765/api/poc/scenarios",
+    "headers": {
+      "accept": "application/json"
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": [
+      {
+        "id": "case-a",
+        "title": "CASE A — 07:00~18:00 순차 배치",
+        "expected_feasibility": true
+      },
+      {
+        "id": "case-b",
+        "title": "CASE B — 8시간 순차 제한",
+        "expected_feasibility": false
+      },
+      {
+        "id": "scenario-b-congestion",
+        "title": "B — 소음 집중 시간대",
+        "expected_feasibility": true
+      },
+      {
+        "id": "scenario-c-exam",
+        "title": "C — 대학 시험기간",
+        "expected_feasibility": true
+      },
+      {
+        "id": "scenario-d-restricted",
+        "title": "D — 같은 날 복구·금지시간 강화",
+        "expected_feasibility": false
+      },
+      {
+        "id": "sinchon-public-2026-10",
+        "title": "신촌 공공데이터 연동 — 2026년 10월",
+        "expected_feasibility": true
+      },
+      {
+        "id": "sinchon-spatial-2026",
+        "title": "신촌 공식 좌표 기반 거리 — 2026",
+        "expected_feasibility": true
+      },
+      {
+        "id": "official_reference_equipment",
+        "title": "최종 시연 A — 공식 공간·배경·장비 참고값",
+        "expected_feasibility": true
+      },
+      {
+        "id": "final-demo-congestion",
+        "title": "최종 시연 B — 신촌 소음 집중 가정 실험",
+        "expected_feasibility": true
+      },
+      {
+        "id": "final-demo-congestion-near-residential",
+        "title": "9차 실험 — 25m 가정 주거 수음점 추가",
+        "expected_feasibility": true
+      },
+      {
+        "id": "official-reference-equipment-min",
+        "title": "9차 민감도 — 공식 장비 유형별 최솟값",
+        "expected_feasibility": true
+      },
+      {
+        "id": "official-reference-equipment-max",
+        "title": "9차 민감도 — 공식 장비 유형별 최댓값",
+        "expected_feasibility": true
+      },
+      {
+        "id": "validation-fixed-schedule",
+        "title": "9차 검증 가정 — 일정 변경 불가",
+        "expected_feasibility": true
+      }
+    ]
+  }
+}

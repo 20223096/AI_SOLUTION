@@ -1,0 +1,21 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/noise/predict",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "scenario_id": "missing"
+    }
+  },
+  "response": {
+    "status": 404,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": "'unknown scenario: missing'"
+    }
+  }
+}

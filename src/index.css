@@ -1,0 +1,112 @@
+/* 디자인 토큰과 공통 컴포넌트 스타일: 전체서비스화면.html 목업 기준 */
+:root {
+  --bg: #F3F5F4; --panel: #FFFFFF; --ink: #18222E; --muted: #5E6B78; --line: #DCE2E0;
+  --quiet: #2F8F7B; --quiet-soft: #D5ECE5;
+  --build: #7A3E6B; --waste: #B7832A; --event: #3767A8; --new: #18222E;
+  --s1: #E4EFEB; --s2: #F3DFA2; --s3: #EDA86A; --s4: #D2603F;
+  --danger: #B5402A; --danger-soft: #F7E3DD;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121A20; --panel: #1B252D; --ink: #E9EEF0; --muted: #9AA8B3; --line: #2E3B45;
+    --quiet: #55BFA6; --quiet-soft: #1E3A34; --build: #C489B5; --waste: #D9A84E; --event: #7AA4DE; --new: #E9EEF0;
+    --s1: #24353A; --s2: #5E5330; --s3: #8A5A32; --s4: #A9452B;
+    --danger: #E58B73; --danger-soft: #3A2420;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121A20; --panel: #1B252D; --ink: #E9EEF0; --muted: #9AA8B3; --line: #2E3B45;
+  --quiet: #55BFA6; --quiet-soft: #1E3A34; --build: #C489B5; --waste: #D9A84E; --event: #7AA4DE; --new: #E9EEF0;
+  --s1: #24353A; --s2: #5E5330; --s3: #8A5A32; --s4: #A9452B;
+  --danger: #E58B73; --danger-soft: #3A2420;
+}
+*, *::before, *::after { box-sizing: inherit }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: "IBM Plex Sans KR", -apple-system, "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  font-size: 15px; line-height: 1.55;
+}
+.wrap { max-width: 1080px; margin: 0 auto; padding: 20px 16px 48px }
+
+/* header */
+header.top { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 6px 0 20px }
+.brand { display: flex; align-items: baseline; gap: 10px }
+.brand b { font-size: 26px; font-weight: 700; letter-spacing: -0.02em }
+.brand span { color: var(--muted); font-size: 14px }
+.ctx { display: flex; gap: 8px; flex-wrap: wrap }
+.chip { border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 6px 12px; font-size: 13px }
+
+/* stepper */
+.steps { display: flex; gap: 6px; flex-wrap: wrap; list-style: none; padding: 0; margin: 0 0 16px }
+.steps li { font-size: 13px; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 4px 12px; background: var(--panel) }
+.steps li[aria-current="step"] { background: var(--ink); color: var(--panel); border-color: var(--ink); font-weight: 600 }
+
+/* layout */
+.grid { display: grid; grid-template-columns: 1fr; gap: 16px }
+@media (min-width: 900px) { .grid { grid-template-columns: 1fr 1fr } .span2 { grid-column: 1 / -1 } }
+section.panel { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px }
+.ph { display: flex; align-items: baseline; gap: 10px; margin-bottom: 12px }
+.step { flex: none; min-width: 24px; height: 24px; padding: 0 6px; border-radius: 999px; background: var(--ink); color: var(--panel); font-size: 12px; font-weight: 600; display: grid; place-items: center; transform: translateY(-2px) }
+h2 { font-size: 18px; margin: 0; font-weight: 600; letter-spacing: -0.01em }
+h3 { font-size: 15px; margin: 16px 0 8px; font-weight: 600 }
+.tag { font-size: 12px; color: var(--muted); border: 1px dashed var(--line); border-radius: 6px; padding: 1px 6px; margin-left: auto; white-space: nowrap }
+.sub { color: var(--muted); font-size: 13.5px; margin: -6px 0 12px }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-top: 10px }
+.scroll { overflow-x: auto }
+.muted { color: var(--muted) }
+.good { color: var(--quiet) }
+.bad { color: var(--s4) }
+.neutral { color: var(--muted) }
+
+/* form */
+textarea {
+  width: 100%; min-height: 96px; border: 1px solid var(--line); border-radius: 10px; padding: 10px;
+  font: inherit; font-size: 13.5px; background: var(--bg); color: var(--ink); resize: vertical;
+}
+button {
+  font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--ink); background: var(--ink);
+  color: var(--panel); padding: 9px 14px; font-weight: 600; font-size: 14px;
+}
+button.ghost { background: transparent; color: var(--ink); border-color: var(--line) }
+button:disabled { opacity: .45; cursor: not-allowed }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--quiet); outline-offset: 2px }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 10px; overflow: hidden }
+.seg button { border: 0; border-radius: 0; background: transparent; color: var(--muted); font-weight: 500; padding: 7px 12px }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--panel) }
+
+/* table */
+table { border-collapse: collapse; width: 100%; font-size: 13.5px }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top }
+th { color: var(--muted); font-weight: 500; white-space: nowrap }
+
+/* feedback */
+.hint { font-size: 13px; margin-top: 10px; padding: 8px 10px; border-left: 3px solid var(--quiet); background: var(--quiet-soft); border-radius: 4px }
+.hint.warn { border-left-color: var(--waste); background: color-mix(in srgb, var(--s2) 45%, var(--panel)) }
+.hint.error { border-left-color: var(--danger); background: var(--danger-soft); white-space: pre-line }
+
+footer { color: var(--muted); font-size: 12.5px; margin-top: 20px }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+
+/* 결측·출처 배지 (S1/S2 공용) */
+.missing {
+  color: var(--muted); font-size: 12.5px; border: 1px dashed var(--line);
+  border-radius: 6px; padding: 0 6px; white-space: nowrap;
+}
+
+.prov-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 13.5px }
+.prov-list li { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap }
+
+.badge { font-size: 11.5px; font-weight: 600; border-radius: 6px; padding: 1px 7px; white-space: nowrap; border: 1px solid transparent }
+.prov-verified_public { background: var(--quiet-soft); color: var(--quiet); border-color: var(--quiet) }
+.prov-user_provided { background: var(--bg); color: var(--ink); border-color: var(--line) }
+.prov-assumed { background: color-mix(in srgb, var(--s2) 50%, var(--panel)); color: var(--ink); border-color: var(--waste) }
+.prov-derived { background: color-mix(in srgb, var(--event) 15%, var(--panel)); color: var(--event); border-color: var(--event) }
+.prov-missing { background: transparent; color: var(--muted); border: 1px dashed var(--line) }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}

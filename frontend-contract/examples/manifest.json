@@ -1,0 +1,168 @@
+{
+  "base_url": "http://127.0.0.1:8765",
+  "success_count": 27,
+  "endpoints": [
+    {
+      "name": "19-experiments-run",
+      "method": "POST",
+      "path": "/api/experiments/run",
+      "status": 200
+    },
+    {
+      "name": "01-health",
+      "method": "GET",
+      "path": "/api/health",
+      "status": 200
+    },
+    {
+      "name": "15-impact-calculate",
+      "method": "POST",
+      "path": "/api/impact/calculate",
+      "status": 200
+    },
+    {
+      "name": "07-background-profiles",
+      "method": "GET",
+      "path": "/api/noise/background-profiles",
+      "status": 200
+    },
+    {
+      "name": "09-noise-compare-m0-m1",
+      "method": "POST",
+      "path": "/api/noise/compare-m0-m1",
+      "status": 200
+    },
+    {
+      "name": "13-design-simulation-catalog",
+      "method": "GET",
+      "path": "/api/noise/design-simulation/catalog",
+      "status": 200
+    },
+    {
+      "name": "14-design-simulation-reschedule",
+      "method": "POST",
+      "path": "/api/noise/design-simulation/reschedule",
+      "status": 200
+    },
+    {
+      "name": "11-evaluate-m1-candidates",
+      "method": "POST",
+      "path": "/api/noise/evaluate-m1-candidates",
+      "status": 200
+    },
+    {
+      "name": "10-m1-uncertainty",
+      "method": "POST",
+      "path": "/api/noise/m1-uncertainty",
+      "status": 200
+    },
+    {
+      "name": "06-noise-predict",
+      "method": "POST",
+      "path": "/api/noise/predict",
+      "status": 200
+    },
+    {
+      "name": "08-noise-predict-m1",
+      "method": "POST",
+      "path": "/api/noise/predict-m1",
+      "status": 200
+    },
+    {
+      "name": "12-validate-m1-field",
+      "method": "POST",
+      "path": "/api/noise/validate-m1-field",
+      "status": 200
+    },
+    {
+      "name": "04-notice-extract",
+      "method": "POST",
+      "path": "/api/notices/extract",
+      "status": 200
+    },
+    {
+      "name": "05-notice-extract-file",
+      "method": "POST",
+      "path": "/api/notices/extract-file",
+      "status": 200
+    },
+    {
+      "name": "02-scenarios",
+      "method": "GET",
+      "path": "/api/poc/scenarios",
+      "status": 200
+    },
+    {
+      "name": "03-scenario-detail",
+      "method": "GET",
+      "path": "/api/poc/scenarios/case-a",
+      "status": 200
+    },
+    {
+      "name": "22-prd-demo-2026-09-11",
+      "method": "GET",
+      "path": "/api/prd/demo/2026-09-11",
+      "status": 200
+    },
+    {
+      "name": "26-prd-planning-from-notice",
+      "method": "POST",
+      "path": "/api/prd/planning/from-notice",
+      "status": 200
+    },
+    {
+      "name": "24-prd-recommendation-diagnostics",
+      "method": "GET",
+      "path": "/api/prd/recommendation-diagnostics?analysis_date=2026-09-11",
+      "status": 200
+    },
+    {
+      "name": "27-prd-constraint-filtered-recommendations",
+      "method": "POST",
+      "path": "/api/prd/recommendations/constraint-filtered",
+      "status": 200
+    },
+    {
+      "name": "23-prd-schedule-validate",
+      "method": "POST",
+      "path": "/api/prd/schedules/validate",
+      "status": 200
+    },
+    {
+      "name": "25-prd-sensitivity-experiment",
+      "method": "POST",
+      "path": "/api/prd/sensitivity/experiment",
+      "status": 200
+    },
+    {
+      "name": "20-public-data-catalog",
+      "method": "GET",
+      "path": "/api/public-data/catalog",
+      "status": 200
+    },
+    {
+      "name": "21-construction-design",
+      "method": "GET",
+      "path": "/api/public-data/construction-design",
+      "status": 200
+    },
+    {
+      "name": "17-schedule-compare",
+      "method": "POST",
+      "path": "/api/schedules/compare",
+      "status": 200
+    },
+    {
+      "name": "16-schedule-optimize",
+      "method": "POST",
+      "path": "/api/schedules/optimize",
+      "status": 200
+    },
+    {
+      "name": "18-optimization-diagnostics",
+      "method": "GET",
+      "path": "/api/schedules/optimize/case-a/diagnostics?analysis_date=2026-10-26",
+      "status": 200
+    }
+  ]
+}
