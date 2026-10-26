@@ -2052,6 +2052,39 @@
             },
             "type": "object",
             "title": "Objective Values"
+          },
+          "schedule_snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Snapshot Id"
+          },
+          "schedule_version": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Version"
+          },
+          "schedule_fingerprint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Fingerprint"
           }
         },
         "additionalProperties": false,
@@ -8439,6 +8472,16 @@
             "type": "boolean",
             "title": "Candidate Valid"
           },
+          "recommendation_snapshot_status": {
+            "type": "string",
+            "enum": [
+              "verified",
+              "not_required",
+              "missing",
+              "mismatch"
+            ],
+            "title": "Recommendation Snapshot Status"
+          },
           "schedule_summary": {
             "$ref": "#/components/schemas/DraftScheduleSummary"
           },
@@ -8535,6 +8578,7 @@
           "schedule_fingerprint",
           "candidate_id",
           "candidate_valid",
+          "recommendation_snapshot_status",
           "schedule_summary",
           "headline",
           "body",
@@ -9150,6 +9194,18 @@
           "candidate_valid": {
             "type": "boolean",
             "title": "Candidate Valid"
+          },
+          "schedule_snapshot_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 100
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Schedule Snapshot Id"
           },
           "assignments": {
             "items": {

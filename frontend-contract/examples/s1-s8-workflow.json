@@ -1,0 +1,2740 @@
+{
+  "contract_version": "3.4",
+  "workflow": "connected S1-S8 HTTP replay",
+  "base_url": "http://127.0.0.1:8765",
+  "manual_steps": [
+    "S3 staff completion",
+    "high-noise classification",
+    "public contact",
+    "notice edit and confirm"
+  ],
+  "selected_candidate_id": "offset-60",
+  "schedule_snapshot_status": "verified",
+  "step_count": 13,
+  "steps": [
+    {
+      "step": "S1_extract",
+      "method": "POST",
+      "path": "/api/notices/extract",
+      "request": {
+        "text": "2026년 신촌 연세로 공사 07:00~18:00, 절단기, 브레이커, 굴착기, 롤러"
+      },
+      "status": 200,
+      "response": {
+        "mode": "mock",
+        "is_actual_ai": false,
+        "notice": {
+          "id": "extracted-mock",
+          "name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+          "location": "서울 서대문구 신촌역~현대백화점 인근 연세로 일대",
+          "construction_period": {
+            "start": null,
+            "end": null,
+            "raw_text": "2026년 8월~12월"
+          },
+          "original_work_window": {
+            "start": "07:00:00",
+            "end": "18:00:00"
+          },
+          "tasks": [
+            {
+              "id": "cut",
+              "name": "콘크리트 절단",
+              "equipment_id": "cutter",
+              "duration_minutes": 60,
+              "permitted_time_windows": [],
+              "predecessors": [],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "break",
+              "name": "포장 깨기",
+              "equipment_id": "breaker",
+              "duration_minutes": 120,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "cut"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "excavate",
+              "name": "터파기",
+              "equipment_id": "excavator",
+              "duration_minutes": 300,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "break"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "compact",
+              "name": "되메우기 및 다짐",
+              "equipment_id": "roller",
+              "duration_minutes": 60,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "excavate"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            }
+          ],
+          "constraints": {},
+          "source_provenance": {
+            "document": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            },
+            "unfound_fields": {
+              "status": "missing",
+              "source": null,
+              "note": "Fields not present remain null; mock uses no inference",
+              "unit": null
+            }
+          }
+        },
+        "field_evidence": {
+          "name": "연세로"
+        },
+        "warnings": [
+          "MockExtractor의 결정적 규칙 결과이며 실제 AI 추출이 아닙니다."
+        ]
+      }
+    },
+    {
+      "step": "S2_planning_draft",
+      "method": "POST",
+      "path": "/api/prd/planning/from-notice",
+      "request": {
+        "notice": {
+          "id": "extracted-mock",
+          "name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+          "location": "서울 서대문구 신촌역~현대백화점 인근 연세로 일대",
+          "construction_period": {
+            "start": null,
+            "end": null,
+            "raw_text": "2026년 8월~12월"
+          },
+          "original_work_window": {
+            "start": "07:00:00",
+            "end": "18:00:00"
+          },
+          "tasks": [
+            {
+              "id": "cut",
+              "name": "콘크리트 절단",
+              "equipment_id": "cutter",
+              "duration_minutes": 60,
+              "permitted_time_windows": [],
+              "predecessors": [],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "break",
+              "name": "포장 깨기",
+              "equipment_id": "breaker",
+              "duration_minutes": 120,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "cut"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "excavate",
+              "name": "터파기",
+              "equipment_id": "excavator",
+              "duration_minutes": 300,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "break"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            },
+            {
+              "id": "compact",
+              "name": "되메우기 및 다짐",
+              "equipment_id": "roller",
+              "duration_minutes": 60,
+              "permitted_time_windows": [],
+              "predecessors": [
+                "excavate"
+              ],
+              "is_movable": true,
+              "required_resources": []
+            }
+          ],
+          "constraints": {},
+          "source_provenance": {
+            "document": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            },
+            "unfound_fields": {
+              "status": "missing",
+              "source": null,
+              "note": "Fields not present remain null; mock uses no inference",
+              "unit": null
+            }
+          }
+        },
+        "extractor_mode": "mock",
+        "is_actual_ai": false,
+        "field_evidence": {
+          "name": "연세로"
+        }
+      },
+      "status": 200,
+      "response": {
+        "status": "needs_confirmation",
+        "extractor_mode": "mock",
+        "is_actual_ai": false,
+        "planning_draft": {
+          "notice_id": "extracted-mock",
+          "project_name": "연세로2나길 20 일대 외 1개소 하수관로 개량공사",
+          "location": "서울 서대문구 신촌역~현대백화점 인근 연세로 일대",
+          "construction_period": {
+            "start": null,
+            "end": null,
+            "raw_text": "2026년 8월~12월"
+          },
+          "total_work_window": {
+            "start": "07:00:00",
+            "end": "18:00:00"
+          },
+          "road_excavation": null,
+          "road_occupancy_permit_window": null,
+          "equipment_constraints": [
+            {
+              "equipment_id": "cutter",
+              "category": "콘크리트 절단",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": null,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "request text",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "breaker",
+              "category": "포장 깨기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": null,
+              "required_usage_minutes": 120,
+              "permitted_time_windows": [],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "request text",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "excavator",
+              "category": "터파기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": null,
+              "required_usage_minutes": 300,
+              "permitted_time_windows": [],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "request text",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "roller",
+              "category": "되메우기 및 다짐",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": null,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "request text",
+                "note": null,
+                "unit": null
+              }
+            }
+          ],
+          "fixed_tasks": [],
+          "predecessors": {
+            "break": [
+              "cut"
+            ],
+            "excavate": [
+              "break"
+            ],
+            "compact": [
+              "excavate"
+            ]
+          },
+          "same_day_restoration_required": null,
+          "source_evidence": {
+            "name": "연세로"
+          },
+          "field_provenance": {
+            "project_name": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            },
+            "location": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            },
+            "total_work_window": {
+              "status": "user_provided",
+              "source": "request text",
+              "note": null,
+              "unit": null
+            },
+            "construction_period": {
+              "status": "missing",
+              "source": null,
+              "note": "Not confirmed in extracted notice",
+              "unit": null
+            },
+            "road_excavation": {
+              "status": "missing",
+              "source": null,
+              "note": "Not confirmed in extracted notice",
+              "unit": null
+            },
+            "road_occupancy_permit_window": {
+              "status": "missing",
+              "source": null,
+              "note": "Not confirmed in extracted notice",
+              "unit": null
+            },
+            "max_daily_equipment_count": {
+              "status": "missing",
+              "source": null,
+              "note": "Not confirmed in extracted notice",
+              "unit": null
+            }
+          }
+        },
+        "missing_fields": [
+          "construction_period",
+          "road_excavation",
+          "road_occupancy_permit_window",
+          "max_daily_equipment_count"
+        ],
+        "confirmation_required_fields": [
+          "construction_period",
+          "equipment_constraints",
+          "location",
+          "max_daily_equipment_count",
+          "project_name",
+          "road_excavation",
+          "road_occupancy_permit_window",
+          "total_work_window"
+        ],
+        "warnings": [
+          "Extraction output is an unconfirmed draft and is not an official filing fact.",
+          "Null and missing values must be confirmed by a user; no constraint was inferred."
+        ]
+      }
+    },
+    {
+      "step": "S3_staff_completion",
+      "mode": "manual_input",
+      "missing_before": [
+        "construction_period",
+        "road_excavation",
+        "road_occupancy_permit_window",
+        "max_daily_equipment_count"
+      ],
+      "completed_planning": {
+        "notice_id": "integrated-demo",
+        "project_name": "신촌 시연 공사",
+        "location": "서울특별시 서대문구 신촌동",
+        "construction_period": {
+          "start": "2026-09-11",
+          "end": "2026-09-11",
+          "raw_text": "시연 입력"
+        },
+        "total_work_window": {
+          "start": "08:00",
+          "end": "18:00"
+        },
+        "road_excavation": false,
+        "road_occupancy_permit_window": null,
+        "equipment_constraints": [
+          {
+            "equipment_id": "cutter",
+            "category": "절단기",
+            "specification": null,
+            "model_name": null,
+            "max_daily_count": 1,
+            "required_usage_minutes": 60,
+            "permitted_time_windows": [
+              {
+                "start": "08:00",
+                "end": "18:00"
+              }
+            ],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          {
+            "equipment_id": "breaker",
+            "category": "브레이커",
+            "specification": null,
+            "model_name": null,
+            "max_daily_count": 1,
+            "required_usage_minutes": 120,
+            "permitted_time_windows": [
+              {
+                "start": "08:00",
+                "end": "18:00"
+              }
+            ],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          {
+            "equipment_id": "excavator",
+            "category": "굴착기",
+            "specification": null,
+            "model_name": null,
+            "max_daily_count": 1,
+            "required_usage_minutes": 300,
+            "permitted_time_windows": [
+              {
+                "start": "08:00",
+                "end": "18:00"
+              }
+            ],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          {
+            "equipment_id": "roller",
+            "category": "롤러",
+            "specification": null,
+            "model_name": null,
+            "max_daily_count": 1,
+            "required_usage_minutes": 60,
+            "permitted_time_windows": [
+              {
+                "start": "08:00",
+                "end": "18:00"
+              }
+            ],
+            "source_metadata": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          }
+        ],
+        "fixed_tasks": [],
+        "same_day_restoration_required": false,
+        "project_completion_date": "2026-09-11",
+        "non_adjustable_conditions": [
+          "restore fixed"
+        ],
+        "source_evidence": {
+          "page": "2"
+        },
+        "field_provenance": {
+          "construction_period": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "total_work_window": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "road_excavation": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "equipment_constraints": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          }
+        },
+        "provenance": "user_provided"
+      }
+    },
+    {
+      "step": "S2_address_coordinate",
+      "method": "POST",
+      "path": "/api/locations/address-coordinate",
+      "request": {
+        "address": "서울특별시 서대문구 연세로2나길 20"
+      },
+      "status": 200,
+      "response": {
+        "status": "resolved",
+        "original_address": "서울특별시 서대문구 연세로2나길 20",
+        "normalized_official_address": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "source_coordinate": {
+          "x": 950396.8997951334,
+          "y": 1950996.389126,
+          "crs": "EPSG:5179"
+        },
+        "map_coordinate": {
+          "longitude": 126.93839122,
+          "latitude": 37.55698305,
+          "crs": "EPSG:4326"
+        },
+        "coordinate_source": {
+          "provider": "행정안전부 주소기반산업지원서비스",
+          "api": "좌표제공 검색 API",
+          "point_semantics": "도로명주소 건물 출입구 대표점",
+          "retrieved_live": true
+        },
+        "address_match_status": "exact",
+        "user_confirmation_required": false,
+        "failure_reason": null,
+        "candidates": [
+          {
+            "address_id": "1141011600100130068022668",
+            "road_address": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+            "parcel_address": "서울특별시 서대문구 창천동 13-68",
+            "building_name": null
+          }
+        ],
+        "official_address_coordinate": {
+          "longitude": 126.93839122,
+          "latitude": 37.55698305,
+          "crs": "EPSG:4326"
+        },
+        "construction_geometry": null,
+        "demo_geometry": null,
+        "residential_facade_receptor": null,
+        "site_accuracy_status": "not_validated",
+        "limitation": "공식 주소 좌표는 도로명주소 건물 출입구 대표점이며 공사 중심점·공사 선형·수음점이 아닙니다."
+      }
+    },
+    {
+      "step": "S3_constraint_validation",
+      "method": "POST",
+      "path": "/api/prd/schedules/validate",
+      "request": {
+        "analysis_date": "2026-09-11",
+        "planning": {
+          "notice_id": "integrated-demo",
+          "project_name": "신촌 시연 공사",
+          "location": "서울특별시 서대문구 신촌동",
+          "construction_period": {
+            "start": "2026-09-11",
+            "end": "2026-09-11",
+            "raw_text": "시연 입력"
+          },
+          "total_work_window": {
+            "start": "08:00",
+            "end": "18:00"
+          },
+          "road_excavation": false,
+          "road_occupancy_permit_window": null,
+          "equipment_constraints": [
+            {
+              "equipment_id": "cutter",
+              "category": "절단기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "breaker",
+              "category": "브레이커",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 120,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "excavator",
+              "category": "굴착기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 300,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "roller",
+              "category": "롤러",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            }
+          ],
+          "fixed_tasks": [],
+          "same_day_restoration_required": false,
+          "project_completion_date": "2026-09-11",
+          "non_adjustable_conditions": [
+            "restore fixed"
+          ],
+          "source_evidence": {
+            "page": "2"
+          },
+          "field_provenance": {
+            "construction_period": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "total_work_window": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "road_excavation": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "equipment_constraints": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          "provenance": "user_provided"
+        },
+        "predecessors": {
+          "break": [
+            "cut"
+          ],
+          "excavate": [
+            "break"
+          ],
+          "compact": [
+            "excavate"
+          ]
+        },
+        "equipment_by_task": {
+          "cut": "cutter",
+          "break": "breaker",
+          "excavate": "excavator",
+          "compact": "roller"
+        },
+        "equipment_count_by_task": {
+          "cut": 1,
+          "break": 1,
+          "excavate": 1,
+          "compact": 1
+        },
+        "restoration_task_ids": [],
+        "assignments": [
+          {
+            "task_id": "cut",
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T08:00:00+09:00"
+          },
+          {
+            "task_id": "break",
+            "start": "2026-09-11T08:00:00+09:00",
+            "end": "2026-09-11T10:00:00+09:00"
+          },
+          {
+            "task_id": "excavate",
+            "start": "2026-09-11T10:00:00+09:00",
+            "end": "2026-09-11T15:00:00+09:00"
+          },
+          {
+            "task_id": "compact",
+            "start": "2026-09-11T15:00:00+09:00",
+            "end": "2026-09-11T16:00:00+09:00"
+          }
+        ]
+      },
+      "status": 200,
+      "response": {
+        "feasible": false,
+        "violations": [
+          {
+            "code": "outside_total_work_window",
+            "task_id": "cut",
+            "equipment_id": null,
+            "predecessor_id": null,
+            "count": null,
+            "maximum": null,
+            "scheduled_minutes": null,
+            "required_minutes": null,
+            "detail": null
+          },
+          {
+            "code": "outside_equipment_time_window",
+            "task_id": "cut",
+            "equipment_id": "cutter",
+            "predecessor_id": null,
+            "count": null,
+            "maximum": null,
+            "scheduled_minutes": null,
+            "required_minutes": null,
+            "detail": null
+          }
+        ],
+        "policy_version": "prd_v2_1_explicit_input_only",
+        "notice_id": "integrated-demo",
+        "analysis_date": "2026-09-11"
+      }
+    },
+    {
+      "step": "S4_recommendations",
+      "method": "POST",
+      "path": "/api/prd/recommendations/constraint-filtered",
+      "request": {
+        "analysis_date": "2026-09-11",
+        "planning": {
+          "notice_id": "integrated-demo",
+          "project_name": "신촌 시연 공사",
+          "location": "서울특별시 서대문구 신촌동",
+          "construction_period": {
+            "start": "2026-09-11",
+            "end": "2026-09-11",
+            "raw_text": "시연 입력"
+          },
+          "total_work_window": {
+            "start": "08:00",
+            "end": "18:00"
+          },
+          "road_excavation": false,
+          "road_occupancy_permit_window": null,
+          "equipment_constraints": [
+            {
+              "equipment_id": "cutter",
+              "category": "절단기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "breaker",
+              "category": "브레이커",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 120,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "excavator",
+              "category": "굴착기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 300,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "roller",
+              "category": "롤러",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00",
+                  "end": "18:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            }
+          ],
+          "fixed_tasks": [],
+          "same_day_restoration_required": false,
+          "project_completion_date": "2026-09-11",
+          "non_adjustable_conditions": [
+            "restore fixed"
+          ],
+          "source_evidence": {
+            "page": "2"
+          },
+          "field_provenance": {
+            "construction_period": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "total_work_window": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "road_excavation": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "equipment_constraints": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          "provenance": "user_provided"
+        },
+        "predecessors": {
+          "break": [
+            "cut"
+          ],
+          "excavate": [
+            "break"
+          ],
+          "compact": [
+            "excavate"
+          ]
+        },
+        "equipment_by_task": {
+          "cut": "cutter",
+          "break": "breaker",
+          "excavate": "excavator",
+          "compact": "roller"
+        },
+        "equipment_count_by_task": {
+          "cut": 1,
+          "break": 1,
+          "excavate": 1,
+          "compact": 1
+        },
+        "restoration_task_ids": []
+      },
+      "status": 200,
+      "response": {
+        "input_planning": {
+          "notice_id": "integrated-demo",
+          "project_name": "신촌 시연 공사",
+          "location": "서울특별시 서대문구 신촌동",
+          "construction_period": {
+            "start": "2026-09-11",
+            "end": "2026-09-11",
+            "raw_text": "시연 입력"
+          },
+          "total_work_window": {
+            "start": "08:00:00",
+            "end": "18:00:00"
+          },
+          "road_excavation": false,
+          "road_occupancy_permit_window": null,
+          "equipment_constraints": [
+            {
+              "equipment_id": "cutter",
+              "category": "절단기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00:00",
+                  "end": "18:00:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "breaker",
+              "category": "브레이커",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 120,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00:00",
+                  "end": "18:00:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "excavator",
+              "category": "굴착기",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 300,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00:00",
+                  "end": "18:00:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            },
+            {
+              "equipment_id": "roller",
+              "category": "롤러",
+              "specification": null,
+              "model_name": null,
+              "max_daily_count": 1,
+              "required_usage_minutes": 60,
+              "permitted_time_windows": [
+                {
+                  "start": "08:00:00",
+                  "end": "18:00:00"
+                }
+              ],
+              "source_metadata": {
+                "status": "user_provided",
+                "source": "confirmed form",
+                "note": null,
+                "unit": null
+              }
+            }
+          ],
+          "fixed_tasks": [],
+          "same_day_restoration_required": false,
+          "project_completion_date": "2026-09-11",
+          "non_adjustable_conditions": [
+            "restore fixed"
+          ],
+          "source_evidence": {
+            "page": "2"
+          },
+          "field_provenance": {
+            "construction_period": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "total_work_window": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "road_excavation": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            },
+            "equipment_constraints": {
+              "status": "user_provided",
+              "source": "confirmed form",
+              "note": null,
+              "unit": null
+            }
+          },
+          "provenance": "user_provided"
+        },
+        "input_provenance": {
+          "construction_period": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "total_work_window": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "road_excavation": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          },
+          "equipment_constraints": {
+            "status": "user_provided",
+            "source": "confirmed form",
+            "note": null,
+            "unit": null
+          }
+        },
+        "policy_version": "prd_v2_1_explicit_input_only",
+        "candidate_generation_mode": "existing_optimizer_15_minute_offsets_0_to_120",
+        "optimization_claim": "constraint_filtered_candidate_set_not_global_optimum",
+        "scenario_id": "final-demo-congestion",
+        "analysis_date": "2026-09-11",
+        "original_schedule": {
+          "candidate_id": "offset-0",
+          "assignments": [
+            {
+              "task_id": "cut",
+              "start": "2026-09-11T07:00:00+09:00",
+              "end": "2026-09-11T08:00:00+09:00"
+            },
+            {
+              "task_id": "break",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T10:00:00+09:00"
+            },
+            {
+              "task_id": "excavate",
+              "start": "2026-09-11T10:00:00+09:00",
+              "end": "2026-09-11T15:00:00+09:00"
+            },
+            {
+              "task_id": "compact",
+              "start": "2026-09-11T15:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00"
+            }
+          ],
+          "base_optimizer_feasible": true,
+          "prd_feasible": false,
+          "recommendable": false,
+          "violations": [
+            {
+              "code": "outside_total_work_window",
+              "task_id": "cut",
+              "equipment_id": null,
+              "predecessor_id": null,
+              "count": null,
+              "maximum": null,
+              "scheduled_minutes": null,
+              "required_minutes": null,
+              "detail": null
+            },
+            {
+              "code": "outside_equipment_time_window",
+              "task_id": "cut",
+              "equipment_id": "cutter",
+              "predecessor_id": null,
+              "count": null,
+              "maximum": null,
+              "scheduled_minutes": null,
+              "required_minutes": null,
+              "detail": null
+            }
+          ],
+          "pareto_after_constraint_filter": false,
+          "schedule_change_minutes": 0,
+          "project_start_change_minutes": 0,
+          "project_end_change_minutes": 0,
+          "noise_impact": {
+            "max_continuous_high_noise_minutes": 660,
+            "longest_quiet_window_minutes": 0,
+            "sensitive_high_noise_minutes": 660,
+            "max_impact_score": 47.59,
+            "total_impact_score": 4303.12,
+            "absolute_impact_cost": 4303.12,
+            "incremental_impact_cost": 7.36,
+            "new_project_additional_high_noise_minutes": 0,
+            "sensitive_new_project_exposure_minutes": 540,
+            "sensitive_new_project_receptor_minutes": 1620,
+            "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+            "new_project_receptor_minutes": 1620,
+            "new_project_inactive_minutes": 120,
+            "max_continuous_new_project_minutes": 540,
+            "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+            "cumulative_delta_db_minutes": 66.0,
+            "existing_noise_overlap_receptor_minutes": 360,
+            "max_total_estimated_db": 82.43,
+            "max_new_project_contribution_db": 63.58,
+            "saturation_slot_count": 68,
+            "schedule_change_minutes": 0,
+            "project_start_change_minutes": 0,
+            "project_end_change_minutes": 0
+          },
+          "objective_values": {
+            "resident_cost": 7.36,
+            "change_cost": 0.0,
+            "total_task_start_shift_minutes": 0.0,
+            "project_start_shift_minutes": 0.0,
+            "project_end_shift_minutes": 0.0,
+            "base_impact_cost": 4303.12,
+            "absolute_impact_cost": 4303.12,
+            "incremental_impact_cost": 7.36,
+            "physical_energy_cost": 132.021053,
+            "sensitive_exposure_cost": 1620.0,
+            "weighted_sensitive_exposure": 2430.0,
+            "continuous_burden_cost": 540.0,
+            "existing_noise_overlap_slots": 24.0,
+            "existing_noise_overlap_minutes": 360.0,
+            "policy_overlap_cost": 0.0,
+            "existing_noise_overlap_penalty": 0.0
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
+        },
+        "candidates": [
+          {
+            "candidate_id": "offset-0",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T15:00:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T15:00:00+09:00",
+                "end": "2026-09-11T16:00:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": false,
+            "recommendable": false,
+            "violations": [
+              {
+                "code": "outside_total_work_window",
+                "task_id": "cut",
+                "equipment_id": null,
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              },
+              {
+                "code": "outside_equipment_time_window",
+                "task_id": "cut",
+                "equipment_id": "cutter",
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              }
+            ],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 0,
+            "project_start_change_minutes": 0,
+            "project_end_change_minutes": 0,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.59,
+              "total_impact_score": 4303.12,
+              "absolute_impact_cost": 4303.12,
+              "incremental_impact_cost": 7.36,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 66.0,
+              "existing_noise_overlap_receptor_minutes": 360,
+              "max_total_estimated_db": 82.43,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 68,
+              "schedule_change_minutes": 0,
+              "project_start_change_minutes": 0,
+              "project_end_change_minutes": 0
+            },
+            "objective_values": {
+              "resident_cost": 7.36,
+              "change_cost": 0.0,
+              "total_task_start_shift_minutes": 0.0,
+              "project_start_shift_minutes": 0.0,
+              "project_end_shift_minutes": 0.0,
+              "base_impact_cost": 4303.12,
+              "absolute_impact_cost": 4303.12,
+              "incremental_impact_cost": 7.36,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 24.0,
+              "existing_noise_overlap_minutes": 360.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-15",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T07:15:00+09:00",
+                "end": "2026-09-11T08:15:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T08:15:00+09:00",
+                "end": "2026-09-11T10:15:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T10:15:00+09:00",
+                "end": "2026-09-11T15:15:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T15:15:00+09:00",
+                "end": "2026-09-11T16:15:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": false,
+            "recommendable": false,
+            "violations": [
+              {
+                "code": "outside_total_work_window",
+                "task_id": "cut",
+                "equipment_id": null,
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              },
+              {
+                "code": "outside_equipment_time_window",
+                "task_id": "cut",
+                "equipment_id": "cutter",
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              }
+            ],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 60,
+            "project_start_change_minutes": 15,
+            "project_end_change_minutes": 15,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.59,
+              "total_impact_score": 4304.52,
+              "absolute_impact_cost": 4304.52,
+              "incremental_impact_cost": 8.76,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 78.75,
+              "existing_noise_overlap_receptor_minutes": 315,
+              "max_total_estimated_db": 82.43,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 66,
+              "schedule_change_minutes": 60,
+              "project_start_change_minutes": 15,
+              "project_end_change_minutes": 15
+            },
+            "objective_values": {
+              "resident_cost": 8.76,
+              "change_cost": 60.0,
+              "total_task_start_shift_minutes": 60.0,
+              "project_start_shift_minutes": 15.0,
+              "project_end_shift_minutes": 15.0,
+              "base_impact_cost": 4304.52,
+              "absolute_impact_cost": 4304.52,
+              "incremental_impact_cost": 8.76,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 21.0,
+              "existing_noise_overlap_minutes": 315.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-30",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T07:30:00+09:00",
+                "end": "2026-09-11T08:30:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T08:30:00+09:00",
+                "end": "2026-09-11T10:30:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T10:30:00+09:00",
+                "end": "2026-09-11T15:30:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T15:30:00+09:00",
+                "end": "2026-09-11T16:30:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": false,
+            "recommendable": false,
+            "violations": [
+              {
+                "code": "outside_total_work_window",
+                "task_id": "cut",
+                "equipment_id": null,
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              },
+              {
+                "code": "outside_equipment_time_window",
+                "task_id": "cut",
+                "equipment_id": "cutter",
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              }
+            ],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 120,
+            "project_start_change_minutes": 30,
+            "project_end_change_minutes": 30,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.59,
+              "total_impact_score": 4305.92,
+              "absolute_impact_cost": 4305.92,
+              "incremental_impact_cost": 10.16,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 91.5,
+              "existing_noise_overlap_receptor_minutes": 270,
+              "max_total_estimated_db": 82.43,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 64,
+              "schedule_change_minutes": 120,
+              "project_start_change_minutes": 30,
+              "project_end_change_minutes": 30
+            },
+            "objective_values": {
+              "resident_cost": 10.16,
+              "change_cost": 120.0,
+              "total_task_start_shift_minutes": 120.0,
+              "project_start_shift_minutes": 30.0,
+              "project_end_shift_minutes": 30.0,
+              "base_impact_cost": 4305.92,
+              "absolute_impact_cost": 4305.92,
+              "incremental_impact_cost": 10.16,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 18.0,
+              "existing_noise_overlap_minutes": 270.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-45",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T07:45:00+09:00",
+                "end": "2026-09-11T08:45:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T08:45:00+09:00",
+                "end": "2026-09-11T10:45:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T10:45:00+09:00",
+                "end": "2026-09-11T15:45:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T15:45:00+09:00",
+                "end": "2026-09-11T16:45:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": false,
+            "recommendable": false,
+            "violations": [
+              {
+                "code": "outside_total_work_window",
+                "task_id": "cut",
+                "equipment_id": null,
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              },
+              {
+                "code": "outside_equipment_time_window",
+                "task_id": "cut",
+                "equipment_id": "cutter",
+                "predecessor_id": null,
+                "count": null,
+                "maximum": null,
+                "scheduled_minutes": null,
+                "required_minutes": null,
+                "detail": null
+              }
+            ],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 180,
+            "project_start_change_minutes": 45,
+            "project_end_change_minutes": 45,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.59,
+              "total_impact_score": 4307.32,
+              "absolute_impact_cost": 4307.32,
+              "incremental_impact_cost": 11.56,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 104.25,
+              "existing_noise_overlap_receptor_minutes": 225,
+              "max_total_estimated_db": 82.43,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 62,
+              "schedule_change_minutes": 180,
+              "project_start_change_minutes": 45,
+              "project_end_change_minutes": 45
+            },
+            "objective_values": {
+              "resident_cost": 11.56,
+              "change_cost": 180.0,
+              "total_task_start_shift_minutes": 180.0,
+              "project_start_shift_minutes": 45.0,
+              "project_end_shift_minutes": 45.0,
+              "base_impact_cost": 4307.32,
+              "absolute_impact_cost": 4307.32,
+              "incremental_impact_cost": 11.56,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 15.0,
+              "existing_noise_overlap_minutes": 225.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-60",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T16:00:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T16:00:00+09:00",
+                "end": "2026-09-11T17:00:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": true,
+            "recommendable": true,
+            "violations": [],
+            "pareto_after_constraint_filter": true,
+            "schedule_change_minutes": 240,
+            "project_start_change_minutes": 60,
+            "project_end_change_minutes": 60,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.5,
+              "total_impact_score": 4308.72,
+              "absolute_impact_cost": 4308.72,
+              "incremental_impact_cost": 12.96,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 117.0,
+              "existing_noise_overlap_receptor_minutes": 180,
+              "max_total_estimated_db": 82.38,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 60,
+              "schedule_change_minutes": 240,
+              "project_start_change_minutes": 60,
+              "project_end_change_minutes": 60
+            },
+            "objective_values": {
+              "resident_cost": 12.96,
+              "change_cost": 240.0,
+              "total_task_start_shift_minutes": 240.0,
+              "project_start_shift_minutes": 60.0,
+              "project_end_shift_minutes": 60.0,
+              "base_impact_cost": 4308.72,
+              "absolute_impact_cost": 4308.72,
+              "incremental_impact_cost": 12.96,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 12.0,
+              "existing_noise_overlap_minutes": 180.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": "rec-11faf7cba431e9952f94091e",
+            "schedule_version": "recommendation-v1-11faf7cba431",
+            "schedule_fingerprint": "11faf7cba431e9952f94091e2a09278968e2c5d880b22a7e1631d2b3d3e99cc4"
+          },
+          {
+            "candidate_id": "offset-75",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T08:15:00+09:00",
+                "end": "2026-09-11T09:15:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T09:15:00+09:00",
+                "end": "2026-09-11T11:15:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T11:15:00+09:00",
+                "end": "2026-09-11T16:15:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T16:15:00+09:00",
+                "end": "2026-09-11T17:15:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": true,
+            "recommendable": false,
+            "violations": [],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 300,
+            "project_start_change_minutes": 75,
+            "project_end_change_minutes": 75,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.5,
+              "total_impact_score": 4308.78,
+              "absolute_impact_cost": 4308.78,
+              "incremental_impact_cost": 13.02,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 117.6,
+              "existing_noise_overlap_receptor_minutes": 135,
+              "max_total_estimated_db": 82.38,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 60,
+              "schedule_change_minutes": 300,
+              "project_start_change_minutes": 75,
+              "project_end_change_minutes": 75
+            },
+            "objective_values": {
+              "resident_cost": 13.02,
+              "change_cost": 300.0,
+              "total_task_start_shift_minutes": 300.0,
+              "project_start_shift_minutes": 75.0,
+              "project_end_shift_minutes": 75.0,
+              "base_impact_cost": 4308.78,
+              "absolute_impact_cost": 4308.78,
+              "incremental_impact_cost": 13.02,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 9.0,
+              "existing_noise_overlap_minutes": 135.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-90",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T08:30:00+09:00",
+                "end": "2026-09-11T09:30:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T09:30:00+09:00",
+                "end": "2026-09-11T11:30:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T11:30:00+09:00",
+                "end": "2026-09-11T16:30:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T16:30:00+09:00",
+                "end": "2026-09-11T17:30:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": true,
+            "recommendable": false,
+            "violations": [],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 360,
+            "project_start_change_minutes": 90,
+            "project_end_change_minutes": 90,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.5,
+              "total_impact_score": 4308.84,
+              "absolute_impact_cost": 4308.84,
+              "incremental_impact_cost": 13.08,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 118.2,
+              "existing_noise_overlap_receptor_minutes": 90,
+              "max_total_estimated_db": 82.38,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 60,
+              "schedule_change_minutes": 360,
+              "project_start_change_minutes": 90,
+              "project_end_change_minutes": 90
+            },
+            "objective_values": {
+              "resident_cost": 13.08,
+              "change_cost": 360.0,
+              "total_task_start_shift_minutes": 360.0,
+              "project_start_shift_minutes": 90.0,
+              "project_end_shift_minutes": 90.0,
+              "base_impact_cost": 4308.84,
+              "absolute_impact_cost": 4308.84,
+              "incremental_impact_cost": 13.08,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 6.0,
+              "existing_noise_overlap_minutes": 90.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-105",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T08:45:00+09:00",
+                "end": "2026-09-11T09:45:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T09:45:00+09:00",
+                "end": "2026-09-11T11:45:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T11:45:00+09:00",
+                "end": "2026-09-11T16:45:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T16:45:00+09:00",
+                "end": "2026-09-11T17:45:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": true,
+            "recommendable": false,
+            "violations": [],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 420,
+            "project_start_change_minutes": 105,
+            "project_end_change_minutes": 105,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.5,
+              "total_impact_score": 4308.9,
+              "absolute_impact_cost": 4308.9,
+              "incremental_impact_cost": 13.14,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 118.8,
+              "existing_noise_overlap_receptor_minutes": 45,
+              "max_total_estimated_db": 82.38,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 60,
+              "schedule_change_minutes": 420,
+              "project_start_change_minutes": 105,
+              "project_end_change_minutes": 105
+            },
+            "objective_values": {
+              "resident_cost": 13.14,
+              "change_cost": 420.0,
+              "total_task_start_shift_minutes": 420.0,
+              "project_start_shift_minutes": 105.0,
+              "project_end_shift_minutes": 105.0,
+              "base_impact_cost": 4308.9,
+              "absolute_impact_cost": 4308.9,
+              "incremental_impact_cost": 13.14,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 3.0,
+              "existing_noise_overlap_minutes": 45.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          },
+          {
+            "candidate_id": "offset-120",
+            "assignments": [
+              {
+                "task_id": "cut",
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "task_id": "break",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T12:00:00+09:00"
+              },
+              {
+                "task_id": "excavate",
+                "start": "2026-09-11T12:00:00+09:00",
+                "end": "2026-09-11T17:00:00+09:00"
+              },
+              {
+                "task_id": "compact",
+                "start": "2026-09-11T17:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00"
+              }
+            ],
+            "base_optimizer_feasible": true,
+            "prd_feasible": true,
+            "recommendable": false,
+            "violations": [],
+            "pareto_after_constraint_filter": false,
+            "schedule_change_minutes": 480,
+            "project_start_change_minutes": 120,
+            "project_end_change_minutes": 120,
+            "noise_impact": {
+              "max_continuous_high_noise_minutes": 660,
+              "longest_quiet_window_minutes": 0,
+              "sensitive_high_noise_minutes": 660,
+              "max_impact_score": 47.49,
+              "total_impact_score": 4308.96,
+              "absolute_impact_cost": 4308.96,
+              "incremental_impact_cost": 13.2,
+              "new_project_additional_high_noise_minutes": 0,
+              "sensitive_new_project_exposure_minutes": 540,
+              "sensitive_new_project_receptor_minutes": 1620,
+              "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+              "new_project_receptor_minutes": 1620,
+              "new_project_inactive_minutes": 120,
+              "max_continuous_new_project_minutes": 540,
+              "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+              "cumulative_delta_db_minutes": 119.4,
+              "existing_noise_overlap_receptor_minutes": 0,
+              "max_total_estimated_db": 82.37,
+              "max_new_project_contribution_db": 63.58,
+              "saturation_slot_count": 60,
+              "schedule_change_minutes": 480,
+              "project_start_change_minutes": 120,
+              "project_end_change_minutes": 120
+            },
+            "objective_values": {
+              "resident_cost": 13.2,
+              "change_cost": 480.0,
+              "total_task_start_shift_minutes": 480.0,
+              "project_start_shift_minutes": 120.0,
+              "project_end_shift_minutes": 120.0,
+              "base_impact_cost": 4308.96,
+              "absolute_impact_cost": 4308.96,
+              "incremental_impact_cost": 13.2,
+              "physical_energy_cost": 132.021053,
+              "sensitive_exposure_cost": 1620.0,
+              "weighted_sensitive_exposure": 2430.0,
+              "continuous_burden_cost": 540.0,
+              "existing_noise_overlap_slots": 0.0,
+              "existing_noise_overlap_minutes": 0.0,
+              "policy_overlap_cost": 0.0,
+              "existing_noise_overlap_penalty": 0.0
+            },
+            "schedule_snapshot_id": null,
+            "schedule_version": null,
+            "schedule_fingerprint": null
+          }
+        ],
+        "recommendable_candidate_ids": [
+          "offset-60"
+        ],
+        "recommendation_status": "available",
+        "no_recommendation_reasons": [],
+        "simulation_status": "simulated",
+        "missing_information": [],
+        "caveats": [
+          "This is a constraint-filtered result over the existing offset candidate set, not a global optimum.",
+          "No unspecified time limit or relaxed constraint was introduced.",
+          "S-DoT observations are not added to the acoustic synthesis.",
+          "Official construction geometry and residential facade receptors remain unavailable; field accuracy is not_evaluable."
+        ]
+      }
+    },
+    {
+      "step": "S5_schedule_selection",
+      "selected_candidate_id": "offset-60",
+      "server_snapshot_id": "rec-11faf7cba431e9952f94091e"
+    },
+    {
+      "step": "S6_schedule_comparison",
+      "method": "POST",
+      "path": "/api/schedules/compare",
+      "request": {
+        "scenario_id": "final-demo-congestion",
+        "analysis_date": "2026-09-11",
+        "background_profile": "road_traffic_observed_profile",
+        "before": [
+          {
+            "task_id": "cut",
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T08:00:00+09:00"
+          },
+          {
+            "task_id": "break",
+            "start": "2026-09-11T08:00:00+09:00",
+            "end": "2026-09-11T10:00:00+09:00"
+          },
+          {
+            "task_id": "excavate",
+            "start": "2026-09-11T10:00:00+09:00",
+            "end": "2026-09-11T15:00:00+09:00"
+          },
+          {
+            "task_id": "compact",
+            "start": "2026-09-11T15:00:00+09:00",
+            "end": "2026-09-11T16:00:00+09:00"
+          }
+        ],
+        "after": [
+          {
+            "task_id": "cut",
+            "start": "2026-09-11T08:00:00+09:00",
+            "end": "2026-09-11T09:00:00+09:00"
+          },
+          {
+            "task_id": "break",
+            "start": "2026-09-11T09:00:00+09:00",
+            "end": "2026-09-11T11:00:00+09:00"
+          },
+          {
+            "task_id": "excavate",
+            "start": "2026-09-11T11:00:00+09:00",
+            "end": "2026-09-11T16:00:00+09:00"
+          },
+          {
+            "task_id": "compact",
+            "start": "2026-09-11T16:00:00+09:00",
+            "end": "2026-09-11T17:00:00+09:00"
+          }
+        ]
+      },
+      "status": 200,
+      "response": {
+        "before": {
+          "max_continuous_high_noise_minutes": 660,
+          "longest_quiet_window_minutes": 0,
+          "sensitive_high_noise_minutes": 660,
+          "max_impact_score": 47.59,
+          "total_impact_score": 4303.12,
+          "absolute_impact_cost": 4303.12,
+          "incremental_impact_cost": 7.36,
+          "new_project_additional_high_noise_minutes": 0,
+          "sensitive_new_project_exposure_minutes": 540,
+          "sensitive_new_project_receptor_minutes": 1620,
+          "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+          "new_project_receptor_minutes": 1620,
+          "new_project_inactive_minutes": 120,
+          "max_continuous_new_project_minutes": 540,
+          "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+          "cumulative_delta_db_minutes": 66.0,
+          "existing_noise_overlap_receptor_minutes": 360,
+          "max_total_estimated_db": 82.43,
+          "max_new_project_contribution_db": 63.58,
+          "saturation_slot_count": 68,
+          "schedule_change_minutes": 0,
+          "project_start_change_minutes": 0,
+          "project_end_change_minutes": 0
+        },
+        "after": {
+          "max_continuous_high_noise_minutes": 660,
+          "longest_quiet_window_minutes": 0,
+          "sensitive_high_noise_minutes": 660,
+          "max_impact_score": 47.5,
+          "total_impact_score": 4308.72,
+          "absolute_impact_cost": 4308.72,
+          "incremental_impact_cost": 12.96,
+          "new_project_additional_high_noise_minutes": 0,
+          "sensitive_new_project_exposure_minutes": 540,
+          "sensitive_new_project_receptor_minutes": 1620,
+          "sensitivity_weighted_new_project_receptor_minutes": 2430.0,
+          "new_project_receptor_minutes": 1620,
+          "new_project_inactive_minutes": 120,
+          "max_continuous_new_project_minutes": 540,
+          "new_project_energy_exposure_65db_ref_minutes": 132.021053,
+          "cumulative_delta_db_minutes": 117.0,
+          "existing_noise_overlap_receptor_minutes": 180,
+          "max_total_estimated_db": 82.38,
+          "max_new_project_contribution_db": 63.58,
+          "saturation_slot_count": 60,
+          "schedule_change_minutes": 240,
+          "project_start_change_minutes": 60,
+          "project_end_change_minutes": 60
+        },
+        "delta": {
+          "max_continuous_high_noise_minutes": 0,
+          "longest_quiet_window_minutes": 0,
+          "sensitive_high_noise_minutes": 0,
+          "max_impact_score": -0.09,
+          "total_impact_score": 5.6,
+          "absolute_impact_cost": 5.6,
+          "incremental_impact_cost": 5.6,
+          "new_project_additional_high_noise_minutes": 0,
+          "sensitive_new_project_exposure_minutes": 0,
+          "sensitive_new_project_receptor_minutes": 0,
+          "sensitivity_weighted_new_project_receptor_minutes": 0.0,
+          "new_project_receptor_minutes": 0,
+          "new_project_inactive_minutes": 0,
+          "max_continuous_new_project_minutes": 0,
+          "new_project_energy_exposure_65db_ref_minutes": 0.0,
+          "cumulative_delta_db_minutes": 51.0,
+          "existing_noise_overlap_receptor_minutes": -180,
+          "max_total_estimated_db": -0.05,
+          "max_new_project_contribution_db": 0.0,
+          "saturation_slot_count": -8,
+          "schedule_change_minutes": 240,
+          "project_start_change_minutes": 60,
+          "project_end_change_minutes": 60
+        },
+        "schedule_change_details": {
+          "definition": "after relative to supplied before assignments",
+          "task_start_shift_minutes": {
+            "cut": 60,
+            "break": 60,
+            "excavate": 60,
+            "compact": 60
+          },
+          "total_task_start_shift_minutes": 240,
+          "project_start_shift_minutes": 60,
+          "project_end_shift_minutes": 60,
+          "before_project_end": "2026-09-11T16:00:00+09:00",
+          "after_project_end": "2026-09-11T17:00:00+09:00"
+        },
+        "comparison_basis": {
+          "date": "2026-09-11",
+          "slot_minutes": 15,
+          "threshold_db": 65.0,
+          "background_profile": "road_traffic_observed_profile",
+          "same_receptors_and_rules": true
+        }
+      }
+    },
+    {
+      "step": "S7_notice_draft",
+      "method": "POST",
+      "path": "/api/staff/resident-notices/drafts",
+      "request": {
+        "project_id": "integrated-demo",
+        "project_name": "신촌 시연 공사",
+        "public_location": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "construction_date": "2026-09-11",
+        "public_window_start": "2026-09-11T07:00:00+09:00",
+        "public_window_end": "2026-09-11T18:00:00+09:00",
+        "public_contact": "서대문구 공사안내 02-0000-0000",
+        "schedule": {
+          "schedule_id": "rec-11faf7cba431e9952f94091e",
+          "schedule_version": "recommendation-v1-11faf7cba431",
+          "candidate_id": "offset-60",
+          "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+          "candidate_valid": true,
+          "schedule_snapshot_id": "rec-11faf7cba431e9952f94091e",
+          "assignments": [
+            {
+              "task_id": "cut",
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "break",
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "excavate",
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "compact",
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "field": "schedule",
+            "status": "demo",
+            "source": "server recommendation snapshot",
+            "note": "실제 현장 일정 아님"
+          }
+        ],
+        "data_classification": "demo"
+      },
+      "status": 200,
+      "response": {
+        "status": "draft",
+        "publication_status": "private",
+        "project_id": "integrated-demo",
+        "project_name": "신촌 시연 공사",
+        "public_location": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "construction_date": "2026-09-11",
+        "public_window": {
+          "start": "2026-09-11T07:00:00+09:00",
+          "end": "2026-09-11T18:00:00+09:00"
+        },
+        "public_contact": "서대문구 공사안내 02-0000-0000",
+        "schedule_id": "rec-11faf7cba431e9952f94091e",
+        "schedule_version": "recommendation-v1-11faf7cba431",
+        "schedule_fingerprint": "381e8050692cafc148fd07ad98151610b09572ab6146d6ead0d696fe2293877a",
+        "candidate_id": "offset-60",
+        "candidate_valid": true,
+        "recommendation_snapshot_status": "verified",
+        "schedule_summary": {
+          "scheduled_work": [
+            {
+              "task_id": "cut",
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "break",
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "excavate",
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "compact",
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            }
+          ],
+          "noisy_work_intervals": [
+            {
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00"
+            }
+          ],
+          "no_scheduled_work_intervals": [
+            {
+              "start": "2026-09-11T07:00:00+09:00",
+              "end": "2026-09-11T08:00:00+09:00"
+            },
+            {
+              "start": "2026-09-11T17:00:00+09:00",
+              "end": "2026-09-11T18:00:00+09:00"
+            }
+          ]
+        },
+        "headline": "2026-09-11 공사 일정 안내",
+        "body": "서울특별시 서대문구 연세로2나길 20 (창천동)에서 신촌 시연 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 09:00~11:00 포장 깨기, 11:00~16:00 터파기, 16:00~17:00 되메우기 및 다짐입니다. 시끄러운 작업 예정 시간은 08:00~09:00, 09:00~11:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 17:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다.",
+        "missing_fields": [],
+        "provenance": [
+          {
+            "field": "schedule",
+            "status": "demo",
+            "source": "server recommendation snapshot",
+            "note": "실제 현장 일정 아님"
+          }
+        ],
+        "data_classification": "demo",
+        "revision": 1,
+        "created_at": "2026-10-26T08:35:02.000845Z",
+        "updated_at": "2026-10-26T08:35:02.000845Z",
+        "confirmed_at": null,
+        "publication_version": null,
+        "previous_publication_invalidated": false,
+        "idempotent": false
+      }
+    },
+    {
+      "step": "S7_staff_edit",
+      "method": "PUT",
+      "path": "/api/staff/resident-notices/drafts/integrated-demo",
+      "request": {
+        "expected_revision": 1,
+        "project_name": "신촌 시연 공사",
+        "public_location": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "public_contact": "서대문구 공사안내 02-0000-0000",
+        "headline": "주민 공사 일정 안내",
+        "body": "서울특별시 서대문구 연세로2나길 20 (창천동)에서 신촌 시연 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 09:00~11:00 포장 깨기, 11:00~16:00 터파기, 16:00~17:00 되메우기 및 다짐입니다. 시끄러운 작업 예정 시간은 08:00~09:00, 09:00~11:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 17:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다. 담당자가 내용을 확인했습니다.",
+        "schedule": {
+          "schedule_id": "rec-11faf7cba431e9952f94091e",
+          "schedule_version": "recommendation-v1-11faf7cba431",
+          "candidate_id": "offset-60",
+          "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+          "candidate_valid": true,
+          "schedule_snapshot_id": "rec-11faf7cba431e9952f94091e",
+          "assignments": [
+            {
+              "task_id": "cut",
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "break",
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "excavate",
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "compact",
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            }
+          ]
+        },
+        "provenance": [
+          {
+            "field": "schedule",
+            "status": "demo",
+            "source": "server recommendation snapshot"
+          }
+        ]
+      },
+      "status": 200,
+      "response": {
+        "status": "draft",
+        "publication_status": "private",
+        "project_id": "integrated-demo",
+        "project_name": "신촌 시연 공사",
+        "public_location": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "construction_date": "2026-09-11",
+        "public_window": {
+          "start": "2026-09-11T07:00:00+09:00",
+          "end": "2026-09-11T18:00:00+09:00"
+        },
+        "public_contact": "서대문구 공사안내 02-0000-0000",
+        "schedule_id": "rec-11faf7cba431e9952f94091e",
+        "schedule_version": "recommendation-v1-11faf7cba431",
+        "schedule_fingerprint": "381e8050692cafc148fd07ad98151610b09572ab6146d6ead0d696fe2293877a",
+        "candidate_id": "offset-60",
+        "candidate_valid": true,
+        "recommendation_snapshot_status": "verified",
+        "schedule_summary": {
+          "scheduled_work": [
+            {
+              "task_id": "cut",
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "break",
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "excavate",
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "compact",
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            }
+          ],
+          "noisy_work_intervals": [
+            {
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00"
+            }
+          ],
+          "no_scheduled_work_intervals": [
+            {
+              "start": "2026-09-11T07:00:00+09:00",
+              "end": "2026-09-11T08:00:00+09:00"
+            },
+            {
+              "start": "2026-09-11T17:00:00+09:00",
+              "end": "2026-09-11T18:00:00+09:00"
+            }
+          ]
+        },
+        "headline": "주민 공사 일정 안내",
+        "body": "서울특별시 서대문구 연세로2나길 20 (창천동)에서 신촌 시연 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 09:00~11:00 포장 깨기, 11:00~16:00 터파기, 16:00~17:00 되메우기 및 다짐입니다. 시끄러운 작업 예정 시간은 08:00~09:00, 09:00~11:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 17:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다. 담당자가 내용을 확인했습니다.",
+        "missing_fields": [],
+        "provenance": [
+          {
+            "field": "schedule",
+            "status": "demo",
+            "source": "server recommendation snapshot",
+            "note": null
+          }
+        ],
+        "data_classification": "demo",
+        "revision": 2,
+        "created_at": "2026-10-26T08:35:02.000845Z",
+        "updated_at": "2026-10-26T08:35:02.002545Z",
+        "confirmed_at": null,
+        "publication_version": null,
+        "previous_publication_invalidated": false,
+        "idempotent": false
+      }
+    },
+    {
+      "step": "S8_before_confirm",
+      "method": "GET",
+      "path": "/api/public/construction/integrated-demo/resident-notice",
+      "request": null,
+      "status": 200,
+      "response": {
+        "status": "not_published",
+        "notice": null,
+        "message": "No confirmed resident notice is published"
+      }
+    },
+    {
+      "step": "S7_confirm",
+      "method": "POST",
+      "path": "/api/staff/resident-notices/drafts/integrated-demo/confirm",
+      "request": {
+        "expected_revision": 2,
+        "schedule_version": "recommendation-v1-11faf7cba431"
+      },
+      "status": 200,
+      "response": {
+        "status": "confirmed",
+        "publication_status": "published",
+        "project_id": "integrated-demo",
+        "project_name": "신촌 시연 공사",
+        "public_location": "서울특별시 서대문구 연세로2나길 20 (창천동)",
+        "construction_date": "2026-09-11",
+        "public_window": {
+          "start": "2026-09-11T07:00:00+09:00",
+          "end": "2026-09-11T18:00:00+09:00"
+        },
+        "public_contact": "서대문구 공사안내 02-0000-0000",
+        "schedule_id": "rec-11faf7cba431e9952f94091e",
+        "schedule_version": "recommendation-v1-11faf7cba431",
+        "schedule_fingerprint": "381e8050692cafc148fd07ad98151610b09572ab6146d6ead0d696fe2293877a",
+        "candidate_id": "offset-60",
+        "candidate_valid": true,
+        "recommendation_snapshot_status": "verified",
+        "schedule_summary": {
+          "scheduled_work": [
+            {
+              "task_id": "cut",
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "break",
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "high_noise": true,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "excavate",
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            },
+            {
+              "task_id": "compact",
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "high_noise": false,
+              "classification_source": "demo"
+            }
+          ],
+          "noisy_work_intervals": [
+            {
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00"
+            }
+          ],
+          "no_scheduled_work_intervals": [
+            {
+              "start": "2026-09-11T07:00:00+09:00",
+              "end": "2026-09-11T08:00:00+09:00"
+            },
+            {
+              "start": "2026-09-11T17:00:00+09:00",
+              "end": "2026-09-11T18:00:00+09:00"
+            }
+          ]
+        },
+        "headline": "주민 공사 일정 안내",
+        "body": "서울특별시 서대문구 연세로2나길 20 (창천동)에서 신촌 시연 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 09:00~11:00 포장 깨기, 11:00~16:00 터파기, 16:00~17:00 되메우기 및 다짐입니다. 시끄러운 작업 예정 시간은 08:00~09:00, 09:00~11:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 17:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다. 담당자가 내용을 확인했습니다.",
+        "missing_fields": [],
+        "provenance": [
+          {
+            "field": "schedule",
+            "status": "demo",
+            "source": "server recommendation snapshot",
+            "note": null
+          }
+        ],
+        "data_classification": "demo",
+        "revision": 2,
+        "created_at": "2026-10-26T08:35:02.000845Z",
+        "updated_at": "2026-10-26T08:35:02.004535Z",
+        "confirmed_at": "2026-10-26T08:35:02.004535Z",
+        "publication_version": 1,
+        "previous_publication_invalidated": false,
+        "idempotent": false
+      }
+    },
+    {
+      "step": "S8_public_read",
+      "method": "GET",
+      "path": "/api/public/construction/integrated-demo/resident-notice",
+      "request": null,
+      "status": 200,
+      "response": {
+        "status": "published",
+        "notice": {
+          "today_schedule": [
+            {
+              "task_name": "콘크리트 절단",
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00"
+            },
+            {
+              "task_name": "포장 깨기",
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00"
+            },
+            {
+              "task_name": "터파기",
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00"
+            },
+            {
+              "task_name": "되메우기 및 다짐",
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00"
+            }
+          ],
+          "noisy_work_intervals": [
+            {
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00"
+            }
+          ],
+          "longest_quiet_interval": {
+            "start": "2026-09-11T11:00:00+09:00",
+            "end": "2026-09-11T18:00:00+09:00"
+          },
+          "quiet_interval_limitation": "확정 일정에서 시끄러운 작업이 배정되지 않은 최장 연속 시간이며 실제 환경의 정숙이나 현장 소음 부재를 보장하지 않습니다.",
+          "confirmed_notice": "주민 공사 일정 안내\n\n서울특별시 서대문구 연세로2나길 20 (창천동)에서 신촌 시연 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 09:00~11:00 포장 깨기, 11:00~16:00 터파기, 16:00~17:00 되메우기 및 다짐입니다. 시끄러운 작업 예정 시간은 08:00~09:00, 09:00~11:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 17:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다. 담당자가 내용을 확인했습니다.",
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "hourly_noise_levels": [
+            {
+              "start": "2026-09-11T07:00:00+09:00",
+              "end": "2026-09-11T08:00:00+09:00",
+              "level": "quiet",
+              "label": "조용"
+            },
+            {
+              "start": "2026-09-11T08:00:00+09:00",
+              "end": "2026-09-11T09:00:00+09:00",
+              "level": "loud",
+              "label": "시끄러움"
+            },
+            {
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T10:00:00+09:00",
+              "level": "loud",
+              "label": "시끄러움"
+            },
+            {
+              "start": "2026-09-11T10:00:00+09:00",
+              "end": "2026-09-11T11:00:00+09:00",
+              "level": "loud",
+              "label": "시끄러움"
+            },
+            {
+              "start": "2026-09-11T11:00:00+09:00",
+              "end": "2026-09-11T12:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T12:00:00+09:00",
+              "end": "2026-09-11T13:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T13:00:00+09:00",
+              "end": "2026-09-11T14:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T14:00:00+09:00",
+              "end": "2026-09-11T15:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T15:00:00+09:00",
+              "end": "2026-09-11T16:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T16:00:00+09:00",
+              "end": "2026-09-11T17:00:00+09:00",
+              "level": "moderate",
+              "label": "보통"
+            },
+            {
+              "start": "2026-09-11T17:00:00+09:00",
+              "end": "2026-09-11T18:00:00+09:00",
+              "level": "quiet",
+              "label": "조용"
+            }
+          ],
+          "noise_level_policy": {
+            "version": "schedule_activity_v1",
+            "basis": "확정 일정에서 high_noise=true인 작업과 겹치면 loud, 그 밖의 예정 작업과 겹치면 moderate, 예정 작업이 없으면 quiet. dB 또는 법정 기준이 아닙니다.",
+            "provenance": "derived_from_confirmed_schedule",
+            "measurement_validated": false
+          },
+          "publication_provenance": {
+            "publication_version": 1,
+            "confirmed_at": "2026-10-26T08:35:02.004535Z",
+            "schedule_version": "recommendation-v1-11faf7cba431",
+            "data_classification": "demo"
+          }
+        },
+        "message": null
+      }
+    }
+  ]
+}

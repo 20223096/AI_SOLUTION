@@ -40,6 +40,7 @@ class SelectedNoticeSchedule(BaseModel):
         "manual_confirmed_schedule",
     ]
     candidate_valid: bool
+    schedule_snapshot_id: str | None = Field(default=None, max_length=100)
     assignments: list[NoticeScheduleItem] = Field(min_length=1)
 
     @model_validator(mode="after")
@@ -117,6 +118,7 @@ class ResidentNoticeDraftResponse(BaseModel):
     schedule_fingerprint: str
     candidate_id: str
     candidate_valid: bool
+    recommendation_snapshot_status: Literal["verified", "not_required", "missing", "mismatch"]
     schedule_summary: DraftScheduleSummary
     headline: str
     body: str

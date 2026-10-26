@@ -774,6 +774,12 @@ export interface components {
             objective_values: {
                 [key: string]: number;
             };
+            /** Schedule Snapshot Id */
+            schedule_snapshot_id?: string | null;
+            /** Schedule Version */
+            schedule_version?: string | null;
+            /** Schedule Fingerprint */
+            schedule_fingerprint?: string | null;
         };
         /** ConstraintViolation */
         ConstraintViolation: {
@@ -3205,6 +3211,11 @@ export interface components {
             candidate_id: string;
             /** Candidate Valid */
             candidate_valid: boolean;
+            /**
+             * Recommendation Snapshot Status
+             * @enum {string}
+             */
+            recommendation_snapshot_status: "verified" | "not_required" | "missing" | "mismatch";
             schedule_summary: components["schemas"]["DraftScheduleSummary"];
             /** Headline */
             headline: string;
@@ -3530,6 +3541,8 @@ export interface components {
             recommendation_source: "/api/prd/recommendations/constraint-filtered" | "/api/schedules/optimize" | "manual_confirmed_schedule";
             /** Candidate Valid */
             candidate_valid: boolean;
+            /** Schedule Snapshot Id */
+            schedule_snapshot_id?: string | null;
             /** Assignments */
             assignments: components["schemas"]["NoticeScheduleItem"][];
         };

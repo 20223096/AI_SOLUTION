@@ -250,6 +250,9 @@ class ConstraintCandidateResult(PRDResponse):
     project_end_change_minutes: int
     noise_impact: ScheduleMetrics
     objective_values: dict[str, float]
+    schedule_snapshot_id: str | None = None
+    schedule_version: str | None = None
+    schedule_fingerprint: str | None = None
 
 
 class PRDConstraintRecommendationResponse(PRDResponse):

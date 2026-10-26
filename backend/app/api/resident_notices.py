@@ -10,6 +10,7 @@ from app.models.resident_notices import (
     ResidentPublicResponse,
 )
 from app.services.resident_notices import JsonNoticeRepository, NoticeWorkflowError, ResidentNoticeService
+from app.services.recommendation_snapshots import RecommendationSnapshotRepository
 
 router = APIRouter(tags=["resident-notices"])
 ERRORS = {
@@ -21,7 +22,11 @@ ERRORS = {
 
 
 def notice_service() -> ResidentNoticeService:
-    return ResidentNoticeService(JsonNoticeRepository(get_settings().resident_notice_store_path))
+    settings = get_settings()
+    return ResidentNoticeService(
+        JsonNoticeRepository(settings.resident_notice_store_path),
+        snapshot_repository=RecommendationSnapshotRepository(settings.recommendation_snapshot_store_path),
+    )
 
 
 def staff_only(request: Request) -> None:

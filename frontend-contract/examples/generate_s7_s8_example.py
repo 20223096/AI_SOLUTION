@@ -30,7 +30,7 @@ CREATE = {
         "schedule_id": "schedule-sprint24-demo",
         "schedule_version": "schedule-sprint24-demo-v1",
         "candidate_id": "offset-60",
-        "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+        "recommendation_source": "manual_confirmed_schedule",
         "candidate_valid": True,
         "assignments": [
             {"task_id": "cut", "task_name": "콘크리트 절단", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T09:00:00+09:00", "high_noise": True, "classification_source": "demo"},

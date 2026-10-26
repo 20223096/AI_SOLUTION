@@ -413,7 +413,10 @@
           "existing_noise_overlap_minutes": 360.0,
           "policy_overlap_cost": 0.0,
           "existing_noise_overlap_penalty": 0.0
-        }
+        },
+        "schedule_snapshot_id": "rec-fd5b66e2bd0f8d6b51cceb9b",
+        "schedule_version": "recommendation-v1-fd5b66e2bd0f",
+        "schedule_fingerprint": "fd5b66e2bd0f8d6b51cceb9b177a3f34682012f2da702dae8e34149cf76d258c"
       },
       "candidates": [
         {
@@ -490,7 +493,10 @@
             "existing_noise_overlap_minutes": 360.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": "rec-fd5b66e2bd0f8d6b51cceb9b",
+          "schedule_version": "recommendation-v1-fd5b66e2bd0f",
+          "schedule_fingerprint": "fd5b66e2bd0f8d6b51cceb9b177a3f34682012f2da702dae8e34149cf76d258c"
         },
         {
           "candidate_id": "offset-15",
@@ -566,7 +572,10 @@
             "existing_noise_overlap_minutes": 315.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-30",
@@ -642,7 +651,10 @@
             "existing_noise_overlap_minutes": 270.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-45",
@@ -718,7 +730,10 @@
             "existing_noise_overlap_minutes": 225.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-60",
@@ -794,7 +809,10 @@
             "existing_noise_overlap_minutes": 180.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-75",
@@ -870,7 +888,10 @@
             "existing_noise_overlap_minutes": 135.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-90",
@@ -946,7 +967,10 @@
             "existing_noise_overlap_minutes": 90.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-105",
@@ -1022,7 +1046,10 @@
             "existing_noise_overlap_minutes": 45.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         },
         {
           "candidate_id": "offset-120",
@@ -1098,7 +1125,10 @@
             "existing_noise_overlap_minutes": 0.0,
             "policy_overlap_cost": 0.0,
             "existing_noise_overlap_penalty": 0.0
-          }
+          },
+          "schedule_snapshot_id": null,
+          "schedule_version": null,
+          "schedule_fingerprint": null
         }
       ],
       "recommendable_candidate_ids": [

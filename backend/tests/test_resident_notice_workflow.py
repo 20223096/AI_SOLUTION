@@ -11,6 +11,7 @@ from app.models.resident_notices import (
     ResidentNoticeDraftUpdateRequest,
 )
 from app.services.resident_notices import JsonNoticeRepository, NoticeWorkflowError, ResidentNoticeService
+from app.services.recommendation_snapshots import RecommendationSnapshotRepository
 
 
 def payload(project_id="project-a"):
@@ -26,7 +27,7 @@ def payload(project_id="project-a"):
             "schedule_id": "schedule-a",
             "schedule_version": "schedule-a-v1",
             "candidate_id": "offset-60",
-            "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+            "recommendation_source": "manual_confirmed_schedule",
             "candidate_valid": True,
             "assignments": [
                 {"task_id": "cut", "task_name": "콘크리트 절단", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T09:00:00+09:00", "high_noise": True, "classification_source": "demo"},
@@ -55,6 +56,7 @@ def test_deterministic_draft_generation_is_private_and_has_explicit_schedule(tmp
     draft = create(service(tmp_path))
     assert draft.status == "draft" and draft.publication_status == "private"
     assert draft.schedule_id == "schedule-a" and draft.schedule_version == "schedule-a-v1"
+    assert draft.recommendation_snapshot_status == "not_required"
     assert "08:00~09:00" in draft.body and "문의" in draft.body
     assert draft.missing_fields == []
     assert draft.schedule_summary.no_scheduled_work_intervals[0].start.hour == 7
@@ -156,6 +158,7 @@ def test_quiet_interval_and_schedule_based_three_level_classification(tmp_path):
     assert notice.longest_quiet_interval.end.hour == 18
     levels = {slot.start.hour: slot.level for slot in notice.hourly_noise_levels}
     assert levels[7] == "quiet" and levels[8] == "loud" and levels[10] == "moderate"
+    assert notice.longest_quiet_interval.start.hour == 9 <= 10 < notice.longest_quiet_interval.end.hour
     assert notice.noise_level_policy.measurement_validated is False
     assert "dB" in notice.noise_level_policy.basis
     assert "보장하지" in notice.quiet_interval_limitation
@@ -225,3 +228,44 @@ def test_openapi_has_five_typed_endpoints_and_total_33_operations():
     declaration = (Path(__file__).parents[2] / "frontend-contract" / "types" / "api.d.ts").read_text(encoding="utf-8")
     for token in ('"/api/staff/resident-notices/drafts"', '"/api/public/construction/{project_id}/resident-notice"', "ResidentPublicResponse"):
         assert token in declaration
+
+
+def test_server_recommendation_snapshot_blocks_tampering_and_cross_project_use(tmp_path):
+    snapshot_repo = RecommendationSnapshotRepository(tmp_path / "snapshots.json")
+    assignments = [
+        {"task_id": "cut", "start": "2026-09-11T08:00:00+09:00", "end": "2026-09-11T09:00:00+09:00"},
+        {"task_id": "restore", "start": "2026-09-11T10:00:00+09:00", "end": "2026-09-11T11:00:00+09:00"},
+    ]
+    metadata = snapshot_repo.save_result({
+        "input_planning": {"notice_id": "project-a"}, "scenario_id": "case-a", "analysis_date": "2026-09-11",
+        "candidates": [{"candidate_id": "offset-60", "assignments": assignments, "recommendable": True}],
+    })["offset-60"]
+    value = payload()
+    value["schedule"].update({
+        "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+        "schedule_snapshot_id": metadata["schedule_snapshot_id"], "schedule_version": metadata["schedule_version"],
+    })
+    svc = ResidentNoticeService(JsonNoticeRepository(tmp_path / "notices.json"), snapshot_repository=snapshot_repo)
+    verified = create(svc, value)
+    assert verified.recommendation_snapshot_status == "verified"
+    assert confirm(svc, verified).status == "confirmed"
+
+    tampered = payload("project-b")
+    tampered["schedule"].update(value["schedule"])
+    tampered["schedule"]["assignments"][0]["start"] = "2026-09-11T08:15:00+09:00"
+    tampered["schedule"]["assignments"][0]["end"] = "2026-09-11T09:15:00+09:00"
+    invalid = create(svc, tampered)
+    assert invalid.recommendation_snapshot_status == "mismatch"
+    try:
+        confirm(svc, invalid)
+        assert False, "tampered/cross-project recommendation must not confirm"
+    except NoticeWorkflowError as exc:
+        assert "verified_recommendation_snapshot" in exc.missing_fields
+
+    restarted = ResidentNoticeService(
+        JsonNoticeRepository(tmp_path / "notices.json"),
+        snapshot_repository=RecommendationSnapshotRepository(tmp_path / "snapshots.json"),
+    )
+    public = restarted.public_read("project-a")
+    assert public.status == "published"
+    assert public.notice.publication_provenance.schedule_version == metadata["schedule_version"]

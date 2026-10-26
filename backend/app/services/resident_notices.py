@@ -21,6 +21,7 @@ from app.models.resident_notices import (
     ResidentPublicResponse,
     SelectedNoticeSchedule,
 )
+from app.services.recommendation_snapshots import RecommendationSnapshotRepository
 
 QUIET_LIMITATION = "확정 일정에서 시끄러운 작업이 배정되지 않은 최장 연속 시간이며 실제 환경의 정숙이나 현장 소음 부재를 보장하지 않습니다."
 NOISE_POLICY_BASIS = "확정 일정에서 high_noise=true인 작업과 겹치면 loud, 그 밖의 예정 작업과 겹치면 moderate, 예정 작업이 없으면 quiet. dB 또는 법정 기준이 아닙니다."
@@ -113,6 +114,8 @@ def _missing(record: dict[str, Any]) -> list[str]:
     schedule = record["schedule"]
     if not schedule.get("candidate_valid"):
         missing.append("valid_selected_schedule")
+    if record.get("recommendation_snapshot_status") not in {"verified", "not_required"}:
+        missing.append("verified_recommendation_snapshot")
     if not schedule.get("assignments"):
         missing.append("schedule.assignments")
     return missing
@@ -156,6 +159,7 @@ def _draft_response(record: dict[str, Any], *, idempotent: bool = False) -> Resi
         "schedule_fingerprint": record["schedule_fingerprint"],
         "candidate_id": schedule["candidate_id"],
         "candidate_valid": schedule["candidate_valid"],
+        "recommendation_snapshot_status": record["recommendation_snapshot_status"],
         "schedule_summary": {
             "scheduled_work": schedule["assignments"],
             "noisy_work_intervals": _serialized_intervals(noisy),
@@ -177,9 +181,22 @@ def _draft_response(record: dict[str, Any], *, idempotent: bool = False) -> Resi
 
 
 class ResidentNoticeService:
-    def __init__(self, repository: JsonNoticeRepository, clock: Callable[[], datetime] | None = None):
+    def __init__(self, repository: JsonNoticeRepository, clock: Callable[[], datetime] | None = None, snapshot_repository: RecommendationSnapshotRepository | None = None):
         self.repository = repository
         self.clock = clock or (lambda: datetime.now(timezone.utc))
+        self.snapshot_repository = snapshot_repository
+
+    def _snapshot_status(self, project_id: str, schedule: SelectedNoticeSchedule) -> str:
+        if schedule.recommendation_source == "manual_confirmed_schedule":
+            return "not_required"
+        if self.snapshot_repository is None:
+            return "missing"
+        verified, reason = self.snapshot_repository.verify(
+            schedule.schedule_snapshot_id, project_id, schedule.candidate_id, schedule.schedule_version, schedule.assignments,
+        )
+        if verified:
+            return "verified"
+        return "missing" if "required" in reason or "not found" in reason else "mismatch"
 
     @_synchronized
     def create(self, request: ResidentNoticeDraftCreateRequest) -> ResidentNoticeDraftResponse:
@@ -192,6 +209,7 @@ class ResidentNoticeService:
             **request.model_dump(mode="json", exclude={"schedule"}),
             "schedule": request.schedule.model_dump(mode="json"),
             "schedule_fingerprint": _fingerprint(request.schedule),
+            "recommendation_snapshot_status": self._snapshot_status(request.project_id, request.schedule),
             "headline": headline,
             "body": body,
             "status": "draft",
@@ -245,6 +263,7 @@ class ResidentNoticeService:
             "body": request.body.strip(),
             "schedule": request.schedule.model_dump(mode="json"),
             "schedule_fingerprint": _fingerprint(request.schedule),
+            "recommendation_snapshot_status": self._snapshot_status(project_id, request.schedule),
             "provenance": [item.model_dump(mode="json") for item in request.provenance],
             "status": "draft",
             "revision": record["revision"] + 1,

@@ -5,6 +5,8 @@ from fastapi import APIRouter, HTTPException, Query
 from app.models.prd_responses import DemoFixtureResponse, PRDConstraintRecommendationResponse, PRDPlanningDraftResponse, PRDScheduleValidationResponse, PRDSensitivityExperimentResponse, RecommendationDiagnosticsResponse
 from app.models.prd_v2_1 import PRDConstraintRecommendationRequest, PRDPlanningDraftRequest, PRDScheduleValidationRequest, PRDSensitivityExperimentRequest
 from app.services.prd_v2_1 import constraint_filtered_recommendations, demo_fixture, demo_sensitivity_policy_experiment, planning_draft_from_notice, recommendation_diagnostics, validate_prd_schedule
+from app.services.recommendation_snapshots import RecommendationSnapshotRepository
+from app.core.config import get_settings
 
 
 router = APIRouter(prefix="/api/prd", tags=["prd-v2.1"])
@@ -37,7 +39,13 @@ def create_planning_draft(request: PRDPlanningDraftRequest):
 @router.post("/recommendations/constraint-filtered", response_model=PRDConstraintRecommendationResponse)
 def get_constraint_filtered_recommendations(request: PRDConstraintRecommendationRequest):
     try:
-        return constraint_filtered_recommendations(request)
+        result = constraint_filtered_recommendations(request)
+        metadata = RecommendationSnapshotRepository(get_settings().recommendation_snapshot_store_path).save_result(result)
+        for candidate in result["candidates"]:
+            candidate.update(metadata.get(candidate["candidate_id"], {}))
+        if result["original_schedule"]:
+            result["original_schedule"].update(metadata.get(result["original_schedule"]["candidate_id"], {}))
+        return result
     except KeyError as exc:
         raise HTTPException(404, str(exc)) from exc
     except ValueError as exc:
