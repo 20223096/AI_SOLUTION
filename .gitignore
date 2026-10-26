@@ -5,6 +5,7 @@ __pycache__/
 *.py[cod]
 dist/
 build/
+runtime/
 data/raw/*
 data/processed/*.csv
 data/processed/*.log

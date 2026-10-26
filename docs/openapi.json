@@ -1120,6 +1120,353 @@
           }
         }
       }
+    },
+    "/api/staff/resident-notices/drafts": {
+      "post": {
+        "tags": [
+          "resident-notices"
+        ],
+        "summary": "Create Draft",
+        "operationId": "create_draft_api_staff_resident_notices_drafts_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResidentNoticeDraftCreateRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResidentNoticeDraftResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "담당자 API 접근 제한",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "초안 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "상태 또는 버전 충돌",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "공개 필수 필드 결측",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/staff/resident-notices/drafts/{project_id}": {
+      "get": {
+        "tags": [
+          "resident-notices"
+        ],
+        "summary": "Get Draft",
+        "operationId": "get_draft_api_staff_resident_notices_drafts__project_id__get",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResidentNoticeDraftResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "담당자 API 접근 제한",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "초안 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "상태 또는 버전 충돌",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "공개 필수 필드 결측",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "resident-notices"
+        ],
+        "summary": "Update Draft",
+        "operationId": "update_draft_api_staff_resident_notices_drafts__project_id__put",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResidentNoticeDraftUpdateRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResidentNoticeDraftResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "담당자 API 접근 제한",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "초안 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "상태 또는 버전 충돌",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "공개 필수 필드 결측",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/staff/resident-notices/drafts/{project_id}/confirm": {
+      "post": {
+        "tags": [
+          "resident-notices"
+        ],
+        "summary": "Confirm Draft",
+        "operationId": "confirm_draft_api_staff_resident_notices_drafts__project_id__confirm_post",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ResidentNoticeConfirmRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResidentNoticeDraftResponse"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "담당자 API 접근 제한",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "초안 없음",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "상태 또는 버전 충돌",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "공개 필수 필드 결측",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NoticeErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/public/construction/{project_id}/resident-notice": {
+      "get": {
+        "tags": [
+          "resident-notices"
+        ],
+        "summary": "Public Resident Notice",
+        "operationId": "public_resident_notice_api_public_construction__project_id__resident_notice_get",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Project Id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ResidentPublicResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3062,6 +3409,38 @@
           "source_metadata"
         ],
         "title": "DraftEquipmentConstraint"
+      },
+      "DraftScheduleSummary": {
+        "properties": {
+          "scheduled_work": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeScheduleItem"
+            },
+            "type": "array",
+            "title": "Scheduled Work"
+          },
+          "noisy_work_intervals": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeInterval"
+            },
+            "type": "array",
+            "title": "Noisy Work Intervals"
+          },
+          "no_scheduled_work_intervals": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeInterval"
+            },
+            "type": "array",
+            "title": "No Scheduled Work Intervals"
+          }
+        },
+        "type": "object",
+        "required": [
+          "scheduled_work",
+          "noisy_work_intervals",
+          "no_scheduled_work_intervals"
+        ],
+        "title": "DraftScheduleSummary"
       },
       "Equipment": {
         "properties": {
@@ -5835,6 +6214,77 @@
         ],
         "title": "MockNoticeExtractResponse"
       },
+      "NoiseLevelPolicy": {
+        "properties": {
+          "version": {
+            "type": "string",
+            "const": "schedule_activity_v1",
+            "title": "Version",
+            "default": "schedule_activity_v1"
+          },
+          "basis": {
+            "type": "string",
+            "title": "Basis"
+          },
+          "provenance": {
+            "type": "string",
+            "const": "derived_from_confirmed_schedule",
+            "title": "Provenance",
+            "default": "derived_from_confirmed_schedule"
+          },
+          "measurement_validated": {
+            "type": "boolean",
+            "const": false,
+            "title": "Measurement Validated",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "basis"
+        ],
+        "title": "NoiseLevelPolicy"
+      },
+      "NoiseLevelSlot": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          },
+          "level": {
+            "type": "string",
+            "enum": [
+              "quiet",
+              "moderate",
+              "loud"
+            ],
+            "title": "Level"
+          },
+          "label": {
+            "type": "string",
+            "enum": [
+              "조용",
+              "보통",
+              "시끄러움"
+            ],
+            "title": "Label"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end",
+          "level",
+          "label"
+        ],
+        "title": "NoiseLevelSlot"
+      },
       "NoisePredictResponse": {
         "properties": {
           "scenario_id": {
@@ -5932,6 +6382,108 @@
           "disclaimer"
         ],
         "title": "NoisePredictResponse"
+      },
+      "NoticeErrorResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "not_found",
+              "forbidden",
+              "invalid_state",
+              "version_conflict",
+              "validation_failed"
+            ],
+            "title": "Status"
+          },
+          "message": {
+            "type": "string",
+            "title": "Message"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "message"
+        ],
+        "title": "NoticeErrorResponse"
+      },
+      "NoticeInterval": {
+        "properties": {
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          }
+        },
+        "type": "object",
+        "required": [
+          "start",
+          "end"
+        ],
+        "title": "NoticeInterval"
+      },
+      "NoticeScheduleItem": {
+        "properties": {
+          "task_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Task Id"
+          },
+          "task_name": {
+            "type": "string",
+            "maxLength": 200,
+            "minLength": 1,
+            "title": "Task Name"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          },
+          "high_noise": {
+            "type": "boolean",
+            "title": "High Noise"
+          },
+          "classification_source": {
+            "type": "string",
+            "enum": [
+              "user_confirmed",
+              "official_document",
+              "assumed",
+              "demo"
+            ],
+            "title": "Classification Source"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_id",
+          "task_name",
+          "start",
+          "end",
+          "high_noise",
+          "classification_source"
+        ],
+        "title": "NoticeScheduleItem"
       },
       "OfficialDesignSummary": {
         "properties": {
@@ -7331,6 +7883,105 @@
         ],
         "title": "PublicDataCatalogResponse"
       },
+      "PublicScheduleItem": {
+        "properties": {
+          "task_name": {
+            "type": "string",
+            "title": "Task Name"
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Start"
+          },
+          "end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "End"
+          }
+        },
+        "type": "object",
+        "required": [
+          "task_name",
+          "start",
+          "end"
+        ],
+        "title": "PublicScheduleItem"
+      },
+      "PublicSource": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "official_document",
+              "user_confirmed",
+              "derived",
+              "assumed",
+              "demo"
+            ],
+            "title": "Status"
+          },
+          "source": {
+            "type": "string",
+            "title": "Source"
+          },
+          "note": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Note"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "status",
+          "source"
+        ],
+        "title": "PublicSource"
+      },
+      "PublicationProvenance": {
+        "properties": {
+          "publication_version": {
+            "type": "integer",
+            "title": "Publication Version"
+          },
+          "confirmed_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Confirmed At"
+          },
+          "schedule_version": {
+            "type": "string",
+            "title": "Schedule Version"
+          },
+          "data_classification": {
+            "type": "string",
+            "enum": [
+              "actual",
+              "demo"
+            ],
+            "title": "Data Classification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "publication_version",
+          "confirmed_at",
+          "schedule_version",
+          "data_classification"
+        ],
+        "title": "PublicationProvenance"
+      },
       "Receptor": {
         "properties": {
           "id": {
@@ -7592,6 +8243,488 @@
           "recommendation_reasons"
         ],
         "title": "RecommendedOption"
+      },
+      "ResidentNoticeConfirmRequest": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "schedule_version": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Schedule Version"
+          }
+        },
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "schedule_version"
+        ],
+        "title": "ResidentNoticeConfirmRequest"
+      },
+      "ResidentNoticeDraftCreateRequest": {
+        "properties": {
+          "project_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "public_location": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Location"
+          },
+          "construction_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Construction Date"
+          },
+          "public_window_start": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Public Window Start"
+          },
+          "public_window_end": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Public Window End"
+          },
+          "public_contact": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Contact"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/SelectedNoticeSchedule"
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/PublicSource"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Provenance"
+          },
+          "data_classification": {
+            "type": "string",
+            "enum": [
+              "actual",
+              "demo"
+            ],
+            "title": "Data Classification"
+          }
+        },
+        "type": "object",
+        "required": [
+          "project_id",
+          "construction_date",
+          "public_window_start",
+          "public_window_end",
+          "schedule",
+          "provenance",
+          "data_classification"
+        ],
+        "title": "ResidentNoticeDraftCreateRequest"
+      },
+      "ResidentNoticeDraftResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "draft",
+              "confirmed"
+            ],
+            "title": "Status"
+          },
+          "publication_status": {
+            "type": "string",
+            "enum": [
+              "private",
+              "published"
+            ],
+            "title": "Publication Status"
+          },
+          "project_id": {
+            "type": "string",
+            "title": "Project Id"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "public_location": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Location"
+          },
+          "construction_date": {
+            "type": "string",
+            "format": "date",
+            "title": "Construction Date"
+          },
+          "public_window": {
+            "$ref": "#/components/schemas/NoticeInterval"
+          },
+          "public_contact": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Contact"
+          },
+          "schedule_id": {
+            "type": "string",
+            "title": "Schedule Id"
+          },
+          "schedule_version": {
+            "type": "string",
+            "title": "Schedule Version"
+          },
+          "schedule_fingerprint": {
+            "type": "string",
+            "title": "Schedule Fingerprint"
+          },
+          "candidate_id": {
+            "type": "string",
+            "title": "Candidate Id"
+          },
+          "candidate_valid": {
+            "type": "boolean",
+            "title": "Candidate Valid"
+          },
+          "schedule_summary": {
+            "$ref": "#/components/schemas/DraftScheduleSummary"
+          },
+          "headline": {
+            "type": "string",
+            "title": "Headline"
+          },
+          "body": {
+            "type": "string",
+            "title": "Body"
+          },
+          "missing_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Missing Fields"
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/PublicSource"
+            },
+            "type": "array",
+            "title": "Provenance"
+          },
+          "data_classification": {
+            "type": "string",
+            "enum": [
+              "actual",
+              "demo"
+            ],
+            "title": "Data Classification"
+          },
+          "revision": {
+            "type": "integer",
+            "title": "Revision"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Created At"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "title": "Updated At"
+          },
+          "confirmed_at": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date-time"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Confirmed At"
+          },
+          "publication_version": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Publication Version"
+          },
+          "previous_publication_invalidated": {
+            "type": "boolean",
+            "title": "Previous Publication Invalidated",
+            "default": false
+          },
+          "idempotent": {
+            "type": "boolean",
+            "title": "Idempotent",
+            "default": false
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "publication_status",
+          "project_id",
+          "project_name",
+          "public_location",
+          "construction_date",
+          "public_window",
+          "public_contact",
+          "schedule_id",
+          "schedule_version",
+          "schedule_fingerprint",
+          "candidate_id",
+          "candidate_valid",
+          "schedule_summary",
+          "headline",
+          "body",
+          "missing_fields",
+          "provenance",
+          "data_classification",
+          "revision",
+          "created_at",
+          "updated_at"
+        ],
+        "title": "ResidentNoticeDraftResponse"
+      },
+      "ResidentNoticeDraftUpdateRequest": {
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1.0,
+            "title": "Expected Revision"
+          },
+          "project_name": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Project Name"
+          },
+          "public_location": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 300
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Location"
+          },
+          "public_contact": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 200
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Public Contact"
+          },
+          "headline": {
+            "type": "string",
+            "maxLength": 300,
+            "title": "Headline"
+          },
+          "body": {
+            "type": "string",
+            "maxLength": 5000,
+            "title": "Body"
+          },
+          "schedule": {
+            "$ref": "#/components/schemas/SelectedNoticeSchedule"
+          },
+          "provenance": {
+            "items": {
+              "$ref": "#/components/schemas/PublicSource"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Provenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "expected_revision",
+          "headline",
+          "body",
+          "schedule",
+          "provenance"
+        ],
+        "title": "ResidentNoticeDraftUpdateRequest"
+      },
+      "ResidentPublicNotice": {
+        "properties": {
+          "today_schedule": {
+            "items": {
+              "$ref": "#/components/schemas/PublicScheduleItem"
+            },
+            "type": "array",
+            "title": "Today Schedule"
+          },
+          "noisy_work_intervals": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeInterval"
+            },
+            "type": "array",
+            "title": "Noisy Work Intervals"
+          },
+          "longest_quiet_interval": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/NoticeInterval"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "quiet_interval_limitation": {
+            "type": "string",
+            "title": "Quiet Interval Limitation"
+          },
+          "confirmed_notice": {
+            "type": "string",
+            "title": "Confirmed Notice"
+          },
+          "public_contact": {
+            "type": "string",
+            "title": "Public Contact"
+          },
+          "hourly_noise_levels": {
+            "items": {
+              "$ref": "#/components/schemas/NoiseLevelSlot"
+            },
+            "type": "array",
+            "title": "Hourly Noise Levels"
+          },
+          "noise_level_policy": {
+            "$ref": "#/components/schemas/NoiseLevelPolicy"
+          },
+          "publication_provenance": {
+            "$ref": "#/components/schemas/PublicationProvenance"
+          }
+        },
+        "type": "object",
+        "required": [
+          "today_schedule",
+          "noisy_work_intervals",
+          "longest_quiet_interval",
+          "quiet_interval_limitation",
+          "confirmed_notice",
+          "public_contact",
+          "hourly_noise_levels",
+          "noise_level_policy",
+          "publication_provenance"
+        ],
+        "title": "ResidentPublicNotice"
+      },
+      "ResidentPublicResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "published",
+              "not_published"
+            ],
+            "title": "Status"
+          },
+          "notice": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/ResidentPublicNotice"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Message"
+          }
+        },
+        "type": "object",
+        "required": [
+          "status"
+        ],
+        "title": "ResidentPublicResponse"
       },
       "SDotDailyAudit": {
         "properties": {
@@ -7984,6 +9117,59 @@
         },
         "type": "object",
         "title": "ScheduleMetrics"
+      },
+      "SelectedNoticeSchedule": {
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Schedule Id"
+          },
+          "schedule_version": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Schedule Version"
+          },
+          "candidate_id": {
+            "type": "string",
+            "maxLength": 100,
+            "minLength": 1,
+            "title": "Candidate Id"
+          },
+          "recommendation_source": {
+            "type": "string",
+            "enum": [
+              "/api/prd/recommendations/constraint-filtered",
+              "/api/schedules/optimize",
+              "manual_confirmed_schedule"
+            ],
+            "title": "Recommendation Source"
+          },
+          "candidate_valid": {
+            "type": "boolean",
+            "title": "Candidate Valid"
+          },
+          "assignments": {
+            "items": {
+              "$ref": "#/components/schemas/NoticeScheduleItem"
+            },
+            "type": "array",
+            "minItems": 1,
+            "title": "Assignments"
+          }
+        },
+        "type": "object",
+        "required": [
+          "schedule_id",
+          "schedule_version",
+          "candidate_id",
+          "recommendation_source",
+          "candidate_valid",
+          "assignments"
+        ],
+        "title": "SelectedNoticeSchedule"
       },
       "SensitivityCase": {
         "properties": {

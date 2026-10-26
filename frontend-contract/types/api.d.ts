@@ -480,6 +480,75 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/staff/resident-notices/drafts": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Draft */
+        post: operations["create_draft_api_staff_resident_notices_drafts_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/staff/resident-notices/drafts/{project_id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Draft */
+        get: operations["get_draft_api_staff_resident_notices_drafts__project_id__get"];
+        /** Update Draft */
+        put: operations["update_draft_api_staff_resident_notices_drafts__project_id__put"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/staff/resident-notices/drafts/{project_id}/confirm": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Confirm Draft */
+        post: operations["confirm_draft_api_staff_resident_notices_drafts__project_id__confirm_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/public/construction/{project_id}/resident-notice": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Public Resident Notice */
+        get: operations["public_resident_notice_api_public_construction__project_id__resident_notice_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1223,6 +1292,15 @@ export interface components {
             /** Permitted Time Windows */
             permitted_time_windows: components["schemas"]["TimeWindow"][];
             source_metadata: components["schemas"]["SourceMetadata"];
+        };
+        /** DraftScheduleSummary */
+        DraftScheduleSummary: {
+            /** Scheduled Work */
+            scheduled_work: components["schemas"]["NoticeScheduleItem"][];
+            /** Noisy Work Intervals */
+            noisy_work_intervals: components["schemas"]["NoticeInterval"][];
+            /** No Scheduled Work Intervals */
+            no_scheduled_work_intervals: components["schemas"]["NoticeInterval"][];
         };
         /** Equipment */
         Equipment: {
@@ -2207,6 +2285,52 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** NoiseLevelPolicy */
+        NoiseLevelPolicy: {
+            /**
+             * Version
+             * @default schedule_activity_v1
+             * @constant
+             */
+            version: "schedule_activity_v1";
+            /** Basis */
+            basis: string;
+            /**
+             * Provenance
+             * @default derived_from_confirmed_schedule
+             * @constant
+             */
+            provenance: "derived_from_confirmed_schedule";
+            /**
+             * Measurement Validated
+             * @default false
+             * @constant
+             */
+            measurement_validated: false;
+        };
+        /** NoiseLevelSlot */
+        NoiseLevelSlot: {
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /**
+             * Level
+             * @enum {string}
+             */
+            level: "quiet" | "moderate" | "loud";
+            /**
+             * Label
+             * @enum {string}
+             */
+            label: "조용" | "보통" | "시끄러움";
+        };
         /** NoisePredictResponse */
         NoisePredictResponse: {
             /** Scenario Id */
@@ -2246,6 +2370,55 @@ export interface components {
             disclaimer: string;
         } & {
             [key: string]: unknown;
+        };
+        /** NoticeErrorResponse */
+        NoticeErrorResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "not_found" | "forbidden" | "invalid_state" | "version_conflict" | "validation_failed";
+            /** Message */
+            message: string;
+            /** Missing Fields */
+            missing_fields?: string[];
+        };
+        /** NoticeInterval */
+        NoticeInterval: {
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+        };
+        /** NoticeScheduleItem */
+        NoticeScheduleItem: {
+            /** Task Id */
+            task_id: string;
+            /** Task Name */
+            task_name: string;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+            /** High Noise */
+            high_noise: boolean;
+            /**
+             * Classification Source
+             * @enum {string}
+             */
+            classification_source: "user_confirmed" | "official_document" | "assumed" | "demo";
         };
         /** OfficialDesignSummary */
         OfficialDesignSummary: {
@@ -2826,6 +2999,52 @@ export interface components {
         } & {
             [key: string]: unknown;
         };
+        /** PublicScheduleItem */
+        PublicScheduleItem: {
+            /** Task Name */
+            task_name: string;
+            /**
+             * Start
+             * Format: date-time
+             */
+            start: string;
+            /**
+             * End
+             * Format: date-time
+             */
+            end: string;
+        };
+        /** PublicSource */
+        PublicSource: {
+            /** Field */
+            field: string;
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "official_document" | "user_confirmed" | "derived" | "assumed" | "demo";
+            /** Source */
+            source: string;
+            /** Note */
+            note?: string | null;
+        };
+        /** PublicationProvenance */
+        PublicationProvenance: {
+            /** Publication Version */
+            publication_version: number;
+            /**
+             * Confirmed At
+             * Format: date-time
+             */
+            confirmed_at: string;
+            /** Schedule Version */
+            schedule_version: string;
+            /**
+             * Data Classification
+             * @enum {string}
+             */
+            data_classification: "actual" | "demo";
+        };
         /** Receptor */
         Receptor: {
             /** Id */
@@ -2908,6 +3127,171 @@ export interface components {
             }[];
         } & {
             [key: string]: unknown;
+        };
+        /** ResidentNoticeConfirmRequest */
+        ResidentNoticeConfirmRequest: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Schedule Version */
+            schedule_version: string;
+        };
+        /** ResidentNoticeDraftCreateRequest */
+        ResidentNoticeDraftCreateRequest: {
+            /** Project Id */
+            project_id: string;
+            /** Project Name */
+            project_name?: string | null;
+            /** Public Location */
+            public_location?: string | null;
+            /**
+             * Construction Date
+             * Format: date
+             */
+            construction_date: string;
+            /**
+             * Public Window Start
+             * Format: date-time
+             */
+            public_window_start: string;
+            /**
+             * Public Window End
+             * Format: date-time
+             */
+            public_window_end: string;
+            /** Public Contact */
+            public_contact?: string | null;
+            schedule: components["schemas"]["SelectedNoticeSchedule"];
+            /** Provenance */
+            provenance: components["schemas"]["PublicSource"][];
+            /**
+             * Data Classification
+             * @enum {string}
+             */
+            data_classification: "actual" | "demo";
+        };
+        /** ResidentNoticeDraftResponse */
+        ResidentNoticeDraftResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "draft" | "confirmed";
+            /**
+             * Publication Status
+             * @enum {string}
+             */
+            publication_status: "private" | "published";
+            /** Project Id */
+            project_id: string;
+            /** Project Name */
+            project_name: string | null;
+            /** Public Location */
+            public_location: string | null;
+            /**
+             * Construction Date
+             * Format: date
+             */
+            construction_date: string;
+            public_window: components["schemas"]["NoticeInterval"];
+            /** Public Contact */
+            public_contact: string | null;
+            /** Schedule Id */
+            schedule_id: string;
+            /** Schedule Version */
+            schedule_version: string;
+            /** Schedule Fingerprint */
+            schedule_fingerprint: string;
+            /** Candidate Id */
+            candidate_id: string;
+            /** Candidate Valid */
+            candidate_valid: boolean;
+            schedule_summary: components["schemas"]["DraftScheduleSummary"];
+            /** Headline */
+            headline: string;
+            /** Body */
+            body: string;
+            /** Missing Fields */
+            missing_fields: string[];
+            /** Provenance */
+            provenance: components["schemas"]["PublicSource"][];
+            /**
+             * Data Classification
+             * @enum {string}
+             */
+            data_classification: "actual" | "demo";
+            /** Revision */
+            revision: number;
+            /**
+             * Created At
+             * Format: date-time
+             */
+            created_at: string;
+            /**
+             * Updated At
+             * Format: date-time
+             */
+            updated_at: string;
+            /** Confirmed At */
+            confirmed_at?: string | null;
+            /** Publication Version */
+            publication_version?: number | null;
+            /**
+             * Previous Publication Invalidated
+             * @default false
+             */
+            previous_publication_invalidated: boolean;
+            /**
+             * Idempotent
+             * @default false
+             */
+            idempotent: boolean;
+        };
+        /** ResidentNoticeDraftUpdateRequest */
+        ResidentNoticeDraftUpdateRequest: {
+            /** Expected Revision */
+            expected_revision: number;
+            /** Project Name */
+            project_name?: string | null;
+            /** Public Location */
+            public_location?: string | null;
+            /** Public Contact */
+            public_contact?: string | null;
+            /** Headline */
+            headline: string;
+            /** Body */
+            body: string;
+            schedule: components["schemas"]["SelectedNoticeSchedule"];
+            /** Provenance */
+            provenance: components["schemas"]["PublicSource"][];
+        };
+        /** ResidentPublicNotice */
+        ResidentPublicNotice: {
+            /** Today Schedule */
+            today_schedule: components["schemas"]["PublicScheduleItem"][];
+            /** Noisy Work Intervals */
+            noisy_work_intervals: components["schemas"]["NoticeInterval"][];
+            longest_quiet_interval: components["schemas"]["NoticeInterval"] | null;
+            /** Quiet Interval Limitation */
+            quiet_interval_limitation: string;
+            /** Confirmed Notice */
+            confirmed_notice: string;
+            /** Public Contact */
+            public_contact: string;
+            /** Hourly Noise Levels */
+            hourly_noise_levels: components["schemas"]["NoiseLevelSlot"][];
+            noise_level_policy: components["schemas"]["NoiseLevelPolicy"];
+            publication_provenance: components["schemas"]["PublicationProvenance"];
+        };
+        /** ResidentPublicResponse */
+        ResidentPublicResponse: {
+            /**
+             * Status
+             * @enum {string}
+             */
+            status: "published" | "not_published";
+            notice?: components["schemas"]["ResidentPublicNotice"] | null;
+            /** Message */
+            message?: string | null;
         };
         /** SDotDailyAudit */
         SDotDailyAudit: {
@@ -3130,6 +3514,24 @@ export interface components {
              * @default 0
              */
             project_end_change_minutes: number;
+        };
+        /** SelectedNoticeSchedule */
+        SelectedNoticeSchedule: {
+            /** Schedule Id */
+            schedule_id: string;
+            /** Schedule Version */
+            schedule_version: string;
+            /** Candidate Id */
+            candidate_id: string;
+            /**
+             * Recommendation Source
+             * @enum {string}
+             */
+            recommendation_source: "/api/prd/recommendations/constraint-filtered" | "/api/schedules/optimize" | "manual_confirmed_schedule";
+            /** Candidate Valid */
+            candidate_valid: boolean;
+            /** Assignments */
+            assignments: components["schemas"]["NoticeScheduleItem"][];
         };
         /** SensitivityCase */
         SensitivityCase: {
@@ -4117,6 +4519,279 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["AddressCoordinateResponse"];
+                };
+            };
+        };
+    };
+    create_draft_api_staff_resident_notices_drafts_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResidentNoticeDraftCreateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResidentNoticeDraftResponse"];
+                };
+            };
+            /** @description 담당자 API 접근 제한 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 초안 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 상태 또는 버전 충돌 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 공개 필수 필드 결측 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+        };
+    };
+    get_draft_api_staff_resident_notices_drafts__project_id__get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResidentNoticeDraftResponse"];
+                };
+            };
+            /** @description 담당자 API 접근 제한 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 초안 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 상태 또는 버전 충돌 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 공개 필수 필드 결측 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+        };
+    };
+    update_draft_api_staff_resident_notices_drafts__project_id__put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResidentNoticeDraftUpdateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResidentNoticeDraftResponse"];
+                };
+            };
+            /** @description 담당자 API 접근 제한 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 초안 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 상태 또는 버전 충돌 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 공개 필수 필드 결측 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+        };
+    };
+    confirm_draft_api_staff_resident_notices_drafts__project_id__confirm_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["ResidentNoticeConfirmRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResidentNoticeDraftResponse"];
+                };
+            };
+            /** @description 담당자 API 접근 제한 */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 초안 없음 */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 상태 또는 버전 충돌 */
+            409: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+            /** @description 공개 필수 필드 결측 */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["NoticeErrorResponse"];
+                };
+            };
+        };
+    };
+    public_resident_notice_api_public_construction__project_id__resident_notice_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                project_id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ResidentPublicResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };

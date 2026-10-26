@@ -158,8 +158,8 @@ def test_http_contract_openapi_cors_and_validation(monkeypatch):
     assert {"200", "422", "502", "503"} <= set(operation["responses"])
 
 
-def test_public_operation_count_is_28_and_existing_contract_stays_present():
+def test_public_operation_count_is_33_and_existing_contract_stays_present():
     paths = app.openapi()["paths"]
     operations = sum(method in {"get", "post", "put", "patch", "delete"} for path in paths.values() for method in path)
-    assert operations == 28
+    assert operations == 33
     assert "/api/noise/predict" in paths and "/api/prd/planning/from-notice" in paths

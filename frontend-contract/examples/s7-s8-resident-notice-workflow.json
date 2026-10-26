@@ -1,0 +1,575 @@
+{
+  "contract_version": "3.3",
+  "classification": "demo",
+  "steps": [
+    {
+      "request": {
+        "method": "POST",
+        "path": "/api/staff/resident-notices/drafts",
+        "body": {
+          "project_id": "sprint24-demo",
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "construction_date": "2026-09-11",
+          "public_window_start": "2026-09-11T07:00:00+09:00",
+          "public_window_end": "2026-09-11T18:00:00+09:00",
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "schedule": {
+            "schedule_id": "schedule-sprint24-demo",
+            "schedule_version": "schedule-sprint24-demo-v1",
+            "candidate_id": "offset-60",
+            "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+            "candidate_valid": true,
+            "assignments": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ]
+          },
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ],
+          "data_classification": "demo"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "draft",
+          "publication_status": "private",
+          "project_id": "sprint24-demo",
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "construction_date": "2026-09-11",
+          "public_window": {
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T18:00:00+09:00"
+          },
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "schedule_id": "schedule-sprint24-demo",
+          "schedule_version": "schedule-sprint24-demo-v1",
+          "schedule_fingerprint": "013b8d33764659a38d669d80bbdd07cc97d11549505417847d209be40bdd1d9f",
+          "candidate_id": "offset-60",
+          "candidate_valid": true,
+          "schedule_summary": {
+            "scheduled_work": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ],
+            "noisy_work_intervals": [
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              }
+            ],
+            "no_scheduled_work_intervals": [
+              {
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00"
+              }
+            ]
+          },
+          "headline": "2026-09-11 공사 일정 안내",
+          "body": "서울특별시 서대문구 연세로2나길 20 인근에서 연세로 하수관로 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 10:00~11:00 포장 복구입니다. 시끄러운 작업 예정 시간은 08:00~09:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 09:00~10:00, 11:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다.",
+          "missing_fields": [],
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ],
+          "data_classification": "demo",
+          "revision": 1,
+          "created_at": "2026-10-26T12:00:00Z",
+          "updated_at": "2026-10-26T12:00:00Z",
+          "confirmed_at": null,
+          "publication_version": null,
+          "previous_publication_invalidated": false,
+          "idempotent": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/api/staff/resident-notices/drafts/sprint24-demo",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "draft",
+          "publication_status": "private",
+          "project_id": "sprint24-demo",
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "construction_date": "2026-09-11",
+          "public_window": {
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T18:00:00+09:00"
+          },
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "schedule_id": "schedule-sprint24-demo",
+          "schedule_version": "schedule-sprint24-demo-v1",
+          "schedule_fingerprint": "013b8d33764659a38d669d80bbdd07cc97d11549505417847d209be40bdd1d9f",
+          "candidate_id": "offset-60",
+          "candidate_valid": true,
+          "schedule_summary": {
+            "scheduled_work": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ],
+            "noisy_work_intervals": [
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              }
+            ],
+            "no_scheduled_work_intervals": [
+              {
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00"
+              }
+            ]
+          },
+          "headline": "2026-09-11 공사 일정 안내",
+          "body": "서울특별시 서대문구 연세로2나길 20 인근에서 연세로 하수관로 공사 공사가 예정되어 있습니다. 예정 작업은 08:00~09:00 콘크리트 절단, 10:00~11:00 포장 복구입니다. 시끄러운 작업 예정 시간은 08:00~09:00이며, 공사가 예정되지 않은 시간은 07:00~08:00, 09:00~10:00, 11:00~18:00입니다. 문의: 서대문구 공사안내 02-0000-0000. 일정은 현장 상황에 따라 달라질 수 있습니다.",
+          "missing_fields": [],
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ],
+          "data_classification": "demo",
+          "revision": 1,
+          "created_at": "2026-10-26T12:00:00Z",
+          "updated_at": "2026-10-26T12:00:00Z",
+          "confirmed_at": null,
+          "publication_version": null,
+          "previous_publication_invalidated": false,
+          "idempotent": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "PUT",
+        "path": "/api/staff/resident-notices/drafts/sprint24-demo",
+        "body": {
+          "expected_revision": 1,
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "headline": "수정된 주민 공사 안내",
+          "body": "담당자가 확인한 일정입니다. 08:00~09:00에 시끄러운 작업이 예정되어 있습니다. 문의는 공개 문의처를 이용해 주세요.",
+          "schedule": {
+            "schedule_id": "schedule-sprint24-demo",
+            "schedule_version": "schedule-sprint24-demo-v1",
+            "candidate_id": "offset-60",
+            "recommendation_source": "/api/prd/recommendations/constraint-filtered",
+            "candidate_valid": true,
+            "assignments": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ]
+          },
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ]
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "draft",
+          "publication_status": "private",
+          "project_id": "sprint24-demo",
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "construction_date": "2026-09-11",
+          "public_window": {
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T18:00:00+09:00"
+          },
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "schedule_id": "schedule-sprint24-demo",
+          "schedule_version": "schedule-sprint24-demo-v1",
+          "schedule_fingerprint": "013b8d33764659a38d669d80bbdd07cc97d11549505417847d209be40bdd1d9f",
+          "candidate_id": "offset-60",
+          "candidate_valid": true,
+          "schedule_summary": {
+            "scheduled_work": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ],
+            "noisy_work_intervals": [
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              }
+            ],
+            "no_scheduled_work_intervals": [
+              {
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00"
+              }
+            ]
+          },
+          "headline": "수정된 주민 공사 안내",
+          "body": "담당자가 확인한 일정입니다. 08:00~09:00에 시끄러운 작업이 예정되어 있습니다. 문의는 공개 문의처를 이용해 주세요.",
+          "missing_fields": [],
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ],
+          "data_classification": "demo",
+          "revision": 2,
+          "created_at": "2026-10-26T12:00:00Z",
+          "updated_at": "2026-10-26T12:00:00Z",
+          "confirmed_at": null,
+          "publication_version": null,
+          "previous_publication_invalidated": false,
+          "idempotent": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/api/public/construction/sprint24-demo/resident-notice",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "not_published",
+          "notice": null,
+          "message": "No confirmed resident notice is published"
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "POST",
+        "path": "/api/staff/resident-notices/drafts/sprint24-demo/confirm",
+        "body": {
+          "expected_revision": 2,
+          "schedule_version": "schedule-sprint24-demo-v1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "confirmed",
+          "publication_status": "published",
+          "project_id": "sprint24-demo",
+          "project_name": "연세로 하수관로 공사",
+          "public_location": "서울특별시 서대문구 연세로2나길 20 인근",
+          "construction_date": "2026-09-11",
+          "public_window": {
+            "start": "2026-09-11T07:00:00+09:00",
+            "end": "2026-09-11T18:00:00+09:00"
+          },
+          "public_contact": "서대문구 공사안내 02-0000-0000",
+          "schedule_id": "schedule-sprint24-demo",
+          "schedule_version": "schedule-sprint24-demo-v1",
+          "schedule_fingerprint": "013b8d33764659a38d669d80bbdd07cc97d11549505417847d209be40bdd1d9f",
+          "candidate_id": "offset-60",
+          "candidate_valid": true,
+          "schedule_summary": {
+            "scheduled_work": [
+              {
+                "task_id": "cut",
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "high_noise": true,
+                "classification_source": "demo"
+              },
+              {
+                "task_id": "restore",
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "high_noise": false,
+                "classification_source": "demo"
+              }
+            ],
+            "noisy_work_intervals": [
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              }
+            ],
+            "no_scheduled_work_intervals": [
+              {
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00"
+              },
+              {
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00"
+              }
+            ]
+          },
+          "headline": "수정된 주민 공사 안내",
+          "body": "담당자가 확인한 일정입니다. 08:00~09:00에 시끄러운 작업이 예정되어 있습니다. 문의는 공개 문의처를 이용해 주세요.",
+          "missing_fields": [],
+          "provenance": [
+            {
+              "field": "schedule",
+              "status": "demo",
+              "source": "Sprint 24 E2E fixture",
+              "note": "실제 현장 일정 아님"
+            }
+          ],
+          "data_classification": "demo",
+          "revision": 2,
+          "created_at": "2026-10-26T12:00:00Z",
+          "updated_at": "2026-10-26T12:00:00Z",
+          "confirmed_at": "2026-10-26T12:00:00Z",
+          "publication_version": 1,
+          "previous_publication_invalidated": false,
+          "idempotent": false
+        }
+      }
+    },
+    {
+      "request": {
+        "method": "GET",
+        "path": "/api/public/construction/sprint24-demo/resident-notice",
+        "body": null
+      },
+      "response": {
+        "status": 200,
+        "body": {
+          "status": "published",
+          "notice": {
+            "today_schedule": [
+              {
+                "task_name": "콘크리트 절단",
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              },
+              {
+                "task_name": "포장 복구",
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00"
+              }
+            ],
+            "noisy_work_intervals": [
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00"
+              }
+            ],
+            "longest_quiet_interval": {
+              "start": "2026-09-11T09:00:00+09:00",
+              "end": "2026-09-11T18:00:00+09:00"
+            },
+            "quiet_interval_limitation": "확정 일정에서 시끄러운 작업이 배정되지 않은 최장 연속 시간이며 실제 환경의 정숙이나 현장 소음 부재를 보장하지 않습니다.",
+            "confirmed_notice": "수정된 주민 공사 안내\n\n담당자가 확인한 일정입니다. 08:00~09:00에 시끄러운 작업이 예정되어 있습니다. 문의는 공개 문의처를 이용해 주세요.",
+            "public_contact": "서대문구 공사안내 02-0000-0000",
+            "hourly_noise_levels": [
+              {
+                "start": "2026-09-11T07:00:00+09:00",
+                "end": "2026-09-11T08:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T08:00:00+09:00",
+                "end": "2026-09-11T09:00:00+09:00",
+                "level": "loud",
+                "label": "시끄러움"
+              },
+              {
+                "start": "2026-09-11T09:00:00+09:00",
+                "end": "2026-09-11T10:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T10:00:00+09:00",
+                "end": "2026-09-11T11:00:00+09:00",
+                "level": "moderate",
+                "label": "보통"
+              },
+              {
+                "start": "2026-09-11T11:00:00+09:00",
+                "end": "2026-09-11T12:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T12:00:00+09:00",
+                "end": "2026-09-11T13:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T13:00:00+09:00",
+                "end": "2026-09-11T14:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T14:00:00+09:00",
+                "end": "2026-09-11T15:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T15:00:00+09:00",
+                "end": "2026-09-11T16:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T16:00:00+09:00",
+                "end": "2026-09-11T17:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              },
+              {
+                "start": "2026-09-11T17:00:00+09:00",
+                "end": "2026-09-11T18:00:00+09:00",
+                "level": "quiet",
+                "label": "조용"
+              }
+            ],
+            "noise_level_policy": {
+              "version": "schedule_activity_v1",
+              "basis": "확정 일정에서 high_noise=true인 작업과 겹치면 loud, 그 밖의 예정 작업과 겹치면 moderate, 예정 작업이 없으면 quiet. dB 또는 법정 기준이 아닙니다.",
+              "provenance": "derived_from_confirmed_schedule",
+              "measurement_validated": false
+            },
+            "publication_provenance": {
+              "publication_version": 1,
+              "confirmed_at": "2026-10-26T12:00:00Z",
+              "schedule_version": "schedule-sprint24-demo-v1",
+              "data_classification": "demo"
+            }
+          },
+          "message": null
+        }
+      }
+    }
+  ]
+}

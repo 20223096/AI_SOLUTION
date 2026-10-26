@@ -26,6 +26,8 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("JUSO_COORD_API_KEY", "SHH_JUSO_COORD_API_KEY"),
     )
     juso_timeout_seconds: float = Field(default=5.0, gt=0, le=30)
+    resident_notice_store_path: Path = Path(__file__).parents[3] / "runtime" / "resident_notices.json"
+    staff_api_allowed_hosts: list[str] = Field(default_factory=lambda: ["127.0.0.1", "::1", "localhost", "testclient"])
     model_config = SettingsConfigDict(
         env_file=Path(__file__).parents[3] / ".env",
         env_prefix="SHH_",
