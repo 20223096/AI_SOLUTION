@@ -1,0 +1,3 @@
+﻿institution,event_type,label,start_date,end_date,source_url,status
+sogang,exam,중간시험,2026-10-20,2026-10-26,https://me.sogang.ac.kr/ko/undergraduate/calendar,processed
+sogang,exam,학기말시험,2026-12-15,2026-12-21,https://me.sogang.ac.kr/ko/undergraduate/calendar,processed

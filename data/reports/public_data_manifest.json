@@ -1,0 +1,144 @@
+{
+  "generated_at": "2026-10-23T13:02:21+00:00",
+  "collector_version": "1.0.0",
+  "results": [
+    {
+      "dataset": "equipment_noise",
+      "source_url": "https://www.data.go.kr/data/3038414/fileData.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T13:02:21+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/equipment_noise/official_20260420",
+      "row_count": 753,
+      "note": "Official model-level Lw_dBA records processed for cutter, breaker, excavator, and compactor/roller. Dump trucks are absent. No model was arbitrarily selected for the PoC scenario.",
+      "sha256": "49fb2f8a3d1ca6cafc95d0bea166f001bf1b1e4da7131ad8321e4bfb032313a8",
+      "source_period": "2008-01 to 2025-07",
+      "data_id": "3038414"
+    },
+    {
+      "dataset": "receptor_distances",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:09+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/construction/pmisPjtList_2001_3000.xml",
+      "row_count": 3,
+      "note": "Distances derived from the official project representative point and official facility points. No line geometry was available; these are not propagation-path distances.",
+      "sha256": "11fd2a259e77cedd4d5d39ac8841cb125431849e61092a0fce9ec65e480de84d",
+      "project_id": "6132026083144",
+      "crs": "EPSG:4326"
+    },
+    {
+      "dataset": "facilities",
+      "source_url": "https://mirae.yonsei.ac.kr/sc/502/subview.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/facilities/yonsei.html",
+      "row_count": 1,
+      "note": "Official address verified; coordinates were not supplied and were not invented.",
+      "sha256": "b7296897adc57f28ec1b9b1501d656452b6eb3d7fcaa89550742641639554f3f"
+    },
+    {
+      "dataset": "facilities",
+      "source_url": "https://sev.severance.healthcare/sev/about/location/map.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:49+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/facilities/severance.html",
+      "row_count": 1,
+      "note": "Official address verified; coordinates were not supplied and were not invented.",
+      "sha256": "b1398b0588d82de9947afc3536743d5fb2cfbd0be78c4e1cd75a7b2e351dd34b"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://yonshin.yonsei.ac.kr/theology/department/schedule.do",
+      "status": "collected",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/yonsei_2026.html",
+      "row_count": 0,
+      "note": "",
+      "sha256": "7d6528640299e40addbd2e5a33e6d46a9d47df5ada4a74e5e8d9a42ff6cf6e87"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://cmsguide.ewha.ac.kr/cc/bachelor/academic-schedule.do?date=2026-10&mode=calendar",
+      "status": "pending_verification",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/ewha_2026.html",
+      "row_count": 0,
+      "note": "Official page confirms a 2026 second-semester general-course midterm but machine-readable exact date range was not stable; no range inferred.",
+      "sha256": "254fd725fd9e0963cfd2f1f6db71c0642736e6e1bd24b5edf2f1c99bad3665b9"
+    },
+    {
+      "dataset": "academic_calendar",
+      "source_url": "https://me.sogang.ac.kr/ko/undergraduate/calendar",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/academic_calendar/sogang_2026.html",
+      "row_count": 2,
+      "note": "Official 2026 exam date ranges extracted.",
+      "sha256": "b1f5ec61e0217bfc7455169ab050c9e0f2508075665aaec157e5cc6aa0ef25e3"
+    },
+    {
+      "dataset": "waste_collection",
+      "source_url": "https://www.sdm.go.kr/waste/contents/wasteGuide.do",
+      "status": "insufficient_fields",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/waste_collection/seodaemun_guide.html",
+      "row_count": 0,
+      "note": "Resident disposal guidance is not evidence of vehicle collection time; no acoustic event created.",
+      "sha256": "eed4118d6c501224683aa8f860c4316ac0f380e581890bdaa52eec13aa593e6a"
+    },
+    {
+      "dataset": "geographic",
+      "source_url": "https://www.eum.go.kr/web/am/amMain.jsp",
+      "status": "blocked_access",
+      "fetched_at": "2026-10-23T08:28:50+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/geographic/land_eum.html",
+      "row_count": 0,
+      "note": "Interactive cadastral lookup did not provide a reusable boundary file/CRS without a parcel or authenticated spatial download.",
+      "sha256": "886cf1d71c0979b001b6d8d2927db578a218c266f62633168cfb4ab993f22c6e"
+    },
+    {
+      "dataset": "construction",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:09+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/construction",
+      "row_count": 3,
+      "note": "API INFO-000; source_total_count=5006. Project dates are not daily work times; no acoustic level supplied.",
+      "sha256": "9aeb53e3a32a57cf0e1e2abc007fb83e50c847d47438b33a1d6c63c3cdb720eb",
+      "source_total_count": 5006,
+      "api_result_code": "INFO-000",
+      "service_name": "pmisPjtList",
+      "response_type": "xml"
+    },
+    {
+      "dataset": "events",
+      "source_url": "https://data.seoul.go.kr/dataList/OA-15486/A/1/datasetView.do",
+      "status": "processed",
+      "fetched_at": "2026-10-23T08:56:15+00:00",
+      "raw_path": "/Users/hyewon/ai_life_solution/shh-schedule-poc/data/raw/events",
+      "row_count": 55,
+      "note": "API INFO-000; source_total_count=19658. PRO_TIME retained; only unambiguous clock tokens parsed. No acoustic level supplied.",
+      "sha256": "69831026da3bdf50471281803fa8ea47a4d08784c73de901018955417c4f4133",
+      "source_total_count": 19658,
+      "api_result_code": "INFO-000",
+      "service_name": "culturalEventInfo",
+      "response_type": "json"
+    }
+  ],
+  "processed_counts": {
+    "equipment_noise": 753,
+    "receptor_distances": 3,
+    "construction_events": 3,
+    "cultural_events": 55,
+    "receptors": 6,
+    "academic_calendar": 2,
+    "waste_collection": 0,
+    "land_use": 0
+  },
+  "integration_policy": {
+    "verified_numeric_acoustic_only": true,
+    "schedule_without_noise_db_energy_summed": false,
+    "sdot_reprocessed": false,
+    "road_traffic_reprocessed": false
+  }
+}

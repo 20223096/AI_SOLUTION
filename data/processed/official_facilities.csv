@@ -1,0 +1,4 @@
+﻿facility_id,name,type,address,latitude,longitude,crs,reference_date,retrieved_at,source_dataset_id,source_url,status
+B000001921,서울창서초등학교,school,서울특별시 서대문구 연세로5나길 30-3,37.55814305,126.9334809,EPSG:4326,2026-10-01,2026-10-23,15021148,https://www.data.go.kr/data/15021148/standard.do,processed
+B000008147,창천중학교,school,서울특별시 마포구 백범로1길 56,37.55498958,126.9392951,EPSG:4326,2026-10-01,2026-10-23,15021148,https://www.data.go.kr/data/15021148/standard.do,processed
+JDQ4MTg4MSM1MSMkMSMkMCMkODkkMzgxMzUxIzExIyQxIyQzIyQ5OSQyNjE0ODEjNjEjJDEjJDgjJDgz,연세대학교의과대학세브란스병원,hospital,"서울특별시 서대문구 연세로 50-1, (신촌동)",37.5623446,126.9408265,EPSG:4326,,2026-10-23,15001698,https://www.data.go.kr/data/15001698/openapi.do,processed

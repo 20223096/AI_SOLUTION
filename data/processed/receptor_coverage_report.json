@@ -1,0 +1,72 @@
+{
+  "data_version": "residential-receptor-verification-v2",
+  "source_license": "OpenStreetMap contributors, ODbL 1.0",
+  "raw_polygon_count": 1559,
+  "unique_osm_polygon_count": 1559,
+  "official_target_buildings_queried": 2,
+  "segments": {
+    "segment-yeonse-ro-2na-gil": {
+      "downloaded_building_polygons": 748,
+      "residential_tagged_candidates": 10,
+      "search_area_osm_residential_candidates": 10,
+      "officially_verified_residential": 0,
+      "classification_counts": {
+        "official_residential_verified": 0,
+        "osm_residential_candidate": 10,
+        "unknown_building_use": 447,
+        "verified_non_residential": 291
+      },
+      "duplicate_ids": 0
+    },
+    "segment-chungjeong-ro": {
+      "downloaded_building_polygons": 811,
+      "residential_tagged_candidates": 0,
+      "search_area_osm_residential_candidates": 94,
+      "officially_verified_residential": 0,
+      "classification_counts": {
+        "official_residential_verified": 0,
+        "osm_residential_candidate": 94,
+        "unknown_building_use": 690,
+        "verified_non_residential": 27
+      },
+      "duplicate_ids": 0
+    }
+  },
+  "segment_a_address_anchor_counts_by_radius_m": {
+    "100": 2,
+    "200": 4,
+    "300": 10
+  },
+  "segment_b_radius_counts_status": "deferred_missing_official_coordinate",
+  "official_residential_verified": 0,
+  "official_polygon_count": 0,
+  "osm_residential_candidates": 104,
+  "eligible_receptor_candidates": 10,
+  "official_non_residential_address_buildings_verified": 2,
+  "receptor_wall_points_verified": 0,
+  "official_construction_geometry_status": "null_unchanged",
+  "field_prediction_status": "deferred",
+  "validation_status": "not_evaluable",
+  "building_hub_diagnostic": {
+    "http_status": 200,
+    "result_code": "00",
+    "authenticated": true,
+    "queried_buildings": 2,
+    "secret_logged": false
+  },
+  "juso_search_status": "resolved_two_target_addresses",
+  "juso_coordinate_status": "deferred_missing_coordinate_key",
+  "seoul_recap_title": {
+    "service": "aiVBigDjrRecapTitle",
+    "rows_scanned": 19204,
+    "exact_target_matches": 0,
+    "record_type": "총괄표제부"
+  },
+  "limitations": [
+    "JUSO_COORD_API_KEY is empty; the search key returned E0001 at the coordinate endpoint",
+    "OSM geometry is not an official building polygon",
+    "No fuzzy address join was accepted",
+    "Chungjeong search-area polygons have no official anchor distance",
+    "Building centroids are not facade receptors or construction source locations"
+  ]
+}

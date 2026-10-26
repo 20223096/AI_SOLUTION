@@ -1,0 +1,49 @@
+{
+  "collection_date": "2026-10-24",
+  "sources": [
+    {
+      "name": "국토교통부 GIS건물통합정보",
+      "url": "https://www.data.go.kr/data/15083092/fileData.do",
+      "format": "SHP",
+      "license": "공공저작물 출처표시 제1유형",
+      "status": "blocked_interactive_vworld_download",
+      "note": "VWorld 기관 자체 다운로드로 연결되며 자동 서울/서대문구 추출 파일을 확보하지 못함"
+    },
+    {
+      "name": "건축HUB 건축물대장정보 서비스",
+      "url": "https://www.data.go.kr/data/15134735/openapi.do",
+      "format": "JSON/XML",
+      "status": "blocked_auth_http_403",
+      "note": "DATA_GO_KR_API_KEY 값은 저장하지 않았으며 현재 키로 2026-10-24 호출 시 HTTP 403"
+    },
+    {
+      "name": "국토교통부 연속수치지형도 건물",
+      "url": "https://www.data.go.kr/data/15125047/fileData.do",
+      "format": "SHP",
+      "license": "공공저작물 출처표시 제1유형",
+      "status": "blocked_interactive_vworld_download",
+      "note": "전국 19,402,663행 기관 자체 다운로드이며 지역 단위 자동 취득 경로를 확보하지 못함"
+    },
+    {
+      "name": "OpenStreetMap Overpass API",
+      "url": "https://overpass-api.de/api/interpreter",
+      "format": "OSM JSON with polygon geometry",
+      "license": "ODbL 1.0, © OpenStreetMap contributors",
+      "status": "collected_exploratory"
+    },
+    {
+      "name": "OpenStreetMap Nominatim",
+      "url": "https://nominatim.openstreetmap.org/search",
+      "format": "JSONv2",
+      "license": "ODbL 1.0, © OpenStreetMap contributors",
+      "status": "partial_one_of_two_exact"
+    }
+  ],
+  "raw_files": [
+    "nominatim_yeonse_20261024.json",
+    "nominatim_chungjeong_20261024.json",
+    "osm_yeonse_300m_20261024.json",
+    "osm_chungjeong_search_500m_20261024.json"
+  ],
+  "privacy": "No resident names, contacts, or unit-level personal data collected."
+}

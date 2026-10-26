@@ -1,0 +1,4 @@
+﻿event_id,name,location,district,latitude,longitude,project_start_date,project_end_date,work_start_time,work_end_time,noise_db,source_url,source_service,status
+7042025092297,신촌동 주민센터 복합화 건설사업 석면해체 및 건축물 철거공사,,서대문구,37.557806081786005,126.939518253526,2025-09-22,2026-09-15,,,,https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do,pmisPjtList,processed
+6132026083144,연세로2나길 20 일대 외 1개소 하수관로 개량공사,,서울지역외,37.5569842,126.9384049,2026-08-31,2026-12-18,,,,https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do,pmisPjtList,processed
+6132026073099,신촌 청년푸드스토어 1층 외부 환경개선 공사,,서대문구,37.55891965142176,126.94301457202998,2026-08-01,2026-08-21,,,,https://data.seoul.go.kr/dataList/OA-15585/A/1/datasetView.do,pmisPjtList,processed

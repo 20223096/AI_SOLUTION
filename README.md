@@ -1,31 +1,46 @@
-# AI_SOLUTION
+# 쉿간표 (Shh Schedule) PoC backend
 
-2026 AI 라이프 솔루션 챌린지 프로젝트 저장소입니다.
+구청 담당자가 신규 공사 작업을 15분 슬롯으로 검토하고, 예상 소음·민감도·일정 변경비용을 함께 비교하는 **행정 참고용** FastAPI PoC입니다. 법적 허가, 소음 준수 인증 또는 실제 피해 감소의 증명이 아닙니다.
 
-> **현재 대주제**  
-> 공사·청소·폐기물 수거·행사 등 개별적으로 발생하는 소음이 한 지역에 연속되지 않도록 AI가 작업 일정을 통합 분석하여 **조용한 시간(Quiet Window)** 을 확보하는 솔루션을 개발합니다.
+## 실행
 
-현재는 아이디어 구체화 단계이며, 문제 정의·기능·기술 스택·서비스 형태는 논의를 거쳐 계속 업데이트합니다.
+Python 3.11 이상에서:
 
-## Collaboration Rules
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn app.main:app --reload
+```
 
-### 1. Branch
+Swagger: `http://127.0.0.1:8000/docs`, 상태 확인: `GET /api/health`.
 
-`main` 브랜치에서 직접 개발하지 않습니다.  
-작업별 브랜치를 생성한 뒤 Pull Request(PR)를 통해 `main`에 반영합니다.
+```bash
+cd backend
+pytest -q
+```
 
-브랜치 이름은 아래 형식을 사용합니다.
+기본 `SHH_EXTRACTOR_MODE=mock`이며 API 키 없이 전 기능이 실행됩니다. `.env.example`을 `.env`로 복사해 설정할 수 있습니다. `llm` 모드는 제공업체별 전송 구현과 키를 요구하며 설정 불완전 시 명시적으로 실패합니다.
 
-- `feat/<작업명>` : 새로운 기능
-- `fix/<작업명>` : 버그 수정
-- `refactor/<작업명>` : 리팩터링
-- `docs/<작업명>` : 문서 작업
-- `chore/<작업명>` : 설정·환경 등 기타 작업
+## 설계 요약
 
-예시:
+- `app/models`: Pydantic v2 입력·출력 도메인
+- `app/services`: 음향, 민감도, 점수, 최적화, Pareto, 비교, 추출
+- `app/api`: FastAPI 라우터
+- `app/data`: 출처 상태가 포함된 JSON 설정·시나리오
+- `tests`: 손계산, 물리식, 제약, API 회귀 테스트
 
-```text
-feat/schedule-optimizer
-feat/noise-analysis
-fix/map-rendering
-docs/update-readme
+개발용 후보 진단은 `GET /api/schedules/optimize/{scenario_id}/diagnostics`에서 확인합니다. 기본 CASE A와 별도로 소음 집중, 시험기간, 제약 강화 실험 시나리오가 제공됩니다.
+
+## 배경소음 ETL
+
+원본 경로를 유지한 기본 실행:
+
+```bash
+python scripts/noise_etl.py
+```
+
+다른 경로는 `--raw-root`, `--processed-root`, `--backend-catalog`으로 지정합니다. 원본 CSV는 CP949 스트리밍 방식이며 ZIP에서는 신촌 시트만 읽습니다. 생성 CSV는 Git에서 제외됩니다. `GET /api/noise/background-profiles`로 프로파일을 조회하고 predict/optimize 요청의 `background_profile`로 명시 선택합니다. 기본값은 기존 `assumed_demo`입니다.
+
+작은 시나리오에는 모든 15분 시작 오프셋을 정확 평가합니다. `requirements.txt`에 OR-Tools가 포함되어 있으나 현재 PoC 실행 경로는 재현성과 설명 가능성을 위해 정확 열거를 사용합니다.

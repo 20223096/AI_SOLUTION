@@ -1,0 +1,59 @@
+{
+  "checked_at": "2026-10-23T10:03:10+00:00",
+  "key_logged": false,
+  "client_parameter_mode": "httpx.params",
+  "results": [
+    {
+      "dataset_id": "15021148",
+      "endpoint": "https://api.data.go.kr/openapi/tn_pubr_public_elesch_mskul_lc_api",
+      "query": {
+        "schoolNm": "서울창서초등학교"
+      },
+      "http_status": 200,
+      "result_code": "00",
+      "result_message": "NORMAL SERVICE.",
+      "approved": true,
+      "row_count": 1
+    },
+    {
+      "dataset_id": "15021148",
+      "endpoint": "https://api.data.go.kr/openapi/tn_pubr_public_elesch_mskul_lc_api",
+      "query": {
+        "schoolNm": "창천중학교"
+      },
+      "http_status": 200,
+      "result_code": "00",
+      "result_message": "NORMAL SERVICE.",
+      "approved": true,
+      "row_count": 1
+    },
+    {
+      "dataset_id": "15001698",
+      "endpoint": "https://apis.data.go.kr/B551182/hospInfoServicev2/getHospBasisList",
+      "query": {
+        "yadmNm": "세브란스병원"
+      },
+      "http_status": 200,
+      "result_code": "00",
+      "result_message": "NORMAL SERVICE.",
+      "approved": true,
+      "row_count": 3
+    },
+    {
+      "dataset_id": "15134735",
+      "endpoint": "https://apis.data.go.kr/1613000/BldRgstHubService/getBrTitleInfo",
+      "query": {
+        "scope": "approval_check_sample",
+        "sigunguCd": "11410",
+        "bjdongCd": "11400"
+      },
+      "http_status": 200,
+      "result_code": "00",
+      "result_message": "NORMAL SERVICE",
+      "approved": true,
+      "row_count": 0,
+      "integration": "not_used_for_receptor_location"
+    }
+  ],
+  "processed_facility_count": 3
+}

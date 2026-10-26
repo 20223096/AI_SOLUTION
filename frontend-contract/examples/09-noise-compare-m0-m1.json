@@ -1,0 +1,301 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/noise/compare-m0-m1",
+    "headers": {
+      "accept": "application/json",
+      "content-type": "application/json"
+    },
+    "body": {
+      "slot_start": "2026-10-26T07:00:00+09:00",
+      "slot_end": "2026-10-26T07:15:00+09:00",
+      "background_laeq_db": 50,
+      "background_provenance": "assumed",
+      "overlap_mode": "complete_concurrent",
+      "sources": [
+        {
+          "id": "excavator-a",
+          "segment_id": "segment-yeonse-ro-2na-gil",
+          "source_type": "moving_work",
+          "equipment_category": "굴삭기",
+          "count": 1,
+          "sound_power_level_db": 100,
+          "lw_provenance": "assumed",
+          "position": {
+            "x": 200000,
+            "y": 550000,
+            "z_m": 1,
+            "crs": "EPSG:5186",
+            "provenance": "assumed"
+          },
+          "deployment_start": "2026-10-26T07:00:00+09:00",
+          "deployment_end": "2026-10-26T07:15:00+09:00",
+          "actual_active_minutes": 7.5,
+          "activity_provenance": "assumed"
+        }
+      ],
+      "receptors": [
+        {
+          "id": "r1",
+          "position": {
+            "x": 200010,
+            "y": 550000,
+            "z_m": 1,
+            "crs": "EPSG:5186",
+            "provenance": "assumed"
+          }
+        }
+      ]
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "comparison_status": "simulated",
+      "validation_status": "not_evaluable",
+      "m0_characterization": "representative_point_assumption with explicit 100% slot activity",
+      "m1_characterization": "activity-duration energy averaging and explicit simultaneity",
+      "comparisons": [
+        {
+          "receptor_id": "r1",
+          "m0_new_project_laeq_db": 69.01,
+          "m1_new_project_laeq_db": 66.0,
+          "m0_total_laeq_db": 69.06,
+          "m1_total_laeq_db": 66.11,
+          "m0_delta_total_db": 19.06,
+          "m1_delta_total_db": 16.11,
+          "m0_energy_exposure": 37.746909,
+          "m1_energy_exposure": 18.873455,
+          "m0_incremental_impact": 22.97,
+          "m1_incremental_impact": 18.53
+        }
+      ],
+      "m0": {
+        "model_version": "M0_representative_point_assumption",
+        "calculation_status": "simulated",
+        "validation_status": "not_evaluable",
+        "slot_minutes": 15,
+        "overlap_mode": "complete_concurrent",
+        "background": {
+          "laeq_db": 50.0,
+          "provenance": "assumed"
+        },
+        "corrections": {
+          "ground": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "atmospheric": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "barrier": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "building": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "reflection": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "meteorology": {
+            "status": "not_modelled",
+            "value_db": null
+          }
+        },
+        "results": [
+          {
+            "receptor_id": "r1",
+            "slot_start": "2026-10-26T07:00:00+09:00",
+            "slot_end": "2026-10-26T07:15:00+09:00",
+            "new_project_contribution_laeq_db": 69.01,
+            "slot_laeq_dba": 69.01,
+            "total_laeq_db": 69.06,
+            "delta_total_db": 19.06,
+            "new_project_energy_exposure_65db_ref_minutes": 37.746909,
+            "incremental_impact_legacy_v1": 22.97,
+            "max_simultaneous_lp_db": 69.01,
+            "maximum_concurrent_combined_level_db": 69.01,
+            "measured_lafmax_dba": null,
+            "simultaneity": {
+              "mode": "complete_concurrent",
+              "bound": "complete temporal overlap assumption",
+              "total_source_activity_minutes": 15.0,
+              "complete_sequential_feasible": true,
+              "minimum_feasible_concurrent_source_count": 1,
+              "maximum_concurrent_source_count": 1,
+              "pairwise_overlap": [],
+              "maximum_continuous_construction_noise_minutes_range": {
+                "minimum": 15.0,
+                "maximum": 15.0
+              }
+            },
+            "continuous_new_project_exposure": {
+              "minimum_minutes": 15.0,
+              "maximum_minutes": 15.0,
+              "interpretation": "range from complete overlap to sequential union; not a confidence interval"
+            },
+            "sources": [
+              {
+                "id": "excavator-a",
+                "segment_id": "segment-yeonse-ro-2na-gil",
+                "equipment_category": "굴삭기",
+                "source_type": "moving_work",
+                "equipment_model": null,
+                "simultaneous_group": null,
+                "count": 1,
+                "lw_db": 100.0,
+                "distance_3d_m": 10.0,
+                "active_minutes": 15.0,
+                "activity_ratio": 1.0,
+                "activity_basis": "explicit_active_minutes",
+                "activity_provenance": "assumed",
+                "source_position": {
+                  "x": 200000.0,
+                  "y": 550000.0,
+                  "z_m": 1.0,
+                  "crs": "EPSG:5186",
+                  "provenance": "assumed"
+                },
+                "receptor_position": {
+                  "x": 200010.0,
+                  "y": 550000.0,
+                  "z_m": 1.0,
+                  "crs": "EPSG:5186",
+                  "provenance": "assumed"
+                },
+                "measurement_condition_verified": false,
+                "lw_source": {
+                  "provenance": "assumed",
+                  "selection": "explicit_input",
+                  "measurement_condition_verified": false
+                }
+              }
+            ]
+          }
+        ],
+        "missing_required_inputs": [],
+        "accuracy_claim": null,
+        "disclaimer": "M1 계산 차이는 입력 세분화 효과이며 실측 검증 전 정확도 향상을 의미하지 않습니다."
+      },
+      "m1": {
+        "model_version": "M1_physical_v1",
+        "calculation_status": "simulated",
+        "validation_status": "not_evaluable",
+        "slot_minutes": 15,
+        "overlap_mode": "complete_concurrent",
+        "background": {
+          "laeq_db": 50.0,
+          "provenance": "assumed"
+        },
+        "corrections": {
+          "ground": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "atmospheric": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "barrier": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "building": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "reflection": {
+            "status": "not_modelled",
+            "value_db": null
+          },
+          "meteorology": {
+            "status": "not_modelled",
+            "value_db": null
+          }
+        },
+        "results": [
+          {
+            "receptor_id": "r1",
+            "slot_start": "2026-10-26T07:00:00+09:00",
+            "slot_end": "2026-10-26T07:15:00+09:00",
+            "new_project_contribution_laeq_db": 66.0,
+            "slot_laeq_dba": 66.0,
+            "total_laeq_db": 66.11,
+            "delta_total_db": 16.11,
+            "new_project_energy_exposure_65db_ref_minutes": 18.873455,
+            "incremental_impact_legacy_v1": 18.53,
+            "max_simultaneous_lp_db": 69.01,
+            "maximum_concurrent_combined_level_db": 69.01,
+            "measured_lafmax_dba": null,
+            "simultaneity": {
+              "mode": "complete_concurrent",
+              "bound": "complete temporal overlap assumption",
+              "total_source_activity_minutes": 7.5,
+              "complete_sequential_feasible": true,
+              "minimum_feasible_concurrent_source_count": 1,
+              "maximum_concurrent_source_count": 1,
+              "pairwise_overlap": [],
+              "maximum_continuous_construction_noise_minutes_range": {
+                "minimum": 7.5,
+                "maximum": 7.5
+              }
+            },
+            "continuous_new_project_exposure": {
+              "minimum_minutes": 7.5,
+              "maximum_minutes": 7.5,
+              "interpretation": "range from complete overlap to sequential union; not a confidence interval"
+            },
+            "sources": [
+              {
+                "id": "excavator-a",
+                "segment_id": "segment-yeonse-ro-2na-gil",
+                "equipment_category": "굴삭기",
+                "source_type": "moving_work",
+                "equipment_model": null,
+                "simultaneous_group": null,
+                "count": 1,
+                "lw_db": 100.0,
+                "distance_3d_m": 10.0,
+                "active_minutes": 7.5,
+                "activity_ratio": 0.5,
+                "activity_basis": "explicit_active_minutes",
+                "activity_provenance": "assumed",
+                "source_position": {
+                  "x": 200000.0,
+                  "y": 550000.0,
+                  "z_m": 1.0,
+                  "crs": "EPSG:5186",
+                  "provenance": "assumed"
+                },
+                "receptor_position": {
+                  "x": 200010.0,
+                  "y": 550000.0,
+                  "z_m": 1.0,
+                  "crs": "EPSG:5186",
+                  "provenance": "assumed"
+                },
+                "measurement_condition_verified": false,
+                "lw_source": {
+                  "provenance": "assumed",
+                  "selection": "explicit_input",
+                  "measurement_condition_verified": false
+                }
+              }
+            ]
+          }
+        ],
+        "missing_required_inputs": [],
+        "accuracy_claim": null,
+        "disclaimer": "M1 계산 차이는 입력 세분화 효과이며 실측 검증 전 정확도 향상을 의미하지 않습니다."
+      },
+      "accuracy_improvement_claimed": false
+    }
+  }
+}

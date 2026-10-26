@@ -1,0 +1,22 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "http://127.0.0.1:8765/api/noise/predict",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "scenario_id": "case-a",
+      "background_profile": "does-not-exist"
+    }
+  },
+  "response": {
+    "status": 422,
+    "headers": {
+      "content-type": "application/json"
+    },
+    "body": {
+      "detail": "unknown background profile: does-not-exist"
+    }
+  }
+}
