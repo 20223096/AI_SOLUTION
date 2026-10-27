@@ -3,6 +3,7 @@ import type { ConfirmedPlan } from '../api/planning'
 import { isSelectable, requestRecommendations, type RecommendationResponse } from '../api/recommendations'
 import { ANALYSIS_DATE, type ScheduleValidationResponse } from '../api/schedules'
 import { CandidateBadge } from '../components/CandidateBadge'
+import { SensitivityMap } from '../components/SensitivityMap'
 import { errorMessage, isAbort, type Async } from '../utils/async'
 import { candidateLabel, candidateReason, caveatText, formatDelta, formatNumber } from './s4Display'
 import './S4Recommendation.css'
@@ -85,6 +86,7 @@ export function S4Recommendation({ plan, s3Validation, onBack, onEditPlan, onNex
           OR-Tools가 작업별 시작시간과 확정 제약으로 찾은 해 중, 소음 영향·일정 변경·연속 고소음·기존 소음 중첩의
           비지배 후보만 추천합니다. 탐색한 해 집합 안의 결과이며 전역 최적해가 아닙니다.
         </p>
+        <p className="s4-note"><span className="badge prov-derived">물리모델 계산값</span> 추천 엔진 <b>cp_sat_v2</b> · 배경소음 <span className="badge prov-observed">과거 관측 기반 대표값</span> · 민감도 <span className="badge prov-assumed">시나리오 가정값</span></p>
 
         <div className="s4-summary">
           <div className={`s4-stat ${s3Validation.feasible ? 'ok' : 'fail'}`}>
@@ -128,6 +130,26 @@ export function S4Recommendation({ plan, s3Validation, onBack, onEditPlan, onNex
             </ul>
           </div>
         )}
+      </section>
+
+      <section className="panel span2">
+        <div className="ph"><h2>신촌 민감도 지도</h2><span className="tag">실제 좌표 / 시나리오 가정 분리</span></div>
+        <SensitivityMap />
+      </section>
+
+      <section className="panel span2">
+        <div className="ph"><h2>시간대별 적용 민감도</h2><span className="tag">legacy_v1 · 가정 가중치</span></div>
+        <div className="scroll"><table><thead><tr><th>조건</th><th>실제 엔진 설정</th><th>구현 상태</th></tr></thead><tbody>
+          <tr><td>일반 주간 (07:00–18:00)</td><td>기본 1.0</td><td>계산 적용</td></tr>
+          <tr><td>이른 아침·저녁 (05:00–07:00, 18:00–22:00)</td><td>기본 1.5</td><td>계산 적용</td></tr>
+          <tr><td>야간 (22:00–05:00)</td><td>기본 2.0</td><td>계산 적용</td></tr>
+          <tr><td>시험기간·대학</td><td>+0.5</td><td>학사일정 일치 시 적용</td></tr>
+          <tr><td>학교·병원</td><td>+0.5</td><td>수음점 유형 기준 적용</td></tr>
+          <tr><td>주말 주거 휴식</td><td>+0.3</td><td>weekend_rest 입력 시 적용</td></tr>
+          <tr><td>학교 수업시간 / 그 외</td><td>전용 가중치 없음</td><td>미구현</td></tr>
+          <tr><td>공휴일</td><td>전용 가중치 없음</td><td>미구현</td></tr>
+        </tbody></table></div>
+        <p className="s4-note muted">민감도는 Noise Impact 점수에만 반영되며 물리적 dB를 바꾸지 않습니다. 같은 시간에 조건이 겹치면 legacy_v1은 기본값에 조정값을 더합니다.</p>
       </section>
 
       <section className="panel span2">

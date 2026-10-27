@@ -4,6 +4,7 @@ import type { ConfirmedPlan } from './api/planning'
 import { isSelectable, type CompareResponse, type RecommendationResponse } from './api/recommendations'
 import type { ResidentNoticeDraft } from './api/residentNotices'
 import { AppHeader, type ScreenId } from './components/AppHeader'
+import { DataProvenanceLegend } from './components/DataProvenanceLegend'
 import { S1NoticeInput } from './screens/S1NoticeInput'
 import { S2ExtractionReview } from './screens/S2ExtractionReview'
 import { S3ConstraintCheck, type S3Result } from './screens/S3ConstraintCheck'
@@ -165,6 +166,8 @@ function App() {
       {screen === 'S8' && plan && candidate && confirmedDraft?.candidate_id === candidate.candidate_id && (
         <S8ResidentView projectId={plan.planning.notice_id} location={plan.planning.location} onBack={() => setScreen('S7')} />
       )}
+
+      <DataProvenanceLegend />
 
       <footer>쉿간표 PoC · 추출 결과는 사용자 확인 전까지 확정값이 아닙니다.</footer>
     </div>

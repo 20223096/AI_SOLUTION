@@ -104,7 +104,11 @@ footer { color: var(--muted); font-size: 12.5px; margin-top: 20px }
 .prov-user_provided { background: var(--bg); color: var(--ink); border-color: var(--line) }
 .prov-assumed { background: color-mix(in srgb, var(--s2) 50%, var(--panel)); color: var(--ink); border-color: var(--waste) }
 .prov-derived { background: color-mix(in srgb, var(--event) 15%, var(--panel)); color: var(--event); border-color: var(--event) }
+.prov-observed { background: color-mix(in srgb, var(--build) 14%, var(--panel)); color: var(--build); border-color: var(--build) }
+.prov-llm { background: color-mix(in srgb, var(--s2) 35%, var(--panel)); color: var(--ink); border-color: var(--s3) }
 .prov-missing { background: transparent; color: var(--muted); border: 1px dashed var(--line) }
+.provenance-key { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; margin-top: 18px; padding: 10px 12px; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); font-size: 12px }
+.provenance-key b { margin-right: 2px }
 
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

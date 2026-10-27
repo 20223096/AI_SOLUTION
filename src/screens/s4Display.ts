@@ -41,6 +41,7 @@ export const HEADLINE_METRICS: MetricDef[] = [
   M('existing_noise_overlap_receptor_minutes', '기존 소음과 겹침', '수음점·분', 'lower'),
   M('max_total_estimated_db', '최대 추정 소음', 'dB', 'lower'),
   M('saturation_slot_count', '고소음 포화 구간', '개', 'lower'),
+  M('max_continuous_high_noise_minutes', '최대 연속 고소음 시간', '분', 'lower'),
   M('longest_quiet_window_minutes', '최장 조용한 시간', '분', 'higher'),
   M('schedule_change_minutes', '일정 변경량', '분', 'neutral'),
 ]

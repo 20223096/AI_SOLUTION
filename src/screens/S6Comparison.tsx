@@ -58,6 +58,7 @@ export function S6Comparison({ res, candidate, notice, plan, onBack, onNext }: P
           <span className="tag">원 일정 → {candidateLabel(candidate.candidate_id)}</span>
         </div>
         <p className="sub">같은 수음점과 계산 규칙으로 원 일정과 선택한 조정안을 비교한 시뮬레이션 결과입니다.</p>
+        <p className="s6-note"><b>계산 근거:</b> cp_sat_v2 추천 후보 · 제약조건 {candidate.prd_feasible ? '준수' : '위반'} · road_traffic_observed_profile 대표 배경소음 · 15분 슬롯 · 동일 수음점/민감도 규칙. Noise Impact는 물리모델 계산 점수이며 실제 측정 소음값이나 주민 피해 감소 입증값이 아닙니다.</p>
 
         {original ? (
           <ScheduleTimeline
