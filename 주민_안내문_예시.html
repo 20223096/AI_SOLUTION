@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>쉿간표 안내문 생성</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* layout: 왼쪽 입력 정보 → 가운데 흐름 → 오른쪽 결과물, 폰에서는 한 줄로 쌓임 */
+:root{
+  --bg:#F3F5F4; --panel:#FFFFFF; --ink:#18222E; --muted:#5E6B78; --line:#DCE2E0;
+  --quiet:#2F8F7B; --quiet-soft:#D5ECE5; --mark:#FFF1C2; --mark-ink:#6B5210;
+  --paper:#FBFBF8;
+  --sans:"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121A20; --panel:#1B252D; --ink:#E9EEF0; --muted:#9AA8B3; --line:#2E3B45;
+  --quiet:#55BFA6; --quiet-soft:#1E3A34; --mark:#4A3F1A; --mark-ink:#F3DFA2; --paper:#202B33; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121A20; --panel:#1B252D; --ink:#E9EEF0; --muted:#9AA8B3; --line:#2E3B45;
+  --quiet:#55BFA6; --quiet-soft:#1E3A34; --mark:#4A3F1A; --mark-ink:#F3DFA2; --paper:#202B33; color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.6}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+header{display:flex;flex-wrap:wrap;align-items:baseline;gap:10px;margin-bottom:6px}
+header b{font-size:24px;letter-spacing:-0.02em}
+header span{color:var(--muted);font-size:14px}
+.lead{color:var(--muted);margin:0 0 20px;max-width:62ch}
+.grid{display:grid;grid-template-columns:1fr;gap:16px;align-items:start}
+@media(min-width:900px){.grid{grid-template-columns:minmax(0,1fr) minmax(0,1.35fr)}}
+section{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px;min-width:0}
+h2{font-size:16px;margin:0 0 4px;font-weight:600}
+.sub{color:var(--muted);font-size:13px;margin:0 0 14px}
+dl{display:grid;grid-template-columns:88px minmax(0,1fr);gap:8px 12px;margin:0;font-size:14px}
+dt{color:var(--muted)}
+dd{margin:0}
+.src{display:inline-block;font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:0 5px;margin-left:6px;vertical-align:1px;white-space:nowrap}
+.why{margin-top:14px;padding:10px 12px;background:var(--quiet-soft);border-radius:8px;font-size:13.5px}
+.why b{color:var(--quiet)}
+.prompt{margin-top:16px;border-top:1px dashed var(--line);padding-top:14px}
+.prompt pre{white-space:pre-wrap;font-family:var(--sans);font-size:12.5px;color:var(--muted);background:var(--bg);border-radius:8px;padding:10px;margin:6px 0 0}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.tabs button{font:inherit;font-size:13.5px;border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:6px 13px;cursor:pointer}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--panel);border-color:var(--ink)}
+button:focus-visible{outline:2px solid var(--quiet);outline-offset:2px}
+.doc{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px;font-size:14.5px}
+.doc h3{margin:0 0 4px;font-size:17px;text-wrap:balance}
+.doc .meta{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.doc p{margin:0 0 10px}
+.doc table{border-collapse:collapse;width:100%;font-size:13.5px;margin:6px 0 12px}
+.doc td{border-top:1px solid var(--line);padding:6px 8px;vertical-align:top}
+.doc td:first-child{color:var(--muted);width:84px;white-space:nowrap}
+.sms{max-width:330px;margin:0 auto;background:var(--bg);border-radius:22px;padding:16px}
+.bubble{background:var(--panel);border:1px solid var(--line);border-radius:16px 16px 16px 4px;padding:12px 14px;font-size:14px}
+.sms .from{font-size:12px;color:var(--muted);margin-bottom:6px}
+.board{border:3px solid var(--ink);border-radius:6px;padding:22px;text-align:center;background:var(--paper)}
+.board .big{font-size:30px;font-weight:700;letter-spacing:-0.02em;color:var(--quiet);font-variant-numeric:tabular-nums}
+.board h3{font-size:20px;margin:0 0 10px}
+mark{background:var(--mark);color:var(--mark-ink);border-radius:3px;padding:0 2px}
+.toggle{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);margin:12px 0 0}
+.hl-off mark{background:transparent;color:inherit;padding:0}
+.actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.btn{font:inherit;font-weight:600;font-size:14px;border-radius:10px;padding:9px 14px;cursor:pointer;border:1px solid var(--ink);background:var(--ink);color:var(--panel)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+.flow{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:13px;color:var(--muted);margin:0 0 18px}
+.flow span{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:4px 10px;color:var(--ink)}
+.flow span.on{border-color:var(--quiet);color:var(--quiet);font-weight:600}
+footer{color:var(--muted);font-size:12.5px;margin-top:18px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header><b>쉿간표</b><span>주민 안내문 만들기</span></header>
+  <p class="lead">일정을 확정하면 앞 단계에서 정리된 정보로 안내문 초안이 자동으로 만들어집니다. 담당자는 내용을 확인하고 필요한 곳에 올리기만 하면 됩니다.</p>
+
+  <div class="flow" aria-label="진행 단계">
+    <span>공고문 정리</span>→<span>추천 시간</span>→<span>조정안 선택</span>→<span class="on">확정 · 안내문</span>
+  </div>
+
+  <div class="grid">
+    <section aria-labelledby="h-in">
+      <h2 id="h-in">확정된 일정 정보</h2>
+      <p class="sub">안내문은 아래 정보만 사용해서 작성됩니다.</p>
+      <dl>
+        <dt>공사명</dt><dd>상수도관 교체공사<span class="src">공고문</span></dd>
+        <dt>장소</dt><dd>신촌로 원룸촌 일대 (A구역)<span class="src">공고문</span></dd>
+        <dt>기간</dt><dd>10월 21일(수) ~ 10월 30일(금)<span class="src">공고문</span></dd>
+        <dt>작업 시간</dt><dd><b>매일 16:00 ~ 18:00</b><span class="src">조정안</span></dd>
+        <dt>장비</dt><dd>굴착기, 브레이커<span class="src">공고문</span></dd>
+        <dt>예상 소음</dt><dd>원룸 밀집 구간 약 68dB<span class="src">소음 예측</span></dd>
+        <dt>문의</dt><dd>서대문구 생활환경과 02-000-0000<span class="src">구청 정보</span></dd>
+      </dl>
+      <div class="why">
+        <b>이 시간으로 정한 이유</b><br>
+        연세대 중간고사 기간이라 12~14시 도서관 이용 시간을 피하고, 오전 철거 공사·쓰레기 수거와 소음이 이어지지 않도록 조정
+        <span class="src">민감도 · 추천 시간</span>
+      </div>
+      <div class="prompt">
+        <h2>AI에게 보내는 요청</h2>
+        <pre>위 정보만 사용해서 주민 안내문을 작성해 줘.
+- 작업 시간과 그 시간으로 정한 이유가 잘 보이게
+- 공손하고 짧게, 어려운 용어 없이
+- 정보에 없는 날짜·번호·내용은 쓰지 마
+- 형식: {선택한 채널}</pre>
+      </div>
+    </section>
+
+    <section aria-labelledby="h-out">
+      <h2 id="h-out">생성된 안내문</h2>
+      <p class="sub">올릴 곳에 맞게 길이와 형식이 달라집니다.</p>
+      <div class="tabs" role="group" aria-label="안내문 형식">
+        <button id="t-web" aria-pressed="true">구청 홈페이지 공지</button>
+        <button id="t-sms" aria-pressed="false">주민 문자</button>
+        <button id="t-board" aria-pressed="false">현장 게시판</button>
+      </div>
+
+      <div id="out">
+        <div class="doc" data-k="web">
+          <h3>신촌로 상수도관 교체공사 작업 시간 안내</h3>
+          <div class="meta">서대문구 생활환경과 · 2026.10.19 게시</div>
+          <p>주민 여러분, 안녕하십니까. <mark>신촌로 원룸촌 일대</mark>에서 노후 <mark>상수도관 교체공사</mark>가 진행될 예정이라 안내드립니다.</p>
+          <table>
+            <tr><td>공사 기간</td><td><mark>10월 21일(수) ~ 10월 30일(금)</mark></td></tr>
+            <tr><td>작업 시간</td><td><mark>매일 16:00 ~ 18:00</mark> (소음이 큰 굴착 작업)</td></tr>
+            <tr><td>장소</td><td><mark>신촌로 원룸촌 일대</mark></td></tr>
+          </table>
+          <p>현재 인근 대학의 <mark>시험기간</mark>인 점을 고려해, 학생들이 공부하는 낮 시간대를 피하고 <mark>오전에 진행되는 다른 작업과 소음이 이어지지 않도록</mark> 작업 시간을 오후 늦게 정했습니다.</p>
+          <p>공사 기간 동안 불편을 드려 죄송합니다. 소음이 안내된 시간 외에 발생하거나 불편 사항이 있으시면 아래로 연락해 주십시오.</p>
+          <p>문의: <mark>서대문구 생활환경과 02-000-0000</mark></p>
+        </div>
+
+        <div class="sms" data-k="sms" hidden>
+          <div class="from">[서대문구청] 공사 안내</div>
+          <div class="bubble">
+            [서대문구] <mark>10/21~10/30</mark> <mark>신촌로 원룸촌</mark> 상수도관 교체공사가 있습니다. <mark>시험기간</mark>을 고려해 소음이 큰 작업은 <mark>매일 16~18시</mark>에만 진행합니다. 문의 <mark>02-000-0000</mark>
+          </div>
+        </div>
+
+        <div class="board" data-k="board" hidden>
+          <h3>공사 작업 시간 안내</h3>
+          <div class="big"><mark>16:00 – 18:00</mark></div>
+          <p style="margin:6px 0 14px">소음이 큰 작업은 이 시간에만 합니다</p>
+          <p style="margin:0 0 4px"><mark>상수도관 교체공사</mark> · <mark>10월 21일 ~ 30일</mark></p>
+          <p style="margin:0 0 10px;color:var(--muted)"><mark>시험기간</mark> 학습 시간을 피해 정한 시간입니다</p>
+          <p style="margin:0;font-size:13px">문의 <mark>서대문구 생활환경과 02-000-0000</mark></p>
+        </div>
+      </div>
+
+      <label class="toggle"><input type="checkbox" id="hl" checked> 일정 정보에서 가져온 부분 표시</label>
+
+      <div class="actions">
+        <button class="btn" id="copy">안내문 복사</button>
+        <button class="btn ghost" id="edit">직접 수정하기</button>
+      </div>
+    </section>
+  </div>
+  <footer>화면 예시입니다. 날짜, 소음 수치, 전화번호는 모두 가상값입니다.</footer>
+</div>
+
+<script>
+const tabs={web:document.getElementById('t-web'),sms:document.getElementById('t-sms'),board:document.getElementById('t-board')};
+const panes=document.querySelectorAll('#out [data-k]');
+let cur='web';
+function show(k){
+  cur=k;
+  Object.entries(tabs).forEach(([key,b])=>b.setAttribute('aria-pressed',key===k?'true':'false'));
+  panes.forEach(p=>p.hidden=p.dataset.k!==k);
+}
+Object.keys(tabs).forEach(k=>tabs[k].addEventListener('click',()=>show(k)));
+document.getElementById('hl').addEventListener('change',e=>{
+  document.getElementById('out').classList.toggle('hl-off',!e.target.checked);
+});
+document.getElementById('copy').addEventListener('click',function(){
+  const el=document.querySelector(`#out [data-k="${cur}"]`);
+  const text=el.innerText.trim();
+  const btn=this;
+  const done=()=>{btn.textContent='복사됨';setTimeout(()=>btn.textContent='안내문 복사',1500)};
+  try{
+    navigator.clipboard.writeText(text).then(done,()=>{selectEl(el);btn.textContent='선택됨, Ctrl+C로 복사'});
+  }catch(e){selectEl(el);btn.textContent='선택됨, Ctrl+C로 복사'}
+});
+function selectEl(el){const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r)}
+document.getElementById('edit').addEventListener('click',function(){
+  const el=document.querySelector(`#out [data-k="${cur}"]`);
+  const on=el.isContentEditable;
+  panes.forEach(p=>p.contentEditable=on?'false':'true');
+  this.textContent=on?'직접 수정하기':'수정 완료';
+  if(!on)el.focus();
+});
+</script>
+
+</body>
+</html>

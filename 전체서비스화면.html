@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>쉿간표 화면 목업</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#F3F5F4; --panel:#FFFFFF; --ink:#18222E; --muted:#5E6B78; --line:#DCE2E0;
+  --quiet:#2F8F7B; --quiet-soft:#D5ECE5;
+  --build:#7A3E6B; --waste:#B7832A; --event:#3767A8; --new:#18222E;
+  --s1:#E4EFEB; --s2:#F3DFA2; --s3:#EDA86A; --s4:#D2603F;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121A20; --panel:#1B252D; --ink:#E9EEF0; --muted:#9AA8B3; --line:#2E3B45;
+    --quiet:#55BFA6; --quiet-soft:#1E3A34; --build:#C489B5; --waste:#D9A84E; --event:#7AA4DE; --new:#E9EEF0;
+    --s1:#24353A; --s2:#5E5330; --s3:#8A5A32; --s4:#A9452B;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121A20; --panel:#1B252D; --ink:#E9EEF0; --muted:#9AA8B3; --line:#2E3B45;
+  --quiet:#55BFA6; --quiet-soft:#1E3A34; --build:#C489B5; --waste:#D9A84E; --event:#7AA4DE; --new:#E9EEF0;
+  --s1:#24353A; --s2:#5E5330; --s3:#8A5A32; --s4:#A9452B;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"IBM Plex Sans KR",-apple-system,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;font-size:15px;line-height:1.55}
+.wrap{max-width:1080px;margin:0 auto;padding:20px 16px 48px}
+header.top{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:6px 0 20px}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand b{font-size:26px;font-weight:700;letter-spacing:-0.02em}
+.brand span{color:var(--muted);font-size:14px}
+.ctx{display:flex;gap:8px;flex-wrap:wrap}
+.chip{border:1px solid var(--line);background:var(--panel);border-radius:999px;padding:6px 12px;font-size:13px}
+.chip.exam{border-color:var(--s3);color:var(--ink)}
+.grid{display:grid;grid-template-columns:1fr;gap:16px}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}.span2{grid-column:1/-1}}
+section.panel{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px}
+.ph{display:flex;align-items:baseline;gap:10px;margin-bottom:12px}
+.step{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ink);color:var(--panel);font-size:12px;font-weight:600;display:grid;place-items:center;transform:translateY(-2px)}
+h2{font-size:18px;margin:0;font-weight:600;letter-spacing:-0.01em}
+.tag{font-size:12px;color:var(--muted);border:1px dashed var(--line);border-radius:6px;padding:1px 6px;margin-left:auto;white-space:nowrap}
+.sub{color:var(--muted);font-size:13.5px;margin:-6px 0 12px}
+textarea{width:100%;min-height:96px;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:13.5px;background:var(--bg);color:var(--ink);resize:vertical}
+button{font:inherit;cursor:pointer;border-radius:10px;border:1px solid var(--ink);background:var(--ink);color:var(--panel);padding:9px 14px;font-weight:600;font-size:14px}
+button.ghost{background:transparent;color:var(--ink);border-color:var(--line)}
+button:focus-visible,input:focus-visible{outline:2px solid var(--quiet);outline-offset:2px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:10px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+th{color:var(--muted);font-weight:500}
+.hidden{display:none}
+
+/* timeline */
+.tl{display:grid;grid-template-columns:84px repeat(9,minmax(44px,1fr));min-width:560px;row-gap:8px}
+.tl .h{font-size:12px;color:var(--muted);border-left:1px solid var(--line);padding-left:4px}
+.tl .z{font-size:13px;font-weight:500;align-self:center}
+.lane{grid-column:2/-1;display:grid;grid-template-columns:repeat(9,1fr);height:40px;background:repeating-linear-gradient(90deg,transparent 0,transparent calc(100%/9 - 1px),var(--line) calc(100%/9 - 1px),var(--line) calc(100%/9));border-radius:6px;position:relative}
+.ev{border-radius:6px;color:#fff;font-size:12px;padding:3px 6px;margin:3px 2px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;display:flex;align-items:center}
+.ev.build{background:var(--build)} .ev.waste{background:var(--waste)} .ev.event{background:var(--event)}
+.ev.new{background:transparent;color:var(--ink);border:2px dashed var(--new)}
+.ev.new.placed{border-style:solid;background:var(--new);color:var(--panel)}
+.ev.quietband{background:var(--quiet-soft);color:var(--quiet);border:1px solid var(--quiet);font-weight:600}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12.5px;color:var(--muted);margin-top:12px}
+.legend i{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:5px;vertical-align:-1px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg button{border:0;border-radius:0;background:transparent;color:var(--muted);font-weight:500;padding:7px 12px}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--panel)}
+
+/* map */
+.map svg{width:100%;height:auto;display:block}
+.map text{font-family:inherit}
+.scale{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted);margin-top:8px}
+.scale span{width:28px;height:10px;border-radius:2px;display:inline-block}
+
+/* slot */
+.slot{border:2px solid var(--quiet);border-radius:12px;padding:14px;background:var(--quiet-soft)}
+.slot .t{font-size:28px;font-weight:700;letter-spacing:-0.02em;color:var(--quiet)}
+.reasons{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+.reasons li{display:grid;grid-template-columns:96px 1fr;gap:8px;font-size:13.5px}
+.reasons b{font-weight:600}
+.bad{color:var(--s4)} .good{color:var(--quiet)}
+
+/* pareto */
+input[type=range]{width:100%;accent-color:var(--quiet)}
+.ends{display:flex;justify-content:space-between;font-size:12.5px;color:var(--muted)}
+.opts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.opt{border:1px solid var(--line);border-radius:10px;padding:10px;font-size:13px}
+.opt.on{border:2px solid var(--quiet)}
+.opt b{display:block;font-size:14px;margin-bottom:4px}
+.pareto svg{width:100%;max-width:420px;height:auto;display:block;margin-top:12px}
+
+/* metrics */
+.metrics{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+@media(min-width:900px){.metrics{grid-template-columns:repeat(4,1fr)}}
+.m{border:1px solid var(--line);border-radius:10px;padding:12px}
+.m .l{font-size:12.5px;color:var(--muted)}
+.m .v{font-size:20px;font-weight:700;margin-top:4px;letter-spacing:-0.01em}
+.m .v s{color:var(--muted);font-weight:400;font-size:15px;text-decoration-thickness:1px}
+
+/* notice */
+.notice{margin-top:12px;border:1px solid var(--line);border-radius:10px;padding:14px;background:var(--bg);font-size:14px}
+.notice h3{margin:0 0 8px;font-size:15px}
+.notice p{margin:0 0 6px}
+
+/* bars */
+.bars{display:grid;gap:8px}
+.bar{display:grid;grid-template-columns:88px 1fr 40px;gap:8px;align-items:center;font-size:13px}
+.bar div{height:12px;border-radius:3px}
+.hint{font-size:13px;margin-top:10px;padding:8px 10px;border-left:3px solid var(--quiet);background:var(--quiet-soft);border-radius:4px}
+.reports{display:flex;gap:8px;flex-wrap:wrap;margin-top:6px}
+.rep{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+.rep b{font-size:18px;display:block}
+.chart svg{width:100%;height:auto;display:block}
+.nl{margin-top:14px;border-top:1px dashed var(--line);padding-top:12px}
+.nl-l{font-size:13.5px;font-weight:600}
+.nl input{flex:1;min-width:0;font:inherit;font-size:13.5px;padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.phone{max-width:340px;margin:0 auto;border:1px solid var(--line);border-radius:26px;padding:18px 16px;background:var(--bg)}
+.ph-top{font-size:13px;color:var(--muted);margin-bottom:10px}
+.qcard{background:var(--quiet-soft);border:1px solid var(--quiet);border-radius:14px;padding:14px}
+.ql{font-size:12.5px;color:var(--quiet);font-weight:600}
+.qt{font-size:28px;font-weight:700;color:var(--quiet);letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.qd{font-size:13px}
+.day{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:6px;font-size:13.5px}
+.day li{display:flex;align-items:center;gap:8px;background:var(--panel);border-radius:8px;padding:7px 10px}
+.day li.q{color:var(--quiet);font-weight:600}
+.dt{width:52px;color:var(--muted);font-variant-numeric:tabular-nums}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.dot.build{background:var(--build)} .dot.waste{background:var(--waste)} .dot.event{background:var(--event)} .dot.qq{background:var(--quiet)}
+footer{color:var(--muted);font-size:12.5px;margin-top:20px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+.ev,.opt,.zone{transition:all .25s ease}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand"><b>쉿간표</b><span>서대문구 생활환경과</span></div>
+    <div class="ctx">
+      <span class="chip">신촌동 생활권</span>
+      <span class="chip">10월 21일 (수)</span>
+      <span class="chip exam">연세대 중간고사 기간</span>
+    </div>
+  </header>
+
+  <div class="grid">
+
+    <!-- 1 업로드 -->
+    <section class="panel">
+      <div class="ph"><span class="step">1</span><h2>공고문 올리기</h2></div>
+      <p class="sub">시공사가 보낸 공고문을 붙여넣으면 일정과 장비를 정리합니다.</p>
+      <textarea id="doc">[공사 안내] 신촌로 상수도관 교체공사
+기간: 2026.10.19 ~ 10.30
+작업 시간: 09:00~18:00 중 약 2시간
+사용 장비: 굴착기(0.6㎥), 브레이커
+※ 14시 이전 작업 시작 불가 (자재 반입 일정)</textarea>
+      <div class="row"><button id="parse">일정 정리하기</button></div>
+      <div id="parsed" class="scroll hidden" style="margin-top:12px">
+        <table>
+          <tr><th>작업명</th><td>상수도관 교체 (굴착)</td></tr>
+          <tr><th>장소</th><td>신촌로 원룸촌 A구역</td></tr>
+          <tr><th>기간</th><td>10/19 ~ 10/30</td></tr>
+          <tr><th>필요 시간</th><td>하루 2시간</td></tr>
+          <tr><th>장비</th><td>굴착기, 브레이커</td></tr>
+          <tr><th>조정 불가 조건</th><td>14시 이전 시작 불가</td></tr>
+          <tr><th>예상 소음</th><td>약 74 dB</td></tr>
+        </table>
+      </div>
+    </section>
+
+    <!-- 3 민감도 지도 -->
+    <section class="panel map">
+      <div class="ph"><span class="step">2</span><h2>소음 민감도 지도</h2></div>
+      <p class="sub">같은 소음이라도 시간과 장소에 따라 피해가 다릅니다.</p>
+      <div class="seg" role="group" aria-label="기간 선택">
+        <button id="mNormal" aria-pressed="false">평상시</button>
+        <button id="mExam" aria-pressed="true">시험기간</button>
+      </div>
+      <svg viewBox="0 0 360 230" role="img" aria-label="신촌 구역별 민감도 지도" style="margin-top:12px">
+        <rect x="0" y="0" width="360" height="230" rx="10" fill="var(--bg)"/>
+        <path d="M0 150 L360 120" stroke="var(--line)" stroke-width="10"/>
+        <path d="M200 0 L215 230" stroke="var(--line)" stroke-width="8"/>
+        <g id="zones"></g>
+      </svg>
+      <div class="scale">낮음 <span style="background:var(--s1)"></span><span style="background:var(--s2)"></span><span style="background:var(--s3)"></span><span style="background:var(--s4)"></span> 높음</div>
+    </section>
+
+    <!-- 2 타임라인 -->
+    <section class="panel span2">
+      <div class="ph"><span class="step">3</span><h2>시간대별 소음 일정</h2></div>
+      <div class="row" style="margin:-4px 0 12px">
+        <div class="seg" role="group" aria-label="조정 전후">
+          <button id="tBefore" aria-pressed="true">조정 전</button>
+          <button id="tAfter" aria-pressed="false">조정 후</button>
+        </div>
+      </div>
+      <div class="scroll"><div class="tl" id="tl"></div></div>
+      <div class="legend">
+        <span><i style="background:var(--build)"></i>공사</span>
+        <span><i style="background:var(--waste)"></i>쓰레기 수거</span>
+        <span><i style="background:var(--event)"></i>행사</span>
+        <span><i style="border:2px dashed var(--new)"></i>새 공사</span>
+        <span><i style="background:var(--quiet-soft);border:1px solid var(--quiet)"></i>지켜야 할 조용한 시간</span>
+      </div>
+    </section>
+
+    <!-- 4 Noise Slot -->
+    <section class="panel">
+      <div class="ph"><span class="step">4</span><h2>추천 시간 (Noise Slot)</h2></div>
+      <div class="slot">
+        <div style="font-size:13px;color:var(--muted)">상수도관 교체 · 원룸촌 A구역</div>
+        <div class="t">16:00 – 18:00</div>
+        <div style="font-size:13.5px">주변 소음 부담이 가장 적게 늘어나는 시간입니다.</div>
+      </div>
+      <ul class="reasons">
+        <li><b class="bad">10–12시</b><span>철거 공사와 쓰레기 수거가 이어져 4시간 연속 소음</span></li>
+        <li><b class="bad">12–14시</b><span>시험기간 도서관 이용 시간, 하루 중 가장 긴 조용한 시간이라 보존</span></li>
+        <li><b class="bad">14–16시</b><span>지역 행사와 겹침</span></li>
+        <li><b class="good">16–18시</b><span>겹치는 일정 없음, 14시 이후 조건 충족</span></li>
+      </ul>
+    </section>
+
+    <!-- 5 Pareto -->
+    <section class="panel pareto">
+      <div class="ph"><span class="step">5</span><h2>조정안 고르기</h2></div>
+      <p class="sub">공사 일정 변경과 주민 보호 사이에서 효과 있는 안만 보여줍니다.</p>
+      <input type="range" id="pr" min="0" max="2" step="1" value="1" aria-label="공사 운영 우선에서 주민 보호 우선까지">
+      <div class="ends"><span>공사 운영 우선</span><span>주민 보호 우선</span></div>
+      <div class="opts" id="opts"></div>
+      <svg viewBox="0 0 320 170" role="img" aria-label="조정안 비교 그래프">
+        <line x1="40" y1="140" x2="310" y2="140" stroke="var(--line)"/>
+        <line x1="40" y1="10" x2="40" y2="140" stroke="var(--line)"/>
+        <text x="175" y="162" font-size="10" fill="var(--muted)" text-anchor="middle">일정 변경량</text>
+        <text x="12" y="75" font-size="10" fill="var(--muted)" transform="rotate(-90 12 75)" text-anchor="middle">소음 감소율</text>
+        <circle cx="150" cy="115" r="4" fill="var(--line)"/><circle cx="230" cy="95" r="4" fill="var(--line)"/><circle cx="275" cy="70" r="4" fill="var(--line)"/>
+        <text x="236" y="112" font-size="9" fill="var(--muted)">효과 없는 안 (제외)</text>
+        <polyline points="70,112 135,72 250,40" fill="none" stroke="var(--quiet)" stroke-width="1.5" stroke-dasharray="3 3"/>
+        <g id="pdots"></g>
+      </svg>
+      <div class="nl">
+        <label for="nlIn" class="nl-l">조건 직접 입력하기</label>
+        <div class="row" style="margin-top:6px">
+          <input id="nlIn" type="text" value="도로 공사는 15시 이전에 시작할 수 없어요">
+          <button id="nlGo">조건 반영</button>
+        </div>
+        <div id="nlOut" class="hint hidden">
+          <b>이렇게 이해했어요</b> · 대상: 초등학교 인근 도로 공사 · 조건: 15:00 이후 시작<br>
+          조건을 반영해 조정안을 다시 계산했습니다. 도로 공사가 15–17시로 옮겨지고, 다른 조정안은 그대로 유지됩니다.
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 Before After -->
+    <section class="panel span2">
+      <div class="ph"><span class="step">6</span><h2>조정 전후 비교</h2></div>
+      <div class="metrics" id="metrics"></div>
+    </section>
+
+    <!-- 7 안내문 -->
+    <section class="panel">
+      <div class="ph"><span class="step">7</span><h2>일정 확정과 주민 안내</h2></div>
+      <p class="sub">확정하면 주민 안내문 초안을 만듭니다.</p>
+      <button id="confirm">일정 확정하고 안내문 만들기</button>
+      <div class="notice hidden" id="notice">
+        <h3>신촌로 상수도관 교체공사 작업 시간 안내</h3>
+        <p>10월 21일부터 30일까지 신촌로 원룸촌 일대에서 상수도관 교체공사가 진행됩니다.</p>
+        <p>시험기간 학생들의 학습 환경을 고려해 소음이 큰 굴착 작업은 <b>매일 16시부터 18시까지</b>만 진행합니다.</p>
+        <p>불편을 드려 죄송합니다. 문의: 서대문구 생활환경과 02-000-0000</p>
+        <div class="row"><button class="ghost" id="copy">안내문 복사</button></div>
+      </div>
+    </section>
+
+    <!-- 8 신고 -->
+    <section class="panel">
+      <div class="ph"><span class="step">8</span><h2>주민 소음 신고</h2><span class="tag">간단 버전</span></div>
+      <p class="sub">같은 구역, 같은 시간대 신고가 쌓이면 민감도가 올라갑니다.</p>
+      <div class="reports">
+        <div class="rep"><b>12건</b>원룸촌 A · 07–09시</div>
+        <div class="rep"><b>7건</b>대학 정문 · 12–14시</div>
+        <div class="rep"><b>2건</b>신촌역 상권 · 20시 이후</div>
+      </div>
+      <div class="hint">원룸촌 A 이른 아침 민감도 58 → 71로 상승, 다음 추천부터 반영됩니다.</div>
+    </section>
+
+    <!-- 9 실측 -->
+    <section class="panel chart">
+      <div class="ph"><span class="step">9</span><h2>예측과 실측 비교</h2><span class="tag">간단 버전</span></div>
+      <p class="sub">신촌 실제 소음 측정값(도로교통 소음, S-DoT 센서)과 예측을 비교해 지역별로 보정합니다.</p>
+      <svg viewBox="0 0 320 150" role="img" aria-label="시간대별 예측 소음과 실측 소음">
+        <line x1="30" y1="120" x2="310" y2="120" stroke="var(--line)"/>
+        <g font-size="9" fill="var(--muted)"><text x="30" y="134">9시</text><text x="140" y="134">13시</text><text x="285" y="134">18시</text><text x="0" y="40">75dB</text><text x="0" y="100">60dB</text></g>
+        <polyline points="30,95 65,60 100,58 135,80 170,90 205,70 240,72 275,62 310,90" fill="none" stroke="var(--muted)" stroke-width="2" stroke-dasharray="4 3"/>
+        <polyline points="30,88 65,48 100,45 135,72 170,84 205,58 240,60 275,50 310,82" fill="none" stroke="var(--s4)" stroke-width="2"/>
+      </svg>
+      <div class="legend" style="margin-top:4px"><span><i style="background:var(--muted)"></i>예측</span><span><i style="background:var(--s4)"></i>실측</span></div>
+      <div class="hint">원룸촌 골목은 예측보다 평균 +3.8 dB 높게 측정되어 보정값을 적용했습니다.</div>
+    </section>
+
+    <!-- 10 기여도 -->
+    <section class="panel span2">
+      <div class="ph"><span class="step">10</span><h2>어떤 일정이 가장 시끄럽게 만드나</h2><span class="tag">간단 버전</span></div>
+      <p class="sub">원룸촌 A구역 10–12시 소음 부담 기여도</p>
+      <div class="bars">
+        <div class="bar"><span>철거 공사</span><div style="width:96%;background:var(--build)"></div><span>48%</span></div>
+        <div class="bar"><span>지역 행사</span><div style="width:52%;background:var(--event)"></div><span>26%</span></div>
+        <div class="bar"><span>도로 공사</span><div style="width:36%;background:var(--build);opacity:.6"></div><span>18%</span></div>
+        <div class="bar"><span>쓰레기 수거</span><div style="width:16%;background:var(--waste)"></div><span>8%</span></div>
+      </div>
+      <div class="hint">철거 공사를 1시간 늦추면 이 시간대 소음 부담이 29% 줄어듭니다.</div>
+    </section>
+
+    <!-- 11 주민용 -->
+    <section class="panel span2">
+      <div class="ph"><span class="step">11</span><h2>주민 화면: 오늘의 조용한 시간</h2><span class="tag">주민용</span></div>
+      <p class="sub">주민이 휴대폰으로 우리 동네 오늘 일정을 확인하는 화면입니다.</p>
+      <div class="phone">
+        <div class="ph-top">신촌동 원룸촌 · 10월 21일 (수)</div>
+        <div class="qcard">
+          <div class="ql">오늘 가장 긴 조용한 시간</div>
+          <div class="qt">12:00 – 14:00</div>
+          <div class="qd">시험기간이라 이 시간은 공사가 없어요</div>
+        </div>
+        <ul class="day">
+          <li><span class="dt">09–11</span><span class="dot build"></span>철거 공사</li>
+          <li><span class="dt">11–12</span><span class="dot waste"></span>쓰레기 수거</li>
+          <li class="q"><span class="dt">12–14</span><span class="dot qq"></span>조용한 시간</li>
+          <li><span class="dt">14–16</span><span class="dot event"></span>지역 행사</li>
+          <li><span class="dt">16–18</span><span class="dot build"></span>상수도관 공사</li>
+          <li class="q"><span class="dt">18시~</span><span class="dot qq"></span>조용한 시간</li>
+        </ul>
+        <button class="ghost" style="width:100%;margin-top:12px">소음 신고하기</button>
+      </div>
+    </section>
+
+  </div>
+  <footer>화면 예시용 목업입니다. 수치는 가상값입니다.</footer>
+</div>
+
+<script>
+// timeline
+const hours=[9,10,11,12,13,14,15,16,17];
+const lanes={
+  before:[
+    {z:"원룸촌 A",ev:[[9,11,"build","철거 공사"],[11,12,"waste","쓰레기 수거"],[14,16,"event","지역 행사"]]},
+    {z:"새 공사 요청",ev:[[10,12,"new","굴착 10–12시 요청"]]},
+    {z:"대학 정문",ev:[[9,10,"waste","수거"],[12,14,"quietband","시험기간 조용한 시간"],[15,17,"build","보도 정비"]]},
+    {z:"초등학교 인근",ev:[[13,15,"build","도로 공사"]]}
+  ],
+  after:[
+    {z:"원룸촌 A",ev:[[9,11,"build","철거 공사"],[11,12,"waste","쓰레기 수거"],[12,14,"quietband","조용한 시간 확보"],[14,16,"event","지역 행사"],[16,18,"new placed","새 굴착 공사"]]},
+    {z:"대학 정문",ev:[[9,10,"waste","수거"],[12,14,"quietband","시험기간 조용한 시간"],[15,17,"build","보도 정비"]]},
+    {z:"초등학교 인근",ev:[[15,17,"build","도로 공사 (수업 후로)"]]}
+  ]
+};
+function drawTL(mode){
+  const el=document.getElementById('tl');
+  let h='<div></div>'+hours.map(x=>`<div class="h">${x}시</div>`).join('');
+  lanes[mode].forEach(l=>{
+    h+=`<div class="z">${l.z}</div><div class="lane">`;
+    l.ev.forEach(e=>{
+      h+=`<div class="ev ${e[2]}" style="grid-column:${e[0]-8}/${e[1]-8};grid-row:1" title="${e[3]}">${e[3]}</div>`;
+    });
+    h+='</div>';
+  });
+  el.innerHTML=h;
+}
+const tB=document.getElementById('tBefore'),tA=document.getElementById('tAfter');
+tB.onclick=()=>{tB.setAttribute('aria-pressed','true');tA.setAttribute('aria-pressed','false');drawTL('before')};
+tA.onclick=()=>{tA.setAttribute('aria-pressed','true');tB.setAttribute('aria-pressed','false');drawTL('after')};
+drawTL('before');
+
+// map
+const zones=[
+  {n:"연세대 캠퍼스",x:10,y:10,w:180,h:120,s:[45,82]},
+  {n:"원룸촌 A",x:225,y:10,w:125,h:100,s:[58,74]},
+  {n:"창천초등학교",x:10,y:162,w:100,h:58,s:[66,66]},
+  {n:"세브란스병원",x:120,y:162,w:85,h:58,s:[80,80]},
+  {n:"신촌역 상권",x:225,y:130,w:125,h:90,s:[30,34]}
+];
+function col(s){return s>=75?'var(--s4)':s>=60?'var(--s3)':s>=45?'var(--s2)':'var(--s1)'}
+function drawMap(i){
+  document.getElementById('zones').innerHTML=zones.map(z=>{
+    const s=z.s[i], dark=s>=60;
+    return `<g class="zone"><rect x="${z.x}" y="${z.y}" width="${z.w}" height="${z.h}" rx="8" fill="${col(s)}"/>
+    <text x="${z.x+10}" y="${z.y+20}" font-size="11" fill="${dark?'#fff':'var(--ink)'}">${z.n}</text>
+    <text x="${z.x+10}" y="${z.y+44}" font-size="20" font-weight="700" fill="${dark?'#fff':'var(--ink)'}">${s}</text></g>`;
+  }).join('');
+}
+const mN=document.getElementById('mNormal'),mE=document.getElementById('mExam');
+mN.onclick=()=>{mN.setAttribute('aria-pressed','true');mE.setAttribute('aria-pressed','false');drawMap(0)};
+mE.onclick=()=>{mE.setAttribute('aria-pressed','true');mN.setAttribute('aria-pressed','false');drawMap(1)};
+drawMap(1);
+
+// pareto
+const P=[
+  {n:"공사 부담 최소",t:"15:00–17:00",chg:"40분",red:"21%",q:"+42분",cx:70,cy:112,
+   m:[["연속 고소음 시간","5h 20m","4h 10m"],["최대 소음 부담","100","84"],["일정 변경량","","40분"],["확보된 조용한 시간","52분","1h 34m"]]},
+  {n:"균형안",t:"16:00–18:00",chg:"1시간 20분",red:"42%",q:"+96분",cx:135,cy:72,
+   m:[["연속 고소음 시간","5h 20m","3h 05m"],["최대 소음 부담","100","68"],["일정 변경량","","1h 20m"],["확보된 조용한 시간","52분","2h 28m"]]},
+  {n:"주민 보호 우선",t:"다음날 16:00–18:00",chg:"3시간",red:"58%",q:"+165분",cx:250,cy:40,
+   m:[["연속 고소음 시간","5h 20m","2h 15m"],["최대 소음 부담","100","55"],["일정 변경량","","3h"],["확보된 조용한 시간","52분","3h 37m"]]}
+];
+function drawP(i){
+  document.getElementById('opts').innerHTML=P.map((p,j)=>`<div class="opt ${j==i?'on':''}"><b>${p.n}</b>${p.t}<br>변경 ${p.chg}<br>소음 ${p.red} 감소<br>조용한 시간 ${p.q}</div>`).join('');
+  document.getElementById('pdots').innerHTML=P.map((p,j)=>`<circle cx="${p.cx}" cy="${p.cy}" r="${j==i?7:5}" fill="var(--quiet)" ${j==i?'stroke="var(--ink)" stroke-width="2"':''}/>`).join('');
+  document.getElementById('metrics').innerHTML=P[i].m.map(m=>`<div class="m"><div class="l">${m[0]}</div><div class="v">${m[1]?`<s>${m[1]}</s> → `:''}${m[2]}</div></div>`).join('');
+}
+const pr=document.getElementById('pr');
+pr.oninput=()=>drawP(+pr.value);
+drawP(1);
+
+// natural-language condition
+document.getElementById('nlGo').onclick=()=>{
+  document.getElementById('nlOut').classList.remove('hidden');
+  tA.click();
+};
+
+// parse & notice
+document.getElementById('parse').onclick=()=>document.getElementById('parsed').classList.remove('hidden');
+document.getElementById('confirm').onclick=()=>{document.getElementById('notice').classList.remove('hidden');tA.click()};
+document.getElementById('copy').onclick=function(){
+  const t=document.querySelector('#notice').innerText.replace('안내문 복사','').trim();
+  try{navigator.clipboard.writeText(t);this.textContent='복사됨'}catch(e){this.textContent='복사 실패'}
+};
+</script>
+</body>
+</html>

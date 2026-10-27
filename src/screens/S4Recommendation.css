@@ -1,0 +1,20 @@
+.s4-summary { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px }
+@media (min-width: 720px) { .s4-summary { grid-template-columns: repeat(4, 1fr) } }
+.s4-stat { display: grid; gap: 2px; border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font-size: 12.5px; color: var(--muted) }
+.s4-stat b { font-size: 18px; color: var(--ink) }
+.s4-stat.ok { border-color: var(--quiet) } .s4-stat.ok b { color: var(--quiet) }
+.s4-stat.fail { border-color: var(--danger) } .s4-stat.fail b { color: var(--danger) }
+
+.s4-list { margin: 6px 0 0; padding-left: 18px; font-size: 13.5px; display: grid; gap: 4px }
+.s4-note { font-size: 12.5px; margin: 8px 0 0 }
+
+.s4-table td { vertical-align: middle; white-space: nowrap }
+.s4-table tr.recommended td { background: var(--quiet-soft) }
+.s4-table tr.disabled td { color: var(--muted) }
+.s4-table tr.disabled td b { font-weight: 500 }
+.s4-table .s4-reason { white-space: normal; min-width: 220px; font-size: 12.5px }
+
+.s4-badge { font-size: 11.5px; font-weight: 600; border-radius: 6px; padding: 1px 7px; white-space: nowrap; border: 1px solid }
+.s4-badge.rec { background: var(--quiet); color: var(--panel); border-color: var(--quiet) }
+.s4-badge.ok { color: var(--quiet); border-color: var(--quiet) }
+.s4-badge.bad { color: var(--s4); border-color: var(--s4) }

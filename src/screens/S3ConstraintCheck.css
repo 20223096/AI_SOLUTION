@@ -1,0 +1,22 @@
+.s3 input[type=time] {
+  font: inherit; font-size: 13.5px; padding: 6px 8px; border: 1px solid var(--line);
+  border-radius: 8px; background: var(--bg); color: var(--ink);
+}
+.s3 input:disabled { opacity: .45 }
+
+.s3-table td { vertical-align: middle; white-space: nowrap }
+.s3-table tr.bad-row td:first-child { box-shadow: inset 3px 0 0 var(--s4) }
+
+.s3-verdict { display: grid; gap: 2px; padding: 12px 14px; border-radius: 10px; font-size: 14px }
+.s3-verdict b { font-size: 16px }
+.s3-verdict.ok { background: var(--quiet-soft); border: 2px solid var(--quiet); color: var(--ink) }
+.s3-verdict.ok b { color: var(--quiet) }
+.s3-verdict.fail { background: var(--danger-soft); border: 2px solid var(--danger) }
+.s3-verdict.fail b { color: var(--danger) }
+
+.s3-violations { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 8px }
+.s3-violations li {
+  display: grid; gap: 2px; padding: 10px 12px; border: 1px solid var(--line);
+  border-left: 3px solid var(--s4); border-radius: 8px; font-size: 13.5px;
+}
+.s3-violations code { font-size: 11.5px; color: var(--muted) }

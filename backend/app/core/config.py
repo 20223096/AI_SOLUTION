@@ -4,6 +4,9 @@ from pydantic import AliasChoices, Field, SecretStr
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
+PROJECT_ROOT = Path(__file__).parents[3]
+BACKEND_ROOT = Path(__file__).parents[2]
+
 
 class Settings(BaseSettings):
     app_name: str = "쉿간표 PoC"
@@ -26,11 +29,12 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("JUSO_COORD_API_KEY", "SHH_JUSO_COORD_API_KEY"),
     )
     juso_timeout_seconds: float = Field(default=5.0, gt=0, le=30)
-    resident_notice_store_path: Path = Path(__file__).parents[3] / "runtime" / "resident_notices.json"
-    recommendation_snapshot_store_path: Path = Path(__file__).parents[3] / "runtime" / "recommendation_snapshots.json"
+    resident_notice_store_path: Path = PROJECT_ROOT / "runtime" / "resident_notices.json"
+    recommendation_snapshot_store_path: Path = PROJECT_ROOT / "runtime" / "recommendation_snapshots.json"
     staff_api_allowed_hosts: list[str] = Field(default_factory=lambda: ["127.0.0.1", "::1", "localhost", "testclient"])
     model_config = SettingsConfigDict(
-        env_file=Path(__file__).parents[3] / ".env",
+        # Root .env remains a migration fallback; backend/.env wins when both exist.
+        env_file=(PROJECT_ROOT / ".env", BACKEND_ROOT / ".env"),
         env_prefix="SHH_",
         extra="ignore",
     )

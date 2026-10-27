@@ -45,6 +45,8 @@ def main() -> None:
         coordinate = call(client, "S2_address_coordinate", "POST", "/api/locations/address-coordinate", {
             "address": "서울특별시 서대문구 연세로2나길 20"
         })
+        if coordinate["response"]["status"] != "resolved" or not coordinate["response"].get("map_coordinate"):
+            raise RuntimeError(f"JUSO coordinate verification failed: {coordinate['response']['status']}")
         steps.append(coordinate)
 
         original = [
@@ -110,9 +112,10 @@ def main() -> None:
         "contract_version": "3.4", "workflow": "connected S1-S8 HTTP replay", "base_url": BASE_URL,
         "manual_steps": ["S3 staff completion", "high-noise classification", "public contact", "notice edit and confirm"],
         "selected_candidate_id": selected_id, "schedule_snapshot_status": draft["response"]["recommendation_snapshot_status"],
+        "coordinate_status": coordinate["response"]["status"],
         "step_count": len(steps), "steps": steps,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"verified connected S1-S8 HTTP workflow; selected {selected_id}; wrote {OUT}")
+    print(f"verified connected S1-S8 HTTP workflow with resolved JUSO coordinate; selected {selected_id}; wrote {OUT}")
 
 
 if __name__ == "__main__":

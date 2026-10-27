@@ -102,7 +102,9 @@ def test_prd_experiment_is_separate_and_does_not_change_default_optimizer():
 
 def test_demo_fixture_matches_sdot_daily_rows_and_quality():
     fixture = json.loads((ROOT / "backend/app/data/demo_2026_09_11.json").read_text())
-    with (ROOT / "data/processed/sdot_sinchon_clean.csv").open() as handle:
+    # The full 8.9 MB processed dataset is intentionally ignored. This committed,
+    # byte-for-byte subset contains only the two demo days required by the audit.
+    with (ROOT / "backend/tests/fixtures/sdot_demo_days.csv").open() as handle:
         rows = list(csv.DictReader(handle))
     for expected in fixture["sdot_daily_audit"]["days"]:
         selected = [row for row in rows if row["observed_at"].startswith(expected["date"])]
