@@ -6,8 +6,8 @@ from app.services.impact import calculate_impact
 from app.services.prediction import predict
 
 
-def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignment], threshold: float = 65.0, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> ScheduleMetrics:
-    rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, sensitivity_policy=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier)["predictions"]
+def schedule_metrics(scenario_id: str, day: date, assignments: list[TaskAssignment], threshold: float = 65.0, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None, include_existing_events: bool = True) -> ScheduleMetrics:
+    rows = predict(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, sensitivity_policy=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier, include_existing_events=include_existing_events)["predictions"]
     # Aggregate conservatively across receptors: one value per slot, taking maximum.
     by_slot = {}
     for row in rows:

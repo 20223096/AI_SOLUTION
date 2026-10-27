@@ -2614,6 +2614,12 @@ export interface components {
              * @enum {string}
              */
             objective_mode: "incremental_impact" | "absolute_impact" | "physical_energy" | "sensitive_exposure" | "continuous_burden" | "multi_axis";
+            /**
+             * Recommendation Engine
+             * @default offset_v1
+             * @enum {string}
+             */
+            recommendation_engine: "offset_v1" | "cp_sat_v2";
         };
         /** PRDConstraintRecommendationResponse */
         PRDConstraintRecommendationResponse: {
@@ -2629,14 +2635,46 @@ export interface components {
             policy_version: "prd_v2_1_explicit_input_only";
             /**
              * Candidate Generation Mode
-             * @constant
+             * @enum {string}
              */
-            candidate_generation_mode: "existing_optimizer_15_minute_offsets_0_to_120";
+            candidate_generation_mode: "existing_optimizer_15_minute_offsets_0_to_120" | "ortools_cp_sat_task_start_enumeration";
             /**
              * Optimization Claim
              * @constant
              */
             optimization_claim: "constraint_filtered_candidate_set_not_global_optimum";
+            /**
+             * Solver
+             * @default exact_enumeration
+             * @enum {string}
+             */
+            solver: "exact_enumeration" | "ortools_cp_sat";
+            /**
+             * Explored Candidate Count
+             * @default 0
+             */
+            explored_candidate_count: number;
+            /**
+             * Pareto Candidate Count
+             * @default 0
+             */
+            pareto_candidate_count: number;
+            /**
+             * Pareto Axes
+             * @default []
+             */
+            pareto_axes: string[];
+            /**
+             * Search Complete
+             * @default true
+             */
+            search_complete: boolean;
+            /**
+             * Global Optimality Guaranteed
+             * @default false
+             * @constant
+             */
+            global_optimality_guaranteed: false;
             /** Scenario Id */
             scenario_id: string;
             /**

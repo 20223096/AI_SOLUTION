@@ -4,6 +4,8 @@ import { violationMessage } from './s3Schedule'
 
 /** "offset-60" → "+60분 이동" */
 export function candidateLabel(id: string): string {
+  const advanced = /^cp-sat-(\d+)$/.exec(id)
+  if (advanced) return `작업별 배치안 ${Number(advanced[1])}`
   const m = /^offset-(\d+)$/.exec(id)
   if (!m) return id
   return m[1] === '0' ? '원 일정 시각' : `+${m[1]}분 이동`
@@ -84,6 +86,8 @@ export function deltaTone(def: MetricDef, delta: number): 'good' | 'bad' | 'neut
 }
 
 const CAVEAT_KO: Record<string, string> = {
+  'This is a constraint-filtered result over the explored candidate set, not a global optimum.':
+    '탐색한 후보 집합에서 제약으로 거른 결과이며, 전역 최적해가 아닙니다.',
   'This is a constraint-filtered result over the existing offset candidate set, not a global optimum.':
     '기존 이동(offset) 후보 안에서 제약으로 거른 결과이며, 전역 최적해가 아닙니다.',
   'No unspecified time limit or relaxed constraint was introduced.':

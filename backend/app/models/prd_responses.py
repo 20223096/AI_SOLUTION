@@ -259,8 +259,14 @@ class PRDConstraintRecommendationResponse(PRDResponse):
     input_planning: PRDNoticePlanningInput
     input_provenance: dict[str, SourceMetadata]
     policy_version: Literal["prd_v2_1_explicit_input_only"]
-    candidate_generation_mode: Literal["existing_optimizer_15_minute_offsets_0_to_120"]
+    candidate_generation_mode: Literal["existing_optimizer_15_minute_offsets_0_to_120", "ortools_cp_sat_task_start_enumeration"]
     optimization_claim: Literal["constraint_filtered_candidate_set_not_global_optimum"]
+    solver: Literal["exact_enumeration", "ortools_cp_sat"] = "exact_enumeration"
+    explored_candidate_count: int = 0
+    pareto_candidate_count: int = 0
+    pareto_axes: list[str] = []
+    search_complete: bool = True
+    global_optimality_guaranteed: Literal[False] = False
     scenario_id: str
     analysis_date: date
     original_schedule: ConstraintCandidateResult | None

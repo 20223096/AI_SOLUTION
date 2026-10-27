@@ -34,7 +34,7 @@ def _within_windows(moment: datetime, windows: list[dict]) -> bool:
     return False
 
 
-def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> dict:
+def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | None = None, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None, include_existing_events: bool = True) -> dict:
     scenario = get_scenario(scenario_id)
     assignments = default_assignments(scenario, day) if assignments is None else assignments
     equipment = {x.id: x.model_dump(mode="json") for x in scenario["equipment"]}
@@ -76,7 +76,7 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             if background_db is None:
                 warnings.append(f"{receptor.id} {start.strftime('%H:%M')}: background noise missing; no fallback value inserted")
             event_levels, event_ids, event_sources = [], [], []
-            for event in existing_events:
+            for event in existing_events if include_existing_events else []:
                 if event.get("scenario_group") != event_group or receptor.id not in event.get("receptor_ids", []):
                     continue
                 event_start = at(day, datetime.strptime(event["start_time"], "%H:%M").time())

@@ -8,6 +8,7 @@ import {
   updateResidentNoticeDraft,
 } from './residentNotices'
 import { request } from './client'
+import { requestRecommendations } from './recommendations'
 
 const ok = (payload: unknown) => vi.spyOn(globalThis, 'fetch').mockResolvedValue(
   new Response(JSON.stringify(payload), { status: 200, headers: { 'Content-Type': 'application/json' } }),
@@ -65,5 +66,13 @@ describe('API v3.4 client', () => {
   it('reports network failures distinctly', async () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('offline'))
     await expect(request('/api/test')).rejects.toMatchObject({ status: null })
+  })
+
+  it('S4 explicitly requests the CP-SAT v2 engine while the API default remains compatible', async () => {
+    const fetch = ok({ candidates: [] })
+    await requestRecommendations({
+      planning: {}, predecessors: {}, equipment_by_task: {}, equipment_count_by_task: {}, restoration_task_ids: [],
+    } as never)
+    expect(JSON.parse(String(fetch.mock.calls[0][1]?.body)).recommendation_engine).toBe('cp_sat_v2')
   })
 })

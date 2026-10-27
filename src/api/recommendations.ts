@@ -27,6 +27,7 @@ export function requestRecommendations(plan: ConfirmedPlan, signal?: AbortSignal
     restoration_task_ids: plan.restoration_task_ids,
     background_profile: BACKGROUND_PROFILE,
     objective_mode: OBJECTIVE_MODE,
+    recommendation_engine: 'cp_sat_v2',
   }
   return postJson<RecommendationResponse>('/api/prd/recommendations/constraint-filtered', body, signal)
 }

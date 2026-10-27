@@ -82,8 +82,8 @@ export function S4Recommendation({ plan, s3Validation, onBack, onEditPlan, onNex
       <section className="panel span2">
         {heading}
         <p className="sub">
-          기존 최적화기의 15분 단위 이동 후보(0~120분) 중 확정한 제약을 모두 지키고 조건부 Pareto에 속한 후보만 추천합니다.
-          전역 최적해가 아닙니다.
+          OR-Tools가 작업별 시작시간과 확정 제약으로 찾은 해 중, 소음 영향·일정 변경·연속 고소음·기존 소음 중첩의
+          비지배 후보만 추천합니다. 탐색한 해 집합 안의 결과이며 전역 최적해가 아닙니다.
         </p>
 
         <div className="s4-summary">
@@ -93,7 +93,7 @@ export function S4Recommendation({ plan, s3Validation, onBack, onEditPlan, onNex
           </div>
           <div className="s4-stat">
             <span>생성된 후보</span>
-            <b>{res.candidates.length}개</b>
+            <b>{res.explored_candidate_count}개</b>
           </div>
           <div className="s4-stat">
             <span>제약 충족</span>

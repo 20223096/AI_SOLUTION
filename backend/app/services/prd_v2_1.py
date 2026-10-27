@@ -9,6 +9,7 @@ from app.core.config import get_settings
 from app.services.optimizer import optimize
 from app.services.pareto import non_dominated, non_dominated_multi
 from app.services.optimizer import MULTI_AXES
+from app.services.advanced_optimizer import PARETO_AXES as ADVANCED_AXES, optimize_advanced
 from app.services.timegrid import at as _at
 
 
@@ -179,11 +180,21 @@ def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
 
 def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequest) -> dict:
     scenario_id, _, _ = demo_scenario_for_date(request.analysis_date)
-    result = optimize(scenario_id, request.analysis_date, background_profile=request.background_profile, objective_mode=request.objective_mode)
-    base_candidates = result.get("valid_candidates", [])
+    baseline = optimize(scenario_id, request.analysis_date, background_profile=request.background_profile, objective_mode=request.objective_mode)
+    if request.recommendation_engine == "cp_sat_v2":
+        result = optimize_advanced(
+            scenario_id, request.analysis_date, request.planning, request.predecessors,
+            request.equipment_by_task, request.restoration_task_ids,
+            background_profile=request.background_profile,
+        )
+        base_candidates = result["candidates"]
+        axes = ADVANCED_AXES
+    else:
+        result = baseline
+        base_candidates = result.get("valid_candidates", [])
+        axes = MULTI_AXES if request.objective_mode == "multi_axis" else ["resident_cost", "change_cost"]
     rows = []
     feasible_points = []
-    axes = MULTI_AXES if request.objective_mode == "multi_axis" else ["resident_cost", "change_cost"]
     for candidate in base_candidates:
         validation = validate_prd_schedule(
             request.planning, request.analysis_date, candidate.task_assignments, request.predecessors,
@@ -192,8 +203,15 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
         if validation["feasible"]:
             feasible_points.append({"id": candidate.id, **candidate.objective_values})
         rows.append((candidate, validation))
-    frontier_points = non_dominated_multi(feasible_points, axes) if request.objective_mode == "multi_axis" else non_dominated(feasible_points)
+    frontier_points = non_dominated_multi(feasible_points, axes) if len(axes) > 2 else non_dominated(feasible_points)
     frontier_ids = {row["id"] for row in frontier_points}
+    original_candidate = next((item for item in baseline.get("valid_candidates", []) if item.id == "offset-0"), None)
+    original_validation = validate_prd_schedule(
+        request.planning, request.analysis_date, original_candidate.task_assignments, request.predecessors,
+        request.equipment_by_task, request.restoration_task_ids, request.equipment_count_by_task,
+    ) if original_candidate is not None else None
+    if request.recommendation_engine == "cp_sat_v2":
+        rows = [(candidate, validation) for candidate, validation in rows if candidate.id in frontier_ids]
     candidates = []
     for candidate, validation in rows:
         candidates.append({
@@ -218,23 +236,41 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
     ) if field not in request.planning.field_provenance)
     recommendable = [row["candidate_id"] for row in candidates if row["recommendable"]]
     original = next((row for row in candidates if row["candidate_id"] == "offset-0"), None)
+    if request.recommendation_engine == "cp_sat_v2" and original_candidate is not None and original_validation is not None:
+        original = {
+            "candidate_id": original_candidate.id, "assignments": original_candidate.task_assignments,
+            "base_optimizer_feasible": True, "prd_feasible": original_validation["feasible"],
+            "recommendable": False, "violations": original_validation["violations"],
+            "pareto_after_constraint_filter": False,
+            "schedule_change_minutes": original_candidate.metrics.schedule_change_minutes,
+            "project_start_change_minutes": original_candidate.metrics.project_start_change_minutes,
+            "project_end_change_minutes": original_candidate.metrics.project_end_change_minutes,
+            "noise_impact": original_candidate.metrics, "objective_values": original_candidate.objective_values,
+        }
+    advanced = request.recommendation_engine == "cp_sat_v2"
     return {
         "input_planning": request.planning,
         "input_provenance": request.planning.field_provenance,
         "policy_version": "prd_v2_1_explicit_input_only",
-        "candidate_generation_mode": "existing_optimizer_15_minute_offsets_0_to_120",
+        "candidate_generation_mode": "ortools_cp_sat_task_start_enumeration" if advanced else "existing_optimizer_15_minute_offsets_0_to_120",
         "optimization_claim": "constraint_filtered_candidate_set_not_global_optimum",
+        "solver": result.get("solver", "exact_enumeration"),
+        "explored_candidate_count": result.get("explored_candidate_count", len(base_candidates)),
+        "pareto_candidate_count": len(frontier_ids),
+        "pareto_axes": axes,
+        "search_complete": result.get("search_complete", True),
+        "global_optimality_guaranteed": False,
         "scenario_id": scenario_id,
         "analysis_date": request.analysis_date,
         "original_schedule": original,
         "candidates": candidates,
         "recommendable_candidate_ids": recommendable,
         "recommendation_status": "available" if recommendable else "none_feasible",
-        "no_recommendation_reasons": [] if recommendable else ["All candidates in the 0..120 minute, 15-minute offset search set violate explicit PRD constraints."],
+        "no_recommendation_reasons": [] if recommendable else (result.get("infeasibility_reasons") or ["All explored candidates violate explicit PRD constraints."]),
         "simulation_status": "simulated",
         "missing_information": missing,
         "caveats": [
-            "This is a constraint-filtered result over the existing offset candidate set, not a global optimum.",
+            "This is a constraint-filtered result over the explored candidate set, not a global optimum." if advanced else "This is a constraint-filtered result over the existing offset candidate set, not a global optimum.",
             "No unspecified time limit or relaxed constraint was introduced.",
             "S-DoT observations are not added to the acoustic synthesis.",
             "Official construction geometry and residential facade receptors remain unavailable; field accuracy is not_evaluable.",

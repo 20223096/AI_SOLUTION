@@ -6937,6 +6937,15 @@
             ],
             "title": "Objective Mode",
             "default": "incremental_impact"
+          },
+          "recommendation_engine": {
+            "type": "string",
+            "enum": [
+              "offset_v1",
+              "cp_sat_v2"
+            ],
+            "title": "Recommendation Engine",
+            "default": "offset_v1"
           }
         },
         "type": "object",
@@ -6965,13 +6974,54 @@
           },
           "candidate_generation_mode": {
             "type": "string",
-            "const": "existing_optimizer_15_minute_offsets_0_to_120",
+            "enum": [
+              "existing_optimizer_15_minute_offsets_0_to_120",
+              "ortools_cp_sat_task_start_enumeration"
+            ],
             "title": "Candidate Generation Mode"
           },
           "optimization_claim": {
             "type": "string",
             "const": "constraint_filtered_candidate_set_not_global_optimum",
             "title": "Optimization Claim"
+          },
+          "solver": {
+            "type": "string",
+            "enum": [
+              "exact_enumeration",
+              "ortools_cp_sat"
+            ],
+            "title": "Solver",
+            "default": "exact_enumeration"
+          },
+          "explored_candidate_count": {
+            "type": "integer",
+            "title": "Explored Candidate Count",
+            "default": 0
+          },
+          "pareto_candidate_count": {
+            "type": "integer",
+            "title": "Pareto Candidate Count",
+            "default": 0
+          },
+          "pareto_axes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Pareto Axes",
+            "default": []
+          },
+          "search_complete": {
+            "type": "boolean",
+            "title": "Search Complete",
+            "default": true
+          },
+          "global_optimality_guaranteed": {
+            "type": "boolean",
+            "const": false,
+            "title": "Global Optimality Guaranteed",
+            "default": false
           },
           "scenario_id": {
             "type": "string",

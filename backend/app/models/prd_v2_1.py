@@ -114,6 +114,7 @@ class PRDConstraintRecommendationRequest(BaseModel):
     restoration_task_ids: set[str] = Field(default_factory=set)
     background_profile: str = "road_traffic_observed_profile"
     objective_mode: Literal["incremental_impact", "absolute_impact", "physical_energy", "sensitive_exposure", "continuous_burden", "multi_axis"] = "incremental_impact"
+    recommendation_engine: Literal["offset_v1", "cp_sat_v2"] = "offset_v1"
 
     @model_validator(mode="after")
     def supported_demo_dates_only(self):
