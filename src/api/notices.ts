@@ -26,7 +26,7 @@ export function extractNoticeFromFile(file: File, signal?: AbortSignal) {
   return request<ExtractResponse>('/api/notices/extract-file', { method: 'POST', body: form, signal })
 }
 
-/** mock 응답만 field_evidence를 갖는다. */
+/** mock과 LLM 응답의 원문 근거를 동일하게 읽는다. */
 export function getFieldEvidence(res: ExtractResponse): Record<string, unknown> {
   return 'field_evidence' in res && res.field_evidence ? (res.field_evidence as Record<string, unknown>) : {}
 }

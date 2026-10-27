@@ -1654,6 +1654,14 @@ export interface components {
             /** Model */
             model: string;
             notice: components["schemas"]["ConstructionNotice-Output"];
+            /** Field Evidence */
+            field_evidence?: {
+                [key: string]: unknown;
+            };
+            /** Usage */
+            usage?: {
+                [key: string]: number;
+            };
             /** Warnings */
             warnings: string[];
         } & {

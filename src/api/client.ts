@@ -22,6 +22,7 @@ export class ApiError extends Error {
 }
 
 type ValidationItem = { loc?: (string | number)[]; msg?: string }
+type DomainError = { category?: string; message?: string }
 
 /** FastAPI 오류 본문({detail: string | ValidationItem[]})을 사람이 읽을 문구로 바꾼다. */
 function describeDetail(detail: unknown): string | null {
@@ -33,6 +34,10 @@ function describeDetail(detail: unknown): string | null {
         return field ? `${field}: ${d.msg ?? ''}` : (d.msg ?? '')
       })
       .join('\n')
+  }
+  if (detail && typeof detail === 'object') {
+    const error = detail as DomainError
+    if (error.message) return error.category ? `${error.message} (${error.category})` : error.message
   }
   return null
 }

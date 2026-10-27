@@ -4390,6 +4390,18 @@
           "notice": {
             "$ref": "#/components/schemas/ConstructionNotice-Output"
           },
+          "field_evidence": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Field Evidence"
+          },
+          "usage": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Usage"
+          },
           "warnings": {
             "items": {
               "type": "string"

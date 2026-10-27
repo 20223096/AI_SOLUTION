@@ -3,7 +3,7 @@ from fastapi import APIRouter, File, Form, HTTPException, UploadFile
 from app.core.config import get_settings
 from app.models.domain import ExtractRequest
 from app.models.responses import NoticeExtractResponse
-from app.services.extractor import LLMExtractor, MockExtractor
+from app.services.extractor import LLMExtractionError, LLMExtractor, MockExtractor
 
 router = APIRouter(prefix="/api/notices", tags=["notices"])
 
@@ -15,7 +15,10 @@ def extractor():
 
 @router.post("/extract", response_model=NoticeExtractResponse)
 def extract_json(request: ExtractRequest):
-    return extractor().extract(request.text)
+    try:
+        return extractor().extract(request.text)
+    except LLMExtractionError as exc:
+        raise HTTPException(exc.http_status, {"category": exc.category, "message": exc.message}) from exc
 
 
 @router.post("/extract-file", response_model=NoticeExtractResponse)
@@ -34,4 +37,7 @@ async def extract_file(file: UploadFile = File(...)):
         raise HTTPException(415, "Only UTF-8 text or text-extractable PDF is supported")
     if not text.strip():
         raise HTTPException(422, "No extractable text")
-    return extractor().extract(text)
+    try:
+        return extractor().extract(text)
+    except LLMExtractionError as exc:
+        raise HTTPException(exc.http_status, {"category": exc.category, "message": exc.message}) from exc

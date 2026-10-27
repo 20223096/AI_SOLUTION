@@ -63,6 +63,15 @@ describe('API v3.4 client', () => {
     await expect(request('/api/test')).rejects.toMatchObject({ status: 422, detail: 'snapshot mismatch' })
   })
 
+  it('shows classified LLM extraction errors without exposing provider details', async () => {
+    vi.spyOn(globalThis, 'fetch').mockResolvedValue(new Response(JSON.stringify({
+      detail: { category: 'structured_response_parsing', message: 'LLM response did not match the notice extraction schema' },
+    }), { status: 502, headers: { 'Content-Type': 'application/json' } }))
+    await expect(extractNoticeFromText('신고서')).rejects.toMatchObject({
+      message: expect.stringContaining('structured_response_parsing'), status: 502,
+    })
+  })
+
   it('reports network failures distinctly', async () => {
     vi.spyOn(globalThis, 'fetch').mockRejectedValue(new TypeError('offline'))
     await expect(request('/api/test')).rejects.toMatchObject({ status: null })
