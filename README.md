@@ -55,6 +55,18 @@ npm run build
 
 백엔드는 별도로 `cd backend && python3 -m uvicorn app.main:app --host 127.0.0.1 --port 8000`으로 실행합니다.
 
+### 반복 발표용 mock 데모
+
+```bash
+./scripts/run_mock_demo.sh
+```
+
+매 실행마다 `/tmp` 아래에 새 주민 안내문·추천 snapshot 저장소를 할당합니다. 따라서 같은 construction ID를 사용해도 이전 발표의 공개 레코드와 충돌하지 않습니다. 기존 레코드를 삭제하거나 초기화하지 않으며, API 키도 사용하지 않습니다. 출력된 저장소 경로는 발표 기록 확인용으로 남습니다.
+
+실제 LLM 데모는 위 스크립트와 분리해서 실행합니다. 서버 전용 `backend/.env`에 `SHH_EXTRACTOR_MODE=llm`, provider/model/API key를 설정한 뒤 백엔드를 직접 실행하세요. LLM 키나 JUSO 키를 `VITE_` 환경변수에 넣으면 브라우저 번들에 포함되므로 금지합니다.
+
+동일 영속 저장소에서 이미 공개된 ID를 다시 사용하면 서버는 의도적으로 409를 반환합니다. 이는 운영 이력 보호 동작이며, 발표에서는 저장소 격리 스크립트를 사용하세요.
+
 ## 환경변수
 
 `frontend/.env.local`

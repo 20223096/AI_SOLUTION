@@ -43,6 +43,7 @@ function describeDetail(detail: unknown): string | null {
 }
 
 const STATUS_MESSAGE: Record<number, string> = {
+  409: '현재 데모 저장소에 같은 공사 ID의 확정본이 이미 있습니다. 새 격리 데모로 다시 시작해 주세요.',
   404: '요청한 데이터를 찾을 수 없습니다.',
   415: '지원하지 않는 파일 형식입니다. UTF-8 텍스트(.txt) 또는 텍스트 추출이 가능한 PDF만 올릴 수 있습니다.',
   422: '입력값을 확인해 주세요.',
@@ -68,7 +69,9 @@ export async function request<T>(path: string, init: RequestInit = {}): Promise<
   }
 
   if (!response.ok) {
-    const detail = (payload as { detail?: unknown } | null)?.detail
+    const errorPayload = payload as { detail?: unknown; message?: unknown } | null
+    // 주민 안내 workflow 오류는 top-level message를 사용한다.
+    const detail = errorPayload?.detail ?? errorPayload?.message
     // FastAPI의 기본 라우트 404({"detail":"Not Found"}). 계약의 도메인 404(알 수 없는 시나리오 등)와 구분한다.
     if (response.status === 404 && detail === 'Not Found') {
       const method = (init.method ?? 'GET').toUpperCase()

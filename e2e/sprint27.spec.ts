@@ -40,6 +40,7 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await expect(page.getByText(/현재 계산은 시나리오 수음점과 거리 가정을 사용합니다/)).toBeVisible()
   await expect(page.getByRole('cell', { name: '학교 수업시간 / 그 외' })).toBeVisible()
   await expect(page.getByRole('cell', { name: '미구현' }).first()).toBeVisible()
+  await page.screenshot({ path: 'test-results/sprint35/s4-desktop.png', fullPage: true })
   const toS5 = page.getByRole('button', { name: /다음: 조정안 고르기/ })
   await expect(toS5).toBeVisible({ timeout: 30_000 })
   await toS5.click()
@@ -50,6 +51,7 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await page.getByRole('button', { name: /다음: 조정 전후 비교/ }).click()
   const toS7 = page.getByRole('button', { name: /다음: 일정 확정/ })
   await expect(toS7).toBeEnabled({ timeout: 30_000 })
+  await page.screenshot({ path: 'test-results/sprint35/s6-desktop.png', fullPage: true })
   await toS7.click()
 
   await page.getByPlaceholder('필수').fill('서대문구 공사안내 02-0000-0000')
@@ -67,6 +69,7 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await page.getByRole('button', { name: /다음: 주민 공개 화면/ }).click()
   await expect(page.getByText('공개 API 조회 결과')).toBeVisible()
   await expect(page.getByText('시연 데이터')).toBeVisible()
+  await page.screenshot({ path: 'test-results/sprint35/s8-desktop.png', fullPage: true })
 
   const after = await page.evaluate(async () => {
     const response = await fetch('/api/public/construction/extracted-mock/resident-notice')
@@ -87,7 +90,10 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   const mobile = await browser.newPage({ ...devices['iPhone 13'] })
   await mobile.goto('/')
   await expect(mobile.getByRole('heading', { name: '공고문 올리기' })).toBeVisible()
+  await mobile.getByRole('button', { name: '텍스트 붙여넣기' }).focus()
+  await expect(mobile.getByRole('button', { name: '텍스트 붙여넣기' })).toBeFocused()
   const overflow = await mobile.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)
   expect(overflow).toBeLessThanOrEqual(1)
+  await mobile.screenshot({ path: 'test-results/sprint35/s1-mobile.png', fullPage: true })
   await mobile.close()
 })
