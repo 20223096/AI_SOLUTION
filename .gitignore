@@ -1,4 +1,8 @@
 .env
+.env.*
+!.env.example
+!backend/.env.example
+!frontend/.env.example
 .venv/
 __pycache__/
 .pytest_cache/
@@ -38,6 +42,8 @@ lerna-debug.log*
 node_modules
 dist
 dist-ssr
+test-results/
+playwright-report/
 *.local
 
 # Editor directories and files

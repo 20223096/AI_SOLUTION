@@ -21,7 +21,7 @@ cd backend
 pytest -q
 ```
 
-기본 `SHH_EXTRACTOR_MODE=mock`이며 API 키 없이 전 기능이 실행됩니다. `.env.example`을 `.env`로 복사해 설정할 수 있습니다. `llm` 모드는 제공업체별 전송 구현과 키를 요구하며 설정 불완전 시 명시적으로 실패합니다.
+기본 `SHH_EXTRACTOR_MODE=mock`입니다. `backend/.env.example`을 `backend/.env`로 복사해 서버 전용 키와 설정을 넣습니다. `llm` 모드는 제공업체별 전송 구현과 키를 요구하며 설정 불완전 시 명시적으로 실패합니다.
 
 ## 설계 요약
 
@@ -57,7 +57,7 @@ npm run build
 
 ## 환경변수
 
-`.env`
+`frontend/.env.local`
 
 ```env
 VITE_SHH_API_BASE_URL=http://127.0.0.1:8000
@@ -102,12 +102,19 @@ src/
 | 화면 | API | 상태 |
 |---|---|---|
 | S1 공고문 올리기 | `POST /api/notices/extract`, `POST /api/notices/extract-file` | 완료 |
-| S2 추출 확인 | `POST /api/prd/planning/from-notice` | 완료 |
+| S2 추출 확인·주소 좌표 | `POST /api/prd/planning/from-notice`, `POST /api/locations/address-coordinate` | 완료 |
 | S3 제약 확인 | `POST /api/prd/schedules/validate` (분석일 2026-09-11 고정) | 완료 |
 | S4 후보 추천 | `POST /api/prd/recommendations/constraint-filtered` | 완료 |
 | S5 조정안 고르기 | (S4 응답 사용) | 완료 |
 | S6 조정 전후 비교 | `POST /api/schedules/compare` | 완료 |
-| S7 확정·주민 안내 | 없음 — 계약에 안내문 API 없음, 클라이언트 템플릿 | 초안 생성까지 |
-| S8 주민 화면 | 없음 — 계약에 주민 조회 API 없음, 확정 일정으로 계산 | 미리보기 |
+| S7 확정·주민 안내 | staff draft POST/PUT/confirm | 완료 |
+| S8 주민 화면 | `GET /api/public/construction/{project_id}/resident-notice` | 완료 |
 
-S7 확정 상태와 안내문은 브라우저 메모리에만 있으며 새로고침하면 사라집니다. 승인·영구 저장·실제 게시 기능은 아닙니다.
+S7은 추천 snapshot ID·schedule version·revision을 서버에서 검증하고 명시적으로 확정합니다. S8은 staff 초안이나 브라우저 상태를 재사용하지 않고 공개 API를 다시 조회합니다. 다만 staff API의 loopback/host 제한은 운영 인증을 대체하지 않으므로 인터넷에 직접 공개하면 안 됩니다.
+
+## 환경변수 분리
+
+- 백엔드 비밀값: `backend/.env` (Git 제외)
+- 프론트 공개 설정: `frontend/.env.local` (Git 제외, `VITE_SHH_API_BASE_URL`만 허용)
+- 기존 루트 `.env`는 Sprint 27 마이그레이션 호환용 fallback이며 새 설정에는 사용하지 않습니다.
+- 실제 API 키를 `VITE_` 변수에 넣으면 브라우저 번들에 노출되므로 금지합니다.

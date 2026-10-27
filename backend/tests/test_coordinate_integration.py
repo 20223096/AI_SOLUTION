@@ -34,7 +34,9 @@ def lookup(handler, address=ADDRESS, selected=None):
     return JusoCoordinateClient("search-secret", "coord-secret", transport=httpx.MockTransport(handler)).lookup(address, selected)
 
 
-def test_settings_load_project_root_env_and_secrets_are_redacted():
+def test_settings_load_juso_environment_and_secrets_are_redacted(monkeypatch):
+    monkeypatch.setenv("JUSO_SEARCH_API_KEY", "test-search-secret")
+    monkeypatch.setenv("JUSO_COORD_API_KEY", "test-coordinate-secret")
     settings = Settings()
     assert settings.juso_search_api_key is not None
     assert settings.juso_coord_api_key is not None

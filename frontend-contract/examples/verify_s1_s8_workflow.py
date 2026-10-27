@@ -14,10 +14,9 @@ BASE_URL = os.getenv("SHH_API_BASE_URL", "http://127.0.0.1:8765")
 OUT = Path(os.getenv("SHH_WORKFLOW_OUT", Path(__file__).with_name("s1-s8-workflow.json")))
 
 
-def call(client: httpx.Client, step: str, method: str, path: str, body: dict | None = None, expected: tuple[int, ...] = (200,)) -> dict:
+def call(client: httpx.Client, step: str, method: str, path: str, body: dict | None = None) -> dict:
     response = client.request(method, path, json=body)
-    if response.status_code not in expected:
-        response.raise_for_status()
+    response.raise_for_status()
     return {"step": step, "method": method, "path": path, "request": body, "status": response.status_code, "response": response.json()}
 
 
@@ -45,7 +44,9 @@ def main() -> None:
         })
         coordinate = call(client, "S2_address_coordinate", "POST", "/api/locations/address-coordinate", {
             "address": "서울특별시 서대문구 연세로2나길 20"
-        }, expected=(200, 502, 503))
+        })
+        if coordinate["response"]["status"] != "resolved" or not coordinate["response"].get("map_coordinate"):
+            raise RuntimeError(f"JUSO coordinate verification failed: {coordinate['response']['status']}")
         steps.append(coordinate)
 
         original = [
@@ -82,7 +83,7 @@ def main() -> None:
         project_id = request["planning"]["notice_id"]
         draft = call(client, "S7_notice_draft", "POST", "/api/staff/resident-notices/drafts", {
             "project_id": project_id, "project_name": request["planning"]["project_name"],
-            "public_location": coordinate["response"].get("normalized_official_address") or "서울특별시 서대문구 연세로2나길 20", "construction_date": request["analysis_date"],
+            "public_location": coordinate["response"]["normalized_official_address"], "construction_date": request["analysis_date"],
             "public_window_start": "2026-09-11T07:00:00+09:00", "public_window_end": "2026-09-11T18:00:00+09:00",
             "public_contact": "서대문구 공사안내 02-0000-0000", "schedule": selected_schedule,
             "provenance": [{"field": "schedule", "status": "demo", "source": "server recommendation snapshot", "note": "실제 현장 일정 아님"}],
@@ -114,7 +115,7 @@ def main() -> None:
         "coordinate_status": coordinate["response"]["status"],
         "step_count": len(steps), "steps": steps,
     }, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"verified connected S1-S8 HTTP workflow; coordinate={coordinate['response']['status']}; selected {selected_id}; wrote {OUT}")
+    print(f"verified connected S1-S8 HTTP workflow with resolved JUSO coordinate; selected {selected_id}; wrote {OUT}")
 
 
 if __name__ == "__main__":
