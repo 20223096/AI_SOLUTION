@@ -50,7 +50,7 @@ export function buildOriginalSchedule(notice: ConstructionNotice, plan: Confirme
     const endMin = cursor != null && duration != null ? cursor + duration : null
     const end = endMin != null ? fromMinutes(endMin) : null
     cursor = end != null ? endMin : null // 소요시간을 모르면 이후 작업 시각도 비운다.
-    return { task_id: id, name: task.name, start: start ?? '', end: end ?? '' }
+    return { task_id: id, name: plan.task_name_by_task[id] ?? task.name, start: start ?? '', end: end ?? '' }
   })
 }
 

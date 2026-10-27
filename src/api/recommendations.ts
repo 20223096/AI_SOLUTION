@@ -25,6 +25,7 @@ export function requestRecommendations(plan: ConfirmedPlan, signal?: AbortSignal
     equipment_by_task: plan.equipment_by_task,
     equipment_count_by_task: plan.equipment_count_by_task,
     task_duration_by_task: plan.task_duration_by_task,
+    task_name_by_task: plan.task_name_by_task,
     restoration_task_ids: plan.restoration_task_ids,
     background_profile: BACKGROUND_PROFILE,
     objective_mode: OBJECTIVE_MODE,

@@ -32,3 +32,8 @@
 .s2-note { font-size: 12.5px; margin: 8px 0 0 }
 
 .s2-issues { margin: 6px 0 0; padding-left: 18px }
+.source-tag { font-size: 11px; font-weight: 650; border-radius: 999px; padding: 1px 7px; white-space: nowrap }
+.source-tag.llm { color: var(--quiet); border: 1px solid var(--quiet) }
+.source-tag.user { color: var(--good); border: 1px solid var(--good) }
+.source-tag.missing { color: var(--danger); border: 1px solid var(--danger) }
+.s2-review-confirm { display: grid; gap: 5px; margin-bottom: 12px; padding: 12px; border: 1px solid var(--line); border-radius: 10px }

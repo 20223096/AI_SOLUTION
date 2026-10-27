@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest'
 import { isSelectable } from '../api/recommendations'
-import { formFromDraft, validateForm, type PlanningForm } from './s2Form'
+import { formFromDraft, toConfirmedPlan, validateForm, type PlanningForm } from './s2Form'
 import { summarizeDay } from './s8Quiet'
 
 describe('workflow guards', () => {
   it('blocks a notice with missing required fields', () => {
     const form = {
       project_name: '', location: '', period_start: '', period_end: '', period_raw: null,
-      work_start: '', work_end: '', road_excavation: '', has_permit_window: false,
+      work_start: '', work_end: '', road_excavation: '', has_permit_window: false, permit_reviewed: false,
       permit_start: '', permit_end: '', same_day_restoration: false, completion_date: '',
       non_adjustable: '', equipment: [], tasks: [],
     } satisfies PlanningForm
@@ -34,12 +34,16 @@ describe('workflow guards', () => {
     expect(validateForm(form).map((issue) => issue.key)).toContain('tasks.1.equipment_id')
     form.tasks[1].restoration = true
     expect(validateForm(form).map((issue) => issue.key)).not.toContain('tasks.1.equipment_id')
+    const confirmed = toConfirmedPlan(form, draft as never, ['tasks.1.duration_minutes', 'road_excavation'])
+    expect(confirmed.planning.user_review_completed).toBe(true)
+    expect(confirmed.planning.user_modified_fields).toEqual(['road_excavation', 'tasks.1.duration_minutes'])
+    expect(confirmed.task_name_by_task).toMatchObject({ dig: '굴착', restore: '복구' })
   })
 
   it('blocks equipment usage outside the confirmed total work window and quantity overflow', () => {
     const form = {
       project_name: '공사', location: '연세로', period_start: '2026-09-11', period_end: '2026-09-11', period_raw: null,
-      work_start: '08:00', work_end: '17:00', road_excavation: 'no', has_permit_window: false,
+      work_start: '08:00', work_end: '17:00', road_excavation: 'no', has_permit_window: false, permit_reviewed: false,
       permit_start: '', permit_end: '', same_day_restoration: false, completion_date: '', non_adjustable: '',
       equipment: [{ equipment_id: 'excavator', category: '굴착기', specification: '', model_name: '', required_usage_minutes: '120', max_daily_count: '1', window_start: '07:00', window_end: '09:00' }],
       tasks: [{ id: 'excavate', name: '굴착', equipment_id: 'excavator', count: '2', duration_minutes: '120', restoration: false }],

@@ -33,6 +33,7 @@ export interface PlanningForm {
   work_end: string
   road_excavation: '' | 'yes' | 'no'
   has_permit_window: boolean
+  permit_reviewed: boolean
   permit_start: string
   permit_end: string
   same_day_restoration: boolean
@@ -72,6 +73,7 @@ export function formFromDraft(draft: PlanningDraft, tasks: ConstructionTask[]): 
     work_end: draft.total_work_window ? hhmm(draft.total_work_window.end) : '',
     road_excavation: draft.road_excavation == null ? '' : draft.road_excavation ? 'yes' : 'no',
     has_permit_window: draft.road_occupancy_permit_window != null,
+    permit_reviewed: draft.road_occupancy_permit_window != null,
     permit_start: draft.road_occupancy_permit_window ? hhmm(draft.road_occupancy_permit_window.start) : '',
     permit_end: draft.road_occupancy_permit_window ? hhmm(draft.road_occupancy_permit_window.end) : '',
     same_day_restoration: draft.same_day_restoration_required === true,
@@ -119,6 +121,9 @@ export function validateForm(f: PlanningForm): FormIssue[] {
   if (f.has_permit_window) {
     checkWindow(issues, 'road_occupancy_permit_window', '도로점용 허가시간', f.permit_start, f.permit_end, true)
   }
+  if (f.road_excavation === 'yes' && !f.permit_reviewed) {
+    issues.push({ key: 'road_occupancy_permit_window', message: '[도로점용 허가시간] 허가조건 확인 여부를 선택해 주세요.' })
+  }
   if (f.completion_date && f.period_start && f.completion_date < f.period_start) {
     issues.push({ key: 'project_completion_date', message: '계획 완료일이 공사 시작일보다 빠릅니다.' })
   }
@@ -143,14 +148,15 @@ export function validateForm(f: PlanningForm): FormIssue[] {
   })
 
   f.tasks.forEach((t, i) => {
+    if (!t.name.trim()) issues.push({ key: `tasks.${i}.name`, message: `[작업별 장비 배정] ${t.id}: 공정명을 입력해 주세요.` })
     if (!isPositiveInt(t.duration_minutes)) {
-      issues.push({ key: `tasks.${i}.duration_minutes`, message: `작업 ${t.name}: 작업시간(분)을 입력해 주세요.` })
+      issues.push({ key: `tasks.${i}.duration_minutes`, message: `[작업별 장비 배정] ${t.name}: 작업시간(분)을 입력해 주세요.` })
     }
     if (!t.equipment_id && !t.restoration) {
-      issues.push({ key: `tasks.${i}.equipment_id`, message: `작업 ${t.name}: 장비를 연결하거나 복구 작업으로 지정해 주세요.` })
+      issues.push({ key: `tasks.${i}.equipment_id`, message: `[작업별 장비 배정] ${t.name}: 장비를 연결하거나 복구 작업으로 지정해 주세요.` })
     }
     if (t.equipment_id && !isPositiveInt(t.count)) {
-      issues.push({ key: `tasks.${i}.count`, message: `작업 ${t.name}: 투입 장비 대수를 입력해 주세요.` })
+      issues.push({ key: `tasks.${i}.count`, message: `[작업별 장비 배정] ${t.name}: 투입 장비 대수를 입력해 주세요.` })
     } else if (!t.equipment_id && t.count && !isNonNegInt(t.count)) {
       issues.push({ key: `tasks.${i}.count`, message: `작업 ${t.name}: 장비 대수는 정수여야 합니다.` })
     }
@@ -170,7 +176,7 @@ const win = (start: string, end: string): TimeWindow => ({ start, end })
 const orNull = (s: string) => (s.trim() ? s.trim() : null)
 
 /** validateForm 통과 후에만 호출한다. */
-export function toConfirmedPlan(f: PlanningForm, draft: PlanningDraft): ConfirmedPlan {
+export function toConfirmedPlan(f: PlanningForm, draft: PlanningDraft, userModifiedFields: string[] = []): ConfirmedPlan {
   const confirmedFields = [
     'project_name',
     'location',
@@ -227,11 +233,14 @@ export function toConfirmedPlan(f: PlanningForm, draft: PlanningDraft): Confirme
         ...Object.fromEntries(confirmedFields.map((k) => [k, CONFIRMED])),
       },
       provenance: 'user_provided',
+      user_review_completed: true,
+      user_modified_fields: [...new Set(userModifiedFields)].sort(),
     },
     predecessors: draft.predecessors,
     equipment_by_task: Object.fromEntries(f.tasks.map((t) => [t.id, t.equipment_id || null])),
     equipment_count_by_task: Object.fromEntries(tasksWithEquipment.map((t) => [t.id, Number(t.count)])),
     task_duration_by_task: Object.fromEntries(f.tasks.map((t) => [t.id, Number(t.duration_minutes)])),
+    task_name_by_task: Object.fromEntries(f.tasks.map((t) => [t.id, t.name.trim()])),
     restoration_task_ids: f.same_day_restoration ? f.tasks.filter((t) => t.restoration).map((t) => t.id) : [],
   }
 }

@@ -2615,6 +2615,10 @@ export interface components {
             task_duration_by_task?: {
                 [key: string]: number;
             };
+            /** Task Name By Task */
+            task_name_by_task?: {
+                [key: string]: string;
+            };
             /** Restoration Task Ids */
             restoration_task_ids?: string[];
             /**
@@ -2757,6 +2761,13 @@ export interface components {
              * @enum {string}
              */
             provenance: "field_measured" | "official_document" | "user_provided" | "assumed";
+            /**
+             * User Review Completed
+             * @default false
+             */
+            user_review_completed: boolean;
+            /** User Modified Fields */
+            user_modified_fields?: string[];
         };
         /** PRDNoticePlanningInput */
         "PRDNoticePlanningInput-Output": {
@@ -2797,6 +2808,13 @@ export interface components {
              * @enum {string}
              */
             provenance: "field_measured" | "official_document" | "user_provided" | "assumed";
+            /**
+             * User Review Completed
+             * @default false
+             */
+            user_review_completed: boolean;
+            /** User Modified Fields */
+            user_modified_fields?: string[];
         };
         /** PRDPlanningDraft */
         PRDPlanningDraft: {
@@ -2896,6 +2914,10 @@ export interface components {
             /** Task Duration By Task */
             task_duration_by_task?: {
                 [key: string]: number;
+            };
+            /** Task Name By Task */
+            task_name_by_task?: {
+                [key: string]: string;
             };
             /** Restoration Task Ids */
             restoration_task_ids?: string[];

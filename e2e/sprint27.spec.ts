@@ -23,10 +23,12 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await page.getByLabel('공사 시작일').fill('2026-09-11')
   await page.getByLabel('공사 종료일').fill('2026-09-11')
   await page.getByRole('button', { name: '굴착함' }).click()
+  await page.getByLabel('도로점용 허가조건을 확인했습니다').check()
   await page.getByRole('button', { name: '공식 주소·좌표 조회' }).click()
   await expect(page.getByText(/도로명주소 건물 출입구 대표점/)).toBeVisible({ timeout: 30_000 })
   await page.getByLabel('공식 주소 대표점을 확인했습니다').check()
   for (const input of await page.locator('input[aria-label$="투입 대수"]').all()) await input.fill('1')
+  await page.getByLabel('원문 근거, LLM 추출값, 담당자 수정값을 모두 검토했습니다').check()
   await page.getByRole('button', { name: /계획 확정하고 제약 확인/ }).click()
 
   await page.getByRole('button', { name: '일정 검증하기' }).click()

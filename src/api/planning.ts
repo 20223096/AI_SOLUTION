@@ -22,6 +22,7 @@ export interface ConfirmedPlan {
   equipment_by_task: Record<string, string | null>
   equipment_count_by_task: Record<string, number>
   task_duration_by_task: Record<string, number>
+  task_name_by_task: Record<string, string>
   restoration_task_ids: string[]
 }
 

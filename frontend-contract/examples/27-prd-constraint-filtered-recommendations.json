@@ -140,7 +140,9 @@
             "unit": null
           }
         },
-        "provenance": "user_provided"
+        "provenance": "user_provided",
+        "user_review_completed": false,
+        "user_modified_fields": []
       },
       "predecessors": {
         "break": [
@@ -306,7 +308,9 @@
             "unit": null
           }
         },
-        "provenance": "user_provided"
+        "provenance": "user_provided",
+        "user_review_completed": false,
+        "user_modified_fields": []
       },
       "input_provenance": {
         "construction_period": {

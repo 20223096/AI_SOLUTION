@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState, type ReactNode } from 'react'
 import { ApiError } from '../api/client'
 import { lookupAddressCoordinate, type AddressCoordinateResponse } from '../api/coordinates'
-import type { ExtractResponse } from '../api/notices'
+import { evidenceNeedsReview, type ExtractResponse } from '../api/notices'
 import { createPlanningDraft, type ConfirmedPlan, type PlanningDraftResponse } from '../api/planning'
 import { Missing } from '../components/Missing'
 import { ProvenanceBadge } from '../components/ProvenanceBadge'
@@ -31,6 +31,17 @@ const FIELD_LABEL: Record<string, string> = {
   equipment_required_usage_minutes: '장비 필요 사용시간',
   max_daily_equipment_count: '장비 일 최대 대수',
   same_day_restoration_required: '당일 복구 여부',
+  tasks: '작업별 장비 배정',
+  equipment: '장비 종류·수량·사용시간',
+  non_adjustable_conditions: '조정 불가 조건',
+}
+
+function reviewIssueMessage(issue: string) {
+  if (issue.startsWith('restoration_equipment_rejected:')) return '[작업별 장비 배정] 복구 작업에 연결된 장비를 자동 승인하지 않았습니다.'
+  if (issue.startsWith('equipment_task_needs_confirmation:')) return '[작업별 장비 배정] 장비가 사용되는 실제 공정명을 확인해 주세요.'
+  if (issue.startsWith('unmatched_equipment:')) return '[장비 제약] 카탈로그에 없는 장비를 직접 선택하거나 수정해 주세요.'
+  if (issue.startsWith('evidence_not_found:')) return '[원문 근거] 원문에서 찾을 수 없는 근거가 있습니다.'
+  return issue
 }
 
 const WARNING_KO: Record<string, string> = {
@@ -56,6 +67,8 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
   const [coordinateLoading, setCoordinateLoading] = useState(false)
   const [coordinateError, setCoordinateError] = useState('')
   const [coordinateConfirmed, setCoordinateConfirmed] = useState(false)
+  const [reviewConfirmed, setReviewConfirmed] = useState(false)
+  const [modifiedFields, setModifiedFields] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const controller = new AbortController()
@@ -117,8 +130,33 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
   const missing = new Set(data.missing_fields)
   const toConfirm = new Set(data.confirmation_required_fields)
   const invalid = new Set(showErrors ? issues.map((i) => i.key) : [])
+  const evidence = 'field_evidence' in extraction ? extraction.field_evidence : {}
+  const evidenceReviewFields = Object.entries(evidence ?? {}).filter(([, value]) => evidenceNeedsReview(value)).map(([field]) => field)
+  const normalizationIssues = 'normalization_issues' in extraction && Array.isArray(extraction.normalization_issues)
+    ? extraction.normalization_issues.filter((issue): issue is string => typeof issue === 'string')
+    : []
 
-  const set = <K extends keyof PlanningForm>(key: K, value: PlanningForm[K]) =>
+  const markModified = (key: string) => {
+    setModifiedFields((current) => new Set(current).add(key))
+    setReviewConfirmed(false)
+  }
+
+  const canonicalFormField = (key: string) => ({
+    period_start: 'construction_period', period_end: 'construction_period',
+    has_permit_window: 'road_occupancy_permit_window', permit_reviewed: 'road_occupancy_permit_window', permit_start: 'road_occupancy_permit_window', permit_end: 'road_occupancy_permit_window',
+    same_day_restoration: 'same_day_restoration_required', non_adjustable: 'non_adjustable_conditions',
+  } as Record<string, string>)[key] ?? key
+
+  const originTag = (key: string) => {
+    if ([...modifiedFields].some((field) => field === key || field.startsWith(`${key}.`))) {
+      return <span className="source-tag user">담당자 수정</span>
+    }
+    if (missing.has(key)) return <span className="source-tag missing">입력 필요</span>
+    return <span className="source-tag llm">{data.extractor_mode === 'llm' ? 'LLM 추출' : '초기값'}</span>
+  }
+
+  const set = <K extends keyof PlanningForm>(key: K, value: PlanningForm[K]) => {
+    markModified(canonicalFormField(String(key)))
     setForm((f) => {
       if (key === 'location') {
         setCoordinate(null)
@@ -127,10 +165,15 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
       }
       return f ? { ...f, [key]: value } : f
     })
-  const setEquipment = (i: number, patch: Partial<EquipmentForm>) =>
+  }
+  const setEquipment = (i: number, patch: Partial<EquipmentForm>) => {
+    for (const key of Object.keys(patch)) markModified(`equipment.${i}.${key}`)
     setForm((f) => (f ? { ...f, equipment: f.equipment.map((e, j) => (j === i ? { ...e, ...patch } : e)) } : f))
-  const setTask = (i: number, patch: Partial<TaskForm>) =>
+  }
+  const setTask = (i: number, patch: Partial<TaskForm>) => {
+    for (const key of Object.keys(patch)) markModified(`tasks.${i}.${key}`)
     setForm((f) => (f ? { ...f, tasks: f.tasks.map((t, j) => (j === i ? { ...t, ...patch } : t)) } : f))
+  }
 
   /** 필드 옆에 서버가 알려준 상태(미확인/확인 필요)를 표시한다. */
   const fieldTag = (apiField: string) =>
@@ -138,11 +181,11 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
 
   function confirm() {
     if (!form) return
-    if (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed) {
+    if (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed || !reviewConfirmed) {
       setShowErrors(true)
       return
     }
-    onConfirm(toConfirmedPlan(form, draft))
+    onConfirm(toConfirmedPlan(form, draft, [...modifiedFields]))
   }
 
   async function lookupCoordinate(selectedAddressId?: string) {
@@ -187,6 +230,15 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
             ))}
           </div>
         )}
+        {(evidenceReviewFields.length > 0 || normalizationIssues.length > 0) && (
+          <div className="hint warn" data-testid="llm-review-alert">
+            <b>담당자 검토가 필요한 AI 추출 항목</b>
+            <ul className="s2-issues">
+              {evidenceReviewFields.map((field) => <li key={field}>{FIELD_LABEL[field] ?? field}: 원문 근거 또는 연결을 확인해 주세요.</li>)}
+              {normalizationIssues.map((issue) => <li key={issue}>{reviewIssueMessage(issue)}</li>)}
+            </ul>
+          </div>
+        )}
       </section>
 
       {/* 공사 기본 정보 */}
@@ -195,7 +247,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
           <h2>공사 기본 정보</h2>
         </div>
         <div className="s2-fields">
-          <Field label="공사명" tag={fieldTag('project_name')} htmlFor="s2-name">
+          <Field label="공사명" tag={<>{fieldTag('project_name')}{originTag('project_name')}</>} htmlFor="s2-name">
             <input
               id="s2-name"
               value={form.project_name}
@@ -203,7 +255,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               aria-invalid={invalid.has('project_name')}
             />
           </Field>
-          <Field label="장소" tag={fieldTag('location')} htmlFor="s2-location">
+          <Field label="장소" tag={<>{fieldTag('location')}{originTag('location')}</>} htmlFor="s2-location">
             <input
               id="s2-location"
               value={form.location}
@@ -243,7 +295,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
           </Field>
           <Field
             label="공사 기간"
-            tag={fieldTag('construction_period')}
+            tag={<>{fieldTag('construction_period')}{originTag('construction_period')}</>}
             hint={form.period_raw ? `원문: “${form.period_raw}”` : undefined}
           >
             <div className="s2-range">
@@ -264,16 +316,16 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               />
             </div>
           </Field>
-          <Field label="전체 작업 허용시간" tag={fieldTag('total_work_window')}>
+          <Field label="전체 작업 허용시간" tag={<>{fieldTag('total_work_window')}{originTag('total_work_window')}</>}>
             <TimeRange
               label="전체 작업 허용시간"
               start={form.work_start}
               end={form.work_end}
-              onChange={(s, e) => setForm((f) => (f ? { ...f, work_start: s, work_end: e } : f))}
+              onChange={(s, e) => { markModified('total_work_window'); setForm((f) => (f ? { ...f, work_start: s, work_end: e } : f)) }}
               invalid={invalid.has('total_work_window')}
             />
           </Field>
-          <Field label="도로 굴착 여부" tag={fieldTag('road_excavation')}>
+          <Field label="도로 굴착 여부" tag={<>{fieldTag('road_excavation')}{originTag('road_excavation')}</>}>
             <div className={`seg${invalid.has('road_excavation') ? ' invalid' : ''}`} role="group" aria-label="도로 굴착 여부">
               {(['yes', 'no'] as const).map((v) => (
                 <button
@@ -287,7 +339,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               ))}
             </div>
           </Field>
-          <Field label="도로점용 허가시간" tag={fieldTag('road_occupancy_permit_window')}>
+          <Field label="도로점용 허가시간" tag={<>{fieldTag('road_occupancy_permit_window')}{originTag('road_occupancy_permit_window')}</>}>
             <label className="s2-check">
               <input
                 type="checkbox"
@@ -296,12 +348,20 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               />
               허가시간 제한 있음
             </label>
+            <label className="s2-check">
+              <input
+                type="checkbox"
+                checked={form.permit_reviewed}
+                onChange={(e) => set('permit_reviewed', e.target.checked)}
+              />
+              도로점용 허가조건을 확인했습니다
+            </label>
             {form.has_permit_window && (
               <TimeRange
                 label="도로점용 허가시간"
                 start={form.permit_start}
                 end={form.permit_end}
-                onChange={(s, e) => setForm((f) => (f ? { ...f, permit_start: s, permit_end: e } : f))}
+                onChange={(s, e) => { markModified('road_occupancy_permit_window'); setForm((f) => (f ? { ...f, permit_start: s, permit_end: e } : f)) }}
                 invalid={invalid.has('road_occupancy_permit_window')}
               />
             )}
@@ -359,6 +419,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                   <th>장비 허용시간</th>
                   <th>규격 / 모델</th>
                   <th>출처</th>
+                  <th>확인 상태</th>
                 </tr>
               </thead>
               <tbody>
@@ -424,6 +485,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                     <td>
                       <ProvenanceBadge status={draft.equipment_constraints[i]?.source_metadata.status ?? 'missing'} />
                     </td>
+                    <td>{originTag(`equipment.${i}`)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -451,13 +513,20 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                   <th>작업시간(분)</th>
                   <th>투입 대수</th>
                   {form.same_day_restoration && <th>복구 작업</th>}
+                  <th>확인 상태</th>
                 </tr>
               </thead>
               <tbody>
                 {form.tasks.map((t, i) => (
                   <tr key={t.id}>
                     <td>
-                      {t.name} <span className="muted">({t.id})</span>
+                      <input
+                        aria-label={`${t.id} 공정명`}
+                        value={t.name}
+                        onChange={(event) => setTask(i, { name: event.target.value })}
+                        aria-invalid={invalid.has(`tasks.${i}.name`)}
+                      />
+                      <span className="muted">({t.id})</span>
                     </td>
                     <td>{draft.predecessors[t.id]?.join(', ') || '–'}</td>
                     <td>
@@ -506,6 +575,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                         />
                       </td>
                     )}
+                    <td>{originTag(`tasks.${i}`)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -515,7 +585,18 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
       </section>
 
       <section className="panel span2">
-        {showErrors && (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed) && (
+        <div className="s2-review-confirm">
+          <label className="s2-check">
+            <input
+              type="checkbox"
+              checked={reviewConfirmed}
+              onChange={(event) => setReviewConfirmed(event.target.checked)}
+            />
+            원문 근거, LLM 추출값, 담당자 수정값을 모두 검토했습니다
+          </label>
+          <div className="muted">수정한 필드 {modifiedFields.size}개가 S3·S4 API payload에 담당자 수정 이력으로 전달됩니다.</div>
+        </div>
+        {showErrors && (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed || !reviewConfirmed) && (
           <div className="hint error" role="alert">
             <b>확정하기 전에 입력값과 공식 주소 대표점을 확인해 주세요.</b>
             <ul className="s2-issues">
@@ -524,6 +605,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               ))}
             </ul>
             {(coordinate?.status !== 'resolved' || !coordinateConfirmed) && <div>공식 주소 좌표를 조회하고 대표점의 한계를 확인해 주세요.</div>}
+            {!reviewConfirmed && <div>담당자 확인 체크박스를 선택해 주세요.</div>}
           </div>
         )}
         <div className="row">
@@ -533,7 +615,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
           <button type="button" onClick={confirm}>
             계획 확정하고 제약 확인 (S3)
           </button>
-          {!showErrors && (issues.length > 0 || !coordinateConfirmed) && <span className="muted">입력 항목과 공식 주소 좌표 확인이 필요합니다.</span>}
+          {!showErrors && (issues.length > 0 || !coordinateConfirmed || !reviewConfirmed) && <span className="muted">입력 항목, 공식 주소 좌표, 담당자 검토 확인이 필요합니다.</span>}
         </div>
       </section>
     </div>

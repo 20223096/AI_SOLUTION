@@ -49,6 +49,8 @@ class PRDNoticePlanningInput(BaseModel):
     source_evidence: dict[str, str] = Field(default_factory=dict)
     field_provenance: dict[str, SourceMetadata] = Field(default_factory=dict)
     provenance: Literal["field_measured", "official_document", "user_provided", "assumed"]
+    user_review_completed: bool = False
+    user_modified_fields: list[str] = Field(default_factory=list)
 
     @model_validator(mode="after")
     def road_permit_required_only_from_input(self):
@@ -69,6 +71,7 @@ class PRDScheduleValidationRequest(BaseModel):
     equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
     equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
     task_duration_by_task: dict[str, int] = Field(default_factory=dict)
+    task_name_by_task: dict[str, str] = Field(default_factory=dict)
     restoration_task_ids: set[str] = Field(default_factory=set)
 
     @model_validator(mode="after")
@@ -113,6 +116,7 @@ class PRDConstraintRecommendationRequest(BaseModel):
     equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
     equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
     task_duration_by_task: dict[str, int] = Field(default_factory=dict)
+    task_name_by_task: dict[str, str] = Field(default_factory=dict)
     restoration_task_ids: set[str] = Field(default_factory=set)
     background_profile: str = "road_traffic_observed_profile"
     objective_mode: Literal["incremental_impact", "absolute_impact", "physical_energy", "sensitive_exposure", "continuous_burden", "multi_axis"] = "incremental_impact"

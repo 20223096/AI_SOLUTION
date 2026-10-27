@@ -6938,6 +6938,13 @@
             "type": "object",
             "title": "Task Duration By Task"
           },
+          "task_name_by_task": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Task Name By Task"
+          },
           "restoration_task_ids": {
             "items": {
               "type": "string"
@@ -7233,6 +7240,18 @@
               "assumed"
             ],
             "title": "Provenance"
+          },
+          "user_review_completed": {
+            "type": "boolean",
+            "title": "User Review Completed",
+            "default": false
+          },
+          "user_modified_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "User Modified Fields"
           }
         },
         "type": "object",
@@ -7342,6 +7361,18 @@
               "assumed"
             ],
             "title": "Provenance"
+          },
+          "user_review_completed": {
+            "type": "boolean",
+            "title": "User Review Completed",
+            "default": false
+          },
+          "user_modified_fields": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "User Modified Fields"
           }
         },
         "type": "object",
@@ -7640,6 +7671,13 @@
             },
             "type": "object",
             "title": "Task Duration By Task"
+          },
+          "task_name_by_task": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Task Name By Task"
           },
           "restoration_task_ids": {
             "items": {
