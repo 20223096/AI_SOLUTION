@@ -1,0 +1,15 @@
+.s1-input { margin-top: 12px }
+.s1-meta { font-size: 12px; text-align: right; margin-top: 4px }
+.s1-pre { margin: 0; font-size: 12.5px; white-space: pre-wrap }
+
+.dropzone {
+  display: grid; place-items: center; text-align: center; min-height: 140px; padding: 16px;
+  border: 2px dashed var(--line); border-radius: 10px; background: var(--bg); cursor: pointer;
+  font-size: 14px; transition: border-color .2s ease, background .2s ease;
+}
+.dropzone.over { border-color: var(--quiet); background: var(--quiet-soft) }
+.dropzone.disabled { cursor: not-allowed; opacity: .6 }
+.dropzone input { position: absolute; width: 1px; height: 1px; opacity: 0 }
+.dropzone:focus-within { outline: 2px solid var(--quiet); outline-offset: 2px }
+
+.panel.stale > :not(.ph):not(.hint):not(.row) { opacity: .5 }

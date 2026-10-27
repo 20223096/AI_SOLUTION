@@ -1,0 +1,15 @@
+/* 목업 11번 주민 화면 */
+.phone { max-width: 360px; margin: 0 auto; border: 1px solid var(--line); border-radius: 26px; padding: 18px 16px; background: var(--bg) }
+.ph-top { font-size: 13px; color: var(--muted); margin-bottom: 10px }
+.qcard { background: var(--quiet-soft); border: 1px solid var(--quiet); border-radius: 14px; padding: 14px }
+.ql { font-size: 12.5px; color: var(--quiet); font-weight: 600 }
+.qt { font-size: 28px; font-weight: 700; color: var(--quiet); letter-spacing: -0.02em; font-variant-numeric: tabular-nums }
+.qd { font-size: 13px }
+.day { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; font-size: 13.5px }
+.day li { display: flex; align-items: center; gap: 8px; background: var(--panel); border-radius: 8px; padding: 7px 10px }
+.day li.q { color: var(--quiet); font-weight: 600 }
+.dt { min-width: 92px; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums }
+.dot { width: 10px; height: 10px; border-radius: 50%; flex: none }
+.dot.build { background: var(--build) }
+.dot.qq { background: var(--quiet) }
+.ph-note { font-size: 12px; color: var(--muted); margin: 10px 2px 0 }

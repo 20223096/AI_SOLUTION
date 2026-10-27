@@ -1,0 +1,14 @@
+/* 목업 6번 metrics 카드 */
+.metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 4px }
+@media (min-width: 900px) { .metrics { grid-template-columns: repeat(3, 1fr) } }
+.m { border: 1px solid var(--line); border-radius: 10px; padding: 12px }
+.m .l { font-size: 12.5px; color: var(--muted) }
+.m .v { font-size: 20px; font-weight: 700; margin-top: 4px; letter-spacing: -0.01em; font-variant-numeric: tabular-nums }
+.m .v s { color: var(--muted); font-weight: 400; font-size: 15px; text-decoration-thickness: 1px }
+.m .d { font-size: 12.5px; font-weight: 600; margin-top: 2px }
+
+.s6-details { margin-top: 14px }
+.s6-details summary { cursor: pointer; font-size: 13.5px; font-weight: 600 }
+.s6-details table { margin-top: 8px }
+
+.s6-note { font-size: 12.5px; margin: 8px 0 0 }
