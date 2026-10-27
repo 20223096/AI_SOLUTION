@@ -188,6 +188,7 @@ def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
             "fixed_tasks": [],
             "predecessors": {task.id: task.predecessors for task in notice.tasks if task.predecessors},
             "same_day_restoration_required": same_day,
+            "non_adjustable_conditions": constraints.get("non_adjustable_conditions", []),
             "source_evidence": request.field_evidence,
             "field_provenance": provenance,
         },

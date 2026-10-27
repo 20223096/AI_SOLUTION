@@ -205,3 +205,39 @@ def test_confirmed_llm_task_durations_reach_cp_sat_without_scenario_duration_sub
     assert result["optimization_status"] == "feasible_solution_set"
     assert result["explored_candidate_count"] > 0
     assert {row.task_id for row in result["candidates"][0].task_assignments} == {"excavate", "break", "restore"}
+
+
+def test_sprint32_actual_response_rejects_breaker_on_restoration_and_aggregates_evidence():
+    actual = facts(
+        tasks=[
+            {"name": "굴착", "equipment_name": "굴착기", "duration_minutes": 120, "predecessors": []},
+            {"name": "포장 복구", "equipment_name": "브레이커", "duration_minutes": 60, "predecessors": ["굴착"]},
+        ],
+        evidence=[
+            {"field": "name", "quote": "신촌 보도 정비공사"},
+            {"field": "location", "quote": "서울특별시 서대문구 연세로 12 앞"},
+            {"field": "construction_start", "quote": "2026-09-11"},
+            {"field": "construction_end", "quote": "2026-09-11"},
+            {"field": "construction_period_text", "quote": "2026-09-11 ~ 2026-09-11"},
+            {"field": "work_start", "quote": "08:00"}, {"field": "work_end", "quote": "17:00"},
+            {"field": "equipment", "quote": "굴착기 1대(09:00~11:00), 브레이커 2대(13:00~14:00)"},
+            {"field": "tasks", "quote": "작업순서: 굴착 후 포장 복구"},
+            {"field": "non_adjustable_conditions", "quote": "포장 복구는 당일 완료"},
+        ],
+    )
+    notice, reviews, issues = normalize_llm_facts(TEXT, LLMNoticeFacts.model_validate(actual))
+    by_id = {task.id: task for task in notice.tasks}
+    assert by_id["restore"].equipment_id is None
+    assert by_id["restore"].duration_minutes is None
+    assert by_id["break"].equipment_id == "breaker"
+    assert notice.constraints["same_day"] is True
+    assert "restoration_equipment_rejected:포장 복구" in issues
+    assert reviews["tasks"]["needs_review"] is True
+    assert reviews["construction_period"]["evidence_exists"] is True
+    assert reviews["original_work_window"]["evidence_exists"] is True
+    draft = planning_draft_from_notice(PRDPlanningDraftRequest(
+        notice=notice, extractor_mode="llm", is_actual_ai=True, field_evidence=reviews,
+    ))
+    assert draft["planning_draft"]["same_day_restoration_required"] is True
+    assert draft["planning_draft"]["non_adjustable_conditions"] == ["포장 복구는 당일 완료"]
+    assert "road_excavation" in draft["missing_fields"]

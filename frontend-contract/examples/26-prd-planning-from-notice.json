@@ -91,6 +91,7 @@
         "fixed_tasks": [],
         "predecessors": {},
         "same_day_restoration_required": null,
+        "non_adjustable_conditions": [],
         "source_evidence": {
           "name": "연세로"
         },

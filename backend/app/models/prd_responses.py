@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import date, datetime
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
 
 from app.models.domain import ConstructionPeriod, ScheduleMetrics, SourceMetadata, TaskAssignment, TimeWindow
 from app.models.prd_v2_1 import PRDNoticePlanningInput
@@ -223,6 +223,7 @@ class PRDPlanningDraft(PRDResponse):
     fixed_tasks: list[dict]
     predecessors: dict[str, list[str]]
     same_day_restoration_required: bool | None
+    non_adjustable_conditions: list[str] = Field(default_factory=list)
     source_evidence: dict[str, object]
     field_provenance: dict[str, SourceMetadata]
 

@@ -76,7 +76,7 @@ export function formFromDraft(draft: PlanningDraft, tasks: ConstructionTask[]): 
     permit_end: draft.road_occupancy_permit_window ? hhmm(draft.road_occupancy_permit_window.end) : '',
     same_day_restoration: draft.same_day_restoration_required === true,
     completion_date: '',
-    non_adjustable: '',
+    non_adjustable: (draft.non_adjustable_conditions ?? []).join('\n'),
     equipment,
     tasks: tasks.map((t) => ({
       id: t.id,

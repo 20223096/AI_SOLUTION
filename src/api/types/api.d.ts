@@ -2823,6 +2823,8 @@ export interface components {
             };
             /** Same Day Restoration Required */
             same_day_restoration_required: boolean | null;
+            /** Non Adjustable Conditions */
+            non_adjustable_conditions?: string[];
             /** Source Evidence */
             source_evidence: {
                 [key: string]: unknown;

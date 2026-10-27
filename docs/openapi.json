@@ -7454,6 +7454,13 @@
             ],
             "title": "Same Day Restoration Required"
           },
+          "non_adjustable_conditions": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Non Adjustable Conditions"
+          },
           "source_evidence": {
             "additionalProperties": true,
             "type": "object",

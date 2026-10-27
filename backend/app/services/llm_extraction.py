@@ -95,6 +95,11 @@ def _minutes(start: str | None, end: str | None) -> int | None:
     return result if result > 0 else None
 
 
+def _source_line(text: str, *tokens: str | None) -> str | None:
+    required = [token for token in tokens if token]
+    return next((line.strip() for line in text.splitlines() if all(token in line for token in required)), None)
+
+
 def normalize_llm_facts(text: str, facts: LLMNoticeFacts) -> tuple[ConstructionNotice, dict[str, Any], list[str]]:
     """Create trusted-domain data from LLM facts; the LLM never assigns provenance."""
     evidence_by_field: dict[str, str] = {}
@@ -113,6 +118,17 @@ def normalize_llm_facts(text: str, facts: LLMNoticeFacts) -> tuple[ConstructionN
         }
         if quote and not exists:
             issues.append(f"evidence_not_found:{item.field}")
+
+    # The strict LLM schema exposes atomic date/time fields, while the public
+    # response keeps the existing aggregate field names. Derive exact source
+    # lines server-side instead of trusting a synthetic combined quote.
+    aggregate_evidence = {
+        "construction_period": _source_line(text, facts.construction_start, facts.construction_end),
+        "original_work_window": _source_line(text, facts.work_start, facts.work_end),
+    }
+    for field, quote in aggregate_evidence.items():
+        if quote:
+            reviews[field] = {"evidence": quote, "evidence_exists": True, "needs_review": False, "issues": []}
 
     def review_value(field: str, value: Any) -> None:
         row = reviews.setdefault(field, {"evidence": None, "evidence_exists": False, "needs_review": True, "issues": ["evidence_missing"]})
@@ -162,12 +178,14 @@ def normalize_llm_facts(text: str, facts: LLMNoticeFacts) -> tuple[ConstructionN
     tasks: list[ConstructionTask] = []
     task_ids_by_name: dict[str, str] = {}
     for index, item in enumerate(facts.tasks, 1):
-        equipment_id = equipment_id_for(item.equipment_name) or equipment_id_for(item.name)
-        task_id = TASK_IDS.get(equipment_id, "restore" if "복구" in item.name else f"task-{index}")
+        restoration = "복구" in item.name
+        proposed_equipment_id = equipment_id_for(item.equipment_name) or equipment_id_for(item.name)
+        equipment_id = None if restoration else proposed_equipment_id
+        task_id = "restore" if restoration else TASK_IDS.get(equipment_id, f"task-{index}")
         if task_id in task_ids_by_name.values():
             task_id = f"{task_id}-{index}"
         task_ids_by_name[item.name] = task_id
-        duration = item.duration_minutes
+        duration = None if restoration else item.duration_minutes
         if equipment_id and duration is None and equipment_id in equipment_facts:
             fact = equipment_facts[equipment_id]
             duration = _minutes(fact.usage_start, fact.usage_end)
@@ -176,7 +194,8 @@ def normalize_llm_facts(text: str, facts: LLMNoticeFacts) -> tuple[ConstructionN
             permitted_time_windows=[], predecessors=[],
         ))
         if item.equipment_name and equipment_id is None:
-            issues.append(f"task_equipment_unmatched:{item.name}")
+            issue = f"restoration_equipment_rejected:{item.name}" if restoration and proposed_equipment_id else f"task_equipment_unmatched:{item.name}"
+            issues.append(issue)
     for task, item in zip(tasks, facts.tasks):
         task.predecessors = [task_ids_by_name[name] for name in item.predecessors if name in task_ids_by_name]
         if len(task.predecessors) != len(item.predecessors):
@@ -219,10 +238,15 @@ def normalize_llm_facts(text: str, facts: LLMNoticeFacts) -> tuple[ConstructionN
         constraints={
             "equipment_counts": counts, "equipment_usage_times": usage, "equipment_models": models,
             "non_adjustable_conditions": grounded_conditions,
+            "same_day": any("당일" in condition and "복구" in condition for condition in grounded_conditions),
         },
         source_provenance={
             "document": SourceMetadata(status=document_status, source="request text", note="Server-assigned; not official verification"),
             "llm_output": SourceMetadata(status="derived", source="OpenAI-compatible extraction", note="Unconfirmed draft"),
         },
     )
+    if any(issue.startswith(("restoration_equipment_rejected:", "task_equipment_unmatched:", "predecessor_unmatched:")) for issue in issues):
+        row = reviews["tasks"]
+        row["needs_review"] = True
+        row["issues"].append("task_linkage_needs_review")
     return notice, {key: {**value} for key, value in reviews.items()}, list(dict.fromkeys(issues))
