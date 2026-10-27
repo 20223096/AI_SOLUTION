@@ -1658,6 +1658,8 @@ export interface components {
             field_evidence?: {
                 [key: string]: unknown;
             };
+            /** Normalization Issues */
+            normalization_issues?: string[];
             /** Usage */
             usage?: {
                 [key: string]: number;
@@ -2609,6 +2611,10 @@ export interface components {
             equipment_count_by_task?: {
                 [key: string]: number;
             };
+            /** Task Duration By Task */
+            task_duration_by_task?: {
+                [key: string]: number;
+            };
             /** Restoration Task Ids */
             restoration_task_ids?: string[];
             /**
@@ -2883,6 +2889,10 @@ export interface components {
             };
             /** Equipment Count By Task */
             equipment_count_by_task?: {
+                [key: string]: number;
+            };
+            /** Task Duration By Task */
+            task_duration_by_task?: {
                 [key: string]: number;
             };
             /** Restoration Task Ids */

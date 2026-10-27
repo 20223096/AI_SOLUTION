@@ -44,7 +44,7 @@ export function buildOriginalSchedule(notice: ConstructionNotice, plan: Confirme
   return orderTasks([...tasks.keys()], plan.predecessors).map((id) => {
     const task = tasks.get(id)!
     const equipment = plan.equipment_by_task[id]
-    const duration = task.duration_minutes ?? (equipment ? usage.get(equipment) : undefined) ?? null
+    const duration = plan.task_duration_by_task[id] ?? task.duration_minutes ?? (equipment ? usage.get(equipment) : undefined) ?? null
 
     const start = cursor != null ? fromMinutes(cursor) : null
     const endMin = cursor != null && duration != null ? cursor + duration : null
@@ -76,6 +76,8 @@ const VIOLATION_MESSAGE: Record<string, string> = {
   equipment_daily_count_exceeded: '입력한 장비 대수가 일 최대 대수를 초과합니다.',
   equipment_concurrent_count_exceeded: '동시에 사용하는 장비 대수가 한도를 초과합니다.',
   equipment_required_usage_mismatch: '배정된 장비 사용시간이 필요한 사용시간과 다릅니다.',
+  task_assignment_missing: '확정한 작업이 일정에서 누락되었습니다.',
+  task_duration_mismatch: '배정된 작업시간이 사용자가 확인한 작업시간과 다릅니다.',
   outside_road_occupancy_permit: '작업이 도로점용 허가시간을 벗어납니다.',
   fixed_task_missing: '필수 고정 작업이 일정에 없습니다.',
   fixed_task_start_changed: '고정 작업 시작시각을 변경할 수 없습니다.',

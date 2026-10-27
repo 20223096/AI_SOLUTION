@@ -448,6 +448,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                   <th>작업</th>
                   <th>선행 작업</th>
                   <th>사용 장비</th>
+                  <th>작업시간(분)</th>
                   <th>투입 대수</th>
                   {form.same_day_restoration && <th>복구 작업</th>}
                 </tr>
@@ -473,6 +474,16 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
                           </option>
                         ))}
                       </select>
+                    </td>
+                    <td>
+                      <input
+                        className="num"
+                        inputMode="numeric"
+                        aria-label={`${t.name} 작업시간(분)`}
+                        value={t.duration_minutes}
+                        onChange={(ev) => setTask(i, { duration_minutes: ev.target.value })}
+                        aria-invalid={invalid.has(`tasks.${i}.duration_minutes`)}
+                      />
                     </td>
                     <td>
                       <input

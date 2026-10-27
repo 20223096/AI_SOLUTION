@@ -64,7 +64,7 @@ def _candidate(scenario_id: str, day: date, starts: dict[str, int], durations: d
     metrics = schedule_metrics(scenario_id, day, assignments, sensitivity_enabled=sensitivity_enabled, background_profile=background_profile, sensitivity_policy=sensitivity_policy, experimental_context_multiplier=experimental_context_multiplier, include_existing_events=include_existing_events)
     original = default_assignments(get_scenario(scenario_id), day)
     original_starts = {row.task_id: row.start for row in original}
-    changes = {row.task_id: abs(int((row.start - original_starts[row.task_id]).total_seconds() / 60)) for row in assignments}
+    changes = {row.task_id: abs(int((row.start - original_starts[row.task_id]).total_seconds() / 60)) if row.task_id in original_starts else 0 for row in assignments}
     metrics.schedule_change_minutes = sum(changes.values())
     metrics.project_start_change_minutes = abs(int((min(row.start for row in assignments) - min(row.start for row in original)).total_seconds() / 60))
     metrics.project_end_change_minutes = abs(int((max(row.end for row in assignments) - max(row.end for row in original)).total_seconds() / 60))
@@ -80,11 +80,19 @@ def _empty_result(reasons: list[str], limit: int) -> dict[str, Any]:
     return {"optimization_status": "infeasible", "solver": "ortools_cp_sat", "candidates": [], "pareto_candidates": [], "explored_candidate_count": 0, "pareto_candidate_count": 0, "solution_limit": limit, "solution_limit_reached": False, "search_complete": True, "global_optimality_guaranteed": False, "pareto_axes": PARETO_AXES, "infeasibility_reasons": reasons}
 
 
-def optimize_advanced(scenario_id: str, day: date, planning: PRDNoticePlanningInput, predecessors: dict[str, list[str]], equipment_by_task: dict[str, str | None], restoration_task_ids: set[str], *, sensitivity_enabled: bool = True, background_profile: str = "road_traffic_observed_profile", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None, include_existing_events: bool = True, solution_limit: int = 2000) -> dict[str, Any]:
+def optimize_advanced(scenario_id: str, day: date, planning: PRDNoticePlanningInput, predecessors: dict[str, list[str]], equipment_by_task: dict[str, str | None], restoration_task_ids: set[str], task_duration_by_task: dict[str, int] | None = None, *, sensitivity_enabled: bool = True, background_profile: str = "road_traffic_observed_profile", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None, include_existing_events: bool = True, solution_limit: int = 2000) -> dict[str, Any]:
     scenario = get_scenario(scenario_id)
-    tasks = [task for task in scenario["notice"].tasks if task.duration_minutes is not None]
-    durations = {task.id: task.duration_minutes for task in tasks}
+    known_tasks = {task.id: task for task in scenario["notice"].tasks}
+    supplied_durations = task_duration_by_task or {}
+    unknown_task_ids = sorted(set(supplied_durations) - set(known_tasks))
+    tasks = [known_tasks[task_id] for task_id in supplied_durations if task_id in known_tasks]
+    durations = {task.id: supplied_durations[task.id] for task in tasks}
     reasons = []
+    if not supplied_durations:
+        tasks = [task for task in scenario["notice"].tasks if task.duration_minutes is not None]
+        durations = {task.id: task.duration_minutes for task in tasks}
+    if unknown_task_ids:
+        reasons.append("unsupported calculation task ids: " + ", ".join(unknown_task_ids))
     period = planning.construction_period
     if period.start is None or period.end is None or not period.start <= day <= period.end:
         reasons.append("analysis date is outside the confirmed construction period")

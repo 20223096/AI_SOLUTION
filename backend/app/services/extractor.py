@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from datetime import date, time
 
 from app.models.domain import ConstructionNotice, ConstructionPeriod, ConstructionTask, SourceMetadata, TimeWindow
+from app.services.llm_extraction import LLMNoticeFacts, normalize_llm_facts
 
 
 class Extractor(ABC):
@@ -41,22 +42,23 @@ class LLMExtractor(Extractor):
         if self.provider != "openai_compatible":
             raise LLMExtractionError("configuration", "Supported provider value: openai_compatible", 503)
         import json
-        schema = ConstructionNotice.model_json_schema()
+        schema = LLMNoticeFacts.model_json_schema()
         prompt = (
             "You extract Korean construction notices into JSON. Use only facts explicitly written in the input. "
             "Never infer dates, addresses, durations, equipment, quantities, order, or restrictions. "
-            "Return one JSON object with keys notice and field_evidence. notice must match the supplied ConstructionNotice schema. "
-            "For absent values use null, empty lists, or SourceMetadata status=missing as allowed by the schema. "
-            "Put exact short source excerpts in field_evidence. Record explicit equipment quantities under "
-            "notice.constraints.equipment_counts, explicit equipment usage times under equipment_usage_times, and explicit "
-            "non-adjustable statements under non_adjustable_conditions. Set task predecessors only when order is explicit. "
+            "Return one JSON object matching the supplied schema. Use null or empty lists for absent values. "
+            "Evidence quotes must be exact contiguous substrings of the user input. Do not assign provenance. "
+            "Record every explicit equipment name, quantity, usage time, and model name separately. "
+            "Set task predecessors only when order is explicit. "
             "Do not turn an overall work window into an equipment-specific window. Output JSON only. Schema: "
             + json.dumps(schema, ensure_ascii=False)
         )
         return {
             "model": self.model,
             "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": text}],
-            "response_format": {"type": "json_object"},
+            "response_format": {"type": "json_schema", "json_schema": {
+                "name": "construction_notice_facts", "strict": True, "schema": schema,
+            }},
             "temperature": 0,
         }
 
@@ -92,18 +94,19 @@ class LLMExtractor(Extractor):
             body = response.json()
             content = body["choices"][0]["message"]["content"]
             raw = json.loads(content)
-            # Older JSON-mode models occasionally return the requested notice
-            # object directly instead of retaining the envelope.
-            notice_raw = raw.get("notice", raw)
-            evidence = raw.get("field_evidence", {}) if "notice" in raw else {}
-            notice = ConstructionNotice.model_validate(notice_raw)
+            facts = LLMNoticeFacts.model_validate(raw)
+            notice, evidence, normalization_issues = normalize_llm_facts(text, facts)
         except (KeyError, TypeError, ValueError, json.JSONDecodeError, ValidationError) as exc:
             raise LLMExtractionError("structured_response_parsing", "LLM response did not match the notice extraction schema", 502) from exc
         usage = body.get("usage") or {}
+        warnings = ["AI extraction is an unconfirmed draft; every value requires user confirmation."]
+        if normalization_issues:
+            warnings.append("Some extracted values need review: " + ", ".join(normalization_issues))
         return {
             "mode": "llm", "is_actual_ai": True, "provider": self.provider,
             "model": body.get("model") or self.model, "notice": notice,
             "field_evidence": evidence,
+            "normalization_issues": normalization_issues,
             "usage": {key: usage.get(key) for key in ("prompt_tokens", "completion_tokens", "total_tokens") if usage.get(key) is not None},
-            "warnings": ["AI extraction is an unconfirmed draft; every value requires user confirmation."],
+            "warnings": warnings,
         }

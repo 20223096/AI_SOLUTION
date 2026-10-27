@@ -30,3 +30,16 @@ export function extractNoticeFromFile(file: File, signal?: AbortSignal) {
 export function getFieldEvidence(res: ExtractResponse): Record<string, unknown> {
   return 'field_evidence' in res && res.field_evidence ? (res.field_evidence as Record<string, unknown>) : {}
 }
+
+export function evidenceText(value: unknown): string | null {
+  if (typeof value === 'string') return value
+  if (value && typeof value === 'object' && 'evidence' in value) {
+    const evidence = (value as { evidence?: unknown }).evidence
+    return typeof evidence === 'string' ? evidence : null
+  }
+  return null
+}
+
+export function evidenceNeedsReview(value: unknown): boolean {
+  return Boolean(value && typeof value === 'object' && 'needs_review' in value && value.needs_review)
+}

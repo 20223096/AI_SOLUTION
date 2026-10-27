@@ -68,6 +68,7 @@ class PRDScheduleValidationRequest(BaseModel):
     predecessors: dict[str, list[str]] = Field(default_factory=dict)
     equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
     equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
+    task_duration_by_task: dict[str, int] = Field(default_factory=dict)
     restoration_task_ids: set[str] = Field(default_factory=set)
 
     @model_validator(mode="after")
@@ -111,6 +112,7 @@ class PRDConstraintRecommendationRequest(BaseModel):
     predecessors: dict[str, list[str]] = Field(default_factory=dict)
     equipment_by_task: dict[str, str | None] = Field(default_factory=dict)
     equipment_count_by_task: dict[str, int] = Field(default_factory=dict)
+    task_duration_by_task: dict[str, int] = Field(default_factory=dict)
     restoration_task_ids: set[str] = Field(default_factory=set)
     background_profile: str = "road_traffic_observed_profile"
     objective_mode: Literal["incremental_impact", "absolute_impact", "physical_energy", "sensitive_exposure", "continuous_burden", "multi_axis"] = "incremental_impact"

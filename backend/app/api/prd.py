@@ -27,6 +27,7 @@ def validate_schedule(request: PRDScheduleValidationRequest):
         request.equipment_by_task,
         request.restoration_task_ids,
         request.equipment_count_by_task,
+        request.task_duration_by_task,
     )
     return {**result, "notice_id": request.planning.notice_id, "analysis_date": request.analysis_date}
 

@@ -3,7 +3,7 @@ from __future__ import annotations
 import json
 from datetime import date
 
-from app.models.domain import ConstructionNotice, SourceMetadata, TaskAssignment
+from app.models.domain import ConstructionNotice, SourceMetadata, TaskAssignment, TimeWindow
 from app.models.prd_v2_1 import PRDConstraintRecommendationRequest, PRDNoticePlanningInput, PRDPlanningDraftRequest
 from app.core.config import get_settings
 from app.services.optimizer import optimize
@@ -21,6 +21,7 @@ def validate_prd_schedule(
     equipment_by_task: dict[str, str | None],
     restoration_task_ids: set[str],
     equipment_count_by_task: dict[str, int] | None = None,
+    task_duration_by_task: dict[str, int] | None = None,
 ) -> dict:
     """Validate explicit PRD inputs without inventing universal work-hour rules."""
     violations: list[dict] = []
@@ -38,6 +39,13 @@ def validate_prd_schedule(
 
     equipment_constraints = {item.equipment_id: item for item in planning.equipment_constraints}
     equipment_count_by_task = equipment_count_by_task or {}
+    task_duration_by_task = task_duration_by_task or {}
+    for task_id, expected in task_duration_by_task.items():
+        assignment = by_task.get(task_id)
+        if assignment is None:
+            violations.append({"code": "task_assignment_missing", "task_id": task_id})
+        elif int((assignment.end - assignment.start).total_seconds() / 60) != expected:
+            violations.append({"code": "task_duration_mismatch", "task_id": task_id, "required_minutes": expected})
     scheduled_minutes_by_equipment: dict[str, int] = {}
     assignments_by_equipment: dict[str, list[TaskAssignment]] = {}
     for task_id, equipment_id in equipment_by_task.items():
@@ -117,21 +125,35 @@ def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
     document_source = notice.source_provenance.get("document") or notice.source_provenance.get("scenario") or SourceMetadata(
         status="missing", note="No document-level provenance supplied"
     )
-    equipment = []
+    equipment_by_id = {}
+    constraints = notice.constraints
+    equipment_counts = constraints.get("equipment_counts", {}) if isinstance(constraints.get("equipment_counts"), dict) else {}
+    equipment_usage = constraints.get("equipment_usage_times", {}) if isinstance(constraints.get("equipment_usage_times"), dict) else {}
+    equipment_models = constraints.get("equipment_models", {}) if isinstance(constraints.get("equipment_models"), dict) else {}
     for task in notice.tasks:
         if task.equipment_id is None:
             continue
-        equipment.append({
+        usage_rows = equipment_usage.get(task.equipment_id, [])
+        windows = []
+        for row in usage_rows if isinstance(usage_rows, list) else []:
+            try:
+                windows.append(TimeWindow.model_validate(row))
+            except (TypeError, ValueError):
+                pass
+        duration = task.duration_minutes
+        if duration is None and windows:
+            duration = int((windows[0].end.hour * 60 + windows[0].end.minute) - (windows[0].start.hour * 60 + windows[0].start.minute))
+        equipment_by_id.setdefault(task.equipment_id, {
             "equipment_id": task.equipment_id,
             "category": task.name,
             "specification": None,
-            "model_name": None,
-            "max_daily_count": None,
-            "required_usage_minutes": task.duration_minutes,
-            "permitted_time_windows": task.permitted_time_windows,
+            "model_name": equipment_models.get(task.equipment_id),
+            "max_daily_count": equipment_counts.get(task.equipment_id),
+            "required_usage_minutes": duration,
+            "permitted_time_windows": task.permitted_time_windows or windows,
             "source_metadata": document_source,
         })
-    constraints = notice.constraints
+    equipment = list(equipment_by_id.values())
     road_excavation = constraints.get("road_excavation") if isinstance(constraints.get("road_excavation"), bool) else None
     same_day = constraints.get("same_day") if isinstance(constraints.get("same_day"), bool) else None
     field_values = {
@@ -184,7 +206,7 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
     if request.recommendation_engine == "cp_sat_v2":
         result = optimize_advanced(
             scenario_id, request.analysis_date, request.planning, request.predecessors,
-            request.equipment_by_task, request.restoration_task_ids,
+            request.equipment_by_task, request.restoration_task_ids, request.task_duration_by_task,
             background_profile=request.background_profile,
         )
         base_candidates = result["candidates"]
@@ -199,6 +221,7 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
         validation = validate_prd_schedule(
             request.planning, request.analysis_date, candidate.task_assignments, request.predecessors,
             request.equipment_by_task, request.restoration_task_ids, request.equipment_count_by_task,
+            request.task_duration_by_task,
         )
         if validation["feasible"]:
             feasible_points.append({"id": candidate.id, **candidate.objective_values})
@@ -209,6 +232,7 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
     original_validation = validate_prd_schedule(
         request.planning, request.analysis_date, original_candidate.task_assignments, request.predecessors,
         request.equipment_by_task, request.restoration_task_ids, request.equipment_count_by_task,
+        request.task_duration_by_task,
     ) if original_candidate is not None else None
     if request.recommendation_engine == "cp_sat_v2":
         rows = [(candidate, validation) for candidate, validation in rows if candidate.id in frontier_ids]

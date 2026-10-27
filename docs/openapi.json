@@ -4395,6 +4395,13 @@
             "type": "object",
             "title": "Field Evidence"
           },
+          "normalization_issues": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Normalization Issues"
+          },
           "usage": {
             "additionalProperties": {
               "type": "integer"
@@ -6924,6 +6931,13 @@
             "type": "object",
             "title": "Equipment Count By Task"
           },
+          "task_duration_by_task": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Task Duration By Task"
+          },
           "restoration_task_ids": {
             "items": {
               "type": "string"
@@ -7612,6 +7626,13 @@
             },
             "type": "object",
             "title": "Equipment Count By Task"
+          },
+          "task_duration_by_task": {
+            "additionalProperties": {
+              "type": "integer"
+            },
+            "type": "object",
+            "title": "Task Duration By Task"
           },
           "restoration_task_ids": {
             "items": {

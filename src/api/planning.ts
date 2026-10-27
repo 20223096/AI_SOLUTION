@@ -21,6 +21,7 @@ export interface ConfirmedPlan {
   predecessors: Record<string, string[]>
   equipment_by_task: Record<string, string | null>
   equipment_count_by_task: Record<string, number>
+  task_duration_by_task: Record<string, number>
   restoration_task_ids: string[]
 }
 

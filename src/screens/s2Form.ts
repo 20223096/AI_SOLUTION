@@ -1,4 +1,4 @@
-import type { ConstructionTask, SourceMetadata } from '../api/notices'
+import { evidenceText, type ConstructionTask, type SourceMetadata } from '../api/notices'
 import type { ConfirmedPlan, PlanningDraft, TimeWindow } from '../api/planning'
 import { hhmm } from '../utils/time'
 
@@ -19,6 +19,7 @@ export interface TaskForm {
   name: string
   equipment_id: string // '' = 장비 없음
   count: string
+  duration_minutes: string
   restoration: boolean
 }
 
@@ -77,12 +78,14 @@ export function formFromDraft(draft: PlanningDraft, tasks: ConstructionTask[]): 
     completion_date: '',
     non_adjustable: '',
     equipment,
-    // 장비 대수는 추출되지 않으므로 사용자가 직접 입력한다.
     tasks: tasks.map((t) => ({
       id: t.id,
       name: t.name,
       equipment_id: t.equipment_id && equipmentIds.has(t.equipment_id) ? t.equipment_id : '',
-      count: '',
+      count: t.equipment_id
+        ? str(equipment.find((e) => e.equipment_id === t.equipment_id)?.max_daily_count)
+        : '',
+      duration_minutes: str(t.duration_minutes),
       restoration: false,
     })),
   }
@@ -120,6 +123,10 @@ export function validateForm(f: PlanningForm): FormIssue[] {
     issues.push({ key: 'project_completion_date', message: '계획 완료일이 공사 시작일보다 빠릅니다.' })
   }
 
+  if (f.equipment.length === 0) {
+    issues.push({ key: 'equipment_constraints', message: '계산에 사용할 장비를 하나 이상 확인해 주세요.' })
+  }
+
   f.equipment.forEach((e, i) => {
     const label = `장비 ${e.equipment_id}`
     if (!e.category.trim()) issues.push({ key: `equipment.${i}.category`, message: `${label}: 장비 종류를 입력해 주세요.` })
@@ -130,13 +137,26 @@ export function validateForm(f: PlanningForm): FormIssue[] {
       issues.push({ key: `equipment.${i}.max_daily_count`, message: `${label}: 일 최대 대수는 1 이상의 정수여야 합니다.` })
     }
     checkWindow(issues, `equipment.${i}.window`, `${label} 허용시간`, e.window_start, e.window_end, false)
+    if (e.window_start && e.window_end && f.work_start && f.work_end && (e.window_start < f.work_start || e.window_end > f.work_end)) {
+      issues.push({ key: `equipment.${i}.window`, message: `${label}: 장비 사용시간이 전체 작업 허용시간을 벗어납니다.` })
+    }
   })
 
   f.tasks.forEach((t, i) => {
+    if (!isPositiveInt(t.duration_minutes)) {
+      issues.push({ key: `tasks.${i}.duration_minutes`, message: `작업 ${t.name}: 작업시간(분)을 입력해 주세요.` })
+    }
+    if (!t.equipment_id && !t.restoration) {
+      issues.push({ key: `tasks.${i}.equipment_id`, message: `작업 ${t.name}: 장비를 연결하거나 복구 작업으로 지정해 주세요.` })
+    }
     if (t.equipment_id && !isPositiveInt(t.count)) {
       issues.push({ key: `tasks.${i}.count`, message: `작업 ${t.name}: 투입 장비 대수를 입력해 주세요.` })
     } else if (!t.equipment_id && t.count && !isNonNegInt(t.count)) {
       issues.push({ key: `tasks.${i}.count`, message: `작업 ${t.name}: 장비 대수는 정수여야 합니다.` })
+    }
+    const maximum = f.equipment.find((e) => e.equipment_id === t.equipment_id)?.max_daily_count
+    if (t.equipment_id && isPositiveInt(t.count) && maximum && isPositiveInt(maximum) && Number(t.count) > Number(maximum)) {
+      issues.push({ key: `tasks.${i}.count`, message: `작업 ${t.name}: 투입 대수가 확인된 장비 수량을 초과합니다.` })
     }
   })
   if (f.same_day_restoration && !f.tasks.some((t) => t.restoration)) {
@@ -167,7 +187,9 @@ export function toConfirmedPlan(f: PlanningForm, draft: PlanningDraft): Confirme
 
   // source_evidence 입력 타입은 문자열 값만 받는다.
   const sourceEvidence = Object.fromEntries(
-    Object.entries(draft.source_evidence).filter((e): e is [string, string] => typeof e[1] === 'string'),
+    Object.entries(draft.source_evidence)
+      .map(([key, value]) => [key, evidenceText(value)] as const)
+      .filter((entry): entry is readonly [string, string] => entry[1] !== null),
   )
 
   const tasksWithEquipment = f.tasks.filter((t) => t.equipment_id)
@@ -209,6 +231,7 @@ export function toConfirmedPlan(f: PlanningForm, draft: PlanningDraft): Confirme
     predecessors: draft.predecessors,
     equipment_by_task: Object.fromEntries(f.tasks.map((t) => [t.id, t.equipment_id || null])),
     equipment_count_by_task: Object.fromEntries(tasksWithEquipment.map((t) => [t.id, Number(t.count)])),
+    task_duration_by_task: Object.fromEntries(f.tasks.map((t) => [t.id, Number(t.duration_minutes)])),
     restoration_task_ids: f.same_day_restoration ? f.tasks.filter((t) => t.restoration).map((t) => t.id) : [],
   }
 }

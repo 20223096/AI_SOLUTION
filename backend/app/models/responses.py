@@ -59,6 +59,7 @@ class LLMNoticeExtractResponse(ResponseModel):
     model: str
     notice: ConstructionNotice
     field_evidence: dict[str, Any] = Field(default_factory=dict)
+    normalization_issues: list[str] = Field(default_factory=list)
     usage: dict[str, int] = Field(default_factory=dict)
     warnings: list[str]
 

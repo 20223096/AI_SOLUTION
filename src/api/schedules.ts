@@ -26,6 +26,7 @@ export function validateSchedule(plan: ConfirmedPlan, assignments: TaskAssignmen
     predecessors: plan.predecessors,
     equipment_by_task: plan.equipment_by_task,
     equipment_count_by_task: plan.equipment_count_by_task,
+    task_duration_by_task: plan.task_duration_by_task,
     restoration_task_ids: plan.restoration_task_ids,
   }
   return postJson<ScheduleValidationResponse>('/api/prd/schedules/validate', body, signal)

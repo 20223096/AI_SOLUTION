@@ -3,6 +3,8 @@ import { ApiError } from '../api/client'
 import {
   extractNoticeFromFile,
   extractNoticeFromText,
+  evidenceText,
+  evidenceNeedsReview,
   getFieldEvidence,
   type ConstructionNotice,
   type ExtractResponse,
@@ -296,7 +298,10 @@ function ExtractResult({ result, stale, onNext }: { result: ExtractResponse; sta
             {evidence.map(([field, value]) => (
               <li key={field}>
                 <b>{field}</b>
-                {value == null ? <Missing /> : <q>{String(value)}</q>}
+                {evidenceText(value) == null ? <Missing /> : <q>{evidenceText(value)}</q>}
+                {evidenceNeedsReview(value) && (
+                  <span className="tag">검토 필요</span>
+                )}
               </li>
             ))}
           </ul>
