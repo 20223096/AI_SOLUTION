@@ -7,7 +7,7 @@ import argparse
 import json
 import platform
 import sys
-from datetime import date
+from datetime import UTC, date, datetime
 from pathlib import Path
 
 import ortools
@@ -90,7 +90,25 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
     args = parser.parse_args()
-    report = {"experiment_version": "sprint29_cp_sat_v2", "environment": {"python": platform.python_version(), "platform": platform.platform(), "ortools": ortools.__version__, "grid_minutes": 15}, "global_optimality_claimed": False, "results": [run_day(day, scenario) for day, scenario in DATES]}
+    report = {
+        "experiment_version": "sprint29_cp_sat_v2",
+        "generated_at": datetime.now(UTC).isoformat(),
+        "generator": "scripts/run_sprint29_experiments.py",
+        "data_sources": {
+            "scenario_fixtures": "backend/app/data/scenarios.json",
+            "background_profile": PROFILE,
+            "source_documentation": "docs/SPRINT29_EXPERIMENT_RESULTS.md",
+        },
+        "model_assumptions": [
+            "Noise Impact is incremental_impact_cost, a simulated model score.",
+            "Quiet Window and continuous high noise use the PoC 65 dB total-environment threshold.",
+            "The 2026-09-11 existing-event overlay is a scenario assumption.",
+            "Results do not demonstrate measured noise or complaint reduction.",
+        ],
+        "environment": {"python": platform.python_version(), "platform": platform.platform(), "ortools": ortools.__version__, "grid_minutes": 15},
+        "global_optimality_claimed": False,
+        "results": [run_day(day, scenario) for day, scenario in DATES],
+    }
     payload = json.dumps(report, ensure_ascii=False, indent=2) + "\n"
     if args.output:
         args.output.write_text(payload, encoding="utf-8")

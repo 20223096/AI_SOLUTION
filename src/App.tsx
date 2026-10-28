@@ -13,6 +13,7 @@ import { S5CandidatePicker } from './screens/S5CandidatePicker'
 import { S6Comparison } from './screens/S6Comparison'
 import { S7NoticeDraft } from './screens/S7NoticeDraft'
 import { S8ResidentView } from './screens/S8ResidentView'
+import { ScenarioComparison } from './screens/ScenarioComparison'
 
 type Stage = 'plan' | 's3' | 'rec' | 'candidate' | 'comparison'
 const STAGES: Stage[] = ['plan', 's3', 'rec', 'candidate', 'comparison']
@@ -46,7 +47,9 @@ function App() {
 
   return (
     <div className="wrap">
-      <AppHeader current={screen} />
+      <AppHeader current={screen} onNavigate={setScreen} />
+
+      {screen === 'COMPARE' && <ScenarioComparison />}
 
       {/* 각 화면은 마운트해 두어 앞 단계로 돌아가도 입력이 유지되게 한다. */}
       <div hidden={screen !== 'S1'}>
@@ -167,7 +170,7 @@ function App() {
         <S8ResidentView projectId={plan.planning.notice_id} location={plan.planning.location} onBack={() => setScreen('S7')} />
       )}
 
-      <DataProvenanceLegend />
+      {screen !== 'COMPARE' && <DataProvenanceLegend />}
 
       <footer>쉿간표 PoC · 추출 결과는 사용자 확인 전까지 확정값이 아닙니다.</footer>
     </div>

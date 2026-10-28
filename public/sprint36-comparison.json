@@ -1,0 +1,395 @@
+{
+  "experiment_version": "sprint29_cp_sat_v2",
+  "generated_at": "2026-10-28T03:01:07.068307+00:00",
+  "generator": "scripts/run_sprint29_experiments.py",
+  "data_sources": {
+    "scenario_fixtures": "backend/app/data/scenarios.json",
+    "background_profile": "road_traffic_observed_profile",
+    "source_documentation": "docs/SPRINT29_EXPERIMENT_RESULTS.md"
+  },
+  "model_assumptions": [
+    "Noise Impact is incremental_impact_cost, a simulated model score.",
+    "Quiet Window and continuous high noise use the PoC 65 dB total-environment threshold.",
+    "The 2026-09-11 existing-event overlay is a scenario assumption.",
+    "Results do not demonstrate measured noise or complaint reduction."
+  ],
+  "environment": {
+    "python": "3.14.4",
+    "platform": "macOS-26.2-arm64-arm-64bit-Mach-O",
+    "ortools": "9.15.6755",
+    "grid_minutes": 15
+  },
+  "global_optimality_claimed": false,
+  "results": [
+    {
+      "analysis_date": "2026-09-11",
+      "scenario_id": "final-demo-congestion",
+      "input_data": {
+        "background": "historical representative road-traffic LEQ profile",
+        "sdot": "observed but excluded from synthesis",
+        "existing_events": "scenario opt-in; 9/11 overlay is assumed",
+        "equipment_and_distance": "official-reference/derived/assumed mixture documented by scenario provenance"
+      },
+      "A_original_vs_offset": {
+        "candidate_count": 9,
+        "pareto_count": 1,
+        "original": {
+          "candidate_id": "offset-0",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        },
+        "offset_recommendation": {
+          "candidate_id": "offset-0",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        }
+      },
+      "B_original_vs_advanced": {
+        "candidate_count": 495,
+        "pareto_count": 35,
+        "original": {
+          "candidate_id": "offset-0",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        },
+        "advanced_recommendation": {
+          "candidate_id": "cp-sat-001",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        }
+      },
+      "C_simple_empty_vs_advanced": {
+        "definition": "minimum existing-event overlap, then minimum schedule change",
+        "simple_empty": {
+          "candidate_id": "cp-sat-495",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.2,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 480
+        },
+        "advanced_recommendation": {
+          "candidate_id": "cp-sat-001",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        }
+      },
+      "D_sensitivity_off_vs_on": {
+        "off": {
+          "candidate_id": "cp-sat-045",
+          "constraint_violation_count": 0,
+          "noise_impact": 6.56,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 240
+        },
+        "on": {
+          "candidate_id": "cp-sat-001",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        }
+      },
+      "E_existing_event_off_vs_on": {
+        "off": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        },
+        "on": {
+          "candidate_id": "cp-sat-001",
+          "constraint_violation_count": 0,
+          "noise_impact": 7.36,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 360,
+          "schedule_change_minutes": 0
+        }
+      },
+      "F_sensitivity_weights": [
+        {
+          "multiplier": 1.1,
+          "candidate_count": 495,
+          "pareto_count": 35,
+          "result": {
+            "candidate_id": "cp-sat-001",
+            "constraint_violation_count": 0,
+            "noise_impact": 6.8,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 360,
+            "schedule_change_minutes": 0
+          }
+        },
+        {
+          "multiplier": 1.3,
+          "candidate_count": 495,
+          "pareto_count": 37,
+          "result": {
+            "candidate_id": "cp-sat-001",
+            "constraint_violation_count": 0,
+            "noise_impact": 7.2,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 360,
+            "schedule_change_minutes": 0
+          }
+        },
+        {
+          "multiplier": 1.5,
+          "candidate_count": 495,
+          "pareto_count": 35,
+          "result": {
+            "candidate_id": "cp-sat-001",
+            "constraint_violation_count": 0,
+            "noise_impact": 7.36,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 360,
+            "schedule_change_minutes": 0
+          }
+        }
+      ]
+    },
+    {
+      "analysis_date": "2026-10-07",
+      "scenario_id": "official_reference_equipment",
+      "input_data": {
+        "background": "historical representative road-traffic LEQ profile",
+        "sdot": "observed but excluded from synthesis",
+        "existing_events": "scenario opt-in; 9/11 overlay is assumed",
+        "equipment_and_distance": "official-reference/derived/assumed mixture documented by scenario provenance"
+      },
+      "A_original_vs_offset": {
+        "candidate_count": 9,
+        "pareto_count": 9,
+        "original": {
+          "candidate_id": "offset-0",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.72,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 0
+        },
+        "offset_recommendation": {
+          "candidate_id": "offset-120",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.2,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 480
+        }
+      },
+      "B_original_vs_advanced": {
+        "candidate_count": 495,
+        "pareto_count": 18,
+        "original": {
+          "candidate_id": "offset-0",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.72,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 0
+        },
+        "advanced_recommendation": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        }
+      },
+      "C_simple_empty_vs_advanced": {
+        "definition": "minimum existing-event overlap, then minimum schedule change",
+        "simple_empty": {
+          "candidate_id": "cp-sat-001",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.72,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 0
+        },
+        "advanced_recommendation": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        }
+      },
+      "D_sensitivity_off_vs_on": {
+        "off": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 11.84,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        },
+        "on": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        }
+      },
+      "E_existing_event_off_vs_on": {
+        "off": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        },
+        "on": {
+          "candidate_id": "cp-sat-491",
+          "constraint_violation_count": 0,
+          "noise_impact": 13.12,
+          "continuous_high_noise_minutes": 660,
+          "quiet_window_minutes": 0,
+          "simultaneous_high_noise_minutes": null,
+          "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+          "existing_noise_overlap_receptor_minutes": 0,
+          "schedule_change_minutes": 420
+        }
+      },
+      "F_sensitivity_weights": [
+        {
+          "multiplier": 1.1,
+          "candidate_count": 495,
+          "pareto_count": 17,
+          "result": {
+            "candidate_id": "cp-sat-491",
+            "constraint_violation_count": 0,
+            "noise_impact": 12.12,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 0,
+            "schedule_change_minutes": 420
+          }
+        },
+        {
+          "multiplier": 1.3,
+          "candidate_count": 495,
+          "pareto_count": 13,
+          "result": {
+            "candidate_id": "cp-sat-491",
+            "constraint_violation_count": 0,
+            "noise_impact": 12.8,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 0,
+            "schedule_change_minutes": 420
+          }
+        },
+        {
+          "multiplier": 1.5,
+          "candidate_count": 495,
+          "pareto_count": 18,
+          "result": {
+            "candidate_id": "cp-sat-491",
+            "constraint_violation_count": 0,
+            "noise_impact": 13.12,
+            "continuous_high_noise_minutes": 660,
+            "quiet_window_minutes": 0,
+            "simultaneous_high_noise_minutes": null,
+            "simultaneous_metric_limitation": "not represented as wall-clock minutes; existing overlap is receptor-minutes",
+            "existing_noise_overlap_receptor_minutes": 0,
+            "schedule_change_minutes": 420
+          }
+        }
+      ]
+    }
+  ]
+}
