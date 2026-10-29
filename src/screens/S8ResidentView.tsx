@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { getPublicResidentNotice, type ResidentPublicResponse } from '../api/residentNotices'
 import { errorMessage, isAbort, type Async } from '../utils/async'
 import { assignmentTime } from './s4Display'
+import { byStartTime } from './s7Notice'
 import './S8ResidentView.css'
 
 interface Props { projectId: string; location: string; onBack: () => void }
@@ -26,14 +27,15 @@ export function S8ResidentView({ projectId, location, onBack }: Props) {
       {published && <div className="phone">
         <div className="ph-top">{location}</div>
         <div className="qcard">
-          <div className="ql">시끄러운 작업이 없는 최장 구간</div>
+          <div className="ql">오늘 이 공사가 쉬어가는 시간</div>
           <div className="qt">{published.longest_quiet_interval ? `${assignmentTime(published.longest_quiet_interval.start)} – ${assignmentTime(published.longest_quiet_interval.end)}` : '없음'}</div>
+          <div className="qs">이 공사 기준이에요</div>
           <div className="qd">{published.quiet_interval_limitation}</div>
         </div>
         <h3>오늘 일정</h3>
-        <ul className="day">{published.today_schedule.map((item) => <li key={`${item.start}-${item.task_name}`}><span className="dt">{assignmentTime(item.start)}–{assignmentTime(item.end)}</span><span className="dot build" aria-hidden="true" />{item.task_name}</li>)}</ul>
+        <ul className="day">{byStartTime(published.today_schedule).map((item) => <li key={`${item.start}-${item.task_name}`}><span className="dt">{assignmentTime(item.start)}–{assignmentTime(item.end)}</span><span className="dot build" aria-hidden="true" />{item.task_name}</li>)}</ul>
         <h3>시간대별 작업 상태</h3>
-        <ul className="day">{published.hourly_noise_levels.map((slot) => <li key={slot.start}><span className="dt">{assignmentTime(slot.start)}–{assignmentTime(slot.end)}</span>{slot.label}</li>)}</ul>
+        <ul className="day">{byStartTime(published.hourly_noise_levels).map((slot) => <li key={slot.start}><span className="dt">{assignmentTime(slot.start)}–{assignmentTime(slot.end)}</span>{slot.label}</li>)}</ul>
         <p className="ph-note">{published.confirmed_notice}</p>
         <p className="ph-note">문의: {published.public_contact}</p>
         {published.publication_provenance.data_classification === 'demo' && <span className="tag">시연 데이터</span>}

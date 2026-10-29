@@ -9,6 +9,22 @@ export function candidateLabel(id: string): string {
   return m[1] === '0' ? '원 일정 시각' : `+${m[1]}분 이동`
 }
 
+/**
+ * 추천 후보 일정은 데모 시나리오(poc_scenario.json)의 작업 ID로 온다.
+ * 공고문에서 추출되지 않은 작업도 이름·장비를 알 수 있도록 시나리오의 작업 정보를 보조로 쓴다.
+ */
+export const SCENARIO_TASKS: Record<string, { name: string; equipment_id: string | null }> = {
+  cut: { name: '포장 절단', equipment_id: 'cutter' },
+  break: { name: '포장 깨기', equipment_id: 'breaker' },
+  excavate: { name: '터파기 및 관 교체', equipment_id: 'excavator' },
+  compact: { name: '되메우기 및 다짐', equipment_id: 'roller' },
+  restore: { name: '포장 복구', equipment_id: null },
+}
+
+/** 작업 ID → 이름. 공고문 추출 이름을 우선하고, 없으면 시나리오 작업 이름을 쓴다. */
+export const taskNameMap = (tasks: { id: string; name: string }[]) =>
+  new Map([...Object.entries(SCENARIO_TASKS).map(([id, t]) => [id, t.name] as const), ...tasks.map((t) => [t.id, t.name] as const)])
+
 /** "2026-09-11T08:00:00+09:00" → "08:00" */
 export const assignmentTime = (iso: string) => iso.slice(11, 16)
 

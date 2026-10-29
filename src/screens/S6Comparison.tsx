@@ -17,6 +17,7 @@ import {
   deltaTone,
   formatDelta,
   formatNumber,
+  taskNameMap,
   toTimelineItems,
 } from './s4Display'
 import './S6Comparison.css'
@@ -46,7 +47,7 @@ export function S6Comparison({ res, candidate, notice, plan, onBack, onNext }: P
     return () => controller.abort()
   }, [res.scenario_id, original, candidate, reloadKey])
 
-  const taskNames = new Map(notice.tasks.map((t) => [t.id, t.name]))
+  const taskNames = taskNameMap(notice.tasks)
   const originalBad = new Set(original?.violations.map((v) => v.task_id).filter((id): id is string => !!id))
 
   return (

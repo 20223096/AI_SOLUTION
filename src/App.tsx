@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { ExtractResponse } from './api/notices'
 import type { ConfirmedPlan } from './api/planning'
-import { isSelectable, type CompareResponse, type RecommendationResponse } from './api/recommendations'
+import { isSelectable, representativeId, type CompareResponse, type RecommendationResponse } from './api/recommendations'
 import type { ResidentNoticeDraft } from './api/residentNotices'
 import { AppHeader, type ScreenId } from './components/AppHeader'
 import { S1NoticeInput } from './screens/S1NoticeInput'
@@ -104,6 +104,8 @@ function App() {
               if (res !== rec) {
                 resetFrom('candidate')
                 setRec(res)
+                // S5에서 API 결과 기준 대표 추천을 기본 선택해 둔다. 담당자가 바꿀 수 있다.
+                setCandidateId(representativeId(res))
               }
               setScreen('S5')
             }}

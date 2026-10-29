@@ -17,7 +17,7 @@ export function AppHeader({ current }: { current: ScreenId }) {
       <header className="top">
         <div className="brand">
           <b>쉿간표</b>
-          <span>서대문구 생활환경과</span>
+          <span>서대문구 기후환경과</span>
         </div>
         <div className="ctx">
           <span className="chip">신촌동 생활권</span>
