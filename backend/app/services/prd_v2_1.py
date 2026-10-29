@@ -192,7 +192,11 @@ def constraint_filtered_recommendations(request: PRDConstraintRecommendationRequ
         if validation["feasible"]:
             feasible_points.append({"id": candidate.id, **candidate.objective_values})
         rows.append((candidate, validation))
-    frontier_points = non_dominated_multi(feasible_points, axes) if request.objective_mode == "multi_axis" else non_dominated(feasible_points)
+    overlap_priority = bool(feasible_points and "existing_high_noise_overlap_minutes" in feasible_points[0])
+    if overlap_priority:
+        frontier_points = [min(feasible_points, key=lambda row: (row["existing_high_noise_overlap_minutes"], row["change_cost"], row["id"]))]
+    else:
+        frontier_points = non_dominated_multi(feasible_points, axes) if request.objective_mode == "multi_axis" else non_dominated(feasible_points)
     frontier_ids = {row["id"] for row in frontier_points}
     candidates = []
     for candidate, validation in rows:
@@ -251,7 +255,7 @@ def demo_scenario_for_date(day: date) -> tuple[str, str, str]:
     if day == date(2026, 9, 11):
         return "final-demo-congestion", "9/11 assumed congestion overlay is scoped to its fixture analysis date", "demo_simulation"
     if day == date(2026, 10, 7):
-        return "official_reference_equipment", "comparison day excludes the date-specific 9/11 assumed congestion overlay", "comparison_day_simulation"
+        return "final-demo-congestion", "same demo plan and receptors; date-scoped 9/11 congestion overlay is inactive", "comparison_day_simulation"
     raise ValueError("analysis_date must be 2026-09-11 or 2026-10-07")
 
 
@@ -276,6 +280,7 @@ def _candidate_diagnostics(result: dict, *, assumed_overlap: bool) -> list[dict]
             "sensitive_time_exposure_minutes": metrics.sensitive_new_project_receptor_minutes,
             "weighted_sensitive_exposure": metrics.sensitivity_weighted_new_project_receptor_minutes,
             "existing_noise_overlap_receptor_minutes": metrics.existing_noise_overlap_receptor_minutes,
+            "existing_high_noise_overlap_minutes": int(row["objective_values"].get("existing_high_noise_overlap_minutes", 0)),
             "existing_event_overlap_basis": "assumed_simulation" if assumed_overlap and metrics.existing_noise_overlap_receptor_minutes else "none",
             "metrics": metrics,
             "pareto_included": candidate_id in pareto_ids,
@@ -291,9 +296,10 @@ def recommendation_diagnostics(day: date, background_profile: str = "road_traffi
     original = next((item for item in result.get("valid_candidates", []) if item.id == "offset-0"), None)
     improved = [
         item["candidate"] for item in result.get("recommended_options", [])
-        if original is not None and item["candidate"].id != original.id and item["candidate"].objective_values["resident_cost"] < original.objective_values["resident_cost"]
+        if original is not None and item["candidate"].id != original.id
+        and item["candidate"].objective_values["existing_high_noise_overlap_minutes"] < original.objective_values["existing_high_noise_overlap_minutes"]
     ]
-    summary = "No feasible candidate improves the selected noise objective over the original schedule without adding schedule change." if not improved else f"{', '.join(item.id for item in improved)} improves the selected noise objective but requires schedule change."
+    summary = "No candidate reduces simultaneous high-noise minutes; the original schedule minimizes change." if not improved else f"{', '.join(item.id for item in improved)} reduces simultaneous high-noise minutes and is the minimum-change candidate at that overlap level."
     return {
         "analysis_date": day,
         "scenario_id": scenario_id,

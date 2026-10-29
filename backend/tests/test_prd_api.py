@@ -83,31 +83,29 @@ def test_prd_schedule_validation_rejects_unzoned_datetime_with_422():
     assert response.status_code == 422
 
 
-def test_9_11_diagnostics_report_no_artificial_improvement_and_domination():
+def test_9_11_diagnostics_report_overlap_improvement():
     response = client.get("/api/prd/recommendation-diagnostics", params={"analysis_date": "2026-09-11"})
     assert response.status_code == 200
     body = response.json()
     assert body["scenario_id"] == "final-demo-congestion"
-    assert body["recommended_candidate_ids"] == ["offset-0"]
-    assert body["pareto_candidate_ids"] == ["offset-0"]
-    assert body["improvement_over_original"] is False
+    assert body["recommended_candidate_ids"] == ["offset-120"]
+    assert body["improvement_over_original"] is True
     shifted = next(row for row in body["candidates"] if row["id"] == "offset-120")
     assert shifted["project_start_shift_minutes"] == 120
-    assert shifted["existing_noise_overlap_receptor_minutes"] == 0
-    assert shifted["dominated_reason"]["dominated_by"] == "offset-0"
+    assert shifted["existing_high_noise_overlap_minutes"] == 60
 
 
-def test_10_07_diagnostics_excludes_9_11_overlay_and_exposes_real_tradeoff():
+def test_10_07_diagnostics_excludes_9_11_overlay_and_keeps_original():
     response = client.get("/api/prd/recommendation-diagnostics", params={"analysis_date": "2026-10-07"})
     assert response.status_code == 200
     body = response.json()
-    assert body["scenario_id"] == "official_reference_equipment"
-    assert body["improvement_over_original"] is True
-    assert body["recommended_candidate_ids"] == ["offset-0", "offset-120"]
+    assert body["scenario_id"] == "final-demo-congestion"
+    assert body["improvement_over_original"] is False
+    assert body["recommended_candidate_ids"] == ["offset-0"]
     assert all(row["existing_noise_overlap_receptor_minutes"] == 0 for row in body["candidates"])
     original = next(row for row in body["candidates"] if row["id"] == "offset-0")
     shifted = next(row for row in body["candidates"] if row["id"] == "offset-120")
-    assert shifted["objective_values"]["resident_cost"] < original["objective_values"]["resident_cost"]
+    assert shifted["existing_high_noise_overlap_minutes"] == original["existing_high_noise_overlap_minutes"] == 0
     assert shifted["total_task_start_shift_minutes"] == 480
 
 

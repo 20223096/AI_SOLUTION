@@ -695,6 +695,8 @@ export interface components {
             weighted_sensitive_exposure: number;
             /** Existing Noise Overlap Receptor Minutes */
             existing_noise_overlap_receptor_minutes: number;
+            /** Existing High Noise Overlap Minutes */
+            existing_high_noise_overlap_minutes: number;
             /**
              * Existing Event Overlap Basis
              * @enum {string}

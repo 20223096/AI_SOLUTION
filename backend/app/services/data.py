@@ -23,6 +23,12 @@ def scenarios() -> dict:
             merged["title"] = overlay["title"]
             merged["expected_feasibility"] = overlay["expected_feasibility"]
             merged["notice"]["id"] = f"{merged['notice']['id']}-{overlay['id']}"
+            if "notice" in overlay:
+                for key, value in overlay["notice"].items():
+                    if key == "constraints":
+                        merged["notice"]["constraints"].update(value)
+                    else:
+                        merged["notice"][key] = value
             merged["notice"]["constraints"].update(overlay.get("constraints", {}))
             merged["settings"] = overlay.get("settings", {})
             merged["source_provenance"] = overlay.get("source_provenance", {})

@@ -1,7 +1,7 @@
 from datetime import date, datetime, timedelta
 
 from app.models.domain import ScheduleCandidate, ScheduleMetrics, SourceMetadata, TaskAssignment
-from app.services.data import get_scenario
+from app.services.data import get_scenario, load_json_rows
 from app.services.metrics import schedule_metrics
 from app.services.pareto import non_dominated, non_dominated_multi
 from app.services.prediction import default_assignments
@@ -20,6 +20,43 @@ OBJECTIVE_FIELDS = {
 MULTI_AXES = ["physical_energy_cost", "sensitive_exposure_cost", "continuous_burden_cost", "change_cost"]
 
 
+def _high_noise_overlap_minutes(scenario: dict, day: date, assignments: list[TaskAssignment]) -> int:
+    settings = scenario.get("settings", {})
+    high_noise_tasks = set(settings.get("high_noise_task_ids", []))
+    high_noise_events = set(settings.get("high_noise_event_ids", []))
+    receptor_ids = {item.id for item in scenario["receptors"]}
+    project_id = settings.get("new_project_id")
+    intersections = []
+    for event in load_json_rows("existing_events.json"):
+        if event.get("id") not in high_noise_events or not event.get("high_noise"):
+            continue
+        if event.get("project_id") == project_id:
+            continue
+        if event.get("active_dates") and day.isoformat() not in event["active_dates"]:
+            continue
+        if not receptor_ids.intersection(event.get("receptor_ids", [])):
+            continue
+        event_start = at(day, datetime.strptime(event["start_time"], "%H:%M").time())
+        event_end = at(day, datetime.strptime(event["end_time"], "%H:%M").time())
+        for assignment in assignments:
+            if assignment.task_id not in high_noise_tasks:
+                continue
+            start = max(assignment.start, event_start)
+            end = min(assignment.end, event_end)
+            if start < end:
+                intersections.append((start, end))
+    total = 0
+    merged_end = None
+    for start, end in sorted(intersections):
+        if merged_end is None or start >= merged_end:
+            total += int((end - start).total_seconds() / 60)
+            merged_end = end
+        elif end > merged_end:
+            total += int((end - merged_end).total_seconds() / 60)
+            merged_end = end
+    return total
+
+
 def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_enabled: bool = True, background_profile: str = "assumed_demo", objective_mode: str = "incremental_impact", sensitivity_policy: str = "legacy_v1", experimental_context_multiplier: float | None = None) -> ScheduleCandidate:
     scenario = get_scenario(scenario_id)
     notice = scenario["notice"]
@@ -35,7 +72,7 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
         reasons.append(f"순차 작업 {total}분이 일일 제한 {max_daily}분을 초과")
     start = at(day, window.start) + timedelta(minutes=offset_minutes)
     if offset_minutes < 0 or offset_minutes + total > available:
-        reasons.append("작업이 허용 시간대 [07:00,18:00) 밖으로 벗어남")
+        reasons.append(f"작업이 허용 시간대 [{window.start:%H:%M},{window.end:%H:%M}) 밖으로 벗어남")
     if notice.constraints.get("fixed_schedule") and offset_minutes != 0:
         reasons.append("원 일정 변경 불가 제약으로 시작시간을 이동할 수 없음")
     assignments, cursor = [], start
@@ -72,13 +109,14 @@ def _candidate(scenario_id: str, day: date, offset_minutes: int, sensitivity_ena
             if shared and overlaps(assignment_by_task[left.id].start, assignment_by_task[left.id].end, assignment_by_task[right.id].start, assignment_by_task[right.id].end):
                 resource_conflicts.append({"task_ids": [left.id, right.id], "resources": shared})
     overlap_count = metrics.existing_noise_overlap_receptor_minutes // 15
+    high_noise_overlap_minutes = _high_noise_overlap_minutes(scenario, day, assignments) if feasible else 0
     overlap_penalty = float(scenario.get("settings", {}).get("existing_overlap_penalty_per_receptor_slot", 0))
     absolute_cost = metrics.absolute_impact_cost
     incremental_cost = metrics.incremental_impact_cost
     objective_field, _ = OBJECTIVE_FIELDS[objective_mode]
     resident_cost = incremental_cost if objective_field is None else getattr(metrics, objective_field)
     schedule_change_details = {"definition": "sum of absolute per-task start shifts", "task_start_shift_minutes": task_changes, "total_task_start_shift_minutes": change, "project_start_shift_minutes": project_start_change, "project_end_shift_minutes": project_end_change, "original_project_end": max((x.end for x in original), default=None), "candidate_project_end": max((x.end for x in assignments), default=None), "predecessor_order_preserved": predecessor_order_preserved, "resource_conflicts": resource_conflicts}
-    return ScheduleCandidate(id=f"offset-{offset_minutes}", task_assignments=assignments if feasible else [], feasibility=feasible, infeasibility_reasons=reasons, needs_confirmation=["덤프트럭 소음 원천값", "미확정 공정 소요시간"] if reasons else ["덤프트럭 소음 원천값"], metrics=metrics, objective_values={"resident_cost": round(resident_cost, 6), "change_cost": float(change), "total_task_start_shift_minutes": float(change), "project_start_shift_minutes": float(project_start_change), "project_end_shift_minutes": float(project_end_change), "base_impact_cost": absolute_cost, "absolute_impact_cost": absolute_cost, "incremental_impact_cost": incremental_cost, "physical_energy_cost": metrics.new_project_energy_exposure_65db_ref_minutes, "sensitive_exposure_cost": float(metrics.sensitive_new_project_receptor_minutes), "weighted_sensitive_exposure": metrics.sensitivity_weighted_new_project_receptor_minutes, "continuous_burden_cost": float(metrics.max_continuous_new_project_minutes), "existing_noise_overlap_slots": float(overlap_count), "existing_noise_overlap_minutes": float(overlap_count * 15), "policy_overlap_cost": round(overlap_count * overlap_penalty, 2), "existing_noise_overlap_penalty": round(overlap_count * overlap_penalty, 2)}, schedule_change_details=schedule_change_details, provenance=SourceMetadata(status="derived", source="exact 15-minute offset enumeration", note="No duration reduction or parallel work assumed; each objective retains its own unit; overlap policy cost is reported separately"))
+    return ScheduleCandidate(id=f"offset-{offset_minutes}", task_assignments=assignments if feasible else [], feasibility=feasible, infeasibility_reasons=reasons, needs_confirmation=["덤프트럭 소음 원천값", "미확정 공정 소요시간"] if reasons else ["덤프트럭 소음 원천값"], metrics=metrics, objective_values={"resident_cost": round(resident_cost, 6), "change_cost": float(change), "total_task_start_shift_minutes": float(change), "project_start_shift_minutes": float(project_start_change), "project_end_shift_minutes": float(project_end_change), "base_impact_cost": absolute_cost, "absolute_impact_cost": absolute_cost, "incremental_impact_cost": incremental_cost, "physical_energy_cost": metrics.new_project_energy_exposure_65db_ref_minutes, "sensitive_exposure_cost": float(metrics.sensitive_new_project_receptor_minutes), "weighted_sensitive_exposure": metrics.sensitivity_weighted_new_project_receptor_minutes, "continuous_burden_cost": float(metrics.max_continuous_new_project_minutes), "existing_noise_overlap_slots": float(overlap_count), "existing_noise_overlap_minutes": float(overlap_count * 15), **({"existing_high_noise_overlap_minutes": float(high_noise_overlap_minutes)} if scenario.get("settings", {}).get("recommendation_priority") == "high_noise_overlap_then_change" else {}), "policy_overlap_cost": round(overlap_count * overlap_penalty, 2), "existing_noise_overlap_penalty": round(overlap_count * overlap_penalty, 2)}, schedule_change_details=schedule_change_details, provenance=SourceMetadata(status="derived", source="exact 15-minute offset enumeration", note="No duration reduction or parallel work assumed; each objective retains its own unit; overlap policy cost is reported separately"))
 
 
 def _dominated_reason(candidate: ScheduleCandidate, valid: list[ScheduleCandidate], axes: list[str]) -> dict | None:
@@ -92,6 +130,8 @@ def _dominated_reason(candidate: ScheduleCandidate, valid: list[ScheduleCandidat
 
 def _recommendation_reasons(candidate: ScheduleCandidate, original: ScheduleCandidate, characters: list[str], objective_mode: str, objective_unit: str) -> list[dict]:
     reasons = []
+    if "noise_overlap_priority" in characters:
+        reasons.append({"code": "minimum_high_noise_overlap", "message": "주변 공사와의 동시 고소음시간을 먼저 최소화하고, 동률이면 일정 변경량과 후보 ID 순으로 선택했습니다.", "evidence": [{"field": "objective_values.existing_high_noise_overlap_minutes", "value": candidate.objective_values["existing_high_noise_overlap_minutes"], "unit": "minutes"}, {"field": "objective_values.change_cost", "value": candidate.objective_values["change_cost"], "unit": "minutes"}]})
     if "construction_convenience" in characters:
         reasons.append({"code": "minimum_schedule_change", "message": "Pareto 후보 중 작업별 시작시간 변경 합계가 최소입니다.", "evidence": [{"field": "objective_values.total_task_start_shift_minutes", "value": candidate.objective_values["total_task_start_shift_minutes"], "unit": "minutes"}]})
     if "resident_protection" in characters:
@@ -123,7 +163,17 @@ def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, back
     ids = {x["id"] for x in pareto_points}
     frontier = [x for x in valid if x.id in ids]
     selections = {}
-    if frontier:
+    overlap_priority = scenario.get("settings", {}).get("recommendation_priority") == "high_noise_overlap_then_change"
+    if valid and overlap_priority:
+        selections["noise_overlap_priority"] = min(
+            valid,
+            key=lambda x: (
+                x.objective_values["existing_high_noise_overlap_minutes"],
+                x.objective_values["change_cost"],
+                x.id,
+            ),
+        )
+    elif frontier:
         selections["construction_convenience"] = min(frontier, key=lambda x: x.objective_values["change_cost"])
         if objective_mode != "multi_axis":
             selections["resident_protection"] = min(frontier, key=lambda x: x.objective_values["resident_cost"])
@@ -144,7 +194,7 @@ def optimize(scenario_id: str, day: date, sensitivity_enabled: bool = True, back
         "generated_candidate_count": len(raw), "feasible_candidate_count": len(valid),
         "infeasible_candidate_count": len(raw) - len(valid), "pareto_candidate_count": len(frontier), "pareto_axes": pareto_axes,
         "candidate_metrics": [{"id": x.id, "feasibility": x.feasibility, "pareto_included": x.id in ids, "objective_values": x.objective_values, "metrics": x.metrics, "schedule_change_details": x.schedule_change_details, "infeasibility_reasons": x.infeasibility_reasons, "dominated_reason": _dominated_reason(x, valid, pareto_axes) if x.feasibility else None} for x in raw],
-        "sensitivity_enabled": sensitivity_enabled, "background_profile": background_profile, "objective_mode": objective_mode, "objective_field": OBJECTIVE_FIELDS[objective_mode][0], "objective_unit": OBJECTIVE_FIELDS[objective_mode][1], "default_objective_unchanged": True, "balanced_selection": "legacy_v1_normalized_impact_plus_change" if objective_mode in {"incremental_impact", "absolute_impact"} else None, "policy_overlap_cost_included_in_pareto": False,
+        "sensitivity_enabled": sensitivity_enabled, "background_profile": background_profile, "objective_mode": objective_mode, "objective_field": OBJECTIVE_FIELDS[objective_mode][0], "objective_unit": OBJECTIVE_FIELDS[objective_mode][1], "default_objective_unchanged": True, "balanced_selection": "legacy_v1_normalized_impact_plus_change" if objective_mode in {"incremental_impact", "absolute_impact"} and not overlap_priority else None, "policy_overlap_cost_included_in_pareto": False, **({"representative_selection_order": ["existing_high_noise_overlap_minutes", "change_cost", "candidate_id"]} if overlap_priority else {}),
     }
     if not valid:
         return {"scenario_id": scenario_id, "analysis_date": day, "optimization_status": "infeasible", "scoring_version": "legacy_v1", "metrics_version": "robust_experimental_v1", "valid_candidates": [], "pareto_candidates": [], "recommended_options": [], "infeasible_result": raw[0], "relaxation_guidance": ["누락 공정시간을 확인", "금지시간 또는 일일 제한을 담당자가 검토", "필요하면 다일 분할 가능 여부 확인"], "solver": "exact_enumeration", "diagnostics": diagnostics}

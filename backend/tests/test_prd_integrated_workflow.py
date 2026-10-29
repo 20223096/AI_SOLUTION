@@ -17,16 +17,16 @@ def integrated_payload() -> dict:
     planning.update({
         "notice_id": "integrated-demo",
         "construction_period": {"start": "2026-09-11", "end": "2026-09-11", "raw_text": "confirmed"},
-        "total_work_window": {"start": "07:00", "end": "18:00"},
+        "total_work_window": {"start": "08:00", "end": "17:00"},
         "road_excavation": False,
         "road_occupancy_permit_window": None,
         "equipment_constraints": [
             {"equipment_id": equipment_id, "category": category, "specification": None, "model_name": None,
              "max_daily_count": 1, "required_usage_minutes": minutes,
-             "permitted_time_windows": [{"start": "07:00", "end": "18:00"}], "source_metadata": source}
+             "permitted_time_windows": [{"start": "08:00", "end": "17:00"}], "source_metadata": source}
             for equipment_id, category, minutes in (
                 ("cutter", "절단기", 60), ("breaker", "브레이커", 120),
-                ("excavator", "굴착기", 300), ("roller", "롤러", 60),
+                ("excavator", "굴착기", 180), ("roller", "롤러", 60),
             )
         ],
         "fixed_tasks": [],
@@ -84,19 +84,19 @@ def test_constraint_filtered_normal_input_preserves_9_11_result_and_marks_claim_
     response = client.post("/api/prd/recommendations/constraint-filtered", json=integrated_payload())
     assert response.status_code == 200
     body = response.json()
-    assert body["recommendable_candidate_ids"] == ["offset-0"]
+    assert body["recommendable_candidate_ids"] == ["offset-120"]
     assert body["original_schedule"]["prd_feasible"] is True
     assert body["optimization_claim"] == "constraint_filtered_candidate_set_not_global_optimum"
     assert body["candidate_generation_mode"] == "existing_optimizer_15_minute_offsets_0_to_120"
     legacy = client.get("/api/prd/recommendation-diagnostics", params={"analysis_date": "2026-09-11"}).json()
-    assert legacy["recommended_candidate_ids"] == ["offset-0"]
+    assert legacy["recommended_candidate_ids"] == ["offset-120"]
 
 
 def test_constraint_filter_can_leave_exactly_one_recommendable_candidate():
     payload = integrated_payload()
-    payload["planning"]["total_work_window"] = {"start": "09:00", "end": "18:00"}
+    payload["planning"]["total_work_window"] = {"start": "10:00", "end": "17:00"}
     for equipment in payload["planning"]["equipment_constraints"]:
-        equipment["permitted_time_windows"] = [{"start": "09:00", "end": "18:00"}]
+        equipment["permitted_time_windows"] = [{"start": "10:00", "end": "17:00"}]
     response = client.post("/api/prd/recommendations/constraint-filtered", json=payload)
     assert response.status_code == 200
     body = response.json()
@@ -160,7 +160,7 @@ def test_integrated_endpoint_http_validation_cors_and_openapi_response_model():
         assert schema["paths"][path]["post"]["responses"]["200"]["content"]["application/json"]["schema"]
 
 
-def test_10_07_demo_regression_remains_13_72_to_13_20_with_equal_sensitive_exposure():
+def test_10_07_demo_has_no_overlap_and_recommends_original():
     payload = integrated_payload()
     payload["analysis_date"] = "2026-10-07"
     payload["planning"]["construction_period"] = {"start": "2026-10-07", "end": "2026-10-07", "raw_text": "confirmed"}
@@ -170,10 +170,9 @@ def test_10_07_demo_regression_remains_13_72_to_13_20_with_equal_sensitive_expos
     body = response.json()
     original = next(row for row in body["candidates"] if row["candidate_id"] == "offset-0")
     shifted = next(row for row in body["candidates"] if row["candidate_id"] == "offset-120")
-    assert original["noise_impact"]["incremental_impact_cost"] == 13.72
-    assert shifted["noise_impact"]["incremental_impact_cost"] == 13.20
-    assert original["noise_impact"]["sensitive_new_project_receptor_minutes"] == shifted["noise_impact"]["sensitive_new_project_receptor_minutes"]
-    assert set(body["recommendable_candidate_ids"]) == {f"offset-{n}" for n in range(0, 121, 15)}
+    assert original["objective_values"]["existing_high_noise_overlap_minutes"] == 0
+    assert shifted["objective_values"]["existing_high_noise_overlap_minutes"] == 0
+    assert body["recommendable_candidate_ids"] == ["offset-0"]
 
 
 def test_s1_to_s4_user_correction_partial_feasibility_and_comparison_flow():
@@ -190,9 +189,9 @@ def test_s1_to_s4_user_correction_partial_feasibility_and_comparison_flow():
     assert "road_excavation" in draft_response.json()["missing_fields"]
 
     request = integrated_payload()
-    request["planning"]["total_work_window"] = {"start": "08:00", "end": "18:00"}
+    request["planning"]["total_work_window"] = {"start": "09:00", "end": "17:00"}
     for equipment in request["planning"]["equipment_constraints"]:
-        equipment["permitted_time_windows"] = [{"start": "08:00", "end": "18:00"}]
+        equipment["permitted_time_windows"] = [{"start": "09:00", "end": "17:00"}]
 
     original_assignments = [
         {"task_id": "cut", "start": "2026-09-11T07:00:00+09:00", "end": "2026-09-11T08:00:00+09:00"},
@@ -213,9 +212,9 @@ def test_s1_to_s4_user_correction_partial_feasibility_and_comparison_flow():
     feasible = [row for row in recommendation["candidates"] if row["prd_feasible"]]
     infeasible = [row for row in recommendation["candidates"] if not row["prd_feasible"]]
     assert feasible and infeasible
-    assert recommendation["recommendable_candidate_ids"] == ["offset-60"]
+    assert recommendation["recommendable_candidate_ids"] == ["offset-120"]
 
-    selected = next(row for row in recommendation["candidates"] if row["candidate_id"] == "offset-60")
+    selected = next(row for row in recommendation["candidates"] if row["candidate_id"] == "offset-120")
     comparison = client.post("/api/schedules/compare", json={
         "scenario_id": recommendation["scenario_id"], "analysis_date": request["analysis_date"],
         "background_profile": "road_traffic_observed_profile",

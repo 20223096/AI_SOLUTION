@@ -143,6 +143,7 @@ class CandidateDiagnostic(PRDResponse):
     sensitive_time_exposure_minutes: int
     weighted_sensitive_exposure: float
     existing_noise_overlap_receptor_minutes: int
+    existing_high_noise_overlap_minutes: int
     existing_event_overlap_basis: Literal["assumed_simulation", "none"]
     metrics: ScheduleMetrics
     pareto_included: bool
