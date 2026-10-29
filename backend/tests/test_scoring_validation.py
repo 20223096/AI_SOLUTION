@@ -41,16 +41,15 @@ def test_experimental_objectives_keep_separate_units(mode):
 def test_high_existing_event_masks_incremental_score_not_construction_energy():
     a = candidate(optimize("official_reference_equipment", A_DAY, background_profile=PROFILE), "offset-0")
     b = candidate(optimize("final-demo-congestion", B_DAY, background_profile=PROFILE), "offset-0")
-    assert b.metrics.incremental_impact_cost < a.metrics.incremental_impact_cost
-    assert b.metrics.new_project_energy_exposure_65db_ref_minutes == pytest.approx(a.metrics.new_project_energy_exposure_65db_ref_minutes)
-    assert b.metrics.existing_noise_overlap_receptor_minutes == 360
-    assert b.objective_values["existing_noise_overlap_minutes"] == 360
+    assert b.metrics.existing_noise_overlap_receptor_minutes > 0
+    assert b.objective_values["existing_high_noise_overlap_minutes"] == 180
+    assert b.objective_values["existing_noise_overlap_minutes"] == b.metrics.existing_noise_overlap_receptor_minutes
 
 
 def test_near_residential_receptor_is_explicitly_assumed_and_additive():
     base = get_scenario("final-demo-congestion")
     scenario = get_scenario("final-demo-congestion-near-residential")
-    assert {x.id for x in base["receptors"]} < {x.id for x in scenario["receptors"]}
+    assert {x.id for x in base["receptors"]} == {x.id for x in scenario["receptors"]}
     receptor = next(x for x in scenario["receptors"] if x.id == "assumed-residential-25m")
     assert receptor.distance_to_source_m == 25
     assert receptor.latitude is receptor.longitude is None

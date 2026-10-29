@@ -27,9 +27,10 @@
         ],
         "literature_reference_values": [],
         "assumed_values": [
-          "9/11 신규 신고 조건",
-          "시연 작업창",
-          "07:00~09:00 기존 공사 음향 오버레이",
+          "9/11·10/7 신규 신고 조건",
+          "08:00~17:00 장비 허용시간",
+          "9/11 08:00~11:00 주변 철거 고소음 오버레이",
+          "25m 가정 주거 계산 지점",
           "폐기물 수거시간·소음"
         ],
         "missing_values": [
@@ -52,12 +53,12 @@
       "demo_work_plan": {
         "scenario_id": "final-demo-congestion",
         "analysis_date": "2026-09-11",
-        "work_window": "07:00~18:00",
+        "work_window": "08:00~17:00",
         "status": "assumed",
         "source": "hackathon prompt and PoC scenario",
         "task_duration_status": "user_provided",
         "existing_congestion_overlay_status": "assumed",
-        "note": "공식 설계자료가 아니며 9/11 시연 계산에만 쓰는 작업계획이다. 복구 공정시간은 결측이다."
+        "note": "공식 설계자료가 아닌 9/11·10/7 공통 시연 작업계획이다. 08:00~15:00의 7시간 원안이며 되메우기·다짐으로 당일 복구한다."
       },
       "new_demo_notice": {
         "scenario_id": "final-demo-congestion",
@@ -188,7 +189,7 @@
       ],
       "acoustic_overlap_policy": {
         "official_events": "달력 맥락만 표시하며 가동시간·음향값이 없으면 합성하지 않는다.",
-        "assumed_congestion_overlay": "07:00~09:00, 82 Lp_dBA 가정은 final-demo-congestion 실험에만 사용한다.",
+        "assumed_congestion_overlay": "2026-09-11 08:00~11:00 고소음, 82 Lp_dBA 가정은 final-demo-congestion 실험에만 사용한다. 일일 가동 관측값이 아니다.",
         "claim_limit": "가정 운영시간으로 공식 실측 동시 소음 발생을 주장하지 않는다."
       }
     }

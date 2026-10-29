@@ -51,8 +51,9 @@ def test_simultaneous_and_non_simultaneous_event_exposure_are_distinct():
     result = optimize("final-demo-congestion", B_DAY, background_profile=PROFILE)
     simultaneous = next(x for x in result["valid_candidates"] if x.id == "offset-0")
     separate = next(x for x in result["valid_candidates"] if x.id == "offset-120")
-    assert simultaneous.metrics.existing_noise_overlap_receptor_minutes == 360
-    assert separate.metrics.existing_noise_overlap_receptor_minutes == 0
+    assert simultaneous.objective_values["existing_high_noise_overlap_minutes"] == 180
+    assert separate.objective_values["existing_high_noise_overlap_minutes"] == 60
+    assert simultaneous.metrics.existing_noise_overlap_receptor_minutes > separate.metrics.existing_noise_overlap_receptor_minutes
     assert simultaneous.metrics.new_project_energy_exposure_65db_ref_minutes == pytest.approx(separate.metrics.new_project_energy_exposure_65db_ref_minutes)
 
 

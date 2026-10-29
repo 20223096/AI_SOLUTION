@@ -88,7 +88,7 @@ def prd_validation_payload() -> dict[str, Any]:
         "planning": {
             "notice_id": "demo-notice", "project_name": "신촌 시연 공사", "location": "서울특별시 서대문구 신촌동",
             "construction_period": {"start": "2026-09-11", "end": "2026-09-11", "raw_text": "시연 입력"},
-            "total_work_window": {"start": "07:00", "end": "18:00"}, "road_excavation": True,
+            "total_work_window": {"start": "08:00", "end": "17:00"}, "road_excavation": True,
             "road_occupancy_permit_window": {"start": "08:00", "end": "17:00"},
             "equipment_constraints": [{"equipment_id": "excavator", "category": "굴착기", "specification": "06W", "model_name": None, "max_daily_count": 1, "required_usage_minutes": 60, "permitted_time_windows": [{"start": "08:00", "end": "17:00"}], "source_metadata": source}],
             "fixed_tasks": [{"task_id": "restore", "fixed_start": "16:00", "fixed_end": "17:00", "reason": "당일 복구", "source_metadata": source}],
@@ -113,10 +113,10 @@ def prd_integrated_payload() -> dict[str, Any]:
         "equipment_constraints": [
             {"equipment_id": equipment_id, "category": category, "specification": None, "model_name": None,
              "max_daily_count": 1, "required_usage_minutes": minutes,
-             "permitted_time_windows": [{"start": "07:00", "end": "18:00"}], "source_metadata": source}
+             "permitted_time_windows": [{"start": "08:00", "end": "17:00"}], "source_metadata": source}
             for equipment_id, category, minutes in (
                 ("cutter", "절단기", 60), ("breaker", "브레이커", 120),
-                ("excavator", "굴착기", 300), ("roller", "롤러", 60),
+                ("excavator", "굴착기", 180), ("roller", "롤러", 60),
             )
         ],
         "fixed_tasks": [], "same_day_restoration_required": False,

@@ -1865,6 +1865,10 @@
             "type": "integer",
             "title": "Existing Noise Overlap Receptor Minutes"
           },
+          "existing_high_noise_overlap_minutes": {
+            "type": "integer",
+            "title": "Existing High Noise Overlap Minutes"
+          },
           "existing_event_overlap_basis": {
             "type": "string",
             "enum": [
@@ -1904,6 +1908,7 @@
           "sensitive_time_exposure_minutes",
           "weighted_sensitive_exposure",
           "existing_noise_overlap_receptor_minutes",
+          "existing_high_noise_overlap_minutes",
           "existing_event_overlap_basis",
           "metrics",
           "pareto_included",

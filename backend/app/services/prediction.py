@@ -79,6 +79,8 @@ def predict(scenario_id: str, day: date, assignments: list[TaskAssignment] | Non
             for event in existing_events:
                 if event.get("scenario_group") != event_group or receptor.id not in event.get("receptor_ids", []):
                     continue
+                if event.get("active_dates") and day.isoformat() not in event["active_dates"]:
+                    continue
                 event_start = at(day, datetime.strptime(event["start_time"], "%H:%M").time())
                 event_end = at(day, datetime.strptime(event["end_time"], "%H:%M").time())
                 if overlaps(start, end, event_start, event_end):

@@ -6,40 +6,54 @@
   "analysis_date": "2026-09-11",
   "background_profile": "road_traffic_observed_profile",
   "baseline_policy": "legacy_v1_additive",
-  "baseline_recommended_candidate_ids": ["offset-0"],
+  "baseline_recommended_candidate_ids": [
+    "offset-120"
+  ],
   "cases": [
     {
       "multiplier": 1.1,
-      "recommended_candidate_ids": ["offset-0"],
+      "recommended_candidate_ids": [
+        "offset-120"
+      ],
       "recommendation_changed": false,
-      "pareto_candidate_ids": ["offset-0"],
+      "pareto_candidate_ids": [
+        "offset-0"
+      ],
       "ranking_changed": false,
-      "sensitive_exposure_receptor_minutes": 1620,
-      "weighted_sensitive_exposure": 1782.0,
-      "schedule_change_minutes": 0,
-      "incremental_impact_cost": 6.8
+      "sensitive_exposure_receptor_minutes": 1260,
+      "weighted_sensitive_exposure": 1386.0,
+      "schedule_change_minutes": 480,
+      "incremental_impact_cost": 168.76
     },
     {
       "multiplier": 1.3,
-      "recommended_candidate_ids": ["offset-0"],
+      "recommended_candidate_ids": [
+        "offset-120"
+      ],
       "recommendation_changed": false,
-      "pareto_candidate_ids": ["offset-0"],
+      "pareto_candidate_ids": [
+        "offset-0"
+      ],
       "ranking_changed": false,
-      "sensitive_exposure_receptor_minutes": 1620,
-      "weighted_sensitive_exposure": 2106.0,
-      "schedule_change_minutes": 0,
-      "incremental_impact_cost": 7.2
+      "sensitive_exposure_receptor_minutes": 1260,
+      "weighted_sensitive_exposure": 1638.0,
+      "schedule_change_minutes": 480,
+      "incremental_impact_cost": 169.24
     },
     {
       "multiplier": 1.5,
-      "recommended_candidate_ids": ["offset-0"],
+      "recommended_candidate_ids": [
+        "offset-120"
+      ],
       "recommendation_changed": false,
-      "pareto_candidate_ids": ["offset-0"],
+      "pareto_candidate_ids": [
+        "offset-0"
+      ],
       "ranking_changed": false,
-      "sensitive_exposure_receptor_minutes": 1620,
-      "weighted_sensitive_exposure": 2430.0,
-      "schedule_change_minutes": 0,
-      "incremental_impact_cost": 7.36
+      "sensitive_exposure_receptor_minutes": 1260,
+      "weighted_sensitive_exposure": 1890.0,
+      "schedule_change_minutes": 480,
+      "incremental_impact_cost": 169.68
     }
   ],
   "disclaimer": "Sensitivity multipliers are planning assumptions, not validated harm coefficients."
