@@ -39,7 +39,19 @@ class LLMExtractor(Extractor):
             raise RuntimeError("Supported provider value: openai_compatible")
         import httpx, json
         schema = ConstructionNotice.model_json_schema()
-        prompt = "Extract only explicitly present values. Use null/missing for absent data. Return JSON matching this schema: " + json.dumps(schema, ensure_ascii=False)
+        prompt = (
+            "Extract only explicitly present values. Use null/missing for absent data. Return JSON matching this schema. "
+            "Use these exact separate task_id and equipment_id values when the matching task/equipment is explicitly present: "
+            "콘크리트 절단: task id 'cut', equipment_id 'cutter'; 포장 깨기: task id 'break', equipment_id 'breaker'; "
+            "터파기: task id 'excavate', equipment_id 'excavator'; 되메우기·다짐(or 되메우기 및 다짐): task id 'compact', equipment_id 'roller'. "
+            "Never combine a task id and equipment id into one string. Preserve source order with canonical predecessor task IDs. "
+            "A shared '특정 장비 허용시간' is the permitted_time_windows value for every equipment task; "
+            "do not substitute each task's original scheduled start/end interval for that shared permitted window. "
+            "In constraints, use road_excavation for an explicit excavation condition, same_day for an explicit same-day restoration condition, "
+            "and equipment_count when the explicitly stated count is the same for every equipment task. "
+            "Do not infer any of these values when they are absent. Schema: "
+            + json.dumps(schema, ensure_ascii=False)
+        )
         response = httpx.post(f"{self.base_url.rstrip('/')}/chat/completions", headers={"Authorization": f"Bearer {self.api_key}"}, json={"model": self.model, "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": text}], "response_format": {"type": "json_object"}}, timeout=30)
         response.raise_for_status()
         raw = json.loads(response.json()["choices"][0]["message"]["content"])
