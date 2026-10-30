@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { lookupAddressCoordinate } from './coordinates'
 import { extractNoticeFromText } from './notices'
+import { getRecommendationDiagnostics } from './demoComparison'
 import {
   confirmResidentNotice,
   createResidentNoticeDraft,
@@ -20,6 +21,15 @@ describe('API v3.4 client', () => {
     const fetch = ok({ mode: 'mock' })
     await extractNoticeFromText('신고서')
     expect(fetch).toHaveBeenCalledWith('/api/notices/extract', expect.objectContaining({ method: 'POST' }))
+  })
+
+  it('loads the presentation comparison from current backend calculations', async () => {
+    const fetch = ok({})
+    await getRecommendationDiagnostics('2026-10-07')
+    expect(fetch).toHaveBeenCalledWith(
+      expect.stringContaining('/api/prd/recommendation-diagnostics?analysis_date=2026-10-07'),
+      expect.any(Object),
+    )
   })
 
   it('S2 sends the selected JUSO candidate explicitly', async () => {

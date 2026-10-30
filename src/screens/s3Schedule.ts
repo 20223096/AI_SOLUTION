@@ -46,6 +46,12 @@ export function buildOriginalSchedule(notice: ConstructionNotice, plan: Confirme
     const equipment = plan.equipment_by_task[id]
     const duration = task.duration_minutes ?? (equipment ? usage.get(equipment) : undefined) ?? null
 
+    // 일반 공사시간과 장비 허용시간이 다르면 해당 장비의 첫 허용시각 전에는 배치하지 않는다.
+    const equipmentWindow = equipment
+      ? plan.planning.equipment_constraints?.find((item) => item.equipment_id === equipment)?.permitted_time_windows?.[0]
+      : undefined
+    if (cursor != null && equipmentWindow) cursor = Math.max(cursor, toMinutes(hhmm(equipmentWindow.start)))
+
     const start = cursor != null ? fromMinutes(cursor) : null
     const endMin = cursor != null && duration != null ? cursor + duration : null
     const end = endMin != null ? fromMinutes(endMin) : null

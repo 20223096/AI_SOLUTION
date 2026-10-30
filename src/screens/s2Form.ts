@@ -77,12 +77,12 @@ export function formFromDraft(draft: PlanningDraft, tasks: ConstructionTask[]): 
     completion_date: '',
     non_adjustable: '',
     equipment,
-    // 장비 대수는 추출되지 않으므로 사용자가 직접 입력한다.
+    // 명시적으로 추출된 최대 대수가 있으면 시연 입력에도 그대로 이어 준다.
     tasks: tasks.map((t) => ({
       id: t.id,
       name: t.name,
       equipment_id: t.equipment_id && equipmentIds.has(t.equipment_id) ? t.equipment_id : '',
-      count: '',
+      count: t.equipment_id ? str(equipment.find((e) => e.equipment_id === t.equipment_id)?.max_daily_count) : '',
       restoration: false,
     })),
   }

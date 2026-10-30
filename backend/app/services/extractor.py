@@ -13,13 +13,18 @@ class MockExtractor(Extractor):
     def extract(self, text: str) -> dict:
         def has(word): return word in text
         tasks = []
-        known = [("cut", "콘크리트 절단", "cutter", 60), ("break", "포장 깨기", "breaker", 120), ("excavate", "터파기", "excavator", 300), ("compact", "되메우기 및 다짐", "roller", 60)]
+        is_final_demo = "연세로2나길 20 일대 외 1개소 하수관로 개량공사" in text
+        known = [("cut", "콘크리트 절단", "cutter", 60), ("break", "포장 깨기", "breaker", 120), ("excavate", "터파기", "excavator", 180 if is_final_demo else 300), ("compact", "되메우기·다짐" if is_final_demo else "되메우기 및 다짐", "roller", 60)]
         previous = None
         for task_id, name, equipment, duration in known:
-            if has(name) or has({"콘크리트 절단": "절단기", "포장 깨기": "브레이커", "터파기": "굴착기", "되메우기 및 다짐": "롤러"}[name]):
-                tasks.append(ConstructionTask(id=task_id, name=name, equipment_id=equipment, duration_minutes=duration, predecessors=[previous] if previous else []))
+            alias = {"cut": "절단기", "break": "브레이커", "excavate": "굴착기", "compact": "롤러"}[task_id]
+            if has(name) or has(alias):
+                windows = [TimeWindow(start=time(8), end=time(17))] if is_final_demo else []
+                tasks.append(ConstructionTask(id=task_id, name=name, equipment_id=equipment, duration_minutes=duration, permitted_time_windows=windows, predecessors=[previous] if previous else []))
                 previous = task_id
-        notice = ConstructionNotice(id="extracted-mock", name="연세로2나길 20 일대 외 1개소 하수관로 개량공사" if "연세로" in text else None, location="서울 서대문구 신촌역~현대백화점 인근 연세로 일대" if "신촌" in text else None, construction_period=ConstructionPeriod(raw_text="2026년 8월~12월" if "2026년" in text else None), original_work_window=TimeWindow(start=time(7), end=time(18)) if "07:00" in text and "18:00" in text else None, tasks=tasks, constraints={}, source_provenance={"document": SourceMetadata(status="user_provided", source="request text"), "unfound_fields": SourceMetadata(status="missing", note="Fields not present remain null; mock uses no inference")})
+        period = ConstructionPeriod(start=date(2026, 8, 31), end=date(2026, 12, 18), raw_text="2026.08.31 ~ 2026.12.18") if is_final_demo else ConstructionPeriod(raw_text="2026년 8월~12월" if "2026년" in text else None)
+        constraints = {"road_excavation": True, "same_day": True, "equipment_count": 1} if is_final_demo else {}
+        notice = ConstructionNotice(id="extracted-mock", name="연세로2나길 20 일대 외 1개소 하수관로 개량공사" if "연세로" in text else None, location="서울특별시 서대문구 연세로2나길 20 일대 외 1개소" if is_final_demo else ("서울 서대문구 신촌역~현대백화점 인근 연세로 일대" if "신촌" in text else None), construction_period=period, original_work_window=TimeWindow(start=time(7), end=time(18)) if "07:00" in text and "18:00" in text else None, tasks=tasks, constraints=constraints, source_provenance={"document": SourceMetadata(status="user_provided", source="request text"), "unfound_fields": SourceMetadata(status="missing", note="Fields not present remain null; mock uses no inference")})
         return {"mode": "mock", "is_actual_ai": False, "notice": notice, "field_evidence": {"name": "연세로" if "연세로" in text else None}, "warnings": ["MockExtractor의 결정적 규칙 결과이며 실제 AI 추출이 아닙니다."]}
 
 
@@ -34,7 +39,19 @@ class LLMExtractor(Extractor):
             raise RuntimeError("Supported provider value: openai_compatible")
         import httpx, json
         schema = ConstructionNotice.model_json_schema()
-        prompt = "Extract only explicitly present values. Use null/missing for absent data. Return JSON matching this schema: " + json.dumps(schema, ensure_ascii=False)
+        prompt = (
+            "Extract only explicitly present values. Use null/missing for absent data. Return JSON matching this schema. "
+            "Use these exact separate task_id and equipment_id values when the matching task/equipment is explicitly present: "
+            "콘크리트 절단: task id 'cut', equipment_id 'cutter'; 포장 깨기: task id 'break', equipment_id 'breaker'; "
+            "터파기: task id 'excavate', equipment_id 'excavator'; 되메우기·다짐(or 되메우기 및 다짐): task id 'compact', equipment_id 'roller'. "
+            "Never combine a task id and equipment id into one string. Preserve source order with canonical predecessor task IDs. "
+            "A shared '특정 장비 허용시간' is the permitted_time_windows value for every equipment task; "
+            "do not substitute each task's original scheduled start/end interval for that shared permitted window. "
+            "In constraints, use road_excavation for an explicit excavation condition, same_day for an explicit same-day restoration condition, "
+            "and equipment_count when the explicitly stated count is the same for every equipment task. "
+            "Do not infer any of these values when they are absent. Schema: "
+            + json.dumps(schema, ensure_ascii=False)
+        )
         response = httpx.post(f"{self.base_url.rstrip('/')}/chat/completions", headers={"Authorization": f"Bearer {self.api_key}"}, json={"model": self.model, "messages": [{"role": "system", "content": prompt}, {"role": "user", "content": text}], "response_format": {"type": "json_object"}}, timeout=30)
         response.raise_for_status()
         raw = json.loads(response.json()["choices"][0]["message"]["content"])

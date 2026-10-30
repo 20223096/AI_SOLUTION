@@ -133,6 +133,18 @@ def test_cors_origins_can_be_supplied_by_environment(monkeypatch):
     assert Settings().cors_allowed_origins == ["https://frontend.example"]
 
 
+def test_allowed_frontend_can_preflight_staff_draft_update():
+    origin = "http://localhost:5173"
+    response = client.options("/api/staff/resident-notices/drafts/demo", headers={
+        "Origin": origin,
+        "Access-Control-Request-Method": "PUT",
+        "Access-Control-Request-Headers": "content-type",
+    })
+    assert response.status_code == 200
+    assert response.headers["access-control-allow-origin"] == origin
+    assert "PUT" in response.headers["access-control-allow-methods"]
+
+
 def test_checked_in_openapi_and_types_are_response_typed():
     checked_in = json.loads((ROOT / "docs" / "openapi.json").read_text(encoding="utf-8"))
     assert checked_in == app.openapi()
