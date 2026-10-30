@@ -10,6 +10,7 @@ import {
 import { Missing } from '../components/Missing'
 import { ProvenanceBadge } from '../components/ProvenanceBadge'
 import { hhmm } from '../utils/time'
+import { FINAL_DEMO_NOTICE } from '../demo/finalDemoNotice'
 import './S1NoticeInput.css'
 
 type InputMode = 'text' | 'file'
@@ -20,11 +21,7 @@ type ExtractState =
   | { status: 'success'; data: ExtractResponse; sourceKey: string }
   | { status: 'error'; message: string }
 
-const SAMPLE_TEXT = `[공사 안내] 신촌로 상수도관 교체공사
-기간: 2026.10.19 ~ 10.30
-작업 시간: 09:00~18:00 중 약 2시간
-사용 장비: 굴착기(0.6㎥), 브레이커
-※ 14시 이전 작업 시작 불가 (자재 반입 일정)`
+const SAMPLE_TEXT = FINAL_DEMO_NOTICE
 
 const ACCEPTED_EXT = ['.txt', '.pdf']
 

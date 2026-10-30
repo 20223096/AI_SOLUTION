@@ -1,0 +1,20 @@
+.comparison-page { display: grid; gap: 16px }
+.comparison-intro h1, .comparison-card h2 { margin: 0 }
+.comparison-highlight { display: flex; align-items: baseline; gap: 12px; margin-top: 14px; padding: 14px; border-radius: 10px; background: #eef8f2 }
+.comparison-highlight b { color: var(--ok); font-size: 22px }
+.comparison-days { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px }
+.comparison-card.changed { border-top: 4px solid var(--ok) }
+.comparison-card.kept { border-top: 4px solid #61758a }
+.comparison-kicker, .comparison-assumption { color: var(--muted); margin: 4px 0 0 }
+.schedule-pair { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 12px; margin: 18px 0 }
+.schedule-pair > div { display: grid; gap: 5px; padding: 14px; border-radius: 10px; background: var(--bg) }
+.schedule-pair span, .schedule-pair small { color: var(--muted) }
+.schedule-pair b { font-size: 20px; font-variant-numeric: tabular-nums }
+.comparison-facts { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; border-block: 1px solid var(--line) }
+.comparison-facts div { padding: 12px 6px }
+.comparison-facts dt { color: var(--muted); font-size: 12px }
+.comparison-facts dd { margin: 4px 0 0; font-weight: 700 }
+.comparison-reason { line-height: 1.6 }
+.comparison-note-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px }
+.comparison-note-grid p { display: grid; gap: 4px; margin: 0; padding: 12px; border: 1px solid var(--line); border-radius: 10px }
+@media (max-width: 760px) { .comparison-days, .comparison-note-grid { grid-template-columns: 1fr } .comparison-facts { grid-template-columns: 1fr 1fr 1fr } .comparison-highlight { align-items: flex-start; flex-direction: column } }

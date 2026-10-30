@@ -87,6 +87,44 @@ def test_demo_api_is_deterministic_and_exposes_actual_overlap_numbers():
     assert (original["existing_high_noise_overlap_minutes"], recommended["existing_high_noise_overlap_minutes"]) == (180, 60)
 
 
+def test_final_demo_notice_mock_extraction_preserves_general_and_equipment_windows():
+    text = """연세로2나길 20 일대 외 1개소 하수관로 개량공사
+    공사 기간: 2026.08.31 ~ 2026.12.18
+    일반 공사시간 07:00~18:00, 특정 장비 허용시간 08:00~17:00
+    콘크리트 절단기 1대, 브레이커 1대, 터파기 굴착기 1대, 롤러 1대, 당일 복구"""
+    response = TestClient(app).post("/api/notices/extract", json={"text": text})
+    assert response.status_code == 200
+    notice = response.json()["notice"]
+    assert notice["original_work_window"] == {"start": "07:00:00", "end": "18:00:00"}
+    assert [(task["id"], task["duration_minutes"]) for task in notice["tasks"]] == [
+        ("cut", 60), ("break", 120), ("excavate", 180), ("compact", 60)
+    ]
+    assert all(task["permitted_time_windows"] == [{"start": "08:00:00", "end": "17:00:00"}] for task in notice["tasks"])
+    assert notice["constraints"] == {"road_excavation": True, "same_day": True, "equipment_count": 1}
+
+    draft_response = TestClient(app).post("/api/prd/planning/from-notice", json={
+        "notice": notice, "extractor_mode": "mock", "is_actual_ai": False,
+        "field_evidence": response.json()["field_evidence"],
+    })
+    assert draft_response.status_code == 200
+    planning = draft_response.json()["planning_draft"]
+    assert planning["total_work_window"] == {"start": "07:00:00", "end": "18:00:00"}
+    assert all(row["required_usage_minutes"] in {60, 120, 180} for row in planning["equipment_constraints"])
+    assert all(row["permitted_time_windows"] == [{"start": "08:00:00", "end": "17:00:00"}] for row in planning["equipment_constraints"])
+    planning["provenance"] = "user_provided"
+
+    recommendation = TestClient(app).post("/api/prd/recommendations/constraint-filtered", json={
+        "analysis_date": "2026-09-11", "planning": planning,
+        "predecessors": planning["predecessors"],
+        "equipment_by_task": {task["id"]: task["equipment_id"] for task in notice["tasks"]},
+        "equipment_count_by_task": {task["id"]: 1 for task in notice["tasks"]},
+        "restoration_task_ids": ["compact"],
+        "background_profile": PROFILE, "objective_mode": "incremental_impact",
+    })
+    assert recommendation.status_code == 200
+    assert recommendation.json()["recommendable_candidate_ids"] == ["offset-120"]
+
+
 def test_overlap_uses_temporal_union_and_excludes_the_new_project_itself(monkeypatch):
     scenario = get_scenario(DEMO)
     assignments = default_assignments(scenario, date(2026, 9, 11))

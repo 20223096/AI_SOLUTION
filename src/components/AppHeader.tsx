@@ -1,4 +1,4 @@
-export type ScreenId = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8'
+export type ScreenId = 'S1' | 'S2' | 'S3' | 'S4' | 'S5' | 'S6' | 'S7' | 'S8' | 'COMPARE'
 
 const SCREENS: { id: ScreenId; label: string }[] = [
   { id: 'S1', label: 'S1 공고문 올리기' },
@@ -11,7 +11,7 @@ const SCREENS: { id: ScreenId; label: string }[] = [
   { id: 'S8', label: 'S8 주민 화면' },
 ]
 
-export function AppHeader({ current }: { current: ScreenId }) {
+export function AppHeader({ current, onNavigate }: { current: ScreenId; onNavigate: (screen: 'S1' | 'COMPARE') => void }) {
   return (
     <>
       <header className="top">
@@ -21,15 +21,18 @@ export function AppHeader({ current }: { current: ScreenId }) {
         </div>
         <div className="ctx">
           <span className="chip">신촌동 생활권</span>
+          <button className="ghost" aria-pressed={current === 'COMPARE'} onClick={() => onNavigate(current === 'COMPARE' ? 'S1' : 'COMPARE')}>
+            {current === 'COMPARE' ? 'S1~S8로 돌아가기' : '발표 비교'}
+          </button>
         </div>
       </header>
-      <ol className="steps" aria-label="진행 단계">
+      {current !== 'COMPARE' && <ol className="steps" aria-label="진행 단계">
         {SCREENS.map((s) => (
           <li key={s.id} aria-current={s.id === current ? 'step' : undefined}>
             {s.label}
           </li>
         ))}
-      </ol>
+      </ol>}
     </>
   )
 }

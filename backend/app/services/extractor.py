@@ -13,13 +13,18 @@ class MockExtractor(Extractor):
     def extract(self, text: str) -> dict:
         def has(word): return word in text
         tasks = []
-        known = [("cut", "콘크리트 절단", "cutter", 60), ("break", "포장 깨기", "breaker", 120), ("excavate", "터파기", "excavator", 300), ("compact", "되메우기 및 다짐", "roller", 60)]
+        is_final_demo = "연세로2나길 20 일대 외 1개소 하수관로 개량공사" in text
+        known = [("cut", "콘크리트 절단", "cutter", 60), ("break", "포장 깨기", "breaker", 120), ("excavate", "터파기", "excavator", 180 if is_final_demo else 300), ("compact", "되메우기·다짐" if is_final_demo else "되메우기 및 다짐", "roller", 60)]
         previous = None
         for task_id, name, equipment, duration in known:
-            if has(name) or has({"콘크리트 절단": "절단기", "포장 깨기": "브레이커", "터파기": "굴착기", "되메우기 및 다짐": "롤러"}[name]):
-                tasks.append(ConstructionTask(id=task_id, name=name, equipment_id=equipment, duration_minutes=duration, predecessors=[previous] if previous else []))
+            alias = {"cut": "절단기", "break": "브레이커", "excavate": "굴착기", "compact": "롤러"}[task_id]
+            if has(name) or has(alias):
+                windows = [TimeWindow(start=time(8), end=time(17))] if is_final_demo else []
+                tasks.append(ConstructionTask(id=task_id, name=name, equipment_id=equipment, duration_minutes=duration, permitted_time_windows=windows, predecessors=[previous] if previous else []))
                 previous = task_id
-        notice = ConstructionNotice(id="extracted-mock", name="연세로2나길 20 일대 외 1개소 하수관로 개량공사" if "연세로" in text else None, location="서울 서대문구 신촌역~현대백화점 인근 연세로 일대" if "신촌" in text else None, construction_period=ConstructionPeriod(raw_text="2026년 8월~12월" if "2026년" in text else None), original_work_window=TimeWindow(start=time(7), end=time(18)) if "07:00" in text and "18:00" in text else None, tasks=tasks, constraints={}, source_provenance={"document": SourceMetadata(status="user_provided", source="request text"), "unfound_fields": SourceMetadata(status="missing", note="Fields not present remain null; mock uses no inference")})
+        period = ConstructionPeriod(start=date(2026, 8, 31), end=date(2026, 12, 18), raw_text="2026.08.31 ~ 2026.12.18") if is_final_demo else ConstructionPeriod(raw_text="2026년 8월~12월" if "2026년" in text else None)
+        constraints = {"road_excavation": True, "same_day": True, "equipment_count": 1} if is_final_demo else {}
+        notice = ConstructionNotice(id="extracted-mock", name="연세로2나길 20 일대 외 1개소 하수관로 개량공사" if "연세로" in text else None, location="서울특별시 서대문구 연세로2나길 20 일대 외 1개소" if is_final_demo else ("서울 서대문구 신촌역~현대백화점 인근 연세로 일대" if "신촌" in text else None), construction_period=period, original_work_window=TimeWindow(start=time(7), end=time(18)) if "07:00" in text and "18:00" in text else None, tasks=tasks, constraints=constraints, source_provenance={"document": SourceMetadata(status="user_provided", source="request text"), "unfound_fields": SourceMetadata(status="missing", note="Fields not present remain null; mock uses no inference")})
         return {"mode": "mock", "is_actual_ai": False, "notice": notice, "field_evidence": {"name": "연세로" if "연세로" in text else None}, "warnings": ["MockExtractor의 결정적 규칙 결과이며 실제 AI 추출이 아닙니다."]}
 
 

@@ -116,6 +116,7 @@ def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
     document_source = notice.source_provenance.get("document") or notice.source_provenance.get("scenario") or SourceMetadata(
         status="missing", note="No document-level provenance supplied"
     )
+    constraints = notice.constraints
     equipment = []
     for task in notice.tasks:
         if task.equipment_id is None:
@@ -125,12 +126,11 @@ def planning_draft_from_notice(request: PRDPlanningDraftRequest) -> dict:
             "category": task.name,
             "specification": None,
             "model_name": None,
-            "max_daily_count": None,
+            "max_daily_count": constraints.get("equipment_count") if isinstance(constraints.get("equipment_count"), int) else None,
             "required_usage_minutes": task.duration_minutes,
             "permitted_time_windows": task.permitted_time_windows,
             "source_metadata": document_source,
         })
-    constraints = notice.constraints
     road_excavation = constraints.get("road_excavation") if isinstance(constraints.get("road_excavation"), bool) else None
     same_day = constraints.get("same_day") if isinstance(constraints.get("same_day"), bool) else None
     field_values = {

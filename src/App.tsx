@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import type { ExtractResponse } from './api/notices'
 import type { ConfirmedPlan } from './api/planning'
 import { isSelectable, type CompareResponse, type RecommendationResponse } from './api/recommendations'
@@ -12,12 +12,13 @@ import { S5CandidatePicker } from './screens/S5CandidatePicker'
 import { S6Comparison } from './screens/S6Comparison'
 import { S7NoticeDraft } from './screens/S7NoticeDraft'
 import { S8ResidentView } from './screens/S8ResidentView'
+import { ScenarioComparison } from './screens/ScenarioComparison'
 
 type Stage = 'plan' | 's3' | 'rec' | 'candidate' | 'comparison'
 const STAGES: Stage[] = ['plan', 's3', 'rec', 'candidate', 'comparison']
 
 function App() {
-  const [screen, setScreen] = useState<ScreenId>('S1')
+  const [screen, setScreen] = useState<ScreenId>(() => window.location.pathname === '/demo-comparison' ? 'COMPARE' : 'S1')
   // 단계별 결과. 앞 단계 결과가 바뀌면 뒤 단계 결과는 모두 폐기한다(가이드 6절).
   const [extraction, setExtraction] = useState<ExtractResponse | null>(null) // S1 → S2
   const [plan, setPlan] = useState<ConfirmedPlan | null>(null) // S2 → S3, S4
@@ -43,9 +44,22 @@ function App() {
 
   const candidate = rec?.candidates.find((c) => c.candidate_id === candidateId && isSelectable(c, rec)) ?? null
 
+  useEffect(() => {
+    const onPopState = () => setScreen(window.location.pathname === '/demo-comparison' ? 'COMPARE' : 'S1')
+    window.addEventListener('popstate', onPopState)
+    return () => window.removeEventListener('popstate', onPopState)
+  }, [])
+
+  function navigateTopLevel(next: 'S1' | 'COMPARE') {
+    history.pushState(null, '', next === 'COMPARE' ? '/demo-comparison' : '/')
+    setScreen(next)
+  }
+
   return (
     <div className="wrap">
-      <AppHeader current={screen} />
+      <AppHeader current={screen} onNavigate={navigateTopLevel} />
+
+      {screen === 'COMPARE' && <ScenarioComparison />}
 
       {/* 각 화면은 마운트해 두어 앞 단계로 돌아가도 입력이 유지되게 한다. */}
       <div hidden={screen !== 'S1'}>
