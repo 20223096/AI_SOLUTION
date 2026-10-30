@@ -1,0 +1,34 @@
+services:
+  - type: web
+    name: shh-schedule-api
+    runtime: python
+    region: singapore
+    plan: free
+    buildCommand: pip install -r backend/requirements.txt
+    startCommand: cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.13.5
+      - key: SHH_EXTRACTOR_MODE
+        value: llm
+      - key: SHH_LLM_PROVIDER
+        value: openai_compatible
+      - key: SHH_LLM_BASE_URL
+        value: https://api.openai.com/v1
+      - key: SHH_LLM_MODEL
+        value: gpt-4.1-mini
+      - key: SHH_LLM_API_KEY
+        sync: false
+      - key: JUSO_SEARCH_API_KEY
+        sync: false
+      - key: JUSO_COORD_API_KEY
+        sync: false
+      - key: SHH_CORS_ALLOWED_ORIGINS
+        sync: false
+      - key: SHH_STAFF_API_ALLOWED_HOSTS
+        sync: false
+      - key: SHH_RESIDENT_NOTICE_STORE_PATH
+        value: /opt/render/project/src/runtime/resident_notices.json
+      - key: SHH_RECOMMENDATION_SNAPSHOT_STORE_PATH
+        value: /opt/render/project/src/runtime/recommendation_snapshots.json
