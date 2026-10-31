@@ -5,13 +5,15 @@ import type { CandidateResult, CompareResponse, RecommendationResponse } from '.
 import {
   confirmResidentNotice,
   createResidentNoticeDraft,
+  getResidentNoticeDraft,
   updateResidentNoticeDraft,
   type ResidentNoticeDraft,
   type SelectedNoticeSchedule,
 } from '../api/residentNotices'
+import { ApiError } from '../api/client'
 import { errorMessage } from '../utils/async'
-import { assignmentTime, candidateLabel } from './s4Display'
-import { buildFacts, defaultReason } from './s7Notice'
+import { assignmentTime, candidateLabel, taskNameMap } from './s4Display'
+import { buildFacts, byStartTime, defaultHighNoise, defaultReason } from './s7Notice'
 import './S7NoticeDraft.css'
 
 interface Props {
@@ -28,15 +30,22 @@ interface Props {
 
 export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed, onConfirm, onBack, onNext }: Props) {
   const facts = useMemo(() => buildFacts(plan, candidate), [plan, candidate])
+  const [department, setDepartment] = useState('기후환경과')
   const [contact, setContact] = useState('')
   const [reason, setReason] = useState(() => defaultReason(plan, res, candidate, compare))
-  const [highNoise, setHighNoise] = useState<Record<string, boolean>>({})
+  const [highNoise, setHighNoise] = useState<Record<string, boolean>>(() =>
+    defaultHighNoise(plan, candidate.assignments.map((a) => a.task_id)),
+  )
   const [draft, setDraft] = useState<ResidentNoticeDraft | null>(null)
   const [headline, setHeadline] = useState('')
   const [body, setBody] = useState('')
   const [busy, setBusy] = useState(false)
   const [message, setMessage] = useState('')
-  const taskNames = new Map(notice.tasks.map((task) => [task.id, task.name]))
+  const [loadedExisting, setLoadedExisting] = useState(false)
+  const taskNames = taskNameMap(notice.tasks)
+  const assignments = useMemo(() => byStartTime(candidate.assignments), [candidate])
+  // 공개 문의처는 "담당 부서 연락처" 한 줄로 서버에 보낸다.
+  const publicContact = [department.trim(), contact.trim()].filter(Boolean).join(' ')
 
   const schedule = (): SelectedNoticeSchedule => ({
     schedule_id: `${plan.planning.notice_id}-${candidate.candidate_id}`,
@@ -45,7 +54,7 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
     recommendation_source: '/api/prd/recommendations/constraint-filtered',
     candidate_valid: candidate.recommendable && candidate.prd_feasible,
     schedule_snapshot_id: candidate.schedule_snapshot_id,
-    assignments: candidate.assignments.map((item) => ({
+    assignments: assignments.map((item) => ({
       ...item,
       task_name: taskNames.get(item.task_id) ?? item.task_id,
       high_noise: highNoise[item.task_id] ?? false,
@@ -64,7 +73,7 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
         construction_date: res.analysis_date,
         public_window_start: `${res.analysis_date}T${plan.planning.total_work_window.start}:00+09:00`,
         public_window_end: `${res.analysis_date}T${plan.planning.total_work_window.end}:00+09:00`,
-        public_contact: contact || null,
+        public_contact: publicContact || null,
         schedule: schedule(),
         provenance: [{ field: 'selected_schedule', status: 'user_confirmed', source: 'S5 담당자 선택' }],
         data_classification: 'demo',
@@ -73,7 +82,20 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
       setHeadline(data.headline)
       setBody(`${data.body}\n\n일정 조정 참고: ${reason}`)
     } catch (err) {
-      setMessage(errorMessage(err))
+      if (!isConflict(err)) {
+        setMessage(errorMessage(err))
+        return
+      }
+      // 409: 이 공사의 초안이 서버에 이미 있다(이전 실행에서 저장). 기존 초안을 불러와 이어서 수정·확정한다.
+      try {
+        const existing = await getResidentNoticeDraft(plan.planning.notice_id)
+        setDraft(existing)
+        setHeadline(existing.headline)
+        setBody(existing.body)
+        setLoadedExisting(true)
+      } catch (loadErr) {
+        setMessage(errorMessage(loadErr))
+      }
     } finally {
       setBusy(false)
     }
@@ -83,16 +105,22 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
     if (!draft) return
     setBusy(true)
     setMessage('')
-    try {
-      const updated = await updateResidentNoticeDraft(plan.planning.notice_id, {
-        expected_revision: draft.revision,
+    const update = (revision: number) =>
+      updateResidentNoticeDraft(plan.planning.notice_id, {
+        expected_revision: revision,
         project_name: plan.planning.project_name,
         public_location: plan.planning.location,
-        public_contact: contact || null,
+        public_contact: publicContact || null,
         headline,
         body,
         schedule: schedule(),
         provenance: [{ field: 'selected_schedule', status: 'user_confirmed', source: 'S5 담당자 선택' }],
+      })
+    try {
+      // 409(다른 탭 등에서 초안 revision이 바뀜): 최신 revision으로 한 번 다시 저장한다. 내용은 이 화면 기준으로 덮어쓴다.
+      const updated = await update(draft.revision).catch(async (err: unknown) => {
+        if (!isConflict(err)) throw err
+        return update((await getResidentNoticeDraft(plan.planning.notice_id)).revision)
       })
       const published = await confirmResidentNotice(plan.planning.notice_id, updated.revision, updated.schedule_version)
       setDraft(published)
@@ -115,12 +143,13 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
         <div className="scroll"><table className="s7-facts"><tbody>
           <tr><th>공사명</th><td>{facts.projectName}</td></tr>
           <tr><th>장소</th><td>{facts.location}</td></tr>
-          <tr><th>작업 시간</th><td>{candidate.assignments.map((a) => <div key={a.task_id}>{assignmentTime(a.start)}–{assignmentTime(a.end)} {taskNames.get(a.task_id) ?? a.task_id}</div>)}</td></tr>
+          <tr><th>작업 시간</th><td>{assignments.map((a) => <div key={a.task_id}>{assignmentTime(a.start)}–{assignmentTime(a.end)} {taskNames.get(a.task_id) ?? a.task_id}</div>)}</td></tr>
         </tbody></table></div>
         <h3>시끄러운 작업 분류</h3>
         <p className="muted">서버가 추정하지 않습니다. 담당자가 각 작업을 직접 확인하세요.</p>
-        {candidate.assignments.map((item) => <label className="s2-check" key={item.task_id}><input type="checkbox" checked={highNoise[item.task_id] ?? false} onChange={(e) => setHighNoise((v) => ({ ...v, [item.task_id]: e.target.checked }))} />{taskNames.get(item.task_id) ?? item.task_id}</label>)}
+        {assignments.map((item) => <label className="s2-check" key={item.task_id}><input type="checkbox" checked={highNoise[item.task_id] ?? false} onChange={(e) => setHighNoise((v) => ({ ...v, [item.task_id]: e.target.checked }))} />{taskNames.get(item.task_id) ?? item.task_id}</label>)}
         <div className="s7-inputs">
+          <label><span>담당 부서</span><input value={department} onChange={(e) => setDepartment(e.target.value)} /></label>
           <label><span>공개 문의처</span><input value={contact} onChange={(e) => setContact(e.target.value)} placeholder="필수" /></label>
           <label className="wide"><span>일정 조정 참고 문구</span><textarea rows={3} value={reason} onChange={(e) => setReason(e.target.value)} /></label>
         </div>
@@ -134,6 +163,7 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
         {draft.missing_fields.length > 0 && <div className="hint warn">확정 전 필수값: {draft.missing_fields.join(', ')}</div>}
         <button type="button" disabled={busy || confirmed || !headline.trim() || !body.trim()} onClick={saveAndConfirm}>{busy ? '처리 중…' : '수정 저장 후 확정·공개'}</button>
       </section>}
+      {loadedExisting && !confirmed && <section className="panel span2"><div className="hint warn" role="status">서버에 이미 저장된 초안이 있어 불러왔습니다. 본문의 일정이 지금 고른 조정안과 맞는지 확인한 뒤 확정해 주세요. 확정하면 이 화면의 일정으로 덮어씁니다.</div></section>}
       {message && <section className="panel span2"><div className="hint error" role="alert">{message}</div></section>}
       <section className="panel span2"><div className="row">
         <button type="button" className="ghost" onClick={onBack}>← S6으로 돌아가기</button>
@@ -142,3 +172,5 @@ export function S7NoticeDraft({ notice, plan, res, candidate, compare, confirmed
     </div>
   )
 }
+
+const isConflict = (err: unknown) => err instanceof ApiError && err.status === 409

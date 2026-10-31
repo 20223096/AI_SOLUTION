@@ -51,3 +51,18 @@ export function compareSchedules(
 /** 가이드 6절: id 목록에 있고 recommendable·prd_feasible이 모두 true인 후보만 선택 가능하다. */
 export const isSelectable = (c: CandidateResult, res: RecommendationResponse) =>
   res.recommendable_candidate_ids.includes(c.candidate_id) && c.recommendable && c.prd_feasible
+
+/**
+ * 대표 추천: 선택 가능한 추천 후보 중 추가 소음 영향(incremental_impact_cost)이 가장 낮은 후보.
+ * 같으면 일정 변경이 적은 후보. 날짜별 결과는 API가 정한다(예: 9/11은 offset-0, 10/7은 offset-120).
+ */
+export function representativeId(res: RecommendationResponse): string | null {
+  const best = res.candidates
+    .filter((c) => isSelectable(c, res))
+    .reduce<CandidateResult | null>((a, c) => {
+      if (!a) return c
+      const d = c.noise_impact.incremental_impact_cost - a.noise_impact.incremental_impact_cost
+      return d < 0 || (d === 0 && c.schedule_change_minutes < a.schedule_change_minutes) ? c : a
+    }, null)
+  return best?.candidate_id ?? null
+}

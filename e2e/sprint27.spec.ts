@@ -59,7 +59,7 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await expect(page.getByText('서버 확정·공개됨')).toBeVisible({ timeout: 30_000 })
   await page.getByRole('button', { name: /다음: 주민 공개 화면/ }).click()
   await expect(page.getByText('공개 API 조회 결과')).toBeVisible()
-  await expect(page.getByText('시연 데이터')).toBeVisible()
+  await expect(page.getByText('시연 예시')).toBeVisible()
 
   const after = await page.evaluate(async () => {
     const response = await fetch('/api/public/construction/extracted-mock/resident-notice')

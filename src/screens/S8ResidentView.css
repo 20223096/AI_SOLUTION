@@ -1,15 +1,62 @@
-/* 목업 11번 주민 화면 */
-.phone { max-width: 360px; margin: 0 auto; border: 1px solid var(--line); border-radius: 26px; padding: 18px 16px; background: var(--bg) }
-.ph-top { font-size: 13px; color: var(--muted); margin-bottom: 10px }
-.qcard { background: var(--quiet-soft); border: 1px solid var(--quiet); border-radius: 14px; padding: 14px }
-.ql { font-size: 12.5px; color: var(--quiet); font-weight: 600 }
-.qt { font-size: 28px; font-weight: 700; color: var(--quiet); letter-spacing: -0.02em; font-variant-numeric: tabular-nums }
-.qd { font-size: 13px }
-.day { list-style: none; padding: 0; margin: 12px 0 0; display: grid; gap: 6px; font-size: 13.5px }
-.day li { display: flex; align-items: center; gap: 8px; background: var(--panel); border-radius: 8px; padding: 7px 10px }
-.day li.q { color: var(--quiet); font-weight: 600 }
-.dt { min-width: 92px; color: var(--muted); font-weight: 400; font-variant-numeric: tabular-nums }
-.dot { width: 10px; height: 10px; border-radius: 50%; flex: none }
-.dot.build { background: var(--build) }
-.dot.qq { background: var(--quiet) }
-.ph-note { font-size: 12px; color: var(--muted); margin: 10px 2px 0 }
+/* S8 주민 화면: docs/S8_주민화면_시안.html (후보 1). 주민 휴대폰 화면 미리보기라 다크 모드와 무관하게 시안 색을 쓴다. */
+.s8r {
+  --s8-navy: #1F2A44; --s8-bg: #F4F6F3; --s8-sub: #4A5568; --s8-faint: #718096; --s8-line: #EEF1F4;
+  --s8-loud: #D9604C; --s8-moderate: #E9A23B; --s8-quiet: #5AA47E;
+  max-width: 390px; margin: 0 auto; border-radius: 26px; overflow: hidden; border: 1px solid var(--line);
+  background: var(--s8-bg); color: var(--s8-navy); display: flex; flex-direction: column;
+}
+.s8r p { margin: 0 }
+
+.s8r-top { background: var(--s8-navy); color: #FFFFFF; padding: 28px 24px 24px; display: flex; flex-direction: column; gap: 4px }
+.s8r-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px }
+.s8r-brand b { font-size: 20px; font-weight: 700; letter-spacing: -0.02em }
+.s8r-demo { margin-left: auto; font-size: 12px; font-weight: 500; color: var(--s8-navy); background: #F2B544; border-radius: 999px; padding: 3px 10px }
+.s8r-sub { font-size: 14px; color: #C9D3E0 }
+.s8r-top h1 { margin: 0; font-size: 24px; font-weight: 700; line-height: 1.35; color: #FFFFFF }
+
+.s8r-body { padding: 20px 20px 32px; display: flex; flex-direction: column; gap: 16px }
+.s8r-card { background: #FFFFFF; border-radius: 20px; padding: 20px; display: flex; flex-direction: column; gap: 14px }
+.s8r-h { font-size: 13px; font-weight: 700; color: var(--s8-sub) }
+
+.s8r-glance { display: flex; align-items: center; gap: 12px }
+.s8r-ic { width: 44px; height: 44px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0 }
+.s8r-ic.loud { background: #FBE4DF }
+.s8r-ic.quiet { background: #DDF0EC }
+.s8r-glance > div { display: flex; flex-direction: column; gap: 2px }
+.s8r-gl { font-size: 13px; color: var(--s8-sub) }
+.s8r-gt { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums }
+.s8r-gs { margin-top: 2px !important; font-size: 12px; color: var(--s8-faint) }
+
+.s8r-bars, .s8r-hours { display: grid; gap: 3px }
+.s8r-bars .s8r-bar { height: 36px; border-radius: 6px }
+.s8r-bar.loud { background: var(--s8-loud) }
+.s8r-bar.moderate { background: var(--s8-moderate) }
+.s8r-bar.quiet { background: var(--s8-quiet) }
+.s8r-hours { font-size: 11px; color: var(--s8-sub); text-align: center; margin-top: -8px }
+.s8r-legend { display: flex; gap: 14px; font-size: 12px; color: var(--s8-sub) }
+.s8r-legend span { display: flex; align-items: center; gap: 6px }
+.s8r-legend i { width: 10px; height: 10px; border-radius: 3px; display: inline-block }
+
+.s8r-list { gap: 4px }
+.s8r-list .s8r-h { margin-bottom: 8px }
+.s8r-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--s8-line) }
+.s8r-row:last-child { border-bottom: 0 }
+.s8r-time { font-size: 14px; font-weight: 700; width: 98px; flex-shrink: 0; font-variant-numeric: tabular-nums }
+.s8r-task { font-size: 14px; flex-grow: 1 }
+.s8r-lv { font-size: 12px; font-weight: 700 }
+.s8r-lv.loud { color: #B5432F }
+.s8r-lv.moderate { color: #9A5B0B }
+.s8r-lv.quiet { color: #1F6F65 }
+.s8r-empty { font-size: 14px; color: var(--s8-faint) }
+
+.s8r-note { background: #E8F3F1; border-radius: 20px; padding: 18px 20px; display: flex; gap: 12px; align-items: flex-start }
+.s8r-note svg { flex-shrink: 0; margin-top: 2px }
+.s8r-note p { font-size: 14px; line-height: 1.6; white-space: pre-line }
+
+.s8r-call {
+  display: flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; border-radius: 14px; padding: 0 12px;
+  background: var(--s8-navy); color: #FFFFFF !important; font-size: 15px; font-weight: 700; text-decoration: none; text-align: center;
+}
+a.s8r-call:hover { background: #2F8F83 }
+
+.s8r-foot { margin-top: 4px !important; font-size: 12px; line-height: 1.6; color: var(--s8-sub); text-align: center }

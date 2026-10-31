@@ -2,7 +2,7 @@ import type { ConfirmedPlan } from '../api/planning'
 import type { CandidateResult, CompareResponse, RecommendationResponse } from '../api/recommendations'
 import { ANALYSIS_DATE } from '../api/schedules'
 import { hhmm } from '../utils/time'
-import { assignmentTime } from './s4Display'
+import { assignmentTime, SCENARIO_TASKS } from './s4Display'
 
 /**
  * 주민 안내문 초안 생성. 계약상 안내문 생성 API가 없으므로 클라이언트 템플릿으로 만든다.
@@ -145,3 +145,33 @@ export function buildDrafts(f: NoticeFacts, input: NoticeInputs): Record<Channel
 
   return { web, sms, board }
 }
+
+/** 기본으로 '시끄러운 작업'에 체크할 장비. 담당자가 화면에서 바꿀 수 있다. */
+const DEFAULT_HIGH_NOISE_EQUIPMENT = [
+  { id: 'cutter', name: '절단기' },
+  { id: 'breaker', name: '브레이커' },
+]
+
+/**
+ * 절단기·브레이커를 쓰는 작업을 기본으로 체크한다. 장비 ID나 S2에서 확정한 장비 분류명으로 판단한다.
+ * S2 계획에 없는 작업(공고문에서 추출되지 않은 시나리오 작업)은 시나리오 장비로 판단한다.
+ */
+export function defaultHighNoise(plan: ConfirmedPlan, taskIds: string[]): Record<string, boolean> {
+  const categories = new Map((plan.planning.equipment_constraints ?? []).map((e) => [e.equipment_id, e.category]))
+  const isLoud = (equipmentId: string) =>
+    DEFAULT_HIGH_NOISE_EQUIPMENT.some(
+      (d) => equipmentId === d.id || (categories.get(equipmentId) ?? '').includes(d.name),
+    )
+  const equipmentOf = (taskId: string) =>
+    taskId in plan.equipment_by_task ? plan.equipment_by_task[taskId] : (SCENARIO_TASKS[taskId]?.equipment_id ?? null)
+  return Object.fromEntries(
+    taskIds.filter((taskId) => {
+      const equipmentId = equipmentOf(taskId)
+      return equipmentId != null && isLoud(equipmentId)
+    }).map((taskId) => [taskId, true]),
+  )
+}
+
+/** 작업을 시작 시각순(같으면 종료 시각순)으로 정렬한 사본 */
+export const byStartTime = <T extends { start: string; end: string }>(items: T[]): T[] =>
+  [...items].sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end))
