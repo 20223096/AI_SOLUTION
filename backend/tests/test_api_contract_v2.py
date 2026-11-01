@@ -133,16 +133,25 @@ def test_cors_origins_can_be_supplied_by_environment(monkeypatch):
     assert Settings().cors_allowed_origins == ["https://frontend.example"]
 
 
+def test_staff_token_is_loaded_as_secret(monkeypatch):
+    monkeypatch.setenv("SHH_STAFF_API_TOKEN", "staff-test-token")
+    settings = Settings()
+    assert settings.staff_api_token is not None
+    assert str(settings.staff_api_token) == "**********"
+    assert settings.staff_api_token.get_secret_value() == "staff-test-token"
+
+
 def test_allowed_frontend_can_preflight_staff_draft_update():
     origin = "http://localhost:5173"
     response = client.options("/api/staff/resident-notices/drafts/demo", headers={
         "Origin": origin,
         "Access-Control-Request-Method": "PUT",
-        "Access-Control-Request-Headers": "content-type",
+        "Access-Control-Request-Headers": "authorization,content-type",
     })
     assert response.status_code == 200
     assert response.headers["access-control-allow-origin"] == origin
     assert "PUT" in response.headers["access-control-allow-methods"]
+    assert "Authorization" in response.headers["access-control-allow-headers"]
 
 
 def test_checked_in_openapi_and_types_are_response_typed():

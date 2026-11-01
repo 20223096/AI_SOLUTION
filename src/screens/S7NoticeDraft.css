@@ -13,5 +13,10 @@
 }
 .s7-inputs textarea { font-weight: 400 }
 
+.s7-auth { margin: 14px 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px }
+.s7-auth label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600 }
+.s7-auth input { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink) }
+.s7-auth p { margin: 6px 0 0 }
+
 .s7-draft { margin-top: 12px; font-size: 14px; line-height: 1.7; background: var(--panel) }
 .s7-draft.board { text-align: center; font-size: 15px }

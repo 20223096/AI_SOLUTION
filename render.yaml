@@ -28,6 +28,8 @@ services:
         sync: false
       - key: SHH_STAFF_API_ALLOWED_HOSTS
         sync: false
+      - key: SHH_STAFF_API_TOKEN
+        sync: false
       - key: SHH_RESIDENT_NOTICE_STORE_PATH
         value: /opt/render/project/src/runtime/resident_notices.json
       - key: SHH_RECOMMENDATION_SNAPSHOT_STORE_PATH

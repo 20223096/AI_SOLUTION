@@ -1,3 +1,5 @@
+import secrets
+
 from fastapi import APIRouter, Depends, Request
 
 from app.core.config import get_settings
@@ -31,8 +33,20 @@ def notice_service() -> ResidentNoticeService:
 
 def staff_only(request: Request) -> None:
     host = request.client.host if request.client else ""
-    if host not in get_settings().staff_api_allowed_hosts:
-        raise NoticeWorkflowError("forbidden", "staff API is limited to loopback or an explicitly allowed demo host", 403)
+    settings = get_settings()
+    if host in settings.staff_api_allowed_hosts:
+        return
+
+    authorization = request.headers.get("Authorization", "")
+    scheme, _, credential = authorization.partition(" ")
+    configured = settings.staff_api_token
+    if (
+        configured is None
+        or scheme.lower() != "bearer"
+        or not credential
+        or not secrets.compare_digest(credential, configured.get_secret_value())
+    ):
+        raise NoticeWorkflowError("forbidden", "valid staff Bearer token required", 401)
 
 
 @router.post("/api/staff/resident-notices/drafts", response_model=ResidentNoticeDraftResponse, responses=ERRORS, dependencies=[Depends(staff_only)])

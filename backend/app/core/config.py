@@ -32,6 +32,7 @@ class Settings(BaseSettings):
     resident_notice_store_path: Path = PROJECT_ROOT / "runtime" / "resident_notices.json"
     recommendation_snapshot_store_path: Path = PROJECT_ROOT / "runtime" / "recommendation_snapshots.json"
     staff_api_allowed_hosts: list[str] = Field(default_factory=lambda: ["127.0.0.1", "::1", "localhost", "testclient"])
+    staff_api_token: SecretStr | None = None
     model_config = SettingsConfigDict(
         # Root .env remains a migration fallback; backend/.env wins when both exist.
         env_file=(PROJECT_ROOT / ".env", BACKEND_ROOT / ".env"),

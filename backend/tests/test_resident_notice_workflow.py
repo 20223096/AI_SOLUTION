@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 from fastapi.testclient import TestClient
+from pydantic import SecretStr
 
 from app.api import resident_notices as api
 from app.main import app
@@ -205,11 +206,58 @@ def test_s7_to_s8_http_e2e_and_cors(tmp_path, monkeypatch):
     assert preflight.status_code == 200
 
 
-def test_staff_api_rejects_non_allowed_client(tmp_path, monkeypatch):
+def test_remote_staff_api_requires_valid_bearer_token(tmp_path, monkeypatch):
     monkeypatch.setattr(api, "notice_service", lambda: service(tmp_path))
+    settings = api.get_settings().model_copy(update={"staff_api_token": SecretStr("staff-test-token")})
+    monkeypatch.setattr(api, "get_settings", lambda: settings)
     remote = TestClient(app, client=("203.0.113.10", 50000))
-    response = remote.post("/api/staff/resident-notices/drafts", json=payload())
-    assert response.status_code == 403 and response.json()["status"] == "forbidden"
+    missing = remote.post("/api/staff/resident-notices/drafts", json=payload())
+    wrong = remote.post(
+        "/api/staff/resident-notices/drafts",
+        json=payload(),
+        headers={"Authorization": "Bearer wrong-token"},
+    )
+    valid = remote.post(
+        "/api/staff/resident-notices/drafts",
+        json=payload(),
+        headers={"Authorization": "Bearer staff-test-token"},
+    )
+    assert missing.status_code == 401 and missing.json()["status"] == "forbidden"
+    assert wrong.status_code == 401 and wrong.json()["status"] == "forbidden"
+    assert valid.status_code == 200 and valid.json()["publication_status"] == "private"
+    draft = valid.json()
+    update_body = {
+        "expected_revision": draft["revision"],
+        "project_name": draft["project_name"],
+        "public_location": draft["public_location"],
+        "public_contact": draft["public_contact"],
+        "headline": draft["headline"],
+        "body": draft["body"],
+        "schedule": payload()["schedule"],
+        "provenance": payload()["provenance"],
+    }
+    updated = remote.put(
+        "/api/staff/resident-notices/drafts/project-a",
+        json=update_body,
+        headers={"Authorization": "Bearer staff-test-token"},
+    )
+    confirmed = remote.post(
+        "/api/staff/resident-notices/drafts/project-a/confirm",
+        json={"expected_revision": updated.json()["revision"], "schedule_version": updated.json()["schedule_version"]},
+        headers={"Authorization": "Bearer staff-test-token"},
+    )
+    assert updated.status_code == 200
+    assert confirmed.status_code == 200 and confirmed.json()["publication_status"] == "published"
+
+
+def test_public_notice_read_never_requires_staff_token(tmp_path, monkeypatch):
+    svc = service(tmp_path)
+    monkeypatch.setattr(api, "notice_service", lambda: svc)
+    settings = api.get_settings().model_copy(update={"staff_api_token": SecretStr("staff-test-token")})
+    monkeypatch.setattr(api, "get_settings", lambda: settings)
+    remote = TestClient(app, client=("203.0.113.10", 50000))
+    response = remote.get("/api/public/construction/project-a/resident-notice")
+    assert response.status_code == 200 and response.json()["status"] == "not_published"
 
 
 def test_openapi_has_five_typed_endpoints_and_total_33_operations():
