@@ -6,6 +6,7 @@
   background: var(--s8-bg); color: var(--s8-navy); display: flex; flex-direction: column;
 }
 .s8r p { margin: 0 }
+.s8-source { display: flex; gap: 8px; margin-bottom: 14px; flex-wrap: wrap }
 
 .s8r-top { background: var(--s8-navy); color: #FFFFFF; padding: 28px 24px 24px; display: flex; flex-direction: column; gap: 4px }
 .s8r-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 12px }

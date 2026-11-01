@@ -3,6 +3,7 @@ import type { CandidateResult, CompareResponse, RecommendationResponse } from '.
 import { ANALYSIS_DATE } from '../api/schedules'
 import { hhmm } from '../utils/time'
 import { assignmentTime, SCENARIO_TASKS } from './s4Display'
+import type { ResidentPublicNotice, SelectedNoticeSchedule } from '../api/residentNotices'
 
 /**
  * 주민 안내문 초안 생성. 계약상 안내문 생성 API가 없으므로 클라이언트 템플릿으로 만든다.
@@ -175,3 +176,49 @@ export function defaultHighNoise(plan: ConfirmedPlan, taskIds: string[]): Record
 /** 작업을 시작 시각순(같으면 종료 시각순)으로 정렬한 사본 */
 export const byStartTime = <T extends { start: string; end: string }>(items: T[]): T[] =>
   [...items].sort((a, b) => a.start.localeCompare(b.start) || a.end.localeCompare(b.end))
+
+const QUIET_LIMITATION = '시끄러운 작업이 없는 시간은 이 공사 일정만을 기준으로 계산한 시연 정보입니다.'
+
+/** 서버에 쓰지 않고 S8 주민 화면을 시연하기 위한 메모리 전용 공개 형태를 만든다. */
+export function buildPreviewNotice(
+  schedule: SelectedNoticeSchedule,
+  windowStart: string,
+  windowEnd: string,
+  headline: string,
+  body: string,
+  publicContact: string,
+): ResidentPublicNotice {
+  const assignments = byStartTime(schedule.assignments)
+  const noisy = assignments.filter((item) => item.high_noise).map(({ start, end }) => ({ start, end }))
+  const startMs = Date.parse(windowStart)
+  const endMs = Date.parse(windowEnd)
+  const offset = /([+-])(\d{2}):(\d{2})$/.exec(windowStart)
+  const offsetMinutes = offset ? (offset[1] === '+' ? 1 : -1) * (Number(offset[2]) * 60 + Number(offset[3])) : 0
+  const offsetSuffix = offset?.[0] ?? 'Z'
+  const localIso = (value: number) => `${new Date(value + offsetMinutes * 60_000).toISOString().slice(0, 19)}${offsetSuffix}`
+  const noisyMs = noisy.map((item) => [Date.parse(item.start), Date.parse(item.end)] as const)
+  const hourlyNoiseLevels: ResidentPublicNotice['hourly_noise_levels'] = []
+  for (let cursor = startMs; cursor < endMs; cursor += 60 * 60 * 1000) {
+    const slotEnd = Math.min(cursor + 60 * 60 * 1000, endMs)
+    const overlapping = assignments.filter((item) => Date.parse(item.end) > cursor && Date.parse(item.start) < slotEnd)
+    const level = overlapping.some((item) => item.high_noise) ? 'loud' : overlapping.length ? 'moderate' : 'quiet'
+    const label: '시끄러움' | '보통' | '조용' = level === 'loud' ? '시끄러움' : level === 'moderate' ? '보통' : '조용'
+    hourlyNoiseLevels.push({ start: localIso(cursor), end: localIso(slotEnd), level, label })
+  }
+  const boundaries = [startMs, endMs, ...noisyMs.flat()].filter((value) => value >= startMs && value <= endMs).sort((a, b) => a - b)
+  const quiet = boundaries.slice(0, -1).map((start, index) => ({ start, end: boundaries[index + 1] }))
+    .filter((interval) => interval.end > interval.start && !noisyMs.some(([start, end]) => start < interval.end && end > interval.start))
+    .sort((a, b) => (b.end - b.start) - (a.end - a.start))[0]
+
+  return {
+    today_schedule: assignments.map((item) => ({ task_name: item.task_name, start: item.start, end: item.end })),
+    noisy_work_intervals: noisy,
+    longest_quiet_interval: quiet ? { start: localIso(quiet.start), end: localIso(quiet.end) } : null,
+    quiet_interval_limitation: QUIET_LIMITATION,
+    confirmed_notice: `${headline.trim()}\n\n${body.trim()}`,
+    public_contact: publicContact.trim() || '기후환경과 (시연용 문의처 미입력)',
+    hourly_noise_levels: hourlyNoiseLevels,
+    noise_level_policy: { version: 'schedule_activity_v1', basis: 'S7에서 선택한 시연 일정의 작업 종류 기준', provenance: 'derived_from_confirmed_schedule', measurement_validated: false },
+    publication_provenance: { publication_version: 0, confirmed_at: new Date().toISOString(), schedule_version: schedule.schedule_version, data_classification: 'demo' },
+  }
+}

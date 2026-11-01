@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import type { ExtractResponse } from './api/notices'
 import type { ConfirmedPlan } from './api/planning'
 import { isSelectable, representativeId, type CompareResponse, type RecommendationResponse } from './api/recommendations'
-import type { ResidentNoticeDraft } from './api/residentNotices'
+import type { ResidentNoticeDraft, ResidentPublicNotice } from './api/residentNotices'
 import { AppHeader, type ScreenId } from './components/AppHeader'
 import { S1NoticeInput } from './screens/S1NoticeInput'
 import { S2ExtractionReview } from './screens/S2ExtractionReview'
@@ -27,6 +27,7 @@ function App() {
   const [candidateId, setCandidateId] = useState<string | null>(null) // S5 → S6
   const [comparison, setComparison] = useState<CompareResponse | null>(null) // S6 → S7
   const [confirmedDraft, setConfirmedDraft] = useState<ResidentNoticeDraft | null>(null) // S7 → S8
+  const [previewNotice, setPreviewNotice] = useState<ResidentPublicNotice | null>(null) // S7 → S8, 메모리 전용
   // 앞 단계 결과가 바뀌면 다음 화면을 key로 다시 마운트해 이전 상태를 버린다.
   const [extractionVersion, setExtractionVersion] = useState(0)
   const [planVersion, setPlanVersion] = useState(0)
@@ -40,6 +41,7 @@ function App() {
     if (from <= 3) setCandidateId(null)
     if (from <= 4) setComparison(null)
     setConfirmedDraft(null)
+    setPreviewNotice(null)
   }
 
   const candidate = rec?.candidates.find((c) => c.candidate_id === candidateId && isSelectable(c, rec)) ?? null
@@ -172,14 +174,21 @@ function App() {
             compare={comparison}
             confirmed={confirmedDraft?.candidate_id === candidate.candidate_id && confirmedDraft.publication_status === 'published'}
             onConfirm={setConfirmedDraft}
+            onPreview={(preview) => {
+              setPreviewNotice(preview)
+              setScreen('S8')
+            }}
             onBack={() => setScreen('S6')}
-            onNext={() => setScreen('S8')}
+            onNext={() => {
+              setPreviewNotice(null)
+              setScreen('S8')
+            }}
           />
         </div>
       )}
 
-      {screen === 'S8' && plan && candidate && confirmedDraft?.candidate_id === candidate.candidate_id && (
-        <S8ResidentView projectId={plan.planning.notice_id} location={plan.planning.location} onBack={() => setScreen('S7')} />
+      {screen === 'S8' && plan && candidate && (previewNotice || confirmedDraft?.candidate_id === candidate.candidate_id) && (
+        <S8ResidentView projectId={plan.planning.notice_id} location={plan.planning.location} preview={previewNotice} onBack={() => setScreen('S7')} />
       )}
 
       <footer>쉿간표 PoC · 추출 결과는 사용자 확인 전까지 확정값이 아닙니다.</footer>
