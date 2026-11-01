@@ -45,26 +45,30 @@ describe('API v3.4 client', () => {
 
   it('creates a private S7 draft through the staff endpoint', async () => {
     const fetch = ok({ status: 'draft' })
-    await createResidentNoticeDraft({} as never)
+    await createResidentNoticeDraft({} as never, 'secret')
     expect(fetch).toHaveBeenCalledWith('/api/staff/resident-notices/drafts', expect.objectContaining({ method: 'POST' }))
+    expect(fetch.mock.calls[0][1]?.headers).toMatchObject({ Authorization: 'Bearer secret' })
   })
 
   it('updates a draft with PUT', async () => {
     const fetch = ok({ revision: 2 })
-    await updateResidentNoticeDraft('project/a', {} as never)
+    await updateResidentNoticeDraft('project/a', {} as never, 'secret')
     expect(fetch).toHaveBeenCalledWith('/api/staff/resident-notices/drafts/project%2Fa', expect.objectContaining({ method: 'PUT' }))
+    expect(fetch.mock.calls[0][1]?.headers).toMatchObject({ Authorization: 'Bearer secret' })
   })
 
   it('confirms with revision and schedule version', async () => {
     const fetch = ok({ status: 'confirmed' })
-    await confirmResidentNotice('project', 2, 'schedule-v2')
+    await confirmResidentNotice('project', 2, 'schedule-v2', 'secret')
     expect(JSON.parse(String(fetch.mock.calls[0][1]?.body))).toEqual({ expected_revision: 2, schedule_version: 'schedule-v2' })
+    expect(fetch.mock.calls[0][1]?.headers).toMatchObject({ Authorization: 'Bearer secret' })
   })
 
   it('S8 reads only the public endpoint', async () => {
     const fetch = ok({ status: 'not_published' })
     expect((await getPublicResidentNotice('project')).status).toBe('not_published')
     expect(fetch).toHaveBeenCalledWith('/api/public/construction/project/resident-notice', expect.any(Object))
+    expect(fetch.mock.calls[0][1]?.headers).not.toHaveProperty('Authorization')
   })
 
   it('preserves server errors for UI handling', async () => {
