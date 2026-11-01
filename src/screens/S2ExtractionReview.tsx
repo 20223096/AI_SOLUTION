@@ -138,7 +138,8 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
 
   function confirm() {
     if (!form) return
-    if (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed) {
+    // 공식 주소 좌표 조회는 선택 사항이다. 확정된 계획에는 좌표가 들어가지 않는다.
+    if (issues.length > 0) {
       setShowErrors(true)
       return
     }
@@ -214,6 +215,7 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
               <button type="button" className="ghost" disabled={coordinateLoading || form.location.trim().length < 2} onClick={() => lookupCoordinate()}>
                 {coordinateLoading ? '공식 주소 조회 중…' : '공식 주소·좌표 조회'}
               </button>
+              <span className="muted">선택 사항 · 조회하지 않아도 다음 단계로 넘어갈 수 있습니다.</span>
             </div>
             {coordinateError && <div className="hint error" role="alert">{coordinateError}</div>}
             {coordinate?.status === 'selection_required' && (
@@ -504,15 +506,14 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
       </section>
 
       <section className="panel span2">
-        {showErrors && (issues.length > 0 || coordinate?.status !== 'resolved' || !coordinateConfirmed) && (
+        {showErrors && issues.length > 0 && (
           <div className="hint error" role="alert">
-            <b>확정하기 전에 입력값과 공식 주소 대표점을 확인해 주세요.</b>
+            <b>확정하기 전에 입력값을 확인해 주세요.</b>
             <ul className="s2-issues">
               {issues.map((i) => (
                 <li key={i.key + i.message}>{i.message}</li>
               ))}
             </ul>
-            {(coordinate?.status !== 'resolved' || !coordinateConfirmed) && <div>공식 주소 좌표를 조회하고 대표점의 한계를 확인해 주세요.</div>}
           </div>
         )}
         <div className="row">
@@ -522,7 +523,8 @@ export function S2ExtractionReview({ extraction, onBack, onConfirm }: Props) {
           <button type="button" onClick={confirm}>
             계획 확정하고 제약 확인 (S3)
           </button>
-          {!showErrors && (issues.length > 0 || !coordinateConfirmed) && <span className="muted">입력 항목과 공식 주소 좌표 확인이 필요합니다.</span>}
+          {!showErrors && issues.length > 0 && <span className="muted">입력 항목 확인이 필요합니다.</span>}
+          {issues.length === 0 && !coordinateConfirmed && <span className="muted">공식 주소 좌표는 확인하지 않았습니다(선택 사항).</span>}
         </div>
       </section>
     </div>

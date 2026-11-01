@@ -5,6 +5,7 @@ import { ANALYSIS_DATE, type ScheduleValidationResponse } from '../api/schedules
 import { CandidateBadge } from '../components/CandidateBadge'
 import { errorMessage, isAbort, type Async } from '../utils/async'
 import { candidateLabel, candidateReason, caveatText, formatDelta, formatNumber } from './s4Display'
+import { S4SensitivityMap } from './S4SensitivityMap'
 import './S4Recommendation.css'
 
 interface Props {
@@ -128,6 +129,14 @@ export function S4Recommendation({ plan, s3Validation, onBack, onEditPlan, onNex
             </ul>
           </div>
         )}
+      </section>
+
+      <section className="panel span2">
+        <div className="ph">
+          <h2>소음 민감도 지도</h2>
+          <span className="tag">공사장 기준 100m·200m</span>
+        </div>
+        <S4SensitivityMap scenarioId={res.scenario_id} />
       </section>
 
       <section className="panel span2">

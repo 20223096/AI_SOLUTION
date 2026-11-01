@@ -18,3 +18,26 @@
 .s4-badge.rec { background: var(--quiet); color: var(--panel); border-color: var(--quiet) }
 .s4-badge.ok { color: var(--quiet); border-color: var(--quiet) }
 .s4-badge.bad { color: var(--s4); border-color: var(--s4) }
+
+.s4-map { margin: 0; display: grid; gap: 8px }
+.s4-map svg { width: 100%; max-width: 560px; height: auto; justify-self: center }
+.s4-map .map-bg { fill: var(--bg) }
+.s4-map .edge { fill: none; stroke: var(--line) }
+.s4-map .ring { fill: none; stroke: var(--muted); stroke-dasharray: 4 3 }
+.s4-map .ring.r100 { fill: var(--s4); fill-opacity: .12 }
+.s4-map .ring.r200 { fill: var(--s3); fill-opacity: .08 }
+.s4-map .ring-label { font-size: 10px; font-weight: 600; fill: var(--muted) }
+.s4-map .ray { stroke: var(--line); stroke-dasharray: 2 3 }
+.s4-map .site { fill: var(--build) }
+.s4-map .site-label { font-size: 10.5px; font-weight: 600; fill: var(--ink) }
+.s4-map .rcp circle { stroke: var(--panel); stroke-width: 2 }
+.s4-map .rcp.high circle, .s4-map-legend .legend-dot.high { background: var(--s4); fill: var(--s4) }
+.s4-map .rcp.mid circle, .s4-map-legend .legend-dot.mid { background: var(--s3); fill: var(--s3) }
+.s4-map .rcp.low circle, .s4-map-legend .legend-dot.low { background: var(--s2); fill: var(--s2) }
+.s4-map .rcp.outside circle { stroke: var(--muted); stroke-dasharray: 2 2 }
+.s4-map .rcp-name { font-size: 10px; font-weight: 600; fill: var(--ink) }
+.s4-map .rcp-dist { font-size: 10px; fill: var(--muted) }
+.s4-map-cap { font-size: 12px }
+.s4-map-legend { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--muted) }
+.s4-map-legend span { display: inline-flex; align-items: center; gap: 6px }
+.s4-map-legend .legend-dot { width: 10px; height: 10px; border-radius: 50% }

@@ -19,7 +19,9 @@ export default defineConfig(({ mode }) => {
       proxy: {
         '/api': {
           target: apiTarget,
+          // 원격 백엔드(https://shh-schedule-api.onrender.com)는 Host 헤더를 자기 도메인으로 받아야 하고 TLS 인증서를 검증한다.
           changeOrigin: true,
+          secure: apiTarget.startsWith('https://'),
         },
       },
     },

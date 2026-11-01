@@ -1,5 +1,5 @@
 import { useState, type KeyboardEvent } from 'react'
-import { isSelectable, type CandidateResult, type RecommendationResponse } from '../api/recommendations'
+import { isSelectable, representativeId, type CandidateResult, type RecommendationResponse } from '../api/recommendations'
 import { assignmentTime, candidateLabel, formatDelta, formatNumber } from './s4Display'
 import './S5CandidatePicker.css'
 
@@ -11,11 +11,42 @@ interface Props {
   onNext: () => void
 }
 
-type Status = 'rec' | 'ok' | 'bad'
-const STATUS_LABEL: Record<Status, string> = { rec: '추천', ok: '제약 충족 · 비추천', bad: '제약 위반' }
+type Status = 'base' | 'rec' | 'more' | 'ok' | 'bad'
+const STATUS_LABEL: Record<Status, string> = {
+  base: '원 일정 · 비교 기준',
+  rec: '추천',
+  more: '추천 · 목록 외',
+  ok: '제약 충족 · 비추천',
+  bad: '제약 위반',
+}
 
-const statusOf = (c: CandidateResult, res: RecommendationResponse): Status =>
-  isSelectable(c, res) ? 'rec' : c.prd_feasible ? 'ok' : 'bad'
+/** 화면에 보여줄 추천 후보 최대 개수 */
+const MAX_SHOWN = 3
+
+/**
+ * 추천 후보가 MAX_SHOWN개를 넘으면 일정 변경량 순으로 정렬해
+ * 변경이 가장 적은 안·중간 안·주민 부담이 가장 적은 안(변경이 가장 큰 안)을 고른다.
+ * 추천 후보는 Pareto 후보라 변경량이 클수록 추가 소음 영향이 작다.
+ */
+function pickShown(selectable: CandidateResult[]): CandidateResult[] {
+  const sorted = [...selectable].sort((a, b) => a.schedule_change_minutes - b.schedule_change_minutes)
+  if (sorted.length <= MAX_SHOWN) return sorted
+  return [sorted[0], sorted[Math.floor((sorted.length - 1) / 2)], sorted[sorted.length - 1]]
+}
+
+const isOriginal = (c: CandidateResult, res: RecommendationResponse) => c.candidate_id === res.original_schedule?.candidate_id
+
+/** 원 일정은 추천 카드가 아니라 비교 기준으로 따로 표시한다(추천 가능하면 '원 일정 유지'로 고를 수 있다). */
+const statusOf = (c: CandidateResult, res: RecommendationResponse, shownIds: Set<string>): Status =>
+  isOriginal(c, res)
+    ? 'base'
+    : isSelectable(c, res)
+      ? shownIds.has(c.candidate_id)
+        ? 'rec'
+        : 'more'
+      : c.prd_feasible
+        ? 'ok'
+        : 'bad'
 
 /** 작업 전체 시간 범위 "08:00–17:00" */
 function spanOf(c: CandidateResult): string {
@@ -26,9 +57,14 @@ function spanOf(c: CandidateResult): string {
 }
 
 export function S5CandidatePicker({ res, selectedId, onSelect, onBack, onNext }: Props) {
-  const selectable = res.candidates.filter((c) => isSelectable(c, res))
+  const selectable = res.candidates.filter((c) => isSelectable(c, res) && !isOriginal(c, res))
+  const shown = pickShown(selectable)
+  const shownIds = new Set(shown.map((c) => c.candidate_id))
   const original = res.original_schedule
-  const selected = selectable.find((c) => c.candidate_id === selectedId) ?? null
+  const repId = representativeId(res)
+  const baseSelectable = original != null && isSelectable(original, res)
+  const baseOn = baseSelectable && original.candidate_id === selectedId
+  const selected = shown.find((c) => c.candidate_id === selectedId) ?? (baseOn ? original : null)
 
   return (
     <div className="grid s5">
@@ -36,23 +72,65 @@ export function S5CandidatePicker({ res, selectedId, onSelect, onBack, onNext }:
         <div className="ph">
           <span className="step">S5</span>
           <h2>조정안 고르기</h2>
-          <span className="tag">추천 후보만 선택 가능</span>
+          <span className="tag">추천 후보 최대 {MAX_SHOWN}개</span>
         </div>
         <p className="sub">
           일정을 얼마나 옮기는지(변경량)와 주민에게 더해지는 소음 영향을 함께 봅니다. 추천 후보만 고를 수 있고, 고른 뒤에도 자동으로
           확정되지 않습니다.
         </p>
 
-        <CandidateChart res={res} selectedId={selectedId} onSelect={onSelect} />
+        <CandidateChart res={res} shownIds={shownIds} selectedId={selectedId} onSelect={onSelect} />
 
-        {selectable.length === 1 && (
+        {shown.length === 0 &&
+          (baseSelectable ? (
+            <div className="hint">
+              원 일정보다 나은 추천 후보가 없어 API 결과에 따라 <b>원 일정 유지</b>가 대표 추천입니다.
+            </div>
+          ) : (
+            <div className="hint error" role="alert">
+              원 일정 외에 고를 수 있는 추천 후보가 없습니다. S4로 돌아가 계획을 확인해 주세요.
+            </div>
+          ))}
+        {shown.length === 1 && (
           <div className="hint">
-            추천 후보가 <b>{candidateLabel(selectable[0].candidate_id)}</b> 하나입니다. 내용을 확인한 뒤 직접 선택해 주세요.
+            추천 후보가 <b>{candidateLabel(shown[0].candidate_id)}</b> 하나입니다. 내용을 확인한 뒤 직접 선택해 주세요.
+          </div>
+        )}
+        {selectable.length > shown.length && (
+          <div className="hint">
+            추천 후보 {selectable.length}개 중 일정 변경이 가장 적은 안, 중간 안, 주민 부담이 가장 적은 안 {shown.length}개만
+            보여줍니다.
+          </div>
+        )}
+
+        {original && (
+          <div className={`s5-base${baseOn ? ' on' : ''}`}>
+            <span className="s5-base-tag">비교 기준</span>
+            <b>
+              원 일정{original.candidate_id === repId && <span className="s5-rep">대표 추천</span>}
+            </b>
+            <span className="opt-time">{spanOf(original)}</span>
+            <span>추가 소음 영향 {formatNumber(original.noise_impact.incremental_impact_cost)}</span>
+            <span>기존 소음과 겹침 {formatNumber(original.noise_impact.existing_noise_overlap_receptor_minutes)}</span>
+            <span className="muted">
+              {original.prd_feasible ? '제약 충족' : `제약 위반 ${original.violations.length}건`} · 아래 추천안의 변화량은 이 일정 대비입니다.
+            </span>
+            {baseSelectable && (
+              <label className="s5-base-pick">
+                <input
+                  type="radio"
+                  name="s5-candidate"
+                  checked={baseOn}
+                  onChange={() => onSelect(original.candidate_id)}
+                />
+                원 일정 유지로 진행
+              </label>
+            )}
           </div>
         )}
 
         <div className="opts" role="radiogroup" aria-label="조정안">
-          {selectable.map((c) => {
+          {shown.map((c) => {
             const on = c.candidate_id === selectedId
             const di = original ? c.noise_impact.incremental_impact_cost - original.noise_impact.incremental_impact_cost : null
             const dov = original
@@ -67,7 +145,10 @@ export function S5CandidatePicker({ res, selectedId, onSelect, onBack, onNext }:
                 className={`opt${on ? ' on' : ''}`}
                 onClick={() => onSelect(c.candidate_id)}
               >
-                <b>{candidateLabel(c.candidate_id)}</b>
+                <b>
+                  {candidateLabel(c.candidate_id)}
+                  {c.candidate_id === repId && <span className="s5-rep">대표 추천</span>}
+                </b>
                 <span className="opt-time">{spanOf(c)}</span>
                 <span>일정 변경 {formatNumber(c.schedule_change_minutes)}분</span>
                 <span>
@@ -119,10 +200,12 @@ function niceTicks(min: number, max: number, count = 4): number[] {
 
 function CandidateChart({
   res,
+  shownIds,
   selectedId,
   onSelect,
 }: {
   res: RecommendationResponse
+  shownIds: Set<string>
   selectedId: string | null
   onSelect: (id: string) => void
 }) {
@@ -131,7 +214,7 @@ function CandidateChart({
     c,
     x: c.schedule_change_minutes,
     y: c.noise_impact.incremental_impact_cost,
-    status: statusOf(c, res),
+    status: statusOf(c, res, shownIds),
   }))
   const xTicks = niceTicks(0, Math.max(...pts.map((p) => p.x), 60))
   const yVals = pts.map((p) => p.y)
@@ -182,8 +265,7 @@ function CandidateChart({
             const cx = sx(p.x)
             const cy = sy(p.y)
             const on = id === selectedId
-            const can = p.status === 'rec'
-            const isOriginal = id === res.original_schedule?.candidate_id
+            const can = p.status === 'rec' || (p.status === 'base' && isSelectable(p.c, res))
             return (
               <g
                 key={id}
@@ -202,9 +284,9 @@ function CandidateChart({
                 <circle cx={cx} cy={cy} r={12} className="hit" />
                 {on && <circle cx={cx} cy={cy} r={10} className="sel-ring" />}
                 <circle cx={cx} cy={cy} r={p.status === 'bad' ? 4 : can ? 6 : 5} className="dot" />
-                {(can || isOriginal) && (
+                {(can || p.status === 'base') && (
                   <text x={cx} y={cy - 14} className="pt-label" textAnchor="middle">
-                    {isOriginal ? '원 일정' : candidateLabel(id)}
+                    {p.status === 'base' ? '원 일정 (기준)' : candidateLabel(id)}
                   </text>
                 )}
               </g>
@@ -232,7 +314,9 @@ function CandidateChart({
         )}
       </div>
       <div className="s5-legend">
-        {(['rec', 'ok', 'bad'] as const).map((s) => (
+        {(['base', 'rec', 'more', 'ok', 'bad'] as const)
+          .filter((s) => (s !== 'more' && s !== 'base') || pts.some((p) => p.status === s))
+          .map((s) => (
           <span key={s}>
             <svg width="14" height="14" aria-hidden="true">
               <circle cx="7" cy="7" r={s === 'bad' ? 4 : 5} className={`legend-dot ${s}`} />
