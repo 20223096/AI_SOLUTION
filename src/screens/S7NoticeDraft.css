@@ -17,6 +17,16 @@
 .s7-auth label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600 }
 .s7-auth input { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink) }
 .s7-auth p { margin: 6px 0 0 }
+.s7-mode { margin: 14px 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 10px }
+.s7-mode legend { padding: 0 5px; font-weight: 700 }
+.s7-mode label { display: flex; align-items: flex-start; gap: 9px; cursor: pointer }
+.s7-mode label span { display: grid; gap: 2px }
+.s7-mode small { color: var(--muted) }
+.s7-preview-action { display: grid; gap: 10px }
+.s7-preview-editor { margin: 14px 0; padding: 12px; border: 1px solid var(--line); border-radius: 8px; display: grid; gap: 9px }
+.s7-preview-editor h3, .s7-preview-editor p { margin: 0 }
+.s7-preview-editor label { display: grid; gap: 6px; font-size: 13.5px; font-weight: 600 }
+.s7-preview-editor input { font: inherit; padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--bg); color: var(--ink); font-weight: 400 }
 
 .s7-draft { margin-top: 12px; font-size: 14px; line-height: 1.7; background: var(--panel) }
 .s7-draft.board { text-align: center; font-size: 15px }

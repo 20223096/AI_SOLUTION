@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getPublicResidentNotice, type ResidentPublicResponse } from '../api/residentNotices'
+import { getPublicResidentNotice, type ResidentPublicNotice, type ResidentPublicResponse } from '../api/residentNotices'
 import { errorMessage, isAbort, type Async } from '../utils/async'
 import { assignmentTime } from './s4Display'
 import { byStartTime } from './s7Notice'
 import './S8ResidentView.css'
 
-interface Props { projectId: string; location: string; onBack: () => void }
+interface Props { projectId: string; location: string; preview: ResidentPublicNotice | null; onBack: () => void }
 
 type PublicNotice = NonNullable<ResidentPublicResponse['notice']>
 type Interval = { start: string; end: string }
@@ -35,30 +35,40 @@ function telHref(contact: string): string | null {
   return m ? `tel:${m[0].replace(/-/g, '')}` : null
 }
 
-export function S8ResidentView({ projectId, location, onBack }: Props) {
+export function S8ResidentView({ projectId, location, preview, onBack }: Props) {
+  const [source, setSource] = useState<'preview' | 'published'>(preview ? 'preview' : 'published')
   const [state, setState] = useState<Async<ResidentPublicResponse>>({ status: 'loading' })
   useEffect(() => {
+    if (source !== 'published') return
     const controller = new AbortController()
     getPublicResidentNotice(projectId, controller.signal)
       .then((data) => setState({ status: 'success', data }))
       .catch((err) => !isAbort(err) && setState({ status: 'error', message: errorMessage(err) }))
     return () => controller.abort()
-  }, [projectId])
+  }, [projectId, source])
 
   const published = state.status === 'success' && state.data.status === 'published' ? state.data.notice : null
   return <div className="grid s8">
     <section className="panel span2">
-      <div className="ph"><span className="step">S8</span><h2>주민 공개 화면</h2><span className="tag">공개 API 조회 결과</span></div>
-      {state.status === 'loading' && <p role="status">확정 안내를 조회하는 중…</p>}
-      {state.status === 'error' && <div className="hint error" role="alert">{state.message}</div>}
-      {state.status === 'success' && state.data.status === 'not_published' && <div className="hint warn">확정된 주민 안내가 없습니다.</div>}
-      {published && <ResidentPhone notice={published} location={location} />}
+      <div className="ph"><span className="step">S8</span><h2>주민 안내 화면</h2><span className="tag">{source === 'preview' ? '미공개 시연' : '공개 API 조회 결과'}</span></div>
+      {preview && <div className="s8-source" aria-label="표시 데이터 선택">
+        <button type="button" className={source === 'preview' ? '' : 'ghost'} onClick={() => setSource('preview')}>시연용 미리보기</button>
+        <button type="button" className={source === 'published' ? '' : 'ghost'} onClick={() => { setState({ status: 'loading' }); setSource('published') }}>실제 공개 조회</button>
+      </div>}
+      {source === 'preview' && preview && <>
+        <div className="hint warn" role="status"><b>시연용 미리보기 · 서버에 공개되지 않은 내용</b><br />현재 브라우저 메모리에만 있으며 실제 공개 데이터와 별개입니다. 새로고침하면 사라질 수 있습니다.</div>
+        <ResidentPhone notice={preview} location={location} preview />
+      </>}
+      {source === 'published' && state.status === 'loading' && <p role="status">확정 안내를 조회하는 중…</p>}
+      {source === 'published' && state.status === 'error' && <div className="hint error" role="alert">{state.message}</div>}
+      {source === 'published' && state.status === 'success' && state.data.status === 'not_published' && <div className="hint warn">공개 API에 확정된 주민 안내가 없습니다. 시연 미리보기 데이터는 여기에 포함되지 않습니다.</div>}
+      {source === 'published' && published && <ResidentPhone notice={published} location={location} />}
     </section>
     <section className="panel span2"><button type="button" className="ghost" onClick={onBack}>← S7로 돌아가기</button></section>
   </div>
 }
 
-function ResidentPhone({ notice, location }: { notice: PublicNotice; location: string }) {
+function ResidentPhone({ notice, location, preview = false }: { notice: PublicNotice; location: string; preview?: boolean }) {
   const slots = byStartTime(notice.hourly_noise_levels)
   const schedule = byStartTime(notice.today_schedule)
   const noisy = byStartTime(notice.noisy_work_intervals)
@@ -76,7 +86,9 @@ function ResidentPhone({ notice, location }: { notice: PublicNotice; location: s
           <path d="M92 118 Q92 104 106 104 L116 104 Q130 104 130 118 L130 132 Q111 142 92 132 Z" fill="#8FD3C8" />
         </svg>
         <b>쉿간표</b>
-        {notice.publication_provenance.data_classification === 'demo' && <span className="s8r-demo">시연 예시</span>}
+        {preview
+          ? <span className="s8r-demo">미공개 시연</span>
+          : notice.publication_provenance.data_classification === 'demo' && <span className="s8r-demo">서버 공개 예시</span>}
       </div>
       <p className="s8r-sub">{[day && dateLabel(day), location].filter(Boolean).join(' · ')}</p>
       <h1>오늘 우리 동네 공사 안내</h1>

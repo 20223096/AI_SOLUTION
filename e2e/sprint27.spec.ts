@@ -1,6 +1,6 @@
 import { devices, expect, test } from '@playwright/test'
 
-test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout', async ({ browser, page }) => {
+test('S1-S8 no-login preview workflow, publication separation, refresh, and mobile layout', async ({ browser, page }) => {
   const consoleErrors: string[] = []
   page.on('console', (message) => {
     if (message.type() === 'error') consoleErrors.push(message.text())
@@ -46,8 +46,8 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await toS7.click()
 
   await page.getByPlaceholder('필수').fill('서대문구 공사안내 02-0000-0000')
-  await page.getByRole('button', { name: '비공개 초안 서버 저장' }).click()
-  await expect(page.getByText('서버 안내문 초안')).toBeVisible({ timeout: 30_000 })
+  await page.getByLabel('제목').fill('심사위원 시연 공고문')
+  await page.getByLabel('본문').fill('서버에 공개되지 않는 시연 내용입니다.')
 
   const before = await page.evaluate(async () => {
     const response = await fetch('/api/public/construction/extracted-mock/resident-notice')
@@ -55,17 +55,19 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   })
   expect(before.status).toBe('not_published')
 
-  await page.getByRole('button', { name: /수정 저장 후 확정/ }).click()
-  await expect(page.getByText('서버 확정·공개됨')).toBeVisible({ timeout: 30_000 })
-  await page.getByRole('button', { name: /다음: 주민 공개 화면/ }).click()
-  await expect(page.getByText('공개 API 조회 결과')).toBeVisible()
-  await expect(page.getByText('시연 예시')).toBeVisible()
+  await page.getByRole('button', { name: '시연 화면으로 계속하기' }).click()
+  await expect(page.getByText('시연용 미리보기 · 서버에 공개되지 않은 내용')).toBeVisible()
+  await expect(page.getByText('심사위원 시연 공고문')).toBeVisible()
+  expect(apiResponses.some((entry) => entry.includes('/api/staff/resident-notices'))).toBeFalsy()
+
+  await page.getByRole('button', { name: '실제 공개 조회' }).click()
+  await expect(page.getByText(/공개 API에 확정된 주민 안내가 없습니다/)).toBeVisible()
 
   const after = await page.evaluate(async () => {
     const response = await fetch('/api/public/construction/extracted-mock/resident-notice')
     return response.json()
   })
-  expect(after.status).toBe('published')
+  expect(after.status).toBe('not_published')
   expect(JSON.stringify(after)).not.toMatch(/predicted_db|noise_impact|receptor|constraint_violations/)
 
   expect(apiResponses.some((entry) => entry.includes('POST /api/locations/address-coordinate'))).toBeTruthy()
@@ -75,7 +77,7 @@ test('S1-S8 real browser workflow, publication gate, refresh, and mobile layout'
   await page.reload()
   await expect(page.getByRole('heading', { name: '공고문 올리기' })).toBeVisible()
   const persisted = await page.evaluate(async () => (await fetch('/api/public/construction/extracted-mock/resident-notice')).json())
-  expect(persisted.status).toBe('published')
+  expect(persisted.status).toBe('not_published')
 
   const mobile = await browser.newPage({ ...devices['iPhone 13'] })
   await mobile.goto('/')

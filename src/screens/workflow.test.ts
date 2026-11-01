@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { isSelectable, representativeId } from '../api/recommendations'
 import { validateForm, type PlanningForm } from './s2Form'
 import { summarizeDay } from './s8Quiet'
+import { buildPreviewNotice } from './s7Notice'
 
 describe('workflow guards', () => {
   it('blocks a notice with missing required fields', () => {
@@ -48,5 +49,20 @@ describe('workflow guards', () => {
   it('does not expose internal metrics in resident timeline summaries', () => {
     const result = summarizeDay([], new Map(), { start: '08:00', end: '18:00' })
     expect(JSON.stringify(result)).not.toMatch(/impact|receptor|decibel|dB/i)
+  })
+
+  it('builds an unpublished S8 preview entirely from the selected in-memory schedule', () => {
+    const preview = buildPreviewNotice({
+      schedule_id: 'demo', schedule_version: 'v1', candidate_id: 'candidate', recommendation_source: '/api/prd/recommendations/constraint-filtered',
+      candidate_valid: true, assignments: [
+        { task_id: 'loud', task_name: '절단', start: '2026-09-11T08:00:00+09:00', end: '2026-09-11T09:00:00+09:00', high_noise: true, classification_source: 'user_confirmed' },
+      ],
+    }, '2026-09-11T07:00:00+09:00', '2026-09-11T10:00:00+09:00', '시연 제목', '시연 본문', '')
+
+    expect(preview.confirmed_notice).toBe('시연 제목\n\n시연 본문')
+    expect(preview.publication_provenance).toMatchObject({ publication_version: 0, data_classification: 'demo' })
+    expect(preview.hourly_noise_levels.map((slot) => slot.level)).toEqual(['quiet', 'loud', 'quiet'])
+    expect(preview.hourly_noise_levels[0].start).toBe('2026-09-11T07:00:00+09:00')
+    expect(preview.public_contact).toContain('시연용')
   })
 })

@@ -6,6 +6,7 @@ export type ResidentNoticeDraftCreate = Schemas['ResidentNoticeDraftCreateReques
 export type ResidentNoticeDraftUpdate = Schemas['ResidentNoticeDraftUpdateRequest']
 export type ResidentNoticeDraft = Schemas['ResidentNoticeDraftResponse']
 export type ResidentPublicResponse = Schemas['ResidentPublicResponse']
+export type ResidentPublicNotice = NonNullable<ResidentPublicResponse['notice']>
 export type SelectedNoticeSchedule = Schemas['SelectedNoticeSchedule']
 
 const staffHeaders = (token: string, json = false) => ({
